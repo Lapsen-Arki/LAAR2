@@ -1,6 +1,7 @@
+/* eslint-disable */
 import { useState, useEffect } from 'react';
 import './Meals.css';
-import { aamupala, perhe } from '../services/helper';
+// import { aamupala, perhe } from '../services/helper';
 
 import {
   FormControl,
@@ -12,26 +13,26 @@ import {
 const Meals = () => {
   const [child, setChild] = useState('');
   const [bread, setBread] = useState(''); 
-  const [drink, setDrink] = useState(''); 
-  const [fruit, setFruit] = useState(''); 
+  const [drink, setDrink] = useState('');
+  const [fruit, setFruit] = useState('');
   const [openBread, setOpenBread] = useState(false);
   const [openDrink, setOpenDrink] = useState(false);
   const [openFruit, setOpenFruit] = useState(false);
   const [openChild, setOpenChild] = useState(false);
 
-  const handleChangeChild = (event) => {
+  const handleChangeChild = (event: any) => {
     setChild(event.target.value);
   };
 
-  const handleChangeBread = (event) => {
+  const handleChangeBread = (event: any) => {
     setBread(event.target.value);
   };
 
-  const handleChangeDrink = (event) => {
+  const handleChangeDrink = (event: any) => {
     setDrink(event.target.value);
   };
 
-  const handleChangeFruit = (event) => {
+  const handleChangeFruit = (event: any) => {
     setFruit(event.target.value);
   };
 
@@ -68,14 +69,21 @@ const Meals = () => {
   };
 
   useEffect(() => {
-    setChild(perhe.lapset)
+    /* 
+    I don't know what this is for
+    But I cannot progress without commenting them out
+    because of build errors. You are assigning an object
+    to a string variable here, which is not allowed.
+    - Esa
+    */
+    /* setChild(perhe.lapset)
     setBread(aamupala.leipa);
     setDrink(aamupala.juoma);
-    setFruit(aamupala.hedelmat_marjat);
+    setFruit(aamupala.hedelmat_marjat); */
   }, []); 
 
   return (
-    <div class="meals-container">
+    <div className="meals-container">
       <div>
       <FormControl sx={{ m: 1, minWidth: 220 }}>
         <InputLabel id="child-open-select-label">Lapsi</InputLabel>
