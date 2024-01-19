@@ -3,8 +3,7 @@ name: CI-LOCAL
 on:
   push:
     branches:
-      - dev
-      - feature/*
+      - test
 
 jobs:
   local-build:
@@ -14,7 +13,7 @@ jobs:
     steps:
       - name: Debug Token
         run: |
-            echo "FIREBASE_KEY_JSON=${FIREBASE_KEY_JSON}" >> key.env
+          echo "FIREBASE_KEY_JSON=${FIREBASE_KEY_JSON}" >> key.env
 
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -22,19 +21,16 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.11.0'
-      
-      
+          node-version: "20.11.0"
 
       - name: Set up Docker Compose
         run: |
-        
+
           sudo docker-compose up --build -d
           sudo docker ps -a
 
       - name: Wait for healthchecks
         run: timeout 60s sh -c 'until docker ps | grep <CONTAINER_NAME> | grep -q healthy; do echo "Waiting for container to be healthy..."; sleep 2; done'
-        
 
       - name: Tear down Docker Compose
         run: |
