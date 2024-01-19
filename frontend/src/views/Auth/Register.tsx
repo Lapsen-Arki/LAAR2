@@ -6,14 +6,37 @@ import {
   Link,
   Checkbox,
   FormControlLabel,
+  Box,
 } from "@mui/material";
 import React from "react";
 import { registerUser } from "../../api/registerPost";
+import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 
 // TODO: 1. Pankkikortin vahvistuksen lisääminen 2. EXTRA: Google ja Facebook kirjautumis vaihtoehdot
+const CARD_ELEMENT_STYLES = {
+  style: {
+    base: {
+      color: "black",
+      iconColor: "black",
+      fontSize: "18px",
+      fontSmoothing: "antialiased",
+      ":-webkit-autofill": {
+        color: "black",
+      },
+      "::placeholder": {
+        color: "#black",
+      },
+    },
+    invalid: {
+      iconColor: "#FFC7EE",
+      color: "#FFC7EE",
+    },
+  },
+};
 
 export default function Register() {
   const [errorMessage, setErrorMessage] = React.useState("");
+  const [isFocused, setIsFocused] = React.useState(false);
   const [formData, setFormData] = React.useState({
     email: "",
     name: "",
@@ -21,6 +44,8 @@ export default function Register() {
     confirmPassword: "",
     accept: false,
   });
+  const stripe = useStripe();
+  const elements = useElements();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -31,6 +56,22 @@ export default function Register() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    if (!stripe || !elements) {
+      console.error("Stripe or elements not defined");
+      return;
+    }
+
+    const card = elements.getElement(CardElement);
+    if (card) {
+      const result = await stripe.createToken(card);
+      if (result.error) {
+        console.error(result.error.message);
+        return;
+      } else {
+        console.log("Token:", result.token);
+      }
+    }
 
     const response = await registerUser(formData);
     if (response && response.error) {
@@ -123,15 +164,37 @@ export default function Register() {
           value={formData.confirmPassword}
           onChange={handleChange}
         />
-        <Typography sx={{ color: "red", marginBottom: 2 }}>
-          {errorMessage}
-        </Typography>
 
-        {/* TODO: TÄHÄN VÄLIIN LISÄTÄÄN MAKSUPALVELU VAHVISTUS, ELI PANKKIKORTIN VAHVISTUS STRIPEN KAUTTA */}
+        <Typography>Vahvista maksukorttisi:</Typography>
+        <Box
+          sx={{
+            background: "white",
+            padding: 2,
+            border: isFocused ? 2 : 1,
+            borderRadius: "4px",
+            borderColor: isFocused ? "#1a73e8" : "rgba(0, 0, 0, 0.23)", // Google blue when focused
+          }}
+        >
+          <CardElement
+            options={CARD_ELEMENT_STYLES}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+          />
+        </Box>
+        <Typography
+          variant="subtitle1"
+          sx={{
+            marginBottom: 2,
+          }}
+        >
+          <b>Emme veloita sinua vielä tässä kohtaa.</b> Turvallisen maksukortin
+          vahvistuksen käsittelee <a href="https://stripe.com/en-fi">Stripe</a>.
+        </Typography>
 
         <Typography
           sx={{
             marginBottom: 2,
+            marginTop: 2,
           }}
           variant="body1"
         >
@@ -143,6 +206,9 @@ export default function Register() {
         <Button type="submit" fullWidth variant="contained" color="primary">
           Rekisteröidy
         </Button>
+        <Typography sx={{ color: "red", marginBottom: 2, marginTop: 2 }}>
+          {errorMessage}
+        </Typography>
         <FormControlLabel
           sx={{ marginTop: 2 }}
           control={
