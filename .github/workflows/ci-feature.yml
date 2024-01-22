@@ -1,0 +1,38 @@
+name: CI-FEATURE
+
+on:
+  push:
+    branches:
+      - dev
+      - "feature/*"
+
+jobs:
+  build-and-run-tests:
+    runs-on: [self-hosted, feature]
+    env:
+      FIREBASE_KEY_JSON: ${{ secrets.FIREBASE_KEY_JSON }}
+      TEST_SECRET: ${{ secrets.TEST_SECRET }}
+    steps:
+      - name: Debug info
+        run: |
+          echo $TEST_SECRET
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.11.0"
+
+      - name: Set up backend
+        run: |
+          sudo docker compose up -d
+          bash ./wait-for-healthy.sh
+
+      - name: Wait for healthchecks
+        run: |
+          bash ./check-healthy.sh
+
+      - name: Tear down Docker Compose
+        run: |
+          sudo docker compose down

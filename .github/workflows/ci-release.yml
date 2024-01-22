@@ -1,14 +1,13 @@
-name: CI
+name: CI-RELEASE
 
 on:
   push:
     branches:
-      - dev
-      - "feature/*"
+      - release
 
 jobs:
-  build:
-    runs-on: self-hosted
+  build-and-dockerize:
+    runs-on: ubuntu-latest
     env:
       FIREBASE_KEY_JSON: ${{ secrets.FIREBASE_KEY_JSON }}
       TEST_SECRET: ${{ secrets.TEST_SECRET }}
