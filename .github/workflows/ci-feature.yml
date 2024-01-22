@@ -13,12 +13,6 @@ jobs:
       FIREBASE_KEY_JSON: ${{ secrets.FIREBASE_KEY_JSON }}
       TEST_SECRET: ${{ secrets.TEST_SECRET }}
     steps:
-      - name: Clear npm cache
-        run: |
-          echo "Initializing local environment"
-          npm cache clean --force
-          npm cache verify
-
       - name: Checkout Repo
         uses: actions/checkout@v4
 
@@ -26,6 +20,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20.11.0"
+
+      - name: Clear npm cache
+        run: |
+          echo "Initializing local environment"
+          npm cache clean --force
+          npm cache verify
 
       - name: Debug Token
         run: |
@@ -48,12 +48,6 @@ jobs:
   build-frontend-run-tests:
     runs-on: [self-hosted, feature]
     steps:
-      - name: Clear npm cache
-        run: |
-          echo "Initializing local environment"
-          npm cache clean --force
-          npm cache verify
-
       - name: Checkout Repo
         uses: actions/checkout@v4
 
@@ -61,6 +55,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20.11.0"
+
+      - name: Clear npm cache
+        run: |
+          echo "Initializing local environment"
+          npm cache clean --force
+          npm cache verify
 
       - name: Setup frontend
         run: |
