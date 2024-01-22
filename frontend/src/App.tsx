@@ -8,7 +8,7 @@ import EditProfile from "./views/editProfile";
 import ProfileDemo from "./views/ProfileDemo";
 import Meals from "./views/Meals";
 import TimeBlocking from "./views/TimeBlocking";
-
+import AdminPage from "./views/admin";
 
 function App() {
   return (
@@ -23,6 +23,7 @@ function App() {
           <Route path="/profile-demo" element={<ProfileDemo />} />
           <Route path="/meals" element={<Meals />} />
           <Route path="/timeblocking" element={<TimeBlocking />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </Layout>
     </Router>
