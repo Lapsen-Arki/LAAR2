@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - dev
-      - feature/*
+      - "feature/*"
 
 jobs:
   build:
@@ -22,8 +22,8 @@ jobs:
 
       - name: Set up Docker Compose
         run: |
-          sudo docker compose up --build -d
-          sudo docker ps -a
+          docker compose up --env-file .env --build -d 
+          docker ps -a
 
       - name: Wait for healthchecks
         run: |
@@ -31,4 +31,4 @@ jobs:
 
       - name: Tear down Docker Compose
         run: |
-          sudo docker compose down
+          docker compose down
