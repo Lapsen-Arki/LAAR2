@@ -26,8 +26,8 @@ jobs:
 
       - name: Set up Docker Compose
         run: |
-          docker compose up --build -d 
-          docker ps -a
+          sudo docker compose up --build -d 
+          sudo docker ps -a
 
       - name: Wait for healthchecks
         run: |
@@ -35,4 +35,4 @@ jobs:
 
       - name: Tear down Docker Compose
         run: |
-          docker compose down
+          sudo docker compose down
