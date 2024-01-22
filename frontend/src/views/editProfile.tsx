@@ -7,6 +7,7 @@ import AnimalAvatarWidget from '../components/AnimalAvatarWidget.tsx';
 import Switch from '@mui/material/Switch';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
+import { useNavigate } from 'react-router-dom';
 
 import { saveUserData } from '../api/editProfilePost.ts';
 
@@ -14,10 +15,11 @@ const EditProfile = () => {
   const [showAnimalAvatar, setShowAnimalAvatar] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
   const [childName, setChildName] = useState('');
-  const [birthdate, setBirthdate] = useState(null);
+  const [birthdate, setBirthdate] = useState<Date | null>(null); // Muutin birthdate-tilan Date-tyypiksi
   const [nameError, setNameError] = useState('');
   const [birthdateError, setBirthdateError] = useState('');
   const [accessRights, setAccessRights] = useState(false);
+  const navigate = useNavigate();
 
   const handleShowAnimalAvatar = () => {
     setShowAnimalAvatar(true);
@@ -58,6 +60,9 @@ const EditProfile = () => {
   
         // Lähetä tiedot tietokantaan
         await saveUserData(userData);
+
+        // Ohjaa käyttäjä Profile.tsx -näkymään, kun tallennus onnistuu
+        navigate('/profile');
 
       } catch (error) {
         console.error('Tietojen tallennus epäonnistui', error);
