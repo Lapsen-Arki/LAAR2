@@ -21,7 +21,7 @@ jobs:
 
       - name: Set up Docker Compose
         run: |
-          FIREBASE_KEY_JSON="${{ secrets.FIREBASE_KEY_JSON }}" sudo docker compose up --build -d 
+          FIREBASE_KEY_JSON=$(echo '${{ secrets.FIREBASE_KEY_JSON }}' | jq -R -s -c .) sudo docker compose up --build -d 
           sudo docker ps -a
 
       - name: Wait for healthchecks
