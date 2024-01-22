@@ -7,15 +7,18 @@ on:
       - "feature/*"
 
 jobs:
-  build-and-run-tests:
+  build-backend-run-tests:
     runs-on: [self-hosted, feature]
     env:
       FIREBASE_KEY_JSON: ${{ secrets.FIREBASE_KEY_JSON }}
       TEST_SECRET: ${{ secrets.TEST_SECRET }}
     steps:
-      - name: Debug info
+      - name: Clear npm cache
         run: |
-          echo $TEST_SECRET
+          echo "Initializing local environment"
+          npm cache clean --force
+          npm cache verify
+
       - name: Checkout Repo
         uses: actions/checkout@v4
 
@@ -24,15 +27,51 @@ jobs:
         with:
           node-version: "20.11.0"
 
+      - name: Debug Token
+        run: |
+          echo "FIREBASE_KEY_JSON=${FIREBASE_KEY_JSON}" >> key.env
+
       - name: Set up backend
         run: |
-          sudo docker compose up -d
-          bash ./wait-for-healthy.sh
+          cd backend
+          npm install
+          npm run build
 
-      - name: Wait for healthchecks
+      - name: Run backend
         run: |
-          bash ./check-healthy.sh
+          (
+            cd backend
+            PORT=3000 FIREBASE_KEY_JSON=${FIREBASE_KEY_JSON} npm run start
+          ) &
+          bash ./check-healthy-light.sh "Backend" "http://localhost:3000/api/alive" 120
 
-      - name: Tear down Docker Compose
+  build-frontend-run-tests:
+    runs-on: [self-hosted, feature]
+    steps:
+      - name: Clear npm cache
         run: |
-          sudo docker compose down
+          echo "Initializing local environment"
+          npm cache clean --force
+          npm cache verify
+
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.11.0"
+
+      - name: Setup frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: Run frontend
+        run: |
+          (
+            cd frontend
+            VITE_PORT=5000 npm run preview
+          ) &
+          bash ./check-healthy-light.sh "Frontend" "http://localhost:5000" 120

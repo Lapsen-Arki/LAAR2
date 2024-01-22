@@ -8,7 +8,7 @@ check_service() {
   local start_time=$(date +%s)
 
   while true; do
-    status=$(curl -s "$url" | grep "OK")
+    status=$(curl -fail -s "$url" | grep "OK")
 
     if [ -n "$status" ]; then
       echo "$service is alive"
@@ -28,10 +28,15 @@ check_service() {
   done
 }
 
-# Check backend
-check_service "Backend" "http://localhost:3000/api/alive" 120 &
+# Check command-line arguments
+if [ "$#" -ne 3 ]; then
+  echo "Usage: $0 <service_name> <url> <timeout>"
+  exit 1
+fi
 
-# Check frontend
-check_service "Frontend" "http://localhost:5000/" 120 &
+service_name=$1
+url=$2
+timeout=$3
 
-wait
+# Check service
+check_service "$service_name" "$url" "$timeout"
