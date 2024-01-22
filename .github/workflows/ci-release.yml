@@ -12,9 +12,6 @@ jobs:
       FIREBASE_KEY_JSON: ${{ secrets.FIREBASE_KEY_JSON }}
       TEST_SECRET: ${{ secrets.TEST_SECRET }}
     steps:
-      - name: Debug info
-        run: |
-          echo $TEST_SECRET
       - name: Checkout Repo
         uses: actions/checkout@v4
 
@@ -32,6 +29,8 @@ jobs:
         run: |
           bash ./check-healthy.sh
 
-      - name: Tear down Docker Compose
+      - name: Cleanup
+        if: success() || failure()
         run: |
+          echo "Cleaning up..."
           sudo docker compose down

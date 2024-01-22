@@ -1,14 +1,4 @@
-FROM node:20.11.0
-
-# Install dockerize
-RUN apt-get update && apt-get install -y wget
-RUN wget https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz \
-    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-v0.6.1.tar.gz \
-    && rm dockerize-linux-amd64-v0.6.1.tar.gz
-
-# Install netstat for debugging
-
-RUN apt-get install -y net-tools
+FROM node:20.11.0 as builder
 
 WORKDIR /app/frontend
 
@@ -20,6 +10,13 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 5000
+# Use a production-ready image to serve the application
+FROM nginx:alpine
 
-CMD ["npm", "run", "preview"]
+ARG PORT
+# Copy the built files from the previous stage
+COPY --from=builder /app/frontend/dist /usr/share/nginx/html
+
+EXPOSE $PORT
+
+CMD ["nginx", "-g", "daemon off;"]
