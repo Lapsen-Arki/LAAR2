@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     image: laar-backend:latest
     env_file:
-      - .env
+      - key.env
     ports:
       - "3000:3000"
     networks:
