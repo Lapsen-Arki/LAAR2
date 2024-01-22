@@ -36,5 +36,4 @@ jobs:
         if: success() || failure()
         run: |
           echo "Cleaning up..."
-          rm key.env
           sudo docker compose down
