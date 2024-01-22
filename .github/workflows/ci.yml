@@ -12,31 +12,22 @@ jobs:
     env:
       FIREBASE_KEY_JSON: ${{ secrets.FIREBASE_KEY_JSON }}
     steps:
-      
       - name: Checkout Repo
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.11.0'
-
-      - name: Debug GITHUBTOKEN
-        run: |
-          echo "GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
-
-      - name: Build wait-for-services Image
-        run: sudo docker build -t wait-for-services:latest --network host -f Dockerfile .
+          node-version: "20.11.0"
 
       - name: Set up Docker Compose
         run: |
-        
-          sudo docker-compose up --build
+          sudo docker-compose up --build -d
           sudo docker ps -a
 
-      - name: Wait for build to finish
+      - name: Wait for healthchecks
         run: |
-          sudo docker run --network=host --rm wait-for-services
+          bash ./check-healthy.sh
 
       - name: Tear down Docker Compose
         run: |

@@ -1,6 +1,7 @@
-version: '3'
+version: "3"
 services:
   backend:
+    container_name: laar_backend
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -8,9 +9,10 @@ services:
     env_file:
       - key.env
     environment:
+      - FIREBASE_KEY_JSON=${FIREBASE_KEY_JSON}
       - PORT=3000
     ports:
-      - '3000:3000'
+      - "3000:3000"
     networks:
       - devnet
     healthcheck:
@@ -21,6 +23,7 @@ services:
       timeout: 10s
 
   frontend:
+    container_name: laar_frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -28,7 +31,7 @@ services:
     environment:
       - VITE_PORT=5000
     ports:
-      - '5000:5000'
+      - "5000:5000"
     networks:
       - devnet
     healthcheck:
@@ -45,4 +48,3 @@ networks:
       driver: default
       config:
         - subnet: "172.18.0.0/16"
-

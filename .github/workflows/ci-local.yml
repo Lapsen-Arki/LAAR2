@@ -3,7 +3,7 @@ name: CI-LOCAL
 on:
   push:
     branches:
-      - test
+      - local/test
 
 jobs:
   local-build:
@@ -25,12 +25,12 @@ jobs:
 
       - name: Set up Docker Compose
         run: |
-
           sudo docker-compose up --build -d
           sudo docker ps -a
 
       - name: Wait for healthchecks
-        run: timeout 60s sh -c 'until docker ps | grep <CONTAINER_NAME> | grep -q healthy; do echo "Waiting for container to be healthy..."; sleep 2; done'
+        run: |
+          bash ./check-healthy.sh
 
       - name: Tear down Docker Compose
         run: |
