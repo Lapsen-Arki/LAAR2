@@ -5,6 +5,7 @@ on:
     branches:
       - dev
       - "feature/*"
+      - "Feature/*"
 
 jobs:
   build-backend-run-tests:
