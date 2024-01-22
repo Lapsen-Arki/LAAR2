@@ -3,14 +3,13 @@ name: CI-RELEASE
 on:
   push:
     branches:
-      - release
+      - release/*
 
 jobs:
   build-and-dockerize:
     runs-on: ubuntu-latest
     env:
       FIREBASE_KEY_JSON: ${{ secrets.FIREBASE_KEY_JSON }}
-      TEST_SECRET: ${{ secrets.TEST_SECRET }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4

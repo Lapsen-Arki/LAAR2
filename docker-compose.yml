@@ -14,7 +14,7 @@ services:
     networks:
       - devnet
     healthcheck:
-      test: curl --fail http://localhost:3000/api/alive || exit 1
+      test: curl --fail http://localhost$:{PORT}/api/alive || exit 1
       interval: 2s
       retries: 10
       start_period: 10s
@@ -33,7 +33,7 @@ services:
     networks:
       - devnet
     healthcheck:
-      test: curl --fail http://localhost:80 || exit 1
+      test: curl --fail http://localhost:${PORT} || exit 1
       interval: 2s
       retries: 10
       start_period: 10s
