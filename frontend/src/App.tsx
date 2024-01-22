@@ -8,6 +8,7 @@ import EditProfile from "./views/editProfile";
 import ProfileDemo from "./views/ProfileDemo";
 import Meals from "./views/Meals";
 import TimeBlocking from "./views/TimeBlocking";
+import TimeBlockPreview from "./views/TimeBlockPreview"
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path="/profile-demo" element={<ProfileDemo />} />
           <Route path="/meals" element={<Meals />} />
           <Route path="/timeblocking" element={<TimeBlocking />} />
+		  <Route path="/preview" element={<TimeBlockPreview />} />
         </Routes>
       </Layout>
     </Router>
