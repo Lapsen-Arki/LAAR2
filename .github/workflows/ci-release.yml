@@ -19,6 +19,10 @@ jobs:
         with:
           node-version: "20.11.0"
 
+      - name: Set env variables
+        run: |
+          echo "FIREBASE_KEY_JSON=$FIREBASE_KEY_JSON" >> key.env
+
       - name: Set up Docker Compose
         run: |
           sudo docker compose up --build -d 
@@ -32,4 +36,5 @@ jobs:
         if: success() || failure()
         run: |
           echo "Cleaning up..."
+          rm .env
           sudo docker compose down

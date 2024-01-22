@@ -6,8 +6,8 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     image: laar-backend:latest
-    environment:
-      - FIREBASE_KEY_JSON=${FIREBASE_KEY_JSON}
+    env_file:
+      - .env
     ports:
       - "3000:3000"
     networks:
