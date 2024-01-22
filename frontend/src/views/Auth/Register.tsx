@@ -11,6 +11,8 @@ import {
 import React from "react";
 import { registerUser } from "../../api/registerPost";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import { RegisterData } from "../../types/registerData";
+import { useNavigate } from "react-router-dom";
 
 // TODO: 1. Pankkikortin vahvistuksen lisääminen 2. EXTRA: Google ja Facebook kirjautumis vaihtoehdot
 const CARD_ELEMENT_STYLES = {
@@ -36,14 +38,16 @@ const CARD_ELEMENT_STYLES = {
 
 export default function Register() {
   const [errorMessage, setErrorMessage] = React.useState("");
+  const [successMessage, setSuccessMessage] = React.useState("");
   const [isFocused, setIsFocused] = React.useState(false);
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = React.useState<RegisterData>({
     email: "",
     name: "",
     password: "",
     confirmPassword: "",
     accept: false,
   });
+  const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
 
@@ -69,15 +73,19 @@ export default function Register() {
         console.error(result.error.message);
         return;
       } else {
-        console.log("Token:", result.token);
+        // MAKE SURE USING HTTPS CONNECTION IN PRODUCTION
+        const response = await registerUser(formData, result.token);
+        if (response && response.error) {
+          setErrorMessage(response.error);
+        } else {
+          setSuccessMessage(
+            "Rekisteröinti onnistui! Siirryt kirjautumis sivulle 5 s kuluttua."
+          );
+          setTimeout(() => {
+            navigate("/login");
+          }, 5000);
+        }
       }
-    }
-
-    const response = await registerUser(formData);
-    if (response && response.error) {
-      setErrorMessage(response.error);
-    } else {
-      console.log("Registration successful", response);
     }
   };
   return (
@@ -123,7 +131,6 @@ export default function Register() {
           fullWidth
           label="Nimi"
           autoComplete="name"
-          autoFocus
           value={formData.name}
           onChange={handleChange}
         />
@@ -141,7 +148,6 @@ export default function Register() {
           label="Salasana"
           autoComplete="password"
           type="password"
-          autoFocus
           value={formData.password}
           onChange={handleChange}
         />
@@ -160,7 +166,6 @@ export default function Register() {
           label="Vahvista salasana"
           autoComplete="password"
           type="password"
-          autoFocus
           value={formData.confirmPassword}
           onChange={handleChange}
         />
@@ -208,6 +213,9 @@ export default function Register() {
         </Button>
         <Typography sx={{ color: "red", marginBottom: 2, marginTop: 2 }}>
           {errorMessage}
+        </Typography>
+        <Typography sx={{ color: "green", marginBottom: 2, marginTop: 2 }}>
+          {successMessage}
         </Typography>
         <FormControlLabel
           sx={{ marginTop: 2 }}
