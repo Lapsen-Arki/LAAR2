@@ -11,6 +11,7 @@ interface ChildProfile {
   childName: string;
 }
 
+// Näytä kaikki profiilit
 const getProfiles = async (req: Request, res: Response): Promise<void> => {
   try {
     const db = admin.firestore();
@@ -33,4 +34,22 @@ const getProfiles = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export default getProfiles;
+// Poista profiili
+const deleteProfile = async (req: Request, res: Response): Promise<void> => {
+  const profileId = req.params.profileId;
+
+  try {
+    const db = admin.firestore();
+    const childProfilesCollection = db.collection("childProfile");
+
+    // Poista profiili tietokannasta
+    await childProfilesCollection.doc(profileId).delete();
+
+    res.status(200).json({ success: true, message: 'Profiili poistettu onnistuneesti.' });
+  } catch (error: any) {
+    console.error('Profiilin poisto epäonnistui', error);
+    res.status(500).json({ success: false, message: 'Profiilin poisto epäonnistui.' });
+  }
+};
+
+export { getProfiles, deleteProfile };

@@ -3,7 +3,7 @@ import express from "express";
 import registerUser from "./controllers/register/register";
 import loginController from "./controllers/login";
 import editProfile from "./controllers/editProfile";
-import profiles from "./controllers/profiles";
+import { getProfiles, deleteProfile } from "./controllers/profiles";
 
 const router = express.Router();
 
@@ -14,7 +14,10 @@ router.post("/login", loginController);
 
 router.post("/editProfile", editProfile);
 
-router.get("/profiles", profiles);
+router.get("/profiles", getProfiles);
+
+router.delete("/profiles/:profileId", deleteProfile);
+
 // alive check
 router.get("/alive", (req, res) => {
   res.status(200);

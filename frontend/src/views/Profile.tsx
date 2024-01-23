@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import './Profile.css';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import axios from 'axios'; // Lisätty axios
-
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -13,8 +11,13 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Tooltip from '@mui/material/Tooltip';
-
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
 import { getProfiles } from '../api/getProfiles';
+import deleteProfile from '../api/deleteProfile';
 
 // kalenteri näytetään oikein, huomioiden synttärit ja karkausvuodet
 function calculateAge(birthdate: Date): string {
@@ -70,7 +73,7 @@ function calculateAge(birthdate: Date): string {
   return `${years}${yearLabel} ${months}${monthLabel} ${days}${dayLabel}`;
 }
 
-//nimen rivinvaihtaja
+// nimen rivinvaihtaja
 function splitNameToFitWidth(name: string, maxLineLength: number) {
   let result = '';
   let lineLength = 0;
@@ -88,7 +91,6 @@ function splitNameToFitWidth(name: string, maxLineLength: number) {
   return result.trim();
 }
 
-
 interface ChildProfile {
   id: string;
   accessRights: boolean;
@@ -100,6 +102,8 @@ interface ChildProfile {
 export default function Profile() {
   const navigate = useNavigate();
   const [profiles, setProfiles] = useState<ChildProfile[]>([]);
+  const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
+  const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null); // Lisätty valitun profiilin tila
 
   useEffect(() => {
     const fetchProfiles = async () => {
@@ -118,17 +122,20 @@ export default function Profile() {
     fetchProfiles();
   }, []);
 
-  // handleClickDelete-funktio profiilin poistamiseksi
   const handleClickDelete = async (profileId: string) => {
-    try {
-      // Lähetä DELETE-pyyntö backendiin käyttäen axiosia
-      await axios.delete(`/api/profiles/${profileId}`); // Korvaa oikealla reitillä
-      // Päivitä frontend uusilla profiileilla
-      const updatedProfiles = profiles.filter((profile) => profile.id !== profileId);
-      setProfiles(updatedProfiles);
-    } catch (error) {
-      console.error('Profiilin poisto epäonnistui', error);
+    // Avaa varmistusdialogi ennen poistoa
+    setSelectedProfileId(profileId);
+    setConfirmationDialogOpen(true);
+  };
+
+  const handleDeleteConfirmed = async () => {
+    // Kutsu poistofunktiota vahvistuksen jälkeen
+    if (selectedProfileId) {
+      await deleteProfile(selectedProfileId, profiles, setProfiles);
+      setSelectedProfileId(null);
     }
+    // Sulje varmistusdialogi
+    setConfirmationDialogOpen(false);
   };
 
   const handleAddProfileClick = () => {
@@ -142,6 +149,34 @@ export default function Profile() {
           Lisää profiili
         </Button>
 
+        {/* Varmistusdialogi */}
+        <Dialog
+          open={confirmationDialogOpen}
+          onClose={() => setConfirmationDialogOpen(false)}
+        >
+          <DialogTitle>Oletko varma että haluat poistaa profiilin?</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Tämä toiminto poistaa profiilin pysyvästi.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setConfirmationDialogOpen(false)}
+              color="primary"
+            >
+              Ei
+            </Button>
+            <Button
+              onClick={handleDeleteConfirmed} // Kutsu poistofunktiota vahvistuksen jälkeen
+              color="error"
+            >
+              Kyllä
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Profiilit */}
         <Box className="profiles" style={{ display: 'flex', flexDirection: 'row' }}>
           <div style={{ flex: 1 }}>
             <Typography variant="h6" gutterBottom component="div">
@@ -175,7 +210,6 @@ export default function Profile() {
                           <EditIcon />
                         </IconButton>
                       </Tooltip>
-                      {/* Lisätty poista-painike */}
                       <Tooltip title="Poista profiili">
                         <IconButton color="error" aria-label="Delete" onClick={() => handleClickDelete(profile.id)}>
                           <DeleteIcon />
@@ -199,16 +233,16 @@ export default function Profile() {
                     Kortti1
                   </Typography>
                   <div>
-                  <Tooltip title="Muokkaa profiilia">
-                        <IconButton color="primary" aria-label="Edit">
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Poista profiili">
-                        <IconButton color="error" aria-label="Delete">
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
+                    <Tooltip title="Muokkaa profiilia">
+                      <IconButton color="primary" aria-label="Edit">
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Poista profiili">
+                      <IconButton color="error" aria-label="Delete">
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
                   </div>
                 </CardContent>
               </Card>
@@ -218,16 +252,16 @@ export default function Profile() {
                     Kortti2
                   </Typography>
                   <div>
-                  <Tooltip title="Muokkaa profiilia">
-                        <IconButton color="primary" aria-label="Edit">
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Poista profiili">
-                        <IconButton color="error" aria-label="Delete">
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
+                    <Tooltip title="Muokkaa profiilia">
+                      <IconButton color="primary" aria-label="Edit">
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Poista profiili">
+                      <IconButton color="error" aria-label="Delete">
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
                   </div>
                 </CardContent>
               </Card>
@@ -237,6 +271,5 @@ export default function Profile() {
         </Box>
       </div>
     </div>
-
   );
 }
