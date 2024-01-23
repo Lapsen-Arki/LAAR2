@@ -1,32 +1,30 @@
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import axios from "axios";
 
-/* 
-I don't know what kind of format is userData
-Please add typing, for now any 
-- Esa
-*/
+// TODO: Move to env variables etc:
+const API_BASE_URL = "http://localhost:3000/api";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any 
-const saveUserData = async (userData: any) => {
+interface EditProfileData {
+  childName: string;
+  birthdate: string;
+  avatar: string;
+  accessRights: boolean;
+}
 
-  // React Hook "useNavigate" is called in function "saveUserData" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word "use".
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const navigate = useNavigate(); // Alusta useNavigate
-
+export const editProfile = async (data: EditProfileData) => {
   try {
-    // Lähetä POST-pyyntö backendiin tallentaaksesi tiedot
-    const response = await axios.post('../backend/src/api/controllers/editProfile', userData);
-    
-    // Tarkista, että tallennus onnistui ja saat tarvittaessa vastauksen backendiltä
-    if (response.data.message === 'Tallennus onnistui') {
-      // Ohjaa käyttäjä Profile.tsx -näkymään
-      navigate('/profile');
-    }
+    console.log("Sending editProfile request with data:", data); // Lisää tämä console.log-pyyntö
+
+    const response = await axios.post(`${API_BASE_URL}/editProfile`, data);
+
+    console.log("Response from editProfile:", response.data); // Lisää tämä console.log-vastaus
+
+    return response.data;
   } catch (error) {
-    console.error('Tietojen tallennus epäonnistui', error);
-    // Voit näyttää virheilmoituksen käyttäjälle, jos tallennus epäonnistuu
+    if (axios.isAxiosError(error) && error.response) {
+      console.error("Editing profile error: ", error.response.data);
+      return { error: error.response.data };
+    }
+    console.error("Error in editProfile:", error); // Lisää tämä console.log-virhe
+    throw error;
   }
 };
-
-export { saveUserData };

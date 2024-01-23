@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import './Profile.css';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import axios from 'axios'; // Lisätty axios
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -114,29 +113,16 @@ export default function Profile() {
         console.error('Virhe profiilien haussa', error);
       }
     };
-
+  
     fetchProfiles();
   }, []);
-
-  // handleClickDelete-funktio profiilin poistamiseksi
-  const handleClickDelete = async (profileId: string) => {
-    try {
-      // Lähetä DELETE-pyyntö backendiin käyttäen axiosia
-      await axios.delete(`/api/profiles/${profileId}`); // Korvaa oikealla reitillä
-      // Päivitä frontend uusilla profiileilla
-      const updatedProfiles = profiles.filter((profile) => profile.id !== profileId);
-      setProfiles(updatedProfiles);
-    } catch (error) {
-      console.error('Profiilin poisto epäonnistui', error);
-    }
-  };
 
   const handleAddProfileClick = () => {
     navigate('/profile-edit');
   };
 
   return (
-    <div className="profile-container">
+<div className="profile-container">
       <div className="profile-view">
         <Button variant="contained" sx={{ mx: 'auto', display: 'block', marginBottom: 3 }} className="custom-button" onClick={handleAddProfileClick}>
           Lisää profiili
@@ -150,16 +136,16 @@ export default function Profile() {
 
             <div className="children" style={{ display: 'flex', flexDirection: 'column' }}>
               {profiles.map((profile) => (
-                <div key={profile.id} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                <div key={profile.childName} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                   <Card sx={{ width: 430, height: 'auto', display: 'flex', alignItems: 'center', marginRight: 2 }}>
-                    <Avatar
-                      sx={{ flex: 0.2, width: 40, height: 40, marginLeft: '10px', marginRight: '10px' }}
-                      src={profile.avatar || '/broken-image.jpg'}
-                      alt="Avatar"
-                    />
+                  <Avatar
+                    sx={{ flex: 0.2, width: 40, height: 40, marginLeft: '10px', marginRight: '10px' }}
+                    src={profile.avatar || '/broken-image.jpg'}
+                    alt="Avatar"
+                  />
                     <Box sx={{ display: 'flex', flexDirection: 'column', flex: '1 0 auto' }}>
                       <Typography component="div" variant="h6" className="multiline-text">
-                        {splitNameToFitWidth(profile.childName, 14)}
+                      {splitNameToFitWidth(profile.childName, 14)}
                       </Typography>
                       <Typography variant="subtitle1" color="text.secondary" component="div">
                         {calculateAge(new Date(profile.birthdate))}
@@ -170,14 +156,13 @@ export default function Profile() {
                     </Box>
 
                     <div style={{ flex: 0.2 }}>
-                      <Tooltip title="Muokkaa profiilia">
+                    <Tooltip title="Muokkaa profiilia">
                         <IconButton color="primary" aria-label="Edit">
                           <EditIcon />
                         </IconButton>
                       </Tooltip>
-                      {/* Lisätty poista-painike */}
                       <Tooltip title="Poista profiili">
-                        <IconButton color="error" aria-label="Delete" onClick={() => handleClickDelete(profile.id)}>
+                        <IconButton color="error" aria-label="Delete">
                           <DeleteIcon />
                         </IconButton>
                       </Tooltip>
