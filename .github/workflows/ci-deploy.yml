@@ -26,13 +26,13 @@ jobs:
 
       - name: Build and Push backend image
         run: |
-          docker buildx create --use
+          docker buildx create
           docker buildx build --platform linux/amd64 -t your-registry-name.azurecr.io/laar-backend:latest ./backend
           docker push ${{ secrets.ACR_REGISTRY }}/laar-backend:latest
 
       - name: Build and Push frontend image
         run: |
-          docker buildx create --use
+          docker buildx create
           docker buildx build --platform linux/amd64 -t your-registry-name.azurecr.io/laar-frontend:latest --build-arg PORT=80 ./frontend
           docker push ${{ secrets.ACR_REGISTRY }}/laar-frontend:latest
 
