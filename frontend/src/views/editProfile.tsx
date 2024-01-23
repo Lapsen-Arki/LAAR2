@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import './Profile.css';
-import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import Avatar from '@mui/material/Avatar';
-import AnimalAvatarWidget from '../components/AnimalAvatarWidget.tsx';
-import Switch from '@mui/material/Switch';
-import Button from '@mui/material/Button';
-import Alert from '@mui/material/Alert';
+import { useState } from "react";
+import "./Profile.css";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import Avatar from "@mui/material/Avatar";
+import AnimalAvatarWidget from "../components/AnimalAvatarWidget.tsx";
+import Switch from "@mui/material/Switch";
+import Button from "@mui/material/Button";
+import Alert from "@mui/material/Alert";
 
-import { saveUserData } from '../api/editProfilePost.ts';
+import { saveUserData } from "../api/editProfilePost.ts";
 
 const EditProfile = () => {
   const [showAnimalAvatar, setShowAnimalAvatar] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
-  const [childName, setChildName] = useState('');
+  const [childName, setChildName] = useState("");
   const [birthdate, setBirthdate] = useState(null);
-  const [nameError, setNameError] = useState('');
-  const [birthdateError, setBirthdateError] = useState('');
+  const [nameError, setNameError] = useState("");
+  const [birthdateError, setBirthdateError] = useState("");
   const [accessRights, setAccessRights] = useState(false);
 
   const handleShowAnimalAvatar = () => {
@@ -31,21 +31,21 @@ const EditProfile = () => {
   const handleSave = async () => {
     // Tarkista, onko nimi tyhjä
     if (!childName) {
-      setNameError('Tämä kenttä on pakollinen');
+      setNameError("Tämä kenttä on pakollinen");
     } else {
-      setNameError('');
+      setNameError("");
     }
-  
+
     // Tarkista, onko syntymäaika tyhjä
     if (!birthdate) {
-      setBirthdateError('Tämä kenttä on pakollinen');
+      setBirthdateError("Tämä kenttä on pakollinen");
     } else {
-      setBirthdateError('');
+      setBirthdateError("");
     }
 
     // Määritä avatar-kenttä
-    const avatar: string | null = selectedAvatar || '/broken-image.jpg';
-  
+    const avatar: string | null = selectedAvatar || "/broken-image.jpg";
+
     // Tallenna tiedot vain, jos nimi ja syntymäaika ovat täytetty
     if (childName && birthdate) {
       try {
@@ -55,12 +55,11 @@ const EditProfile = () => {
           avatar,
           accessRights,
         };
-  
+
         // Lähetä tiedot tietokantaan
         await saveUserData(userData);
-
       } catch (error) {
-        console.error('Tietojen tallennus epäonnistui', error);
+        console.error("Tietojen tallennus epäonnistui", error);
         // Voit näyttää virheilmoituksen käyttäjälle, jos tallennus epäonnistuu
       }
     }
@@ -80,7 +79,7 @@ const EditProfile = () => {
             />
             {nameError && <Alert severity="error">{nameError}</Alert>}
           </div>
-          
+
           <div className="input-group">
             <h3>Lapsen syntymäaika</h3>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -92,7 +91,14 @@ const EditProfile = () => {
             {birthdateError && <Alert severity="error">{birthdateError}</Alert>}
           </div>
 
-          <div className="input-group" style={{ display: "flex", flexDirection: "column", alignItems: "center" }} >
+          <div
+            className="input-group"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
             <h3>Valitse lapselle avatar</h3>
 
             {showAnimalAvatar ? (
@@ -104,7 +110,11 @@ const EditProfile = () => {
             )}
 
             {showAnimalAvatar ? null : (
-              <Button variant="contained" className="custom-button" onClick={handleShowAnimalAvatar}>
+              <Button
+                variant="contained"
+                className="custom-button"
+                onClick={handleShowAnimalAvatar}
+              >
                 Valitse kuva
               </Button>
             )}
@@ -123,7 +133,11 @@ const EditProfile = () => {
           </div>
 
           <div className="input-group">
-            <Button variant="contained" className="custom-button" onClick={handleSave}>
+            <Button
+              variant="contained"
+              className="custom-button"
+              onClick={handleSave}
+            >
               Tallenna
             </Button>
           </div>

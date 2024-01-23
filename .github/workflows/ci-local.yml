@@ -1,0 +1,36 @@
+name: CI-LOCAL
+
+on:
+  push:
+    branches:
+      - local/test
+
+jobs:
+  local-build:
+    runs-on: [self-hosted, local]
+    env:
+      FIREBASE_KEY_JSON: $FIREBASE_KEY_JSON
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.11.0"
+
+      - name: Set up Docker Compose
+        run: |
+          sudo echo "FIREBASE_KEY_JSON=$FIREBASE_KEY_JSON" | sudo tee key.env
+          sudo docker compose up --build -d 
+          sudo docker ps -a
+
+      - name: Wait for healthchecks
+        run: |
+          bash ./check-healthy.sh
+
+      - name: Cleanup
+        if: success() || failure()
+        run: |
+          echo "Cleaning up..."
+          sudo docker compose down

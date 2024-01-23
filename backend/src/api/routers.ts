@@ -13,4 +13,10 @@ router.post("/login", loginController);
 
 router.post("/editProfile", editProfile);
 
+// alive check
+router.get("/alive", (req, res) => {
+  res.status(200);
+  res.send("alive");
+});
+
 export default router;
