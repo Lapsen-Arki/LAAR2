@@ -1,6 +1,6 @@
 // DEFINING ROUTING LOGIC OF THE APPLICATION
 import express from "express";
-import registerUser from "./controllers/register";
+import registerUser from "./controllers/register/register";
 import loginController from "./controllers/login";
 import editProfile from "./controllers/editProfile";
 
