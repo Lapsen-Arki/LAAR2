@@ -10,7 +10,7 @@ import Meals from "./views/Meals";
 import TimeBlocking from "./views/TimeBlocking";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import AdminPage from "./views/admin";
+import AdminPage from "./views/Auth/admin";
 
 // Stripe Publishable testing key:
 // Production version needs: 1. HTTPS connection and 2. pk_live live key

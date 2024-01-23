@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import admin from "../../../config/firebseConfig";
 import validateAndSanitizeName from "./validateAndSanitizeName";
 import validatePassword from "./validatePassword";
-import { RegisterData } from "../../../types/registerData";
+import { RegisterData } from "../../../types/types";
 import stripeConf from "../../../config/stripeClient";
 
 // Registration function

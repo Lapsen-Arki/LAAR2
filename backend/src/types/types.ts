@@ -1,3 +1,5 @@
+// BACKEND TYPE INTERFACES
+
 export interface RegisterData {
   email: string;
   name: string;
@@ -8,4 +10,13 @@ export interface RegisterData {
     id: string;
     error?: undefined;
   };
+}
+
+export interface AddDataToDatabase {
+  category: string;
+  choice: string;
+  name: string;
+  ageLimit: number;
+  photoLink: string;
+  photoFileName: string;
 }
