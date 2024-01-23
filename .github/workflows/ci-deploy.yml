@@ -46,7 +46,6 @@ jobs:
             --registry ${{ secrets.ACR_REGISTRY }} \
             --name laar-backend-deploy \
             --file ./backend/Dockerfile \
-            --context ./backend \
             --image ${{ secrets.ACR_REGISTRY }}/laar-backend:latest \
             --git-access-token "$GIT_ACCESS_TOKEN"
 
@@ -54,7 +53,6 @@ jobs:
             --registry ${{ secrets.ACR_REGISTRY }} \
             --name laar-frontend-deploy \
             --file ./frontend/Dockerfile \
-            --context ./frontend \
             --image ${{ secrets.ACR_REGISTRY }}/laar-frontend:latest \
             --arg PORT=80 \
             --git-access-token "$GIT_ACCESS_TOKEN"
