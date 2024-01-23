@@ -67,11 +67,11 @@ const AdminPage = () => {
             required
           >
             {/* Replace these MenuItem values with your actual categories */}
-            <MenuItem value="Aktiviteetti">Aktiviteetti</MenuItem>
-            <MenuItem value="PieniAteria">Pieni ateria</MenuItem>
-            <MenuItem value="IsoAteria">Iso ateria</MenuItem>
-            <MenuItem value="Iltatoimi">Iltatoimi</MenuItem>
-            <MenuItem value="Nukkuminen">Nukkuminen</MenuItem>
+            <MenuItem value="aktiviteetti">Aktiviteetti</MenuItem>
+            <MenuItem value="pieniAteria">Pieni ateria</MenuItem>
+            <MenuItem value="isoAteria">Iso ateria</MenuItem>
+            <MenuItem value="iltatoimi">Iltatoimi</MenuItem>
+            <MenuItem value="nukkuminen">Nukkuminen</MenuItem>
           </Select>
         </FormControl>
 
