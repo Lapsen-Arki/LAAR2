@@ -35,16 +35,16 @@ const EditProfile = () => {
   const handleSave = async () => {
     // Tarkista, onko nimi tyhjä
     if (!childName) {
-      setNameError('Tämä kenttä on pakollinen');
+      setNameError("Tämä kenttä on pakollinen");
     } else {
-      setNameError('');
+      setNameError("");
     }
-  
+
     // Tarkista, onko syntymäaika tyhjä
     if (!birthdate) {
-      setBirthdateError('Tämä kenttä on pakollinen');
+      setBirthdateError("Tämä kenttä on pakollinen");
     } else {
-      setBirthdateError('');
+      setBirthdateError("");
     }
   
     // Tallenna tiedot vain, jos nimi ja syntymäaika ovat täytetty
@@ -56,7 +56,7 @@ const EditProfile = () => {
           avatar: selectedAvatar || '/broken-image.jpg',
           accessRights,
         };
-  
+
         // Lähetä tiedot tietokantaan
         await editProfile(userData);
 
@@ -64,7 +64,7 @@ const EditProfile = () => {
         navigate('/profile');
 
       } catch (error) {
-        console.error('Tietojen tallennus epäonnistui', error);
+        console.error("Tietojen tallennus epäonnistui", error);
         // Voit näyttää virheilmoituksen käyttäjälle, jos tallennus epäonnistuu
       }
     }
@@ -89,7 +89,7 @@ const EditProfile = () => {
             />
             {nameError && <Alert severity="error">{nameError}</Alert>}
           </div>
-          
+
           <div className="input-group">
             <h3>Lapsen syntymäaika</h3>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -101,7 +101,14 @@ const EditProfile = () => {
             {birthdateError && <Alert severity="error">{birthdateError}</Alert>}
           </div>
 
-          <div className="input-group" style={{ display: "flex", flexDirection: "column", alignItems: "center" }} >
+          <div
+            className="input-group"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
             <h3>Valitse lapselle avatar</h3>
 
             {showAnimalAvatar ? (
@@ -113,7 +120,11 @@ const EditProfile = () => {
             )}
 
             {showAnimalAvatar ? null : (
-              <Button variant="contained" className="custom-button" onClick={handleShowAnimalAvatar}>
+              <Button
+                variant="contained"
+                className="custom-button"
+                onClick={handleShowAnimalAvatar}
+              >
                 Valitse kuva
               </Button>
             )}

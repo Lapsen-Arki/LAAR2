@@ -1,0 +1,35 @@
+name: CI-RELEASE
+
+on:
+  push:
+    branches:
+      - release/*
+
+jobs:
+  build-and-dockerize:
+    runs-on: ubuntu-latest
+    env:
+      FIREBASE_KEY_JSON: ${{ secrets.FIREBASE_KEY_JSON }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.11.0"
+
+      - name: Set up Docker Compose
+        run: |
+          FIREBASE_KEY_JSON=$(echo '${{ secrets.FIREBASE_KEY_JSON }}' | jq -R -s -c .) sudo docker compose up --build -d 
+          sudo docker ps -a
+
+      - name: Wait for healthchecks
+        run: |
+          bash ./check-healthy.sh
+
+      - name: Cleanup
+        if: success() || failure()
+        run: |
+          echo "Cleaning up..."
+          sudo docker compose down
