@@ -1,7 +1,17 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const saveUserData = async (userData) => {
+/* 
+I don't know what kind of format is userData
+Please add typing, for now any 
+- Esa
+*/
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any 
+const saveUserData = async (userData: any) => {
+
+  // React Hook "useNavigate" is called in function "saveUserData" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word "use".
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate(); // Alusta useNavigate
 
   try {
