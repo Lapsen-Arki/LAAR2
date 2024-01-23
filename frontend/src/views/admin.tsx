@@ -45,7 +45,7 @@ const AdminPage = () => {
             <MenuItem value="Category 2">Pienet ateriat</MenuItem>
             <MenuItem value="Category 3">Isot ateriat</MenuItem>
             <MenuItem value="Category 4">Iltatoimet</MenuItem>
-            <MenuItem value="Category 5">Nukkuminenasdasd</MenuItem>
+            <MenuItem value="Category 5">Nukkuminen</MenuItem>
           </Select>
         </FormControl>
 
