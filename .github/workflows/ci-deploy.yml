@@ -47,7 +47,7 @@ jobs:
             --name laar-backend-deploy \
             --file ./backend/Dockerfile \
             --image ${{ secrets.ACR_REGISTRY }}/laar-backend:latest \
-            --context-path .
+            --context /dev/null
 
           az acr task create \
             --registry ${{ secrets.ACR_REGISTRY }} \
@@ -55,4 +55,4 @@ jobs:
             --file ./frontend/Dockerfile \
             --image ${{ secrets.ACR_REGISTRY }}/laar-frontend:latest \
             --arg PORT=80 \
-            --context-path .
+            --context /dev/null
