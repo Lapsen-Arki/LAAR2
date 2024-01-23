@@ -41,18 +41,16 @@ jobs:
 
       - name: Deploy to Azure Container Registry
         run: |
-          export GIT_ACCESS_TOKEN=$(echo "${{ secrets.REPO_ACCESS_KEY}}" | base64 --decode)
+
           az acr task create \
             --registry ${{ secrets.ACR_REGISTRY }} \
             --name laar-backend-deploy \
             --file ./backend/Dockerfile \
-            --image ${{ secrets.ACR_REGISTRY }}/laar-backend:latest \
-            --git-access-token "$GIT_ACCESS_TOKEN"
+            --image ${{ secrets.ACR_REGISTRY }}/laar-backend:latest 
 
           az acr task create \
             --registry ${{ secrets.ACR_REGISTRY }} \
             --name laar-frontend-deploy \
             --file ./frontend/Dockerfile \
             --image ${{ secrets.ACR_REGISTRY }}/laar-frontend:latest \
-            --arg PORT=80 \
-            --git-access-token "$GIT_ACCESS_TOKEN"
+            --arg PORT=80
