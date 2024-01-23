@@ -17,54 +17,97 @@ const AdminPage = () => {
     setCategory(event.target.value);
   };
 
-  return (
-    <div>
-      <Typography variant="h3">Admin Page</Typography>
-      <Typography variant="body1">Lisää tiedot:</Typography>
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+  };
 
-      <FormControl fullWidth margin="normal">
-        <InputLabel id="category-label">Category</InputLabel>
-        <Select
+  return (
+    <div style={{ maxWidth: 500 }}>
+      <Typography variant="h3">Admin Page</Typography>
+      <h3>Lisää tiedot:</h3>
+
+      <form onSubmit={handleSubmit}>
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="category-label">Kategoria</InputLabel>
+          <Select
+            sx={{
+              marginTop: 0,
+              background: "white",
+            }}
+            labelId="category-label"
+            id="category-select"
+            value={category}
+            label="Category"
+            onChange={handleCategoryChange}
+          >
+            {/* Replace these MenuItem values with your actual categories */}
+            <MenuItem value="Category 1">Aktiviteetit</MenuItem>
+            <MenuItem value="Category 2">Pienet ateriat</MenuItem>
+            <MenuItem value="Category 3">Isot ateriat</MenuItem>
+            <MenuItem value="Category 4">Iltatoimet</MenuItem>
+            <MenuItem value="Category 5">Nukkuminen</MenuItem>
+          </Select>
+        </FormControl>
+
+        <TextField
           sx={{
             marginTop: 0,
             background: "white",
           }}
-          labelId="category-label"
-          id="category-select"
-          value={category}
-          label="Category"
-          onChange={handleCategoryChange}
+          fullWidth
+          label="Valikko"
+          margin="normal"
+        />
+        <TextField
+          sx={{
+            marginTop: 0,
+            background: "white",
+          }}
+          fullWidth
+          label="Nimi"
+          margin="normal"
+        />
+        <TextField
+          sx={{
+            marginTop: 0,
+            background: "white",
+          }}
+          fullWidth
+          label="Ikäraja/kk"
+          margin="normal"
+          type="number"
+        />
+        <h3>Kuva</h3>
+        <p>Valitse kuvan URL linkki tai valitse tiedosto:</p>
+        <TextField
+          sx={{
+            marginTop: 0,
+            background: "white",
+          }}
+          fullWidth
+          label="Kuvan linkki"
+          margin="normal"
+        />
+
+        <TextField
+          sx={{
+            marginTop: 0,
+            background: "white",
+          }}
+          fullWidth
+          margin="normal"
+          type="file"
+        />
+
+        <Button
+          variant="contained"
+          color="primary"
+          type="submit"
+          style={{ marginTop: "20px" }}
         >
-          {/* Replace these MenuItem values with your actual categories */}
-          <MenuItem value="Category 1">Category 1</MenuItem>
-          <MenuItem value="Category 2">Category 2</MenuItem>
-          <MenuItem value="Category 3">Category 3</MenuItem>
-        </Select>
-      </FormControl>
-
-      <TextField
-        sx={{
-          marginTop: 0,
-          background: "white",
-        }}
-        fullWidth
-        label="Item"
-        margin="normal"
-      />
-      <TextField
-        sx={{
-          marginTop: 0,
-          background: "white",
-        }}
-        fullWidth
-        label="Age Limit"
-        margin="normal"
-        type="number"
-      />
-
-      <Button variant="contained" color="primary" style={{ marginTop: "20px" }}>
-        Tallenna tietokantaan
-      </Button>
+          Tallenna tietokantaan
+        </Button>
+      </form>
     </div>
   );
 };
