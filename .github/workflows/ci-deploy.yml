@@ -7,7 +7,7 @@ on:
       - deployment-test
 
 jobs:
-  build-and-push-backend:
+  build-push-deploy:
     runs-on: [self-hosted, deploy]
     environment: production
     steps:
@@ -24,17 +24,17 @@ jobs:
           username: ${{ secrets.AZR_USERNAME_ID }}
           password: ${{ secrets.AZR_PASSWORD }}
 
-      - name: Build backend image
-        run: docker buildx create --use && docker buildx build --platform linux/amd64 -t your-registry-name.azurecr.io/laar-backend:latest ./backend
+      - name: Build and Push backend image
+        run: |
+          docker buildx create --use
+          docker buildx build --platform linux/amd64 -t your-registry-name.azurecr.io/laar-backend:latest ./backend
+          docker push ${{ secrets.ACR_REGISTRY }}/laar-backend:latest
 
-      - name: Push backend image
-        run: docker push ${{ secrets.ACR_REGISTRY }}/laar-backend:latest
-
-      - name: Build frontend image
-        run: docker buildx create --use && docker buildx build --platform linux/amd64 -t your-registry-name.azurecr.io/laar-frontend:latest --build-arg PORT=80 ./frontend
-
-      - name: Push frontend image
-        run: docker push ${{ secrets.ACR_REGISTRY }}/laar-frontend:latest
+      - name: Build and Push frontend image
+        run: |
+          docker buildx create --use
+          docker buildx build --platform linux/amd64 -t your-registry-name.azurecr.io/laar-frontend:latest --build-arg PORT=80 ./frontend
+          docker push ${{ secrets.ACR_REGISTRY }}/laar-frontend:latest
 
       - name: Deploy to Azure Container Registry
         run: |
