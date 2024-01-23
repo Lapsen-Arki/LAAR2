@@ -1,13 +1,15 @@
-var admin = require('firebase-admin');
+var admin = require("firebase-admin");
 var serviceAccount;
 if (process.env.FIREBASE_KEY_JSON) {
-	serviceAccount = JSON.parse(process.env.FIREBASE_KEY_JSON);
+  console.log("Secret provided");
+  serviceAccount = JSON.parse(process.env.FIREBASE_KEY_JSON);
 } else {
-	serviceAccount = require('./fireBasePrivateKey.json');
+  console.log("Secret not provided, reading from key file");
+  serviceAccount = require("./fireBasePrivateKey.json");
 }
 
 admin.initializeApp({
-	credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(serviceAccount),
 });
 
 export default admin;
