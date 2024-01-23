@@ -3,14 +3,14 @@ import { useState, useEffect } from 'react';
 import { tapahtumat, perhe } from '../services/helper';
 import { store } from '../main';
 import {
-  formattedTime,
-  weekdayDayMonthAsString
-} from '../components/dateTimeUtils';
-import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  Box,
+  Grid,
+  Paper,
+  styled
 } from '@mui/material';
 
 const TimeBlock = () => {
@@ -18,6 +18,14 @@ const TimeBlock = () => {
   const [children, setChildren] = useState([]);
   const [selectedChild, setSelectedChild] = useState('');
   const [openChild, setOpenChild] = useState(false);
+
+  const Item = styled(Paper)(({ theme }) => ({
+		backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+		...theme.typography.body2,
+		textAlign: 'left',
+		padding: theme.spacing(2),
+		color: theme.palette.text.secondary,
+	}));
 
   const handleChangeChild = (event) => {
     setSelectedChild(event.target.value);
@@ -43,9 +51,8 @@ const TimeBlock = () => {
     }, []); 
 
   return (
-    <div>
-      <h2>{weekdayDayMonthAsString}</h2>
-      <div>
+    <div class="timeBlocking">
+      <div class="select">
       <FormControl sx={{ m: 1, minWidth: 220 }}>
         <InputLabel id="select-child">Lapsi!</InputLabel>
         <Select
@@ -63,69 +70,26 @@ const TimeBlock = () => {
           <MenuItem key={childKey} value={childKey}>
             {childKey}
           </MenuItem>
-        ))}
-
+          ))}
         </Select>
       </FormControl>
       </div>
-      {events.map((event, index) => {
-        const eventEndTime = Object.keys(event)[0];
-        if (eventEndTime > formattedTime) {
-          return (
-            <div key={index} className="input-group timeBlocking">
-              {Object.keys(event).map((key) => (
-                <div key={key}>
-                  {Object.entries(event[key]).map(([subKey, subValue]) => (
-                    <div key={subKey}>{subValue}</div>
-                  ))}
-                </div>
+
+      <Box sx={{ flexGrow: 1 }}>
+        <Grid container spacing={3}>
+          {events.map((event, index) => (
+            Object.keys(event).map((key) => (
+            <Grid item xs={12} md={4} key={key}>
+              {Object.entries(event[key]).map(([subKey, subValue]) => (
+                <Item key={subKey}>{subValue}</Item>
               ))}
-            </div>
-          );
-        } else {
-          return null;
-        }
-      })}
+            </Grid>
+            ))
+          ))}
+        </Grid>
+      </Box>     
     </div>
   );
 };
 
-
 export default TimeBlock;
-
-/*
-import { createMeal } from '../reducers/mealReducer'
-import { useSelector, useDispatch } from 'react-redux'
-
-const MealBlock = () => {
-  const dispatch = useDispatch()
-  const meals = useSelector(state => state)
-
-  const addMeal = (event) => {
-    event.preventDefault()
-    const content = event.target.meal.value
-    event.target.meal.value = ''
-    dispatch(createMeal(content))
-  }
-
-  return (
-    <div>
-      <form onSubmit={addMeal}>
-        <input name="meal" /> 
-        <button type="submit">add</button>
-      </form>
-      <ul>
-        {meals.map(meal =>
-          <li
-            key={meal.id} 
-            onClick={() => toggleImportance(meal.id)}
-          >
-            {meal.content} <strong>{meal.favorite ? 'favorite' : ''}</strong>
-          </li>
-        )}
-      </ul>
-    </div>
-  )
-}
-
-export default MealBlock*/
