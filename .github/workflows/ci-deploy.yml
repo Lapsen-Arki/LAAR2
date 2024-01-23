@@ -67,7 +67,7 @@ jobs:
             --registry-username ${{ secrets.AZR_USERNAME_ID }} \
             --registry-password ${{ secrets.AZR_PASSWORD }} \
             --dns-name-label laar-backend \
-            --environment-variables FIREBASE_KEY_JSON=${{ secrets.FIREBASE_KEY_JSON }} \
+            --environment-variables FIREBASE_KEY_JSON='${{ secrets.FIREBASE_KEY_JSON }}' \
             --ports 3000 \
 
           az container create \
