@@ -1,4 +1,4 @@
-FROM node:20.11.0
+FROM node:20.11.0 as builder
 
 WORKDIR /app/frontend
 
@@ -10,6 +10,13 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 5000
+# Use a production-ready image to serve the application
+FROM nginx:alpine
 
-CMD ["npm", "run", "preview"]
+ARG PORT
+# Copy the built files from the previous stage
+COPY --from=builder /app/frontend/dist /usr/share/nginx/html
+
+EXPOSE $PORT
+
+CMD ["nginx", "-g", "daemon off;"]
