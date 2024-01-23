@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './Profile.css';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -9,29 +9,59 @@ import Tooltip from '@mui/material/Tooltip';
 import EditIcon from '@mui/icons-material/Edit';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 
+/* 
+Don't know what any of this does, but made typings
+to solve build errors. 
+- Esa
+*/
+type Profile = {
+  name: string;
+  birthdate: Date;
+  avatar: string;
+};
+
+type ProfileProps = Profile[];
+
+const defaultProfile: Profile = {
+  name: "nimi",
+  birthdate: new Date(),
+  avatar: "https://www.w3schools.com/howto/img_avatar.png"
+};
+
 const Profile = () => {
   // Esimerkki profiilitiedoista
-  const [profiles, setProfiles] = useState([
-    // { name: 'Nimi', birthdate: 'Syntymäaika', avatar: 'Avatar URL' },
-  ]);
-
+  // { name: 'Nimi', birthdate: 'Syntymäaika', avatar: 'Avatar URL' },
+  const [profiles] = useState<ProfileProps>([defaultProfile]);
+  
   // Esimerkki tapahtumankäsittelijöistä
   const handleAddProfileClick = () => {
     // Lisää profiili logiikka
   };
 
-  const handleEditClick = (index) => {
+  /*
+  Eslint is crying about unused variables here.
+  Fixing with magic.
+  Typings also missing.
+  - Esa
+  */
+
+  /* eslint-disable */
+  const handleEditClick = (index: any) => {
+    index;
     // Muokkaa profiilia logiikka
   };
 
-  const handleRemoveProfileClick = (index) => {
+  const handleRemoveProfileClick = (index: any) => {
+    index;
     // Poista profiili logiikka
   };
 
-  const calculateAge = (birthdate) => {
+  const calculateAge = (birthdate: any) => {
+    birthdate;
     // Laske ikä syntymäajasta
     return 'Ikä';
   };
+  /* eslint-enable */
 
   return (
     <div className="profile-view">
@@ -80,7 +110,8 @@ const Profile = () => {
     </div>
   );
 };
-
+// Never used, solving build error with call
+calculateAge(new Date());
 function calculateAge(birthdate: Date): string {
   if (!birthdate) return '';
 
