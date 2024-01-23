@@ -17,12 +17,7 @@ const aamupala = {
     }
 };
 
-const perhe = {
-    "lapset": {
-        "Veeti": "1",
-        "Oona": "2",
-    }
-}
+
 
 const tapahtumat = [
     {
@@ -81,8 +76,69 @@ const tapahtumat = [
     }
   ];
 
+const perhe = {
+  "lapset": {
+      "Veeti": "1",
+      "Oona": "2",
+  }
+}
+
+const muistiinpanot = {
+  "veeti": {
+    "23022023": {
+      "päiväuni": {
+        "nimi": "päiväuni",
+        "tyyppi": "lepo",
+        "kesto": "1",
+        "paikka": "koti",
+        "suosikki": true
+      },
+      "päivällinen": {
+        "nimi": "päivällinen",
+        "kategoria": {"leipä":"2"},
+        "kesto": "1",
+        "paikka": "koti",
+        "suosikki": true
+      },
+      "aktiviteetti_ilta": {
+        "nimi": "pulkkamäki",
+        "tyyppi": "ulkoilu",
+        "kesto": "1",
+        "paikka": "leikkipuisto",
+        "suosikki": true
+      },
+    },
+  },
+  "Oona": {
+    "23022023": {
+      "päiväuni": {
+        "nimi": "päiväuni",
+        "tyyppi": "lepo",
+        "kesto": "1",
+        "paikka": "koti",
+        "suosikki": true
+      },
+      "päivällinen": {
+        "nimi": "päivällinen",
+        "kategoria": {"leipä":"2"},
+        "kesto": "1",
+        "paikka": "koti",
+        "suosikki": true
+      },
+      "aktiviteetti_ilta": {
+        "nimi": "pulkkamäki",
+        "tyyppi": "ulkoilu",
+        "kesto": "1",
+        "paikka": "leikkipuisto",
+        "suosikki": true
+      },
+    }
+  }
+}
+
+
 const aktiviteetit = {
-  "22022023": {
+  "23022023": {
     "nimi": "päiväuni",
     "tyyppi": "lepo",
     "kesto": "1",
@@ -99,7 +155,7 @@ const aktiviteetit = {
 }
 
 const ateriat = {
-  "22022023-08": {
+  "23022023-08": {
     "nimi": "aamupala",
     "tyyppi": "aamupala",
     "kategoria": {"puuro":"1"},
@@ -119,4 +175,4 @@ const ateriat = {
   
 
 
-export { aamupala, perhe, tapahtumat, ateriat, aktiviteetit };
+export { aamupala, perhe, tapahtumat, ateriat, aktiviteetit, muistiinpanot };

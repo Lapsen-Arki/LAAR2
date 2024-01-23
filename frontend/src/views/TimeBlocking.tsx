@@ -40,6 +40,7 @@ const TimeBlock = () => {
   useEffect(() => {
       setEvents(tapahtumat);
       setChildren(perhe.lapset);
+      setNotes(muistiinpanot);
     }, []); 
 
   return (

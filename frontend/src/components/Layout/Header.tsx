@@ -17,6 +17,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 export default function Header() {
 	const [auth] = React.useState(false);
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+	
 	const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
@@ -30,61 +31,36 @@ export default function Header() {
 			<Box sx={{ flexGrow: 1 }}>
 				<AppBar position='fixed' sx={{ width: '100%' }}>
 					<Toolbar>
-						<Typography
-							variant='h6'
-							component={Link}
-							to='/'
-							sx={{ flexGrow: 1, textDecoration: 'none' }}
-						>
+						<Typography variant='h6'component={Link} to='/' sx={{ flexGrow: 1, textDecoration: 'none' }}>
 							LAAR
 						</Typography>
-						<IconButton
-							size='large'
-							edge='start'
-							color='inherit'
-							aria-label='menu'
-							onClick={handleMenu}
-							sx={{ mr: 2 }}
-						>
-							<MenuIcon />
-						</IconButton>
+						<Box sx={{ display: { xs: 'block', md: 'none' } }}>
+							<IconButton size='large' edge='start' color='inherit' aria-label='menu' onClick={handleMenu} sx={{ mr: 2 }}>
+								<MenuIcon />
+							</IconButton>
+							<Menu id='menu-appbar' anchorEl={anchorEl} anchorOrigin={{vertical: 'top', horizontal: 'right',}} keepMounted transformOrigin={{vertical: 'top', horizontal: 'right',}} open={Boolean(anchorEl)} onClose={handleClose}>
+							<MenuItem>
+								<Link href="/" color="inherit" underline="none">Kauppa</Link>
+							</MenuItem>
+							</Menu>
+						</Box>
+
+						<Box sx={{ display: { xs: 'none', md: 'block' } }}>
+							<Link href="/" color="inherit" underline="none">Kauppa</Link>
+						</Box>
+
 						{auth ? (
 							<div>
-								<Menu
-									id='menu-appbar'
-									anchorEl={anchorEl}
-									anchorOrigin={{
-										vertical: 'top',
-										horizontal: 'right'
-									}}
-									keepMounted
-									transformOrigin={{
-										vertical: 'top',
-										horizontal: 'right'
-									}}
-									open={Boolean(anchorEl)}
-									onClose={handleClose}
-								>
-									<MenuItem onClick={handleClose}>Kauppa</MenuItem>
-								</Menu>
-								<IconButton
-									size='large'
-									component={Link}
-									to='/profile'
-									color='inherit'
-								>
+								<IconButton size='large' component={Link} to='/profile' color='inherit'>
 									<AccountCircle />
 								</IconButton>
 							</div>
 						) : (
-							<IconButton
-								size='large'
-								component={Link}
-								to='/login'
-								color='inherit'
-							>
-								<LoginIcon />
-							</IconButton>
+							<div>
+								<IconButton size='large' component={Link} to='/login' color='inherit'>
+									<LoginIcon />
+								</IconButton>
+							</div>
 						)}
 					</Toolbar>
 				</AppBar>
