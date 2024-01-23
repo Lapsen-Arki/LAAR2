@@ -32,12 +32,12 @@ jobs:
       - name: Build and Push backend image
         run: |
           docker buildx create
-          docker buildx build --platform linux/amd64 -t ${{ secrets.ACR_REGISTRY }}/laar-backend:latest --load --push ./backend
+          docker buildx build --platform linux/amd64 -t ${{ secrets.ACR_REGISTRY }}/laar-backend:latest --push ./backend
 
       - name: Build and Push frontend image
         run: |
           docker buildx create
-          docker buildx build --platform linux/amd64 -t ${{ secrets.ACR_REGISTRY }}/laar-frontend:latest --build-arg PORT=80 --load --push ./frontend
+          docker buildx build --platform linux/amd64 -t ${{ secrets.ACR_REGISTRY }}/laar-frontend:latest --build-arg PORT=80 --push ./frontend
 
       - name: Deploy to Azure Container Registry
         run: |
