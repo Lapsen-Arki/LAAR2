@@ -19,9 +19,7 @@ jobs:
 
       - name: Configure Docker CLI
         run: |
-          echo '{"experimental":true}' | sudo tee /etc/docker/daemon.json > /dev/null
-          echo -e "DOCKER_OPTS=\"--experimental=true\"\n" | sudo tee -a /etc/default/docker > /dev/null
-          sudo service docker restart
+          echo '{"experimental":true}' > ~/.docker/config.json
 
       - name: Login to Azure Container Registry
         uses: azure/docker-login@v1
