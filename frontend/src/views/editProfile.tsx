@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import './Profile.css';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -8,8 +8,10 @@ import Switch from '@mui/material/Switch';
 import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
-import { saveUserData } from '../api/editProfilePost.ts';
+import { editProfile } from '../api/editProfilePost.ts';
 
 const EditProfile = () => {
   const [showAnimalAvatar, setShowAnimalAvatar] = useState(false);
@@ -44,22 +46,19 @@ const EditProfile = () => {
     } else {
       setBirthdateError('');
     }
-
-    // Määritä avatar-kenttä
-    const avatar: string | null = selectedAvatar || '/broken-image.jpg';
   
     // Tallenna tiedot vain, jos nimi ja syntymäaika ovat täytetty
     if (childName && birthdate) {
       try {
         const userData = {
           childName,
-          birthdate,
-          avatar,
+          birthdate: birthdate.toISOString().split('T')[0],
+          avatar: selectedAvatar || '/broken-image.jpg',
           accessRights,
         };
   
         // Lähetä tiedot tietokantaan
-        await saveUserData(userData);
+        await editProfile(userData);
 
         // Ohjaa käyttäjä Profile.tsx -näkymään, kun tallennus onnistuu
         navigate('/profile');
@@ -69,6 +68,10 @@ const EditProfile = () => {
         // Voit näyttää virheilmoituksen käyttäjälle, jos tallennus epäonnistuu
       }
     }
+  };
+
+  const handleNavigateToProfile = () => {
+    navigate('/profile');
   };
 
   return (
@@ -82,6 +85,7 @@ const EditProfile = () => {
               id="childName"
               value={childName}
               onChange={(e) => setChildName(e.target.value)}
+              maxLength={14}
             />
             {nameError && <Alert severity="error">{nameError}</Alert>}
           </div>
@@ -127,11 +131,18 @@ const EditProfile = () => {
             </div>
           </div>
 
+        <Box sx={{ marginTop: 5 }}>
           <div className="input-group">
+
+            <Button variant="contained" className="custom-button" onClick={handleNavigateToProfile} sx={{ marginRight: 3 }}>
+              <ArrowBackIosIcon /> Takaisin
+            </Button>
+
             <Button variant="contained" className="custom-button" onClick={handleSave}>
               Tallenna
             </Button>
           </div>
+        </Box>
         </form>
       </div>
     </div>
