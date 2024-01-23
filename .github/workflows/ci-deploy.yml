@@ -47,7 +47,6 @@ jobs:
             --file ./backend/Dockerfile \
             --context ./backend \
             --image ${{ secrets.ACR_REGISTRY }}/laar-backend:latest \
-            --arg FIREBASE_KEY_JSON=${{ secrets.FIREBASE_KEY_JSON }}
 
           az acr task create \
             --registry ${{ secrets.ACR_REGISTRY }} \
