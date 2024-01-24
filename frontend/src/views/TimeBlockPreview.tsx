@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState, ChangeEvent } from 'react'
+import { useState } from 'react'
 import './TimeBlocking.css';
 import { styled } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
@@ -51,6 +51,7 @@ export default function TimeBlockPreview() {
 	const [fruit, setFruit] = useState<string>("");
 	const [bread, setBread] = useState<string>("");
 	const [culturedDairy, setCulturedDairy] = useState<string>("");
+	const [vegetable, setVegetable] = useState<string>("");
 
 	const Item = styled(Paper)(({ theme }) => ({
 		backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -136,8 +137,8 @@ export default function TimeBlockPreview() {
 						</Grid>
 						<Grid item xs={12} md={4}>
 							<Item className="preview-select">
-								<p>juoma</p>
-								<FoodDropDown id="drink" value={drink} options={["maito", "kauramaito"]} onChange={handleSelectChange(setDrink)} />
+								<p>vihannes</p>
+								<FoodDropDown id="vegetable" value={vegetable} options={["porkkana", "kurkku"]} onChange={handleSelectChange(setVegetable)} />
 							</Item>
 						</Grid>
 					</Grid>

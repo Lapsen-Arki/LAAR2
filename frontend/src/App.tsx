@@ -11,7 +11,7 @@ import TimeBlocking from "./views/TimeBlocking";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import AdminPage from "./views/Auth/admin";
-import TimeBlockPreview from "./views/TimeBlockPreview"
+import TimeBlockPreview from "./views/TimeBlockPreview";
 
 // Stripe Publishable testing key:
 // Production version needs: 1. HTTPS connection and 2. pk_live live key
@@ -37,6 +37,7 @@ function App() {
             <Route path="/meals" element={<Meals />} />
             <Route path="/timeblocking" element={<TimeBlocking />} />
             <Route path="/admin" element={<AdminPage />} />
+			<Route path="/preview" element={<TimeBlockPreview />} />
           </Routes>
         </Layout>
       </Elements>
