@@ -1,5 +1,6 @@
 import './timeBlocking.css';
 import { useState, useEffect } from 'react';
+import { SelectChangeEvent } from '@mui/material/Select';
 import {
   FormControl,
   InputLabel,
@@ -84,7 +85,8 @@ const perhe = {
 const TimeBlock = () => {
   const [events, setEvents] = useState<EventType[]>([]);
   const [children, setChildren] = useState<Record<string, string>>({});
-  const [selectedChild, setSelectedChild] = useState('');
+  const [selectedChild, setSelectedChild] = useState<string | undefined>('');
+
   const [openChild, setOpenChild] = useState(false);
 
   const Canvas = styled(Paper)(({ theme }) => ({
@@ -113,10 +115,13 @@ const TimeBlock = () => {
     margin: 0,
   }));
 
-  const handleChangeChild = (e: React.ChangeEvent<{ value: unknown }>) => {
-    setSelectedChild(e.target.value as string);
+  const handleChangeChild = (event: SelectChangeEvent<{ value: unknown }>) => {
+    const selectedValue = event.target.value as string;
+    console.log('Valittu lapsi on:', selectedValue);
+    setSelectedChild(selectedValue);
   };
-
+  
+  
   const handleCloseChild = () => {
     setOpenChild(false);
   };
@@ -141,7 +146,7 @@ const TimeBlock = () => {
           open={openChild}
           onClose={handleCloseChild}
           onOpen={handleOpenChild}
-          value={selectedChild}
+          value={selectedChild || ''}
           label="Child"
           onChange={handleChangeChild}
         >
