@@ -40,7 +40,7 @@ export default function Header() {
 							</IconButton>
 							<Menu id='menu-appbar' anchorEl={anchorEl} anchorOrigin={{vertical: 'top', horizontal: 'right',}} keepMounted transformOrigin={{vertical: 'top', horizontal: 'right',}} open={Boolean(anchorEl)} onClose={handleClose}>
 							<MenuItem>
-								<Typography variant='h6'component={Link} to='/' sx={{ flexGrow: 1, textDecoration: 'none', fontWeight: 'normal' }}>
+								<Typography variant='h6'component={Link} to='/' sx={{ flexGrow: 1, textDecoration: 'none', fontWeight: 'normal', color: 'black' }}>
 									Kauppa
 								</Typography>
 							</MenuItem>
@@ -48,7 +48,7 @@ export default function Header() {
 						</Box>
 
 						<Box sx={{ display: { xs: 'none', md: 'block' } }}>
-							<Typography variant='h6'component={Link} to='/' sx={{ flexGrow: 1, textDecoration: 'none', fontWeight: 'normal' }}>
+							<Typography variant='h6'component={Link} to='/' sx={{ flexGrow: 1, textDecoration: 'none', fontWeight: 'normal', color: 'black' }}>
 								Kauppa
 							</Typography>
 						</Box>
