@@ -34,6 +34,10 @@ export const userLogin = async (
     let authResponse;
     if (idToken) {
       authResponse = await jwtAuth(idToken);
+      // TEST THAT THIS WORKS CORRECTLY:
+      if (authResponse.message && !authResponse.error) {
+        localStorage.setItem("idToken", idToken);
+      }
     }
 
     return authResponse;

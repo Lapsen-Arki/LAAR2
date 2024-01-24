@@ -12,6 +12,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import AdminPage from "./views/Auth/admin";
 import "./conf/firebaseSdkConfig";
+import { TokenProvider } from "./contexts/tokenContext";
 
 // Stripe Publishable testing key:
 // Production version needs: 1. HTTPS connection and 2. pk_live live key
@@ -25,21 +26,24 @@ const stripePromise = loadStripe(
 function App() {
   return (
     <Router>
-      <Elements stripe={stripePromise}>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/profile-edit" element={<EditProfile />} />
-            <Route path="/profile-demo" element={<ProfileDemo />} />
-            <Route path="/meals" element={<Meals />} />
-            <Route path="/timeblocking" element={<TimeBlocking />} />
-            <Route path="/admin" element={<AdminPage />} />
-          </Routes>
-        </Layout>
-      </Elements>
+      {/* 2. PROFIDING CONTEXT VALUE TO CHILD COMPONENTS: */}
+      <TokenProvider>
+        <Elements stripe={stripePromise}>
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile-edit" element={<EditProfile />} />
+              <Route path="/profile-demo" element={<ProfileDemo />} />
+              <Route path="/meals" element={<Meals />} />
+              <Route path="/timeblocking" element={<TimeBlocking />} />
+              <Route path="/admin" element={<AdminPage />} />
+            </Routes>
+          </Layout>
+        </Elements>
+      </TokenProvider>
     </Router>
   );
 }
