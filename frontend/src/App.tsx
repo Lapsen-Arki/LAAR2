@@ -11,6 +11,7 @@ import TimeBlocking from "./views/TimeBlocking";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import AdminPage from "./views/Auth/admin";
+import "./conf/firebaseSdkConfig";
 
 // Stripe Publishable testing key:
 // Production version needs: 1. HTTPS connection and 2. pk_live live key
