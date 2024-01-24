@@ -12,6 +12,9 @@ import { SelectChangeEvent } from "@mui/material";
 import { AddDataToDatabase } from "../../types/types";
 import { adminAddData } from "../../api/adminPage";
 
+// TODO: add following features: 1. Remove data from recommendation database collection
+// 2. Adding feature for adding and removing admin users by superuser
+
 const AdminPage = () => {
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");

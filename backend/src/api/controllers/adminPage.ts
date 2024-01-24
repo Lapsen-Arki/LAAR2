@@ -1,12 +1,14 @@
 import { AddDataToDatabase } from "../../types/types";
 import { Request, Response } from "express";
+import admin from "../../config/firebseConfig";
 
 const adminPage = async (req: Request, res: Response) => {
   try {
     const addDataObject = req.body as unknown as AddDataToDatabase;
     console.log(addDataObject); // FOR TESTING ONLY
 
-    // Validate category:
+    // TODO: Adding authentication here and passing JWT from frontend
+
     const validCategories = [
       "aktiviteetti",
       "pieniAteria",
@@ -14,6 +16,7 @@ const adminPage = async (req: Request, res: Response) => {
       "iltatoimi",
       "nukkuminen",
     ];
+    // Validate category:
     if (!validCategories.includes(addDataObject.category)) {
       return res.status(400).send({
         error:
@@ -46,6 +49,12 @@ const adminPage = async (req: Request, res: Response) => {
           "Sinulla pitää olla kuvaa varten joko linkki tai tiedosto | You must have either a link or a file for the image"
         );
     }
+
+    // Saving data to firebase
+    const db = admin.firestore();
+    const recommendationsCollection = db.collection("recommendations");
+    await recommendationsCollection.doc().set(addDataObject);
+
     res
       .status(201)
       .send(

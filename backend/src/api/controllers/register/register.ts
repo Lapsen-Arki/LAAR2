@@ -33,19 +33,16 @@ const registerUser = async (req: Request, res: Response) => {
       password: password,
     });
 
+    // Save user to firebase users collection
     const registrationDate = new Date();
     const db = admin.firestore();
-
     const usersCollection = db.collection("users");
-
     await usersCollection.doc(userRecord.uid).set({
       name: isValidName,
       email: email,
       registrationDate: registrationDate,
       stripeTokenId: tokenId,
     });
-
-    // TODO: NOW START NEW SUBSCRIPTION AND 14 DAY TRIAL
 
     try {
       const stripe = stripeConf();
@@ -55,6 +52,7 @@ const registerUser = async (req: Request, res: Response) => {
         source: tokenId,
       });
 
+      // Starting new subscription and 14 day trial:
       const subscription = await stripe.subscriptions.create({
         customer: customer.id,
         items: [{ plan: "price_1ObLeAK45umi2LZd5XwwYvam" }], // THIS IS TEST PLAN -> CHANGE FOR PRODUCTION
