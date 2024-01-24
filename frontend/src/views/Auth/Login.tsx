@@ -34,6 +34,8 @@ const Login: React.FC = (): JSX.Element => {
         }`
       ); */
     } else {
+      // JWT TOKENIN TALLENTAMINEN GLOBAALIIN MUUTTUJAAN
+
       setSuccessMessage(
         "Kirjautuminen onnistui. Tervetuloa! Siirryt etusivulle 3 s kuluttua. | Login successful. Welcome!"
       );
