@@ -19,6 +19,7 @@ export const userLogin = async (
     const presistenceType = rememberMe
       ? browserLocalPersistence
       : browserSessionPersistence;
+
     await setPersistence(auth, presistenceType);
 
     const userCredential = await signInWithEmailAndPassword(
@@ -30,14 +31,17 @@ export const userLogin = async (
     const idToken = await userCredential.user.getIdToken();
 
     // Send token to backend authentication
-    const response = await jwtAuth(idToken);
+    let authResponse;
+    if (idToken) {
+      authResponse = await jwtAuth(idToken);
+    }
 
-    return response;
+    return authResponse;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       console.error("Login error: ", error.response.data);
       return { error: error.response.data };
     }
-    throw error;
+    return { error: error };
   }
 };

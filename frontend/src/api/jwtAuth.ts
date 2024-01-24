@@ -3,7 +3,17 @@ import axios from "axios";
 
 export const jwtAuth = async (idToken: string) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth`, idToken);
+    console.log("olen jwtAuth tiedosto");
+
+    const response = await axios.post(
+      `${API_BASE_URL}/auth`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      }
+    );
 
     return response.data;
   } catch (error) {

@@ -20,19 +20,18 @@ const Login: React.FC = (): JSX.Element => {
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    console.log("data: ");
-    console.log(email, password, rememberMe);
-
     const response = await userLogin(email, password, rememberMe);
+
     if (response && response.error) {
       setErrorMessage(
-        `Kirjautuminen epäonnistui: ${response.error.message}. ${response.error.error}`
+        `Kirjautuminen epäonnistui: ${
+          response.error.message || response.error.error
+        }`
       );
     } else {
       setSuccessMessage(
         "Kirjautuminen onnistui. Tervetuloa! | Login successful. Welcome!"
       );
-      console.log("Kirjautuminen onnistui ");
     }
   };
 
