@@ -29,7 +29,7 @@ const checkAuth = async (
 
     res.status(200).json({ message: "Autentikaatio onnistui" }); // Testaukseen
 
-    // Käyttäjä on kirjautunut sisään, voit siirtyä seuraavaan middlewareen tai käyttäjän reittiin
+    // Käyttäjä on kirjautunut sisään, voit siirtyä seuraavaan middlewareen tai käyttäjän reittiin:
     // next();
   } catch (error: any) {
     console.error("Virhe tarkistaessa kirjautumista", error);
