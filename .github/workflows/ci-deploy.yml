@@ -65,18 +65,18 @@ jobs:
         run: |
           az container create \
             --resource-group ${{ secrets.AZR_RESOURCE_GROUP }} \
-            --name laar-container-group \
+            --name laar-backend-container \
             --image ${{ secrets.ACR_REGISTRY }}/laar-backend:latest \
             --registry-login-server ${{ secrets.ACR_REGISTRY }} \
             --registry-username ${{ secrets.AZR_USERNAME_ID }} \
             --registry-password ${{ secrets.AZR_PASSWORD }} \
-            --dns-name-label laarnet \
+            --dns-name-label laarnet-backend \
             --environment-variables FIREBASE_KEY_JSON='${{ secrets.FIREBASE_KEY_JSON }}' \
             --ports 3000 \
 
           az container create \
             --resource-group ${{ secrets.AZR_RESOURCE_GROUP }} \
-            --name laar-container-group \
+            --name laar-frontend-container \
             --image ${{ secrets.ACR_REGISTRY }}/laar-frontend:latest \
             --registry-login-server ${{ secrets.ACR_REGISTRY }} \
             --registry-username ${{ secrets.AZR_USERNAME_ID }} \
