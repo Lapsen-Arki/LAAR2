@@ -103,7 +103,7 @@ export default function Profile() {
   const navigate = useNavigate();
   const [profiles, setProfiles] = useState<ChildProfile[]>([]);
   const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
-  const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null); // Lisätty valitun profiilin tila
+  const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProfiles = async () => {
@@ -123,19 +123,20 @@ export default function Profile() {
   }, []);
 
   const handleClickDelete = async (profileId: string) => {
-    // Avaa varmistusdialogi ennen poistoa
     setSelectedProfileId(profileId);
     setConfirmationDialogOpen(true);
   };
 
   const handleDeleteConfirmed = async () => {
-    // Kutsu poistofunktiota vahvistuksen jälkeen
     if (selectedProfileId) {
       await deleteProfile(selectedProfileId, profiles, setProfiles);
       setSelectedProfileId(null);
     }
-    // Sulje varmistusdialogi
     setConfirmationDialogOpen(false);
+  };
+
+  const handleEditClick = (profileId: string) => {
+    navigate(`/profile-edit/${profileId}`);
   };
 
   const handleAddProfileClick = () => {
@@ -188,7 +189,7 @@ export default function Profile() {
                 <div key={profile.id} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                   <Card sx={{ width: 430, height: 'auto', display: 'flex', alignItems: 'center', marginRight: 2 }}>
                     <Avatar
-                      sx={{ flex: 0.2, width: 40, height: 40, marginLeft: '10px', marginRight: '10px' }}
+                      sx={{ width: 40, height: 40, margin: '10px', flexShrink: 0 }}
                       src={profile.avatar || '/broken-image.jpg'}
                       alt="Avatar"
                     />
@@ -206,7 +207,7 @@ export default function Profile() {
 
                     <div style={{ flex: 0.2 }}>
                       <Tooltip title="Muokkaa profiilia">
-                        <IconButton color="primary" aria-label="Edit">
+                        <IconButton color="primary" aria-label="Edit" onClick={() => handleEditClick(profile.id)}>
                           <EditIcon />
                         </IconButton>
                       </Tooltip>
@@ -269,6 +270,7 @@ export default function Profile() {
             </div>
           </div>
         </Box>
+
       </div>
     </div>
   );

@@ -2,8 +2,9 @@
 import express from "express";
 import registerUser from "./controllers/register/register";
 import loginController from "./controllers/login";
+import createProfile from "./controllers/editProfile";
 import editProfile from "./controllers/editProfile";
-import { getProfiles, deleteProfile } from "./controllers/profiles";
+import { getProfiles, getProfileById, deleteProfile } from "./controllers/profiles";
 
 const router = express.Router();
 
@@ -12,9 +13,11 @@ router.post("/register", registerUser);
 
 router.post("/login", loginController);
 
-router.post("/editProfile", editProfile);
+router.post("/editProfile", createProfile);
+router.post("/editProfile/:id", editProfile);
 
 router.get("/profiles", getProfiles);
+router.get('/profiles/:id', getProfileById);
 
 router.delete("/profiles/:profileId", deleteProfile);
 

@@ -3,7 +3,7 @@ import admin from "../../config/firebseConfig";
 
 const editProfile = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { childName, birthdate, avatar, accessRights } = req.body;
+    const { id, childName, birthdate, avatar, accessRights } = req.body;
 
     if (!childName || !birthdate || !avatar || accessRights === undefined) {
       res.status(400).json({ error: 'Kaikki tarvittavat tiedot eivät ole saatavilla' });
@@ -13,27 +13,36 @@ const editProfile = async (req: Request, res: Response): Promise<void> => {
     const db = admin.firestore();
     const childProfilesCollection = db.collection("childProfile");
 
-    // Tarkista, onko käyttäjäprofiili jo olemassa (voit muokata tätä osaa tarvittaessa)
-    const existingProfile = await childProfilesCollection.where('childName', '==', childName).get();
+    if (id) {
+      // Käyttäjä haluaa päivittää olemassa olevaa profiilia id:n avulla
+      const profileRef = childProfilesCollection.doc(id);
+      const profileSnapshot = await profileRef.get();
 
-    if (existingProfile.empty) {
-      // Luo uusi profiili, jos sitä ei ole vielä olemassa
+      if (!profileSnapshot.exists) {
+        res.status(404).json({ error: 'Profiilia ei löydy' });
+        return;
+      }
+
+      // Päivitä olemassa olevaa profiilia id:n avulla
+      await profileRef.update({
+        childName: childName,
+        birthdate: birthdate,
+        avatar: avatar,
+        accessRights: accessRights,
+      });
+
+      res.status(200).json({ message: 'Profiili päivitetty onnistuneesti' });
+    } else {
+      // Luo uusi profiili, jos id ei ole mukana
       await childProfilesCollection.add({
         childName: childName,
         birthdate: birthdate,
         avatar: avatar,
         accessRights: accessRights,
       });
-    } else {
-      // Päivitä olemassa olevaa profiilia (voit mukauttaa päivitystä tarpeen mukaan)
-      existingProfile.docs[0].ref.update({
-        birthdate: birthdate,
-        avatar: avatar,
-        accessRights: accessRights,
-      });
-    }
 
-    res.status(200).json({ message: 'Profiili päivitetty onnistuneesti' });
+      res.status(200).json({ message: 'Uusi profiili luotu onnistuneesti' });
+    }
   } catch (error: any) {
     console.error('Profiilin päivitys epäonnistui', error);
     res.status(500).json({ error: 'Jotain meni pieleen' });
