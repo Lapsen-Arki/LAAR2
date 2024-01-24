@@ -11,7 +11,7 @@ import {
 import React from "react";
 import { registerUser } from "../../api/registerPost";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
-import { RegisterData } from "../../types/registerData";
+import { RegisterData } from "../../types/types";
 import { useNavigate } from "react-router-dom";
 
 // TODO: 1. Pankkikortin vahvistuksen lisääminen 2. EXTRA: Google ja Facebook kirjautumis vaihtoehdot

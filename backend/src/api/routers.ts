@@ -3,6 +3,7 @@ import express from "express";
 import registerUser from "./controllers/register/register";
 import loginController from "./controllers/login";
 import editProfile from "./controllers/editProfile";
+import adminPage from "./controllers/adminPage";
 import profiles from "./controllers/profiles";
 
 const router = express.Router();
@@ -13,6 +14,8 @@ router.post("/register", registerUser);
 router.post("/login", loginController);
 
 router.post("/editProfile", editProfile);
+
+router.post("/admin", adminPage);
 
 router.get("/profiles", profiles);
 // alive check

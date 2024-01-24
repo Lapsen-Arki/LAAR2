@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import xss from "xss";
 
 const validateAndSanitizeName = (name: string, res: Response) => {
