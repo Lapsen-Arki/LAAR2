@@ -1,34 +1,77 @@
-import { createContext, useState, ReactNode } from "react";
+import { createContext, useState, ReactNode, useEffect } from "react";
+
+import { getAuth, signOut } from "firebase/auth";
 
 type Props = {
   children: ReactNode;
 };
 
 type TokenContext = {
+  isLoggedIn: boolean;
   idToken: string | null;
-  setIdToken: null | React.Dispatch<React.SetStateAction<string | null>>;
+  signOutMethod: () => void;
+  setIdToken: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 // 1. CREATE CONTEXT
 const TokenContext = createContext<TokenContext>({
+  isLoggedIn: false,
   idToken: "",
-  setIdToken: null,
+  signOutMethod: () => null,
+  setIdToken: () => null,
 });
 
 function TokenProvider({ children }: Props) {
   const [idToken, setIdToken] = useState(localStorage.getItem("idToken"));
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setIsLoggedIn(idToken !== null);
+  }, [idToken]);
+
+  const signOutMethod = () => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        setIdToken(null);
+        sessionStorage.clear();
+      })
+      .catch((error) => {
+        // An error happened.
+        console.error("Signout failed: ", error);
+      });
+  };
 
   return (
-    <TokenContext.Provider value={{ idToken, setIdToken }}>
+    <TokenContext.Provider
+      value={{ isLoggedIn, idToken, signOutMethod, setIdToken }}
+    >
       {children}
     </TokenContext.Provider>
   );
 }
 
-/* 3. EXAMPLE OF CONSUMING THE CONTEXT:
+/* OHJEET tokenContext.tsx ja jwtAuth.ts käyttöön:
 
+    IMPORTIT:
     import { useContext } from "react";
-    const {idToken} = useContext(TokenContext)
+    import { TokenContext } from "../../contexts/tokenContext";
+
+    KULUTA MUUTTUJA TAI METHODEITA NÄIN:
+    esim. jos tarvitset pelkkää JWT tokenia:
+    const {isLoggedIn} = useContext(TokenContext)
+    esim. jos tarvitset näitä:
+    const {idToken, signOutMethod, setIdToken } = useContext(TokenContext)
+
+    KÄYTÄ jwtAuth.ts FUNCTIOTA AINA ENNEN PÄÄSYÄ SIVUILLE, JOILLA ARKALUONTOISTA DATAA:
+    import { jwtAuth } from "./jwtAuth";
+    authResponse = await jwtAuth(newIdToken);
+
+    Jos haluat kirjautua ulos:
+
+
+
 
 */
 
