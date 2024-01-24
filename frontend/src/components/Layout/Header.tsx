@@ -40,13 +40,17 @@ export default function Header() {
 							</IconButton>
 							<Menu id='menu-appbar' anchorEl={anchorEl} anchorOrigin={{vertical: 'top', horizontal: 'right',}} keepMounted transformOrigin={{vertical: 'top', horizontal: 'right',}} open={Boolean(anchorEl)} onClose={handleClose}>
 							<MenuItem>
-								<Link href="/" color="inherit" underline="none">Kauppa</Link>
+								<Typography variant='h6'component={Link} to='/' sx={{ flexGrow: 1, textDecoration: 'none', fontWeight: 'normal' }}>
+									Kauppa
+								</Typography>
 							</MenuItem>
 							</Menu>
 						</Box>
 
 						<Box sx={{ display: { xs: 'none', md: 'block' } }}>
-							<Link href="/" color="inherit" underline="none">Kauppa</Link>
+							<Typography variant='h6'component={Link} to='/' sx={{ flexGrow: 1, textDecoration: 'none', fontWeight: 'normal' }}>
+								Kauppa
+							</Typography>
 						</Box>
 
 						{auth ? (
