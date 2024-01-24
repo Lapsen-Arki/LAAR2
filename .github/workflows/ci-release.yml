@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - release/*
+      - workflow/release
   pull_request:
     branches:
       - main
