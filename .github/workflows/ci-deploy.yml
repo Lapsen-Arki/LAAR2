@@ -28,6 +28,10 @@ jobs:
           uname -a
           docker info
 
+      - name: Set Docker Compose file
+        run: |
+          export DOCKER_COMPOSE_FILE=docker-compose.prod.yml
+
       - name: Build and Push backend image
         run: |
           docker buildx create

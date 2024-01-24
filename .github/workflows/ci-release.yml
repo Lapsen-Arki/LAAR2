@@ -11,8 +11,6 @@ on:
 jobs:
   build-and-dockerize:
     runs-on: ubuntu-latest
-    env:
-      FIREBASE_KEY_JSON: ${{ secrets.FIREBASE_KEY_JSON }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -22,14 +20,10 @@ jobs:
         with:
           node-version: "20.11.0"
 
-      - name: Set env variables
-        run: |
-          echo "FIREBASE_KEY_JSON=$FIREBASE_KEY_JSON" >> key.env
-
       - name: Set up Docker Compose
         run: |
-          sudo docker compose up --build -d 
-          sudo docker ps -a
+          FIREBASE_KEY_JSON='${{ secrets.FIREBASE_KEY_JSON }}' docker compose -f docker-compose.release.yml up --build -d 
+          docker ps -a
 
       - name: Wait for healthchecks
         run: |
@@ -39,5 +33,4 @@ jobs:
         if: success() || failure()
         run: |
           echo "Cleaning up..."
-          rm key.env
-          sudo docker compose down
+          docker compose down
