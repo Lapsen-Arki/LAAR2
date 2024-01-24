@@ -113,8 +113,8 @@ const TimeBlock = () => {
     margin: 0,
   }));
 
-  const handleChangeChild = (e) => {
-    setSelectedChild(e.target.value);
+  const handleChangeChild = (e: React.ChangeEvent<{ value: unknown }>) => {
+    setSelectedChild(e.target.value as string);
   };
 
   const handleCloseChild = () => {
@@ -156,7 +156,7 @@ const TimeBlock = () => {
       </div>
 
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={3}>
+        <Grid container spacing={2}>
           {events.map((event, index) => (
             Object.keys(event).map((key) => (
               <Grid item xs={12} md={4} key={key}>
