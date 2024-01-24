@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import './TimeBlocking.css';
+import './timeBlocking.css';
 import { styled } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
