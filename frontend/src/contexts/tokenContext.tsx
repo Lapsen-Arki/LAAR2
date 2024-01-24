@@ -52,27 +52,4 @@ function TokenProvider({ children }: Props) {
   );
 }
 
-/* OHJEET tokenContext.tsx ja jwtAuth.ts käyttöön:
-
-    IMPORTIT:
-    import { useContext } from "react";
-    import { TokenContext } from "../../contexts/tokenContext";
-
-    KULUTA MUUTTUJA TAI METHODEITA NÄIN:
-    esim. jos tarvitset pelkkää JWT tokenia:
-    const {isLoggedIn} = useContext(TokenContext)
-    esim. jos tarvitset näitä:
-    const {idToken, signOutMethod, setIdToken } = useContext(TokenContext)
-
-    KÄYTÄ jwtAuth.ts FUNCTIOTA AINA ENNEN PÄÄSYÄ SIVUILLE, JOILLA ARKALUONTOISTA DATAA:
-    import { jwtAuth } from "./jwtAuth";
-    authResponse = await jwtAuth(newIdToken);
-
-    Jos haluat kirjautua ulos:
-
-
-
-
-*/
-
 export { TokenContext, TokenProvider };
