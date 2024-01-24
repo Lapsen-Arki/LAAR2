@@ -21,4 +21,10 @@ router.get("/alive", (req, res) => {
   res.send("alive");
 });
 
+// for testing purposes, remove later
+router.get("/secret", (req, res) => {
+  res.status(200);
+  res.send(process.env.SECRET_IS_SET);
+});
+
 export default router;

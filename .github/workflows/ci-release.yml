@@ -29,9 +29,10 @@ jobs:
       - name: Wait for healthchecks
         run: |
           bash ./check-healthy.sh
+          bash ./check-secret.sh
 
       - name: Cleanup
         if: success() || failure()
         run: |
           echo "Cleaning up..."
-          docker compose down
+          docker compose -f docker-compose.release.yml down
