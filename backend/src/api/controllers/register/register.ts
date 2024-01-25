@@ -5,6 +5,7 @@ import validatePassword from "./validatePassword";
 import { RegisterData } from "../../../types/types";
 import stripeConf from "../../../config/stripeClient";
 import crypto from "crypto";
+import sendVerification from "../../../utils/sendVerification";
 
 // Registration function
 const registerUser = async (req: Request, res: Response) => {
@@ -52,6 +53,8 @@ const registerUser = async (req: Request, res: Response) => {
       verificationCode: verificationCode,
       codeExpires: expirationDate,
     });
+
+    sendVerification(email, verificationCode, expirationDate);
 
     try {
       const stripe = stripeConf();

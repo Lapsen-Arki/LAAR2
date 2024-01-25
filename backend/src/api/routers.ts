@@ -5,7 +5,7 @@ import editProfile from "./controllers/editProfile";
 import adminPage from "./controllers/adminPage";
 import profiles from "./controllers/profiles";
 import checkAuth from "./controllers/checkAuth";
-import { emailTest } from "./controllers/register/sendEmail";
+import { emailTest } from "./controllers/testingEmail";
 
 const router = express.Router();
 
