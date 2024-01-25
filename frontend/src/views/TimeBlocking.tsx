@@ -77,7 +77,7 @@ const tapahtumat: EventType[] = [
 
 const perhe = {
   "lapset": {
-      "Veeti": "1",
+      "Veeti": "3",
       "Oona": "2",
   }
 }
@@ -86,7 +86,6 @@ const TimeBlock = () => {
   const [events, setEvents] = useState<EventType[]>([]);
   const [children, setChildren] = useState<Record<string, string>>({});
   const [selectedChild, setSelectedChild] = useState<string | undefined>('');
-
   const [openChild, setOpenChild] = useState(false);
 
   const Canvas = styled(Paper)(({ theme }) => ({
@@ -115,12 +114,11 @@ const TimeBlock = () => {
     margin: 0,
   }));
 
-  const handleChangeChild = (event: SelectChangeEvent<{ value: unknown }>) => {
+  const handleChangeChild = (event: SelectChangeEvent) => {
     const selectedValue = event.target.value as string;
     console.log('Valittu lapsi on:', selectedValue);
     setSelectedChild(selectedValue);
   };
-  
   
   const handleCloseChild = () => {
     setOpenChild(false);
@@ -146,7 +144,7 @@ const TimeBlock = () => {
           open={openChild}
           onClose={handleCloseChild}
           onOpen={handleOpenChild}
-          value={selectedChild || ''}
+          value={selectedChild}
           label="Child"
           onChange={handleChangeChild}
         >
