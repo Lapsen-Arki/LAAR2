@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import './Profile.css';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import axios from 'axios'; // Lisätty axios
-
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -13,22 +11,28 @@ import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Tooltip from '@mui/material/Tooltip';
-
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
 import { getProfiles } from '../api/getProfiles';
+import deleteProfile from '../api/deleteProfile';
 
 // kalenteri näytetään oikein, huomioiden synttärit ja karkausvuodet
-function calculateAge(birthdate: Date): string {
-  if (!birthdate) return '';
+function calculateAge(birthdate: Date): { age: string, birthdayWish?: string } {
+  if (!birthdate) return { age: '' };
 
   const today = new Date();
   const birthDate = new Date(birthdate);
+  const result: { age: string, birthdayWish?: string } = { age: '' };
 
   if (
     birthDate.getDate() === today.getDate() &&
     birthDate.getMonth() === today.getMonth()
   ) {
     const ageInMilliseconds = today.getTime() - birthDate.getTime();
-    const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25); // Huomioi karkausvuodet
+    const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25);
 
     const years = Math.floor(ageInYears);
     const monthsInMilliseconds = (ageInYears - years) * (365.25 * 24 * 60 * 60 * 1000);
@@ -40,37 +44,37 @@ function calculateAge(birthdate: Date): string {
     const monthLabel = months === 1 ? 'kk' : 'kk';
     const dayLabel = days === 1 ? 'pv' : 'pv';
 
-    return `${years}${yearLabel} ${months}${monthLabel} ${days}${dayLabel}, Hyvää Syntymäpäivää! 🥳🎈`;
-  }
-
-  if (birthDate.getTime() > today.getTime()) {
-    // Syntymäpäivä on tulevaisuudessa
+    result.age = `${years}${yearLabel} ${months}${monthLabel} ${days}${dayLabel}`;
+    result.birthdayWish = 'Hyvää Syntymäpäivää! 🥳🎈';
+  } else if (birthDate.getTime() > today.getTime()) {
     const timeDifference = birthDate.getTime() - today.getTime();
     const millisecondsInDay = 1000 * 60 * 60 * 24;
     const daysRemaining = Math.floor(timeDifference / millisecondsInDay);
     const monthsRemaining = Math.floor(daysRemaining / 30);
     const yearsRemaining = Math.floor(monthsRemaining / 12);
 
-    return `Syntymään jäljellä: ${yearsRemaining}v ${monthsRemaining % 12}kk ${daysRemaining % 30}pv`;
+    result.age = `Syntymään jäljellä: ${yearsRemaining}v ${monthsRemaining % 12}kk ${daysRemaining % 30}pv`;
+  } else {
+    const ageInMilliseconds = today.getTime() - birthDate.getTime();
+    const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25);
+
+    const years = Math.floor(ageInYears);
+    const monthsInMilliseconds = (ageInYears - years) * (365.25 * 24 * 60 * 60 * 1000);
+    const months = Math.floor(monthsInMilliseconds / (1000 * 60 * 60 * 24 * (365.25 / 12)));
+    const daysInMilliseconds = monthsInMilliseconds % (1000 * 60 * 60 * 24 * (365.25 / 12));
+    const days = Math.floor(daysInMilliseconds / (1000 * 60 * 60 * 24));
+
+    const yearLabel = years === 1 ? 'v' : 'v';
+    const monthLabel = months === 1 ? 'kk' : 'kk';
+    const dayLabel = days === 1 ? 'pv' : 'pv';
+
+    result.age = `${years}${yearLabel} ${months}${monthLabel} ${days}${dayLabel}`;
   }
 
-  const ageInMilliseconds = today.getTime() - birthDate.getTime();
-  const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25); // Huomioi karkausvuodet
-
-  const years = Math.floor(ageInYears);
-  const monthsInMilliseconds = (ageInYears - years) * (365.25 * 24 * 60 * 60 * 1000);
-  const months = Math.floor(monthsInMilliseconds / (1000 * 60 * 60 * 24 * (365.25 / 12)));
-  const daysInMilliseconds = monthsInMilliseconds % (1000 * 60 * 60 * 24 * (365.25 / 12));
-  const days = Math.floor(daysInMilliseconds / (1000 * 60 * 60 * 24));
-
-  const yearLabel = years === 1 ? 'v' : 'v';
-  const monthLabel = months === 1 ? 'kk' : 'kk';
-  const dayLabel = days === 1 ? 'pv' : 'pv';
-
-  return `${years}${yearLabel} ${months}${monthLabel} ${days}${dayLabel}`;
+  return result;
 }
 
-//nimen rivinvaihtaja
+// nimen rivinvaihtaja
 function splitNameToFitWidth(name: string, maxLineLength: number) {
   let result = '';
   let lineLength = 0;
@@ -88,7 +92,6 @@ function splitNameToFitWidth(name: string, maxLineLength: number) {
   return result.trim();
 }
 
-
 interface ChildProfile {
   id: string;
   accessRights: boolean;
@@ -100,6 +103,8 @@ interface ChildProfile {
 export default function Profile() {
   const navigate = useNavigate();
   const [profiles, setProfiles] = useState<ChildProfile[]>([]);
+  const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
+  const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProfiles = async () => {
@@ -118,17 +123,21 @@ export default function Profile() {
     fetchProfiles();
   }, []);
 
-  // handleClickDelete-funktio profiilin poistamiseksi
   const handleClickDelete = async (profileId: string) => {
-    try {
-      // Lähetä DELETE-pyyntö backendiin käyttäen axiosia
-      await axios.delete(`/api/profiles/${profileId}`); // Korvaa oikealla reitillä
-      // Päivitä frontend uusilla profiileilla
-      const updatedProfiles = profiles.filter((profile) => profile.id !== profileId);
-      setProfiles(updatedProfiles);
-    } catch (error) {
-      console.error('Profiilin poisto epäonnistui', error);
+    setSelectedProfileId(profileId);
+    setConfirmationDialogOpen(true);
+  };
+
+  const handleDeleteConfirmed = async () => {
+    if (selectedProfileId) {
+      await deleteProfile(selectedProfileId, profiles, setProfiles);
+      setSelectedProfileId(null);
     }
+    setConfirmationDialogOpen(false);
+  };
+
+  const handleEditClick = (profileId: string) => {
+    navigate(`/profile-edit/${profileId}`);
   };
 
   const handleAddProfileClick = () => {
@@ -142,40 +151,76 @@ export default function Profile() {
           Lisää profiili
         </Button>
 
-        <Box className="profiles" style={{ display: 'flex', flexDirection: 'row' }}>
+        {/* Varmistusdialogi */}
+        <Dialog
+          open={confirmationDialogOpen}
+          onClose={() => setConfirmationDialogOpen(false)}
+        >
+          <DialogTitle>Oletko varma että haluat poistaa profiilin?</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Tämä toiminto poistaa profiilin pysyvästi.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={() => setConfirmationDialogOpen(false)}
+              color="primary"
+            >
+              Ei
+            </Button>
+            <Button
+              onClick={handleDeleteConfirmed}
+              color="error"
+            >
+              Kyllä
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Profiilit */}
+        <Box className="profiles">
           <div style={{ flex: 1 }}>
-            <Typography variant="h6" gutterBottom component="div">
+            <Typography variant="h6" gutterBottom>
               Lapset:
             </Typography>
 
-            <div className="children" style={{ display: 'flex', flexDirection: 'column' }}>
+            <div className="children">
               {profiles.map((profile) => (
-                <div key={profile.id} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                  <Card sx={{ width: 430, height: 'auto', display: 'flex', alignItems: 'center', marginRight: 2 }}>
+                <div className="cards-wrap" key={profile.id}>
+
+                  <Card className="children-card">
                     <Avatar
-                      sx={{ flex: 0.2, width: 40, height: 40, marginLeft: '10px', marginRight: '10px' }}
+                      className="card-avatar"
                       src={profile.avatar || '/broken-image.jpg'}
                       alt="Avatar"
                     />
-                    <Box sx={{ display: 'flex', flexDirection: 'column', flex: '1 0 auto' }}>
+                    
+                    <Box className="card-content">
                       <Typography component="div" variant="h6" className="multiline-text">
                         {splitNameToFitWidth(profile.childName, 14)}
                       </Typography>
+                      
                       <Typography variant="subtitle1" color="text.secondary" component="div">
-                        {calculateAge(new Date(profile.birthdate))}
+                        {calculateAge(new Date(profile.birthdate)).age}
                       </Typography>
+
+                      <Typography variant="subtitle1" color="text.secondary" component="div">
+                        {calculateAge(new Date(profile.birthdate)).birthdayWish}
+                      </Typography>
+
+
                       <Typography variant="subtitle1" color="text.secondary" component="div">
                         {`Pääsy muilla: ${profile.accessRights ? 'Kyllä' : 'Ei'}`}
                       </Typography>
                     </Box>
 
-                    <div style={{ flex: 0.2 }}>
+                    <div className="card-icons">
                       <Tooltip title="Muokkaa profiilia">
-                        <IconButton color="primary" aria-label="Edit">
+                        <IconButton color="primary" aria-label="Edit" onClick={() => handleEditClick(profile.id)}>
                           <EditIcon />
                         </IconButton>
                       </Tooltip>
-                      {/* Lisätty poista-painike */}
                       <Tooltip title="Poista profiili">
                         <IconButton color="error" aria-label="Delete" onClick={() => handleClickDelete(profile.id)}>
                           <DeleteIcon />
@@ -189,54 +234,56 @@ export default function Profile() {
           </div>
 
           <div style={{ flex: 1 }}>
-            <Typography variant="h6" gutterBottom component="div">
+            <Typography variant="h6" gutterBottom>
               Hoitajat:
             </Typography>
             <div className="carer">
-              <Card sx={{ width: 300, height: 100, display: 'flex', alignItems: 'center', marginBottom: 2 }}>
-                <CardContent sx={{ flex: '1 0 auto' }}>
+
+              <Card className="carer-cards">
+                <CardContent className="cards-content">
                   <Typography component="div" variant="h6">
                     Kortti1
                   </Typography>
                   <div>
-                  <Tooltip title="Muokkaa profiilia">
-                        <IconButton color="primary" aria-label="Edit">
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Poista profiili">
-                        <IconButton color="error" aria-label="Delete">
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
+                    <Tooltip title="Muokkaa profiilia">
+                      <IconButton color="primary" aria-label="Edit">
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Poista profiili">
+                      <IconButton color="error" aria-label="Delete">
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
                   </div>
                 </CardContent>
               </Card>
-              <Card sx={{ width: 300, height: 100, display: 'flex', alignItems: 'center', marginBottom: 2 }}>
-                <CardContent sx={{ flex: '1 0 auto' }}>
+
+              <Card className="carer-cards">
+                <CardContent className="cards-content">
                   <Typography component="div" variant="h6">
                     Kortti2
                   </Typography>
                   <div>
-                  <Tooltip title="Muokkaa profiilia">
-                        <IconButton color="primary" aria-label="Edit">
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Poista profiili">
-                        <IconButton color="error" aria-label="Delete">
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
+                    <Tooltip title="Muokkaa profiilia">
+                      <IconButton color="primary" aria-label="Edit">
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Poista profiili">
+                      <IconButton color="error" aria-label="Delete">
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
                   </div>
                 </CardContent>
               </Card>
-              {/* Voit lisätä kortteja Hoitajat-osioon tarvittaessa */}
+
             </div>
           </div>
         </Box>
+
       </div>
     </div>
-
   );
 }

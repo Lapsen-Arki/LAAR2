@@ -1,10 +1,12 @@
 // DEFINING ROUTING LOGIC OF THE APPLICATION
 import express from "express";
 import registerUser from "./controllers/register/register";
-import editProfile from "./controllers/editProfile";
 import adminPage from "./controllers/adminPage";
-import profiles from "./controllers/profiles";
 import checkAuth from "./controllers/checkAuth";
+
+import createProfile from "./controllers/editProfile";
+import editProfile from "./controllers/editProfile";
+import { getProfiles, getProfileById, deleteProfile } from "./controllers/profiles";
 
 const router = express.Router();
 
@@ -13,11 +15,16 @@ router.post("/register", registerUser);
 
 router.post("/auth", checkAuth);
 
-router.post("/editProfile", editProfile);
+router.post("/editProfile", createProfile);
+router.post("/editProfile/:id", editProfile);
+
+router.get("/profiles", getProfiles);
+router.get('/profiles/:id', getProfileById);
+
+router.delete("/profiles/:profileId", deleteProfile);
 
 router.post("/admin", adminPage);
 
-router.get("/profiles", profiles);
 // alive check
 router.get("/alive", (req, res) => {
   res.status(200);
