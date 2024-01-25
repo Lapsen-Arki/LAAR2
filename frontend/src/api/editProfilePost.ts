@@ -4,6 +4,7 @@ import axios from "axios";
 const API_BASE_URL = "http://localhost:3000/api";
 
 interface EditProfileData {
+  id: string;
   childName: string;
   birthdate: string;
   avatar: string;

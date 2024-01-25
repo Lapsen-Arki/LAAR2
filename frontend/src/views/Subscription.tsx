@@ -1,4 +1,4 @@
-import './Subscription.css'
+import '../styles/Subscription.css'
 import Button from '@mui/material/Button';
 /* import { useState, useEffect } from 'react'
 import { useStripe } from "@stripe/react-stripe-js"; */
