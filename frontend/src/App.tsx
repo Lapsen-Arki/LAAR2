@@ -11,6 +11,7 @@ import TimeBlocking from "./views/TimeBlocking";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import AdminPage from "./views/Auth/admin";
+import Subscription from "./views/Subscription";
 import TimeBlockPreview from "./views/TimeBlockPreview";
 import "./conf/firebaseSdkConfig";
 import { TokenProvider } from "./contexts/tokenContext";
@@ -42,6 +43,7 @@ function App() {
               <Route path="/timeblocking" element={<TimeBlocking />} />
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/preview" element={<TimeBlockPreview />} />
+              <Route path="/subscription" element={<Subscription />} />
             </Routes>
           </Layout>
         </Elements>
