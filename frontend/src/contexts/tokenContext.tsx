@@ -1,6 +1,7 @@
 import { createContext, useState, ReactNode, useEffect } from "react";
 
 import { getAuth, signOut } from "firebase/auth";
+import { jwtAuth } from "../api/jwtAuth";
 
 type Props = {
   children: ReactNode;
@@ -30,9 +31,31 @@ function TokenProvider({ children }: Props) {
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  // Update isLoggedIn if idToken value changes:
   useEffect(() => {
     setIsLoggedIn(idToken !== null);
   }, [idToken]);
+
+  // Validatin JWT token automaticly every 15 minutes:
+  useEffect(() => {
+    const checkSessionInterval = setInterval(async () => {
+      console.log("Running Session check");
+
+      if (idToken) {
+        const result = await jwtAuth(idToken);
+        if (!result.message && result.error) {
+          signOutMethod();
+        }
+      } else {
+        signOutMethod();
+      }
+    }, 900000); // 900000 milliseconds = 15 minutes
+
+    // Cleanup
+    return () => {
+      clearInterval(checkSessionInterval);
+    };
+  }, []); // <- DO NOT ADD idToken HERE, FUCK YOU ESLINT
 
   const signOutMethod = () => {
     const auth = getAuth();
@@ -41,6 +64,8 @@ function TokenProvider({ children }: Props) {
         // Sign-out successful.
         setIdToken(null);
         sessionStorage.clear();
+        localStorage.clear();
+        // ADD REDIRECT HERE TO IMPROVE UX -> YOU HAVE SIGNED OUT ETC
       })
       .catch((error) => {
         // An error happened.
