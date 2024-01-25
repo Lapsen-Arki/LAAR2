@@ -46,6 +46,8 @@ export const userLogin = async (
           sessionStorage.setItem("storageType", "session");
         }
       }
+    } else {
+      console.error("newIdToken not defined");
     }
 
     return authResponse;
