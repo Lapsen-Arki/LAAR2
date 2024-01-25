@@ -1,21 +1,50 @@
-import axios from "axios";
 import { Request, Response } from "express";
-import dotenv from "dotenv";
-
-dotenv.config();
+import admin from "../../config/firebseConfig";
 
 const editProfile = async (req: Request, res: Response): Promise<void> => {
   try {
-    // Hae tarvittavat tiedot pyynnöstä (esimerkiksi childName, birthdate, avatar jne.)
-    const { childName, birthdate, avatar } = req.body;
+    const { id, childName, birthdate, avatar, accessRights } = req.body;
 
-    // Tee tarvittavat tietokantaoperaatiot (päivitä käyttäjän profiili tietokantaan)
+    if (!childName || !birthdate || !avatar || accessRights === undefined) {
+      res.status(400).json({ error: 'Kaikki tarvittavat tiedot eivät ole saatavilla' });
+      return;
+    }
 
-    // Lähetä vastaus, kun toiminto on suoritettu onnistuneesti
-    res.status(200).json({ message: 'Profiili päivitetty onnistuneesti' });
+    const db = admin.firestore();
+    const childProfilesCollection = db.collection("childProfile");
+
+    if (id) {
+      // Käyttäjä haluaa päivittää olemassa olevaa profiilia id:n avulla
+      const profileRef = childProfilesCollection.doc(id);
+      const profileSnapshot = await profileRef.get();
+
+      if (!profileSnapshot.exists) {
+        res.status(404).json({ error: 'Profiilia ei löydy' });
+        return;
+      }
+
+      // Päivitä olemassa olevaa profiilia id:n avulla
+      await profileRef.update({
+        childName: childName,
+        birthdate: birthdate,
+        avatar: avatar,
+        accessRights: accessRights,
+      });
+
+      res.status(200).json({ message: 'Profiili päivitetty onnistuneesti' });
+    } else {
+      // Luo uusi profiili, jos id ei ole mukana
+      await childProfilesCollection.add({
+        childName: childName,
+        birthdate: birthdate,
+        avatar: avatar,
+        accessRights: accessRights,
+      });
+
+      res.status(200).json({ message: 'Uusi profiili luotu onnistuneesti' });
+    }
   } catch (error: any) {
     console.error('Profiilin päivitys epäonnistui', error);
-    // Lähetä virheilmoitus, jos toiminto epäonnistuu
     res.status(500).json({ error: 'Jotain meni pieleen' });
   }
 };

@@ -1,109 +1,98 @@
 .profile-container {
-  max-width: 850px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.profile-modification {
-  margin-bottom: 30px;
-}
-
-.profile-modification form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.profile-modification label {
-  margin-bottom: 5px;
-}
-
-.profile-modification input[type="text"] {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-/* Tyylit avatarin valinnalle ja kytkimelle */
-.avatar-selection,
-.profile-picture-toggle {
-  margin-bottom: 20px;
-}
-
-/* Profiilinäkymän tyylit */
-.profile-view .children,
-.profile-view .caretakers {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-}
-
-.profile-view .children > div,
-.profile-view .caretakers > div {
-  flex-basis: 100%;
-}
+    max-width: 850px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    padding: 20px;
+  }
 
 .custom-button {
-  background-color: #63c8cc !important;
-}
-
-.input-group {
-  text-align: center;
-}
-
-/* Korttien tyyli */
-.card-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.text-section {
-  text-align: center;
-}
-
-.avatar {
-  margin-right: 10px;
-}
-
-.edit-icon {
-  align-self: flex-start;
-}
-
-/* Muokkaa Poista profiili -napin sijaintia */
-.edit-icon-section {
-  display: flex;
-  align-items: center; /* Aseta painikkeet vaakasuoraan keskelle */
-  justify-content: flex-end; /* Siirrä painikkeet oikeaan reunaan */
-  padding-left: 50px;
-}
-
-.edit-button,
-.remove-button {
-  margin-left: 10px; 
-  min-width: auto !important;
-  padding: 0px 0px 0px 5px !important;
-}
-
-/* Media queries responsiivisille tyyleille */
-@media (max-width: 768px) {
-  .profile-container {
-    padding: 10px;
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 3px;
+    background-color: #63c8cc !important;
   }
 
-  .profile-modification form {
-    width: 100%;
-  }
+/* Lasten profiilit */
 
-  .profile-view .children,
-  .profile-view .caretakers {
+.profiles {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .children {
+    display: flex;
     flex-direction: column;
   }
 
-  .profile-view .children > div,
-  .profile-view .caretakers > div {
-    flex-basis: 100%;
+  .cards-wrap {
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+  }
+
+  .children-card {
+    width: 430px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    
+  }
+
+  .card-avatar {
+    width: 40;
+    height: 40;
+    margin: 10px;
+    flex-shrink: 0;
+  }
+
+  .card-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+  }
+
+  .card-icons {
+    flex: 0.2;
+  }
+
+  /* Hoitajien profiilit */
+
+  .carer-cards {
+    width: 300px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .cards-content {
+    flex: 1 0 auto;
+  }
+
+  /* Responsiivisuus mobiilille */
+  @media (max-width: 767px) {
+    .profiles {
+      display: block;
+      text-align: center;
+    }
+
+    .children-card {
+      width: 100%;
+      flex-direction: column;
+    }
+  
+  
+  /* Hoitajien profiilit */
+  .carer-cards {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .cards-content {
+    flex: 1 0 auto;
   }
 }

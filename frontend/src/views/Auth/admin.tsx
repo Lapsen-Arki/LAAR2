@@ -9,16 +9,43 @@ import {
   InputLabel,
 } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material";
+import { AddDataToDatabase } from "../../types/types";
+import { adminAddData } from "../../api/adminPage";
+
+// TODO: add following features: 1. Remove data from recommendation database collection
+// 2. Adding feature for adding and removing admin users by superuser
 
 const AdminPage = () => {
+  const [errorMessage, setErrorMessage] = React.useState("");
+  const [successMessage, setSuccessMessage] = React.useState("");
   const [category, setCategory] = React.useState("");
+  const [formData, setFormData] = React.useState<AddDataToDatabase>({
+    choice: "",
+    name: "",
+    ageLimit: 0,
+    photoLink: "",
+    photoFileName: "",
+  });
 
   const handleCategoryChange = (event: SelectChangeEvent<string>) => {
     setCategory(event.target.value);
   };
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [event.target.name]: event.target.value });
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    const submitData = { category, ...formData };
+    const response = await adminAddData(submitData);
+    if (response && response.error) {
+      setErrorMessage(response.error);
+    } else {
+      setSuccessMessage(
+        "Tietokantaan tallentaminen onnistui! Lisää uusi tieto tai voit poistua sivulta."
+      );
+    }
   };
 
   return (
@@ -34,18 +61,20 @@ const AdminPage = () => {
               marginTop: 0,
               background: "white",
             }}
+            name="category"
             labelId="category-label"
             id="category-select"
             value={category}
             label="Category"
             onChange={handleCategoryChange}
+            required
           >
             {/* Replace these MenuItem values with your actual categories */}
-            <MenuItem value="Category 1">Aktiviteetit</MenuItem>
-            <MenuItem value="Category 2">Pienet ateriat</MenuItem>
-            <MenuItem value="Category 3">Isot ateriat</MenuItem>
-            <MenuItem value="Category 4">Iltatoimet</MenuItem>
-            <MenuItem value="Category 5">Nukkuminen</MenuItem>
+            <MenuItem value="aktiviteetti">Aktiviteetti</MenuItem>
+            <MenuItem value="pieniAteria">Pieni ateria</MenuItem>
+            <MenuItem value="isoAteria">Iso ateria</MenuItem>
+            <MenuItem value="iltatoimi">Iltatoimi</MenuItem>
+            <MenuItem value="nukkuminen">Nukkuminen</MenuItem>
           </Select>
         </FormControl>
 
@@ -54,28 +83,37 @@ const AdminPage = () => {
             marginTop: 0,
             background: "white",
           }}
+          name="choice"
           fullWidth
           label="Valikko"
           margin="normal"
+          onChange={handleChange}
+          required
         />
         <TextField
           sx={{
             marginTop: 0,
             background: "white",
           }}
+          name="name"
           fullWidth
           label="Nimi"
           margin="normal"
+          onChange={handleChange}
+          required
         />
         <TextField
           sx={{
             marginTop: 0,
             background: "white",
           }}
+          name="ageLimit"
           fullWidth
           label="Ikäraja/kk"
           margin="normal"
           type="number"
+          onChange={handleChange}
+          required
         />
         <h3>Kuva</h3>
         <p>Valitse kuvan URL linkki tai valitse tiedosto:</p>
@@ -84,9 +122,11 @@ const AdminPage = () => {
             marginTop: 0,
             background: "white",
           }}
+          name="photoLink"
           fullWidth
           label="Kuvan linkki"
           margin="normal"
+          onChange={handleChange}
         />
 
         <TextField
@@ -94,9 +134,11 @@ const AdminPage = () => {
             marginTop: 0,
             background: "white",
           }}
+          name="photoFileName"
           fullWidth
           margin="normal"
           type="file"
+          onChange={handleChange}
         />
 
         <Button
@@ -107,6 +149,12 @@ const AdminPage = () => {
         >
           Tallenna tietokantaan
         </Button>
+        <Typography sx={{ color: "red", marginBottom: 2, marginTop: 2 }}>
+          {errorMessage}
+        </Typography>
+        <Typography sx={{ color: "green", marginBottom: 2, marginTop: 2 }}>
+          {successMessage}
+        </Typography>
       </form>
     </div>
   );
