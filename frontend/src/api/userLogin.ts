@@ -35,7 +35,13 @@ export const userLogin = async (
     if (newIdToken) {
       authResponse = await jwtAuth(newIdToken);
       if (authResponse.message && !authResponse.error) {
-        localStorage.setItem("idToken", newIdToken);
+        if (rememberMe) {
+          localStorage.setItem("idToken", newIdToken);
+          localStorage.setItem("storageType", "local");
+        } else {
+          sessionStorage.setItem("idToken", newIdToken);
+          sessionStorage.setItem("storageType", "session");
+        }
       }
     }
 

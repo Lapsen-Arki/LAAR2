@@ -22,7 +22,12 @@ const TokenContext = createContext<TokenContext>({
 });
 
 function TokenProvider({ children }: Props) {
-  const [idToken, setIdToken] = useState(localStorage.getItem("idToken"));
+  const [idToken, setIdToken] = useState(() => {
+    const storageType = localStorage.getItem("storageType") || "session";
+    return storageType === "local"
+      ? localStorage.getItem("idToken")
+      : sessionStorage.getItem("idToken");
+  });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
