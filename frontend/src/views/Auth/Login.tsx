@@ -9,6 +9,7 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import { userLogin } from "../../api/userLogin";
+import { useNavigate } from "react-router-dom";
 
 const Login: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState("");
@@ -17,22 +18,30 @@ const Login: React.FC = (): JSX.Element => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  const navigate = useNavigate();
+
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    console.log("data: ");
-    console.log(email, password, rememberMe);
-
     const response = await userLogin(email, password, rememberMe);
+
     if (response && response.error) {
-      setErrorMessage(
-        `Kirjautuminen epäonnistui: ${response.error.message}. ${response.error.error}`
-      );
+      setErrorMessage(`Kirjautuminen epäonnistui`);
+      // VAIHTOEHTOINEN TAPA -> NÄYTTÄÄ ERROR VIESTIN:
+      /*       setErrorMessage(
+        `Kirjautuminen epäonnistui: ${
+          response.error.message || response.error.error
+        }`
+      ); */
     } else {
+      // JWT TOKENIN TALLENTAMINEN GLOBAALIIN MUUTTUJAAN
+
       setSuccessMessage(
-        "Kirjautuminen onnistui. Tervetuloa! | Login successful. Welcome!"
+        "Kirjautuminen onnistui. Tervetuloa! Siirryt etusivulle 3 s kuluttua. | Login successful. Welcome!"
       );
-      console.log("Kirjautuminen onnistui ");
+      setTimeout(() => {
+        navigate("/");
+      }, 5000);
     }
   };
 
@@ -43,7 +52,15 @@ const Login: React.FC = (): JSX.Element => {
   };
 
   return (
-    <Container component="main" maxWidth="xs" style={{ marginTop: "64px" }}>
+    <Container
+      component="main"
+      maxWidth="xs"
+      style={{
+        marginTop: "64px",
+        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+        padding: 20,
+      }}
+    >
       <Typography variant="h5" component="h1" gutterBottom>
         Kirjaudu sisään
       </Typography>
@@ -93,7 +110,7 @@ const Login: React.FC = (): JSX.Element => {
           color="success"
           variant="body2"
           align="center"
-          style={{ marginTop: "16px", color: "green" }}
+          style={{ marginTop: "16px", color: "green", marginBottom: "10px" }}
         >
           {successMessage}
         </Typography>
@@ -101,7 +118,7 @@ const Login: React.FC = (): JSX.Element => {
           color="error"
           variant="body2"
           align="center"
-          style={{ marginTop: "16px" }}
+          style={{ marginTop: "16px", marginBottom: "10px" }}
         >
           {errorMessage}
         </Typography>
