@@ -17,6 +17,7 @@ const router = express.Router();
 
 router.post("/register", registerUser);
 router.post("/auth", checkAuth);
+router.post("/admin", adminPage);
 
 // Profile routes:
 router.post("/editProfile", createProfile);
@@ -25,9 +26,9 @@ router.get("/profiles", getProfiles);
 router.get("/profiles/:id", getProfileById);
 router.delete("/profiles/:profileId", deleteProfile);
 
-router.post("/admin", adminPage);
-
+// Email related routes, forgot pw, new verification etc:
 router.post("/email-test", emailTest);
+
 // alive check
 router.get("/alive", (req, res) => {
   res.status(200);
