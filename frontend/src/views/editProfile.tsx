@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import './editProfile.css';
+import '../styles/editProfile.css';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
