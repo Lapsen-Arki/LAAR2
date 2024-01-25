@@ -28,12 +28,15 @@ export const userLogin = async (
       password
     );
 
-    const idToken = await userCredential.user.getIdToken();
+    const newIdToken = await userCredential.user.getIdToken();
 
     // Send token to backend authentication
     let authResponse;
-    if (idToken) {
-      authResponse = await jwtAuth(idToken);
+    if (newIdToken) {
+      authResponse = await jwtAuth(newIdToken);
+      if (authResponse.message && !authResponse.error) {
+        localStorage.setItem("idToken", newIdToken);
+      }
     }
 
     return authResponse;

@@ -10,6 +10,8 @@ import {
 } from "@mui/material";
 import { userLogin } from "../../api/userLogin";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { TokenContext } from "../../contexts/tokenContext";
 
 const Login: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState("");
@@ -17,6 +19,7 @@ const Login: React.FC = (): JSX.Element => {
   const [rememberMe, setRememberMe] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { setIdToken } = useContext(TokenContext);
 
   const navigate = useNavigate();
 
@@ -34,14 +37,22 @@ const Login: React.FC = (): JSX.Element => {
         }`
       ); */
     } else {
-      // JWT TOKENIN TALLENTAMINEN GLOBAALIIN MUUTTUJAAN
+      // TALLENTAA JWT TOKENIN GLOBAALIIN TOKEN CONTEXTIIN
+      const newToken = localStorage.getItem("idToken");
+      if (newToken) {
+        setIdToken(newToken);
+      } else {
+        setErrorMessage(
+          "Istunto tietojen tallentaminen epäonnistui. Yritä kirjautua uudelleen."
+        );
+      }
 
       setSuccessMessage(
         "Kirjautuminen onnistui. Tervetuloa! Siirryt etusivulle 3 s kuluttua. | Login successful. Welcome!"
       );
       setTimeout(() => {
         navigate("/");
-      }, 5000);
+      }, 3000);
     }
   };
 
