@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import './Profile.css';
+import './editProfile.css';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -11,6 +11,7 @@ import Alert from '@mui/material/Alert';
 import { useNavigate, useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import Tooltip from '@mui/material/Tooltip';
 
 import { editProfile } from '../api/editProfilePost.ts';
 import { getProfileById } from '../api/getProfiles';
@@ -116,14 +117,14 @@ const EditProfile = () => {
       <div className="profile-modification">
         <form>
           {/* Lapsen nimi -kenttä */}
-          <div className="input-group">
+          <div className="input-group editProfile">
             <h3>Lapsen nimi tai lempinimi</h3>
             <input type="text" id="childName" value={childName} onChange={(e) => setChildName(e.target.value)} maxLength={14} />
             {nameError && <Alert severity="error">{nameError}</Alert>}
           </div>
 
           {/* Syntymäaika -kenttä */}
-          <div className="input-group">
+          <div className="input-group editProfile">
             <h3>Lapsen syntymäaika</h3>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker value={birthdate} onChange={(newDate) => setBirthdate(newDate ? dayjs(newDate) : null)} />
@@ -132,7 +133,7 @@ const EditProfile = () => {
           </div>
 
           {/* Avatarin valinta */}
-          <div className="input-group" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div className="input-group editProfile editProfileAvatar">
             <h3>Valitse lapselle avatar</h3>
             {showAnimalAvatar ? (
               <AnimalAvatarWidget onSelect={handleAvatarSelect} />
@@ -142,12 +143,14 @@ const EditProfile = () => {
               <Avatar src="/broken-image.jpg" />
             )}
             {showAnimalAvatar ? null : (
+              <Tooltip title="Valitse kuva">
               <Button variant="contained" className="custom-button" onClick={handleShowAnimalAvatar}>Valitse kuva</Button>
+              </Tooltip>
             )}
           </div>
 
           {/* Pääsyoikeudet -kytkin */}
-          <div className="input-group">
+          <div className="input-group editProfile">
             <h5>Tarvitsetko pääsyoikeudet myös muille ihmisille?</h5>
             <div className="switch-group">
               <span>Ei</span>
@@ -158,11 +161,16 @@ const EditProfile = () => {
 
           {/* Tallennus- ja paluupainikkeet */}
           <Box sx={{ marginTop: 5 }}>
-            <div className="input-group">
-              <Button variant="contained" className="custom-button" onClick={handleNavigateToProfile} sx={{ marginRight: 3 }}>
+            <div className="input-group editProfile">
+            <Tooltip title="Takaisin profiiliin">
+              <Button variant="contained" className="custom-button editProfile" onClick={handleNavigateToProfile}>
                 <ArrowBackIosIcon /> Takaisin
               </Button>
+              </Tooltip>
+
+            <Tooltip title="Tallenna profiili">
               <Button variant="contained" className="custom-button" onClick={handleSave}>Tallenna</Button>
+              </Tooltip>
             </div>
           </Box>
         </form>

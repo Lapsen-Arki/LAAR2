@@ -169,7 +169,7 @@ export default function Profile() {
               Ei
             </Button>
             <Button
-              onClick={handleDeleteConfirmed} // Kutsu poistofunktiota vahvistuksen jälkeen
+              onClick={handleDeleteConfirmed}
               color="error"
             >
               Kyllä
@@ -178,22 +178,24 @@ export default function Profile() {
         </Dialog>
 
         {/* Profiilit */}
-        <Box className="profiles" style={{ display: 'flex', flexDirection: 'row' }}>
+        <Box className="profiles">
           <div style={{ flex: 1 }}>
-            <Typography variant="h6" gutterBottom component="div">
+            <Typography variant="h6" gutterBottom>
               Lapset:
             </Typography>
 
-            <div className="children" style={{ display: 'flex', flexDirection: 'column' }}>
+            <div className="children">
               {profiles.map((profile) => (
-                <div key={profile.id} style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                  <Card sx={{ width: 430, height: 'auto', display: 'flex', alignItems: 'center', marginRight: 2 }}>
+                <div className="cards-wrap" key={profile.id}>
+
+                  <Card className="children-card">
                     <Avatar
-                      sx={{ width: 40, height: 40, margin: '10px', flexShrink: 0 }}
+                      className="card-avatar"
                       src={profile.avatar || '/broken-image.jpg'}
                       alt="Avatar"
                     />
-                    <Box sx={{ display: 'flex', flexDirection: 'column', flex: '1 0 auto' }}>
+                    
+                    <Box className="card-content">
                       <Typography component="div" variant="h6" className="multiline-text">
                         {splitNameToFitWidth(profile.childName, 14)}
                       </Typography>
@@ -205,7 +207,7 @@ export default function Profile() {
                       </Typography>
                     </Box>
 
-                    <div style={{ flex: 0.2 }}>
+                    <div className="card-icons">
                       <Tooltip title="Muokkaa profiilia">
                         <IconButton color="primary" aria-label="Edit" onClick={() => handleEditClick(profile.id)}>
                           <EditIcon />
@@ -224,12 +226,13 @@ export default function Profile() {
           </div>
 
           <div style={{ flex: 1 }}>
-            <Typography variant="h6" gutterBottom component="div">
+            <Typography variant="h6" gutterBottom>
               Hoitajat:
             </Typography>
             <div className="carer">
-              <Card sx={{ width: 300, height: 100, display: 'flex', alignItems: 'center', marginBottom: 2 }}>
-                <CardContent sx={{ flex: '1 0 auto' }}>
+
+              <Card className="carer-cards">
+                <CardContent className="cards-content">
                   <Typography component="div" variant="h6">
                     Kortti1
                   </Typography>
@@ -247,8 +250,9 @@ export default function Profile() {
                   </div>
                 </CardContent>
               </Card>
-              <Card sx={{ width: 300, height: 100, display: 'flex', alignItems: 'center', marginBottom: 2 }}>
-                <CardContent sx={{ flex: '1 0 auto' }}>
+
+              <Card className="carer-cards">
+                <CardContent className="cards-content">
                   <Typography component="div" variant="h6">
                     Kortti2
                   </Typography>
@@ -266,7 +270,7 @@ export default function Profile() {
                   </div>
                 </CardContent>
               </Card>
-              {/* Voit lisätä kortteja Hoitajat-osioon tarvittaessa */}
+
             </div>
           </div>
         </Box>
