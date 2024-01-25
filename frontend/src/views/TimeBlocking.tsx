@@ -1,4 +1,4 @@
-import './timeBlocking.css';
+import '../styles/timeBlocking.css';
 import { useState, useEffect } from 'react';
 import { SelectChangeEvent } from '@mui/material/Select';
 import {
