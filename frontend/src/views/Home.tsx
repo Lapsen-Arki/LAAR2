@@ -4,7 +4,7 @@ import { TokenContext } from "../contexts/tokenContext";
 // PYYHI TESTI ROSKAT POIS JOS TULET TEKEMÄÄN
 
 export default function Home() {
-  const { idToken, signOutMethod } = useContext(TokenContext);
+  const { isLoggedIn, idToken, signOutMethod } = useContext(TokenContext);
 
   function signOuttt() {
     console.log("logging out");
@@ -13,6 +13,7 @@ export default function Home() {
   }
   function printToken() {
     console.log(idToken);
+    console.log(isLoggedIn);
   }
 
   return (

@@ -35,8 +35,19 @@ export const userLogin = async (
     if (newIdToken) {
       authResponse = await jwtAuth(newIdToken);
       if (authResponse.message && !authResponse.error) {
-        localStorage.setItem("idToken", newIdToken);
+        if (rememberMe) {
+          console.log("saving to localS");
+
+          localStorage.setItem("idToken", newIdToken);
+          localStorage.setItem("storageType", "local");
+        } else {
+          console.log("saving to sessionS");
+          sessionStorage.setItem("idToken", newIdToken);
+          sessionStorage.setItem("storageType", "session");
+        }
       }
+    } else {
+      console.error("newIdToken not defined");
     }
 
     return authResponse;

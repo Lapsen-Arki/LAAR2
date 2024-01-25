@@ -38,7 +38,8 @@ const Login: React.FC = (): JSX.Element => {
       ); */
     } else {
       // TALLENTAA JWT TOKENIN GLOBAALIIN TOKEN CONTEXTIIN
-      const newToken = localStorage.getItem("idToken");
+      const newToken =
+        localStorage.getItem("idToken") || sessionStorage.getItem("idToken");
       if (newToken) {
         setIdToken(newToken);
       } else {
