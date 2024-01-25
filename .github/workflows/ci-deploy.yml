@@ -28,6 +28,10 @@ jobs:
           uname -a
           docker info
 
+      - name: Set Docker Compose file
+        run: |
+          export DOCKER_COMPOSE_FILE=docker-compose.prod.yml
+
       - name: Build and Push backend image
         run: |
           docker buildx create
@@ -65,7 +69,7 @@ jobs:
             --registry-login-server ${{ secrets.ACR_REGISTRY }} \
             --registry-username ${{ secrets.AZR_USERNAME_ID }} \
             --registry-password ${{ secrets.AZR_PASSWORD }} \
-            --dns-name-label laar-backend \
+            --dns-name-label laarnet-backend \
             --environment-variables FIREBASE_KEY_JSON='${{ secrets.FIREBASE_KEY_JSON }}' \
             --ports 3000 \
 
@@ -76,5 +80,5 @@ jobs:
             --registry-login-server ${{ secrets.ACR_REGISTRY }} \
             --registry-username ${{ secrets.AZR_USERNAME_ID }} \
             --registry-password ${{ secrets.AZR_PASSWORD }} \
-            --dns-name-label laar-frontend \
+            --dns-name-label laarnet \
             --ports 80 \
