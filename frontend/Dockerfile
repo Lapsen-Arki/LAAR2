@@ -17,6 +17,8 @@ ARG PORT
 # Copy the built files from the previous stage
 COPY --from=builder /app/frontend/dist /usr/share/nginx/html
 
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE $PORT
 
 CMD ["nginx", "-g", "daemon off;"]

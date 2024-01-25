@@ -17,12 +17,7 @@ const aamupala = {
     }
 };
 
-const perhe = {
-    "lapset": {
-        "Veeti": "1",
-        "Oona": "2",
-    }
-}
+
 
 const tapahtumat = [
     {
@@ -83,4 +78,4 @@ const tapahtumat = [
   
 
 
-export { aamupala, perhe, tapahtumat };
+export { aamupala, tapahtumat };
