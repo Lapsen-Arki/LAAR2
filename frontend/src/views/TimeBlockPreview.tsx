@@ -2,13 +2,10 @@ import React from 'react'
 import { useState } from 'react'
 import '../styles/timeBlocking.css';
 import { styled } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
@@ -45,7 +42,6 @@ return (
 
 export default function TimeBlockPreview() {
 
-	const [target, setTarget] = useState<string>("");
 	const [porridge, setPorridge] = useState<string>("");
 	const [drink, setDrink] = useState<string>("");
 	const [fruit, setFruit] = useState<string>("");

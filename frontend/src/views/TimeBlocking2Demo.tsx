@@ -2,10 +2,6 @@ import '../styles/timeBlocking.css';
 import { useState, useEffect } from 'react';
 import { SelectChangeEvent } from '@mui/material/Select';
 import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
   Box,
   Grid,
   Paper,
@@ -75,18 +71,8 @@ const tapahtumat: EventType[] = [
   }
 ];
 
-const perhe = {
-  "lapset": {
-      "Veeti": "3",
-      "Oona": "2",
-  }
-}
-
 const TimeBlock = () => {
   const [events, setEvents] = useState<EventType[]>([]);
-  const [children, setChildren] = useState<Record<string, string>>({});
-  const [selectedChild, setSelectedChild] = useState<string | undefined>('');
-  const [openChild, setOpenChild] = useState(false);
 
   const Canvas = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -114,23 +100,8 @@ const TimeBlock = () => {
     margin: 0,
   }));
 
-  const handleChangeChild = (event: SelectChangeEvent) => {
-    const selectedValue = event.target.value as string;
-    console.log('Valittu lapsi on:', selectedValue);
-    setSelectedChild(selectedValue);
-  };
-  
-  const handleCloseChild = () => {
-    setOpenChild(false);
-  };
-
-  const handleOpenChild = () => {
-    setOpenChild(true);
-  };
-
   useEffect(() => {
       setEvents(tapahtumat);
-      setChildren(perhe.lapset);
     }, []); 
 
   return (
