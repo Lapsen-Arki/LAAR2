@@ -40,7 +40,7 @@ export default function Home() {
 					<div className="preview-top-right-bottom">
 						<div className="preview-grid-title">
 							{insertOn?
-							<h2>Luo ateria</h2>
+							<h2 className="preview-h2">Luo ateria</h2>
 							:null
 							}
 						</div>
