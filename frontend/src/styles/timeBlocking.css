@@ -1,5 +1,4 @@
 .timeBlocking {
-	max-width: 90vw;
     display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -19,8 +18,6 @@
     text-align: left;
     background-color: white;
     font-weight: lighter;
-    padding: 20px;
-    min-width: 250px;
 }
 
 .preview-page {
@@ -35,7 +32,8 @@
 }
 
 .preview-image {
-	margin: 1vh;
+	margin-bottom: 2vh;
+	margin-right: 2vh;
 	width: 40%;
 	border: 1px solid black;
 }
@@ -46,13 +44,13 @@
 }
 
 .preview-description {
-	margin: 1vh;
 	width: 60%;
+	margin: 1vh;
 }
 
 .preview-top-right-bottom {
-	margin: 1vh;
 	display: flex;
+	margin-bottom: 2vh;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
@@ -62,13 +60,7 @@
 	width: 20%;
 }
 
-.preview-grid {
-	margin: 1vh;
-	margin-top: 2vh;
-}
-
 .preview-register {
-	margin-right: 1vh;
 	margin-top: 3vh;
 	margin-bottom: 3vh;
 	text-align: right;
