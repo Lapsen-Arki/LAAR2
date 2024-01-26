@@ -36,12 +36,9 @@ export const userLogin = async (
       authResponse = await jwtAuth(newIdToken);
       if (authResponse.message && !authResponse.error) {
         if (rememberMe) {
-          console.log("saving to localS");
-
           localStorage.setItem("idToken", newIdToken);
           localStorage.setItem("storageType", "local");
         } else {
-          console.log("saving to sessionS");
           sessionStorage.setItem("idToken", newIdToken);
           sessionStorage.setItem("storageType", "session");
         }

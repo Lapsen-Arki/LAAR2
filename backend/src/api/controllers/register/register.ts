@@ -4,6 +4,8 @@ import validateAndSanitizeName from "./validateAndSanitizeName";
 import validatePassword from "./validatePassword";
 import { RegisterData } from "../../../types/types";
 import stripeConf from "../../../config/stripeClient";
+import crypto from "crypto";
+import sendVerification from "../../../utils/sendVerification";
 
 // Registration function
 const registerUser = async (req: Request, res: Response) => {
@@ -33,6 +35,11 @@ const registerUser = async (req: Request, res: Response) => {
       password: password,
     });
 
+    const verificationCode = crypto.randomBytes(16).toString("hex");
+
+    const expirationDate = new Date();
+    expirationDate.setHours(expirationDate.getHours() + 24);
+
     // Save user to firebase users collection
     const registrationDate = new Date();
     const db = admin.firestore();
@@ -42,7 +49,12 @@ const registerUser = async (req: Request, res: Response) => {
       email: email,
       registrationDate: registrationDate,
       stripeTokenId: tokenId,
+      emailVerified: false,
+      verificationCode: verificationCode,
+      codeExpires: expirationDate,
     });
+
+    sendVerification(email, verificationCode, expirationDate);
 
     try {
       const stripe = stripeConf();
