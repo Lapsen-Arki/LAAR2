@@ -32,7 +32,6 @@ const Login: React.FC = (): JSX.Element => {
 
     if (response === "emailNotVerified") {
       setVerifyEmail(true);
-      setErrorMessage("Email verification is required.");
     }
 
     if (response === "success") {
@@ -54,7 +53,13 @@ const Login: React.FC = (): JSX.Element => {
         navigate("/");
       }, 3000);
     } else {
-      setErrorMessage(`Kirjautuminen epäonnistui`);
+      if (response === "emailNotVerified") {
+        setErrorMessage(
+          "Vahvista sähköpostiositeessi ja kirjaudu sisään uudelleen"
+        );
+      } else {
+        setErrorMessage(`Kirjautuminen epäonnistui`);
+      }
     }
   };
 
@@ -77,7 +82,11 @@ const Login: React.FC = (): JSX.Element => {
       <Typography variant="h5" component="h1" gutterBottom>
         Kirjaudu sisään
       </Typography>
-      <VerifyEmailModal open={verifyEmail} />
+      <VerifyEmailModal
+        open={verifyEmail}
+        email={email}
+        setOpen={setVerifyEmail}
+      />
       <form onSubmit={handleLogin}>
         <TextField
           style={{ background: "white" }}
