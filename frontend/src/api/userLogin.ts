@@ -1,5 +1,6 @@
 import {
   getAuth,
+  signOut,
   signInWithEmailAndPassword,
   setPersistence,
   browserLocalPersistence,
@@ -34,9 +35,10 @@ export const userLogin = async (
     if (newIdToken) {
       authResponse = await jwtAuth(newIdToken);
       if (authResponse === "emailNotVerified") {
+        await signOut(auth);
         return "emailNotVerified";
       }
-      if (authResponse) {
+      if (authResponse === "success") {
         if (rememberMe) {
           localStorage.setItem("idToken", newIdToken);
           localStorage.setItem("storageType", "local");
@@ -46,6 +48,7 @@ export const userLogin = async (
         }
       }
     } else {
+      await signOut(auth);
       console.error("newIdToken not defined");
     }
 
