@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -34,7 +33,10 @@ export const userLogin = async (
     let authResponse;
     if (newIdToken) {
       authResponse = await jwtAuth(newIdToken);
-      if (authResponse.message && !authResponse.error) {
+      if (authResponse === "emailNotVerified") {
+        return "emailNotVerified";
+      }
+      if (authResponse) {
         if (rememberMe) {
           localStorage.setItem("idToken", newIdToken);
           localStorage.setItem("storageType", "local");
@@ -49,10 +51,6 @@ export const userLogin = async (
 
     return authResponse;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      console.error("Login error: ", error.response.data);
-      return { error: error.response.data };
-    }
-    return { error: error };
+    return false;
   }
 };

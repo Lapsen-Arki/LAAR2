@@ -27,7 +27,23 @@ const checkAuth = async (
       return;
     }
 
-    res.status(200).json({ message: "Autentikaatio onnistui" }); // Testaukseen
+    const userId = decodedToken.uid;
+
+    const db = admin.firestore();
+    const userDoc = await db.collection("users").doc(userId).get();
+
+    if (!userDoc.exists) {
+      res.status(401).json({ error: "Käyttäjää ei löytynyt" });
+      return;
+    }
+
+    const emailVerified = userDoc.data().emailVerified;
+    if (!emailVerified) {
+      res.status(401).json({ error: "emailNotVerified" });
+      return;
+    }
+
+    res.status(200).json({ message: "Success" }); // Testaukseen
 
     // Käyttäjä on kirjautunut sisään, voit siirtyä seuraavaan middlewareen tai käyttäjän reittiin:
     // next();

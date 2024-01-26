@@ -12,6 +12,7 @@ import { userLogin } from "../../api/userLogin";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
+import VerifyEmailModal from "../../components/verifyEmailModal";
 
 const Login: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState("");
@@ -19,6 +20,7 @@ const Login: React.FC = (): JSX.Element => {
   const [rememberMe, setRememberMe] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [verifyEmail, setVerifyEmail] = useState(false);
   const { setIdToken } = useContext(TokenContext);
 
   const navigate = useNavigate();
@@ -28,15 +30,12 @@ const Login: React.FC = (): JSX.Element => {
 
     const response = await userLogin(email, password, rememberMe);
 
-    if (response && response.error) {
-      setErrorMessage(`Kirjautuminen epäonnistui`);
-      // VAIHTOEHTOINEN TAPA -> NÄYTTÄÄ ERROR VIESTIN:
-      /*       setErrorMessage(
-        `Kirjautuminen epäonnistui: ${
-          response.error.message || response.error.error
-        }`
-      ); */
-    } else {
+    if (response === "emailNotVerified") {
+      setVerifyEmail(true);
+      setErrorMessage("Email verification is required.");
+    }
+
+    if (response === "success") {
       // TALLENTAA JWT TOKENIN GLOBAALIIN TOKEN CONTEXTIIN
       const newToken =
         localStorage.getItem("idToken") || sessionStorage.getItem("idToken");
@@ -54,6 +53,8 @@ const Login: React.FC = (): JSX.Element => {
       setTimeout(() => {
         navigate("/");
       }, 3000);
+    } else {
+      setErrorMessage(`Kirjautuminen epäonnistui`);
     }
   };
 
@@ -76,6 +77,7 @@ const Login: React.FC = (): JSX.Element => {
       <Typography variant="h5" component="h1" gutterBottom>
         Kirjaudu sisään
       </Typography>
+      <VerifyEmailModal open={verifyEmail} />
       <form onSubmit={handleLogin}>
         <TextField
           style={{ background: "white" }}
