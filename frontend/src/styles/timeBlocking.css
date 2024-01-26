@@ -26,7 +26,6 @@
 .preview-page {
 	display: flex;
 	flex-direction: column;
-	padding: 10vh;
 }
 
 .preview-top-panel {
@@ -86,6 +85,7 @@
 
 	.preview-image {
 		width: 90%;
+		height: 20vh;
 	}
 
 	.preview-description {
