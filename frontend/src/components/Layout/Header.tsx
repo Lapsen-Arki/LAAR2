@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { headingTheme, paragraphTheme } from './themeMUI';
+import { headingTheme } from './themeMUI';
 import { Link } from 'react-router-dom';
 import {
 	AppBar,
