@@ -190,6 +190,9 @@ export default function Register() {
           variant="subtitle1"
           sx={{
             marginBottom: 2,
+            a: {
+              color: '#298E77',
+            },
           }}
         >
           <b>Emme veloita sinua vielä tässä kohtaa.</b> Turvallisen maksukortin
@@ -208,7 +211,7 @@ export default function Register() {
           päättymään maksukauden loppuun.
         </Typography>
         {/* Repeat for other fields like password, confirm password, etc. */}
-        <Button type="submit" fullWidth variant="contained" color="primary">
+        <Button type="submit" fullWidth variant="contained" color="primary" sx={{ backgroundColor: '#39C4A3', color: '#000000'}}>
           Rekisteröidy
         </Button>
         <Typography sx={{ color: "red", marginBottom: 2, marginTop: 2 }}>
@@ -228,7 +231,7 @@ export default function Register() {
           }
           label="Hyväksyn tietosuojaselosteen ja palvelun käyttöehdot"
         />
-        <Link href="/login" variant="body2">
+        <Link href="/login" variant="body2" sx={{ color: '#298E77'}}>
           <p>Onko sinulla valmiiksi tili? Kirjaudu tästä!</p>
         </Link>
       </form>

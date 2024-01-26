@@ -115,7 +115,7 @@ const Login: React.FC = (): JSX.Element => {
           }
           label="Muista minut"
         />
-        <Button type="submit" fullWidth variant="contained" color="primary">
+        <Button type="submit" fullWidth variant="contained" color="primary" sx={{ backgroundColor: '#39C4A3', color: '#000000'}}>
           Kirjaudu sisään
         </Button>
         <Typography
@@ -134,7 +134,7 @@ const Login: React.FC = (): JSX.Element => {
         >
           {errorMessage}
         </Typography>
-        <Link href="/register" variant="body2">
+        <Link href="/register" variant="body2" sx={{ color: '#298E77'}}>
           Eikö sinulla ole tiliä? Luo tili tästä!
         </Link>
       </form>

@@ -136,7 +136,7 @@ const TimeBlock = () => {
   return (
     <div className="timeBlocking">
       <div className="select">
-      <FormControl sx={{ m: 1, minWidth: 220 }}>
+      <FormControl sx={{ m: 1, minWidth: 220, backgroundColor: '#FFFFFF' }}>
         <InputLabel id="select-child">Lapsi</InputLabel>
         <Select
           labelId="select-child"
