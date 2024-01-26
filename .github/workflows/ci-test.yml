@@ -1,0 +1,6 @@
+name: CI-test
+on:
+  push:
+    branches: KANBAN-95-Implement-HTTPS
+
+jobs:
