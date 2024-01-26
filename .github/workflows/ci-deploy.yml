@@ -69,7 +69,7 @@ jobs:
             --registry-login-server ${{ secrets.ACR_REGISTRY }} \
             --registry-username ${{ secrets.AZR_USERNAME_ID }} \
             --registry-password ${{ secrets.AZR_PASSWORD }} \
-            --dns-name-label laarnet-backend \
+            --dns-name-label api.laarnet \
             --environment-variables FIREBASE_KEY_JSON='${{ secrets.FIREBASE_KEY_JSON }}' \
             --ports 3000 \
 

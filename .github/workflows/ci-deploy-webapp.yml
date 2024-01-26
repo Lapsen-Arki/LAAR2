@@ -1,0 +1,16 @@
+name: Azure Web App Container Deployment
+
+on:
+  push:
+    branches:
+      - feature/KANBAN-103-Webapp-workflow
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, deploy]
+    environment: production
+    steps:
+      - name: Yikes
+        run: |
+          echo ${{ secrets.AZR_USERNAME_ID }}
+          echo ${{ secrets.AZR_PASSWORD }}
