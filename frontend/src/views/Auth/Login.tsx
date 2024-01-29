@@ -23,7 +23,7 @@ const Login: React.FC = (): JSX.Element => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [openResetModel, setOpenResetModal] = useState(false);
-  const [verifyEmail, setVerifyEmail] = useState(false);
+  const [openVerifyEmail, setOpenVerifyEmail] = useState(false);
   const { setIdToken } = useContext(TokenContext);
 
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ const Login: React.FC = (): JSX.Element => {
     const response = await userLogin(email, password, rememberMe);
 
     if (response === "emailNotVerified") {
-      setVerifyEmail(true);
+      setOpenVerifyEmail(true);
     }
 
     if (response === "success") {
@@ -86,9 +86,9 @@ const Login: React.FC = (): JSX.Element => {
         Kirjaudu sisään
       </Typography>
       <VerifyEmailModal
-        open={verifyEmail}
+        open={openVerifyEmail}
         email={email}
-        setOpen={setVerifyEmail}
+        setOpen={setOpenVerifyEmail}
       />
       <form onSubmit={handleLogin}>
         <TextField
