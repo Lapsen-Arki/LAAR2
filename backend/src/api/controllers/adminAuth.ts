@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import admin from "../../config/firebseConfig";
 
 const adminAuth = async (req: Request, res: Response) => {
