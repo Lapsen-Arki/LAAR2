@@ -45,8 +45,8 @@ jobs:
         uses: fingerprintjs/action-coverage-report-md@v1
         id: coverage
         with:
-          textReportPath: "./coverage/coverage.txt"
-          srcBasePath: "./backend/"
+          textReportPath: "./backend/coverage/coverage.txt"
+          srcBasePath: "./backend/src"
 
       - name: Add coverage report to the job summary
         run: |
