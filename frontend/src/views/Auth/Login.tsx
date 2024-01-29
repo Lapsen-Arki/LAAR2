@@ -142,6 +142,7 @@ const Login: React.FC = (): JSX.Element => {
         </Link>
         <br />
         <Link
+          href="#"
           onClick={() => {
             setOpenResetModal(true);
           }}

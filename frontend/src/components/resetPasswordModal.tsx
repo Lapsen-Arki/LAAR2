@@ -41,7 +41,11 @@ const ResetPasswordModal: React.FC<VerifyEmailModalProps> = ({
       <DialogContent>
         <Typography>Lähetä salasanan palautusviesti sähköposiisi:</Typography>
 
-        <TextField value={email} onChange={setEmail}></TextField>
+        <TextField
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          fullWidth
+        ></TextField>
 
         <Button
           style={{ marginTop: "16px", marginBottom: "10px" }}
