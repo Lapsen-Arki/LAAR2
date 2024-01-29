@@ -30,13 +30,9 @@ jobs:
           npm cache clean --force
           npm cache verify
 
-      - name: Debug Token
-        run: |
-          echo "FIREBASE_KEY_JSON=${FIREBASE_KEY_JSON}" >> key.env
-
       - name: Set up backend
+        working-directory: backend
         run: |
-          cd backend
           npm install
           npm run build
 
@@ -46,9 +42,9 @@ jobs:
           test-script: npm run test
 
       - name: Run backend
+        working-directory: backend
         run: |
           (
-            cd backend
             PORT=3000 FIREBASE_KEY_JSON=${FIREBASE_KEY_JSON} npm run start
           ) &
           bash ./check-healthy-light.sh "Backend" "http://localhost:3000/api/alive" 120
