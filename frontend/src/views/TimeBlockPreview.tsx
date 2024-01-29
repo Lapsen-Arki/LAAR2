@@ -2,13 +2,10 @@ import React from 'react'
 import { useState } from 'react'
 import '../styles/timeBlocking.css';
 import { styled } from '@mui/material/styles';
-import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
@@ -26,7 +23,7 @@ const FoodDropDown: React.FC<FoodDropDownProps> = ({ id, value, options, onChang
 	});
 
 return (
-	<FormControl fullWidth>
+	<FormControl>
 		<CustomSelect
 			id={id}
 			value={value}
@@ -45,7 +42,6 @@ return (
 
 export default function TimeBlockPreview() {
 
-	const [target, setTarget] = useState<string>("");
 	const [porridge, setPorridge] = useState<string>("");
 	const [drink, setDrink] = useState<string>("");
 	const [fruit, setFruit] = useState<string>("");
@@ -70,38 +66,6 @@ export default function TimeBlockPreview() {
 	};
 
 	return (
-		<div className="preview-page">
-			<div className="preview-top-panel">
-				<div className="preview-image">
-
-				</div>
-				<div className="preview-top-right">
-					<div className="preview-description">
-						<h1>Lapsen arkirytmi</h1>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-					</div>
-					<div className="preview-top-right-bottom">
-						<div className="preview-grid-title">
-							<h2>Luo ateria</h2>
-						</div>
-						<div className="preview-target">
-							<FormControl fullWidth>
-								<InputLabel id="preview-target-label">Lapsi</InputLabel>
-								<Select
-									labelId="preview-target-label"
-									id="preview-target-select"
-									value={target}
-									label="Lapsi"
-									onChange={handleSelectChange(setTarget)}
-									>
-									<MenuItem value={"Ulpukka"}>Ulpukka</MenuItem>
-									<MenuItem value={"Kullervo"}>Kullervo</MenuItem>
-								</Select>
-							</FormControl>
-						</div>
-					</div>
-				</div>
-			</div>
 			<div className="preview-grid">
 				<Box sx={{ flexGrow: 1 }}>
 					<Grid container spacing={3}>
@@ -144,11 +108,5 @@ export default function TimeBlockPreview() {
 					</Grid>
 				</Box>
 			</div>
-			<div className="preview-register">
-				<Button component={Link} to="/register" variant="contained" sx={{ backgroundColor: '#39C4A3'}}>
-					Register
-				</Button>
-			</div>
-		</div>
   	);
 }

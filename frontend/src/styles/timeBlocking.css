@@ -36,8 +36,9 @@
 }
 
 .preview-image {
-	margin: 1vh;
-	width: 40%;
+	margin-right: 2vh;
+	margin-bottom: 2vh;
+	width: 70%;
 	border: 1px solid black;
 }
 
@@ -52,24 +53,23 @@
 }
 
 .preview-top-right-bottom {
-	margin: 1vh;
+	margin-bottom: 2vh;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
 }
 
+.preview-h2 {
+	margin: 0;
+	padding: 0;
+}
+
 .preview-target {
 	width: 20%;
 }
 
-.preview-grid {
-	margin: 1vh;
-	margin-top: 2vh;
-}
-
 .preview-register {
-	margin-right: 1vh;
 	margin-top: 3vh;
 	margin-bottom: 3vh;
 	text-align: right;
@@ -86,6 +86,7 @@
 
 	.preview-image {
 		width: 90%;
+		height: 30vh;
 	}
 
 	.preview-description {
