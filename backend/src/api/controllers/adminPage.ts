@@ -7,7 +7,9 @@ const adminPage = async (req: Request, res: Response) => {
     const addDataObject = req.body as unknown as AddDataToDatabase;
     console.log(addDataObject); // FOR TESTING ONLY
 
-    // TODO: Adding authentication here and passing JWT from frontend
+    // TODO: 1. Adding normal authentication here -> chckAuth.ts
+    // 2. Adding ADMIN auth here -> adminAuth.ts
+    // 3. Continuing normally:
 
     const validCategories = [
       "aktiviteetti",
