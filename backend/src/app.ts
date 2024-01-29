@@ -17,8 +17,11 @@ app.use(express.json());
 
 app.use("/api", routers);
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+// Listen only if this file is being run directly (not through tests)
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+}
 
 export default app;

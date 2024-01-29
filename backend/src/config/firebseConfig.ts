@@ -3,6 +3,7 @@ let admin = getAdminInstance();
 
 function getAdminInstance() {
   if (process.env.NODE_ENV === "test") {
+    process.env.FIRESTORE_INSTANCE = "test";
     // If we are in test mode, use the mock firebase
     // Import the mock library
     const firebaseMock = require("firebase-mock");
@@ -12,7 +13,7 @@ function getAdminInstance() {
     const mockStorage = new firebaseMock.MockStorage();
     const mockMessaging = new firebaseMock.MockMessaging();
     // Create a mock admin SDK instance
-    return new firebaseMock.MockFirebaseSdk(
+    const mockSdk = new firebaseMock.MockFirebaseSdk(
       (path: any) => {
         return path ? mockDatabase.child(path) : mockDatabase;
       },
@@ -29,7 +30,16 @@ function getAdminInstance() {
         return mockMessaging;
       }
     );
+    /* const mockFirestoreInstance = mockSdk.firestore();
+    mockFirestoreInstance.autoFlush(true);
+    mockFirestoreInstance.collection("childProfile").doc("doc1").set({
+      name: "Test Child",
+      age: 5,
+      parent: "Test Parent",
+    }); */
+    return mockSdk;
   } else {
+    process.env.FIRESTORE_INSTANCE = "prod";
     // If we are in production mode, use the real firebase
     var serviceAccount;
     if (process.env.FIREBASE_KEY_JSON) {

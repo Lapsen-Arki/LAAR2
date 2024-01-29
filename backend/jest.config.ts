@@ -137,7 +137,7 @@ const config: Config = {
   // setupFiles: [],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  // setupFilesAfterEnv: [],
+  setupFilesAfterEnv: ["./tests/setupTests.ts"],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   // slowTestThreshold: 5,
@@ -194,6 +194,7 @@ const config: Config = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
+  testSequencer: "./tests/jestSequencer.js",
 };
 
 export default config;
