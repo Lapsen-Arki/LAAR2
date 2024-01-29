@@ -4,7 +4,7 @@ import registerUser from "./controllers/register/register";
 import adminPage from "./controllers/adminPage";
 import checkAuth from "./controllers/checkAuth";
 import { emailTest } from "./controllers/testingEmail";
-
+import adminAuth from "./controllers/adminAuth";
 import createProfile from "./controllers/editProfile";
 import editProfile from "./controllers/editProfile";
 import {
@@ -19,6 +19,7 @@ const router = express.Router();
 router.post("/register", registerUser);
 router.post("/auth", checkAuth);
 router.post("/admin", adminPage);
+router.post("/adminAuth", adminAuth);
 
 // Profile routes:
 router.post("/editProfile", createProfile);
