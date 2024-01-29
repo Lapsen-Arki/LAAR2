@@ -12,6 +12,7 @@ import { userLogin } from "../../api/userLogin";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
+import ResetPasswordModal from "../../components/resetPasswordModal";
 
 const Login: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState("");
@@ -19,6 +20,8 @@ const Login: React.FC = (): JSX.Element => {
   const [rememberMe, setRememberMe] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const [openResetModel, setOpenResetModal] = useState(false);
   const { setIdToken } = useContext(TokenContext);
 
   const navigate = useNavigate();
@@ -30,12 +33,6 @@ const Login: React.FC = (): JSX.Element => {
 
     if (response && response.error) {
       setErrorMessage(`Kirjautuminen epäonnistui`);
-      // VAIHTOEHTOINEN TAPA -> NÄYTTÄÄ ERROR VIESTIN:
-      /*       setErrorMessage(
-        `Kirjautuminen epäonnistui: ${
-          response.error.message || response.error.error
-        }`
-      ); */
     } else {
       // TALLENTAA JWT TOKENIN GLOBAALIIN TOKEN CONTEXTIIN
       const newToken =
@@ -115,7 +112,13 @@ const Login: React.FC = (): JSX.Element => {
           }
           label="Muista minut"
         />
-        <Button type="submit" fullWidth variant="contained" color="primary" sx={{ backgroundColor: '#39C4A3', color: '#000000'}}>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          sx={{ backgroundColor: "#39C4A3", color: "#000000" }}
+        >
           Kirjaudu sisään
         </Button>
         <Typography
@@ -134,9 +137,25 @@ const Login: React.FC = (): JSX.Element => {
         >
           {errorMessage}
         </Typography>
-        <Link href="/register" variant="body2" sx={{ color: '#298E77'}}>
+        <Link href="/register" variant="body2" sx={{ color: "#298E77" }}>
           Eikö sinulla ole tiliä? Luo tili tästä!
         </Link>
+        <br />
+        <Link
+          onClick={() => {
+            setOpenResetModal(true);
+          }}
+          variant="body2"
+          sx={{ color: "#298E77" }}
+        >
+          Unohtuiko salasana?
+        </Link>
+        <ResetPasswordModal
+          open={openResetModel}
+          email={email}
+          setEmail={setEmail}
+          setOpen={setOpenResetModal}
+        />
       </form>
     </Container>
   );
