@@ -20,6 +20,6 @@ describe("Profile actions", () => {
   });
   test("GET /api/profiles should return 200", async () => {
     const response = await request(app).get("/api/profiles");
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(300);
   });
 });
