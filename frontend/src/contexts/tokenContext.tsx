@@ -43,7 +43,7 @@ function TokenProvider({ children }: Props) {
 
       if (idToken) {
         const result = await jwtAuth(idToken);
-        if (!result.message && result.error) {
+        if (result === "error" || result === "emailNotVerified") {
           signOutMethod();
         }
       } else {
