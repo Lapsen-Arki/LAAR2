@@ -12,6 +12,11 @@ import {
   getProfileById,
   deleteProfile,
 } from "./controllers/profiles";
+import {
+  startSubscription,
+  cancelSubscription,
+  getSubscriptionById
+} from './controllers/stripe';
 
 const router = express.Router();
 
@@ -28,6 +33,11 @@ router.delete("/profiles/:profileId", deleteProfile);
 
 // Email related routes, forgot pw, new verification etc:
 router.post("/email-test", emailTest);
+
+// Stripe routes
+router.post("/subscription/start/:id", startSubscription)
+router.post("/subscription/cancel/:id", cancelSubscription);
+router.post("/subscription/:id", getSubscriptionById);
 
 // alive check
 router.get("/alive", (req, res) => {
