@@ -1,7 +1,7 @@
 // checkAuth.ts
 
 import { Request, Response, NextFunction } from "express";
-import admin from "../../config/firebseConfig";
+import admin from "../config/firebseConfig";
 
 const checkAuth = async (
   req: Request,
@@ -44,8 +44,6 @@ const checkAuth = async (
       res.status(401).json({ error: "emailNotVerified" });
       return;
     }
-
-    // res.status(200).json({ message: "Success" }); // Testaukseen
 
     // Käyttäjä on kirjautunut sisään, voit siirtyä seuraavaan middlewareen tai käyttäjän reittiin:
     next();

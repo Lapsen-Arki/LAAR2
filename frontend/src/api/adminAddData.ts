@@ -4,7 +4,7 @@ import { AddDataToDatabase } from "../types/types";
 // TODO: Move to env variables etc:
 const API_BASE_URL = "http://localhost:3000/api";
 
-// Backend needs: userId, idToken,
+// Backend needs: userId, idToken, data
 
 export const adminAddData = async (submitData: AddDataToDatabase) => {
   try {
