@@ -15,6 +15,8 @@ import Subscription from "./views/Subscription";
 import "./conf/firebaseSdkConfig";
 import { TokenProvider } from "./contexts/tokenContext";
 
+import Example from "./views/example";
+
 // Stripe Publishable testing key:
 // Production version needs: 1. HTTPS connection and 2. pk_live live key
 const stripePromise = loadStripe(
@@ -31,6 +33,8 @@ function App() {
         <Elements stripe={stripePromise}>
           <Layout>
             <Routes>
+              <Route path="/example" element={<Example />} />
+
               <Route path="/" element={<Home />} />
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />

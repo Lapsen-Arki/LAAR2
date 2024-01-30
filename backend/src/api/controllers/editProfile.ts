@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
+import { getUserIdFromToken } from "./authUtils";
 
 const editProfile = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -10,11 +11,23 @@ const editProfile = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
+    const idToken = req.headers.authorization?.split('Bearer ')[1];
+    if (!idToken) {
+      res.status(401).json({ error: 'Token puuttuu' });
+      return;
+    }
+
+    const userId = await getUserIdFromToken(idToken);
+    if (!userId) {
+      res.status(403).json({ error: 'Virheellinen token' });
+      return;
+    }
+
     const db = admin.firestore();
     const childProfilesCollection = db.collection("childProfile");
 
     if (id) {
-      // Käyttäjä haluaa päivittää olemassa olevaa profiilia id:n avulla
+      // Käyttäjä päivittää olemassa olevaa profiilia id:n avulla
       const profileRef = childProfilesCollection.doc(id);
       const profileSnapshot = await profileRef.get();
 
@@ -29,6 +42,7 @@ const editProfile = async (req: Request, res: Response): Promise<void> => {
         birthdate: birthdate,
         avatar: avatar,
         accessRights: accessRights,
+        userId: userId, // Lisää userId tähän
       });
 
       res.status(200).json({ message: 'Profiili päivitetty onnistuneesti' });
@@ -39,6 +53,7 @@ const editProfile = async (req: Request, res: Response): Promise<void> => {
         birthdate: birthdate,
         avatar: avatar,
         accessRights: accessRights,
+        userId: userId, // Lisää userId tähän
       });
 
       res.status(200).json({ message: 'Uusi profiili luotu onnistuneesti' });

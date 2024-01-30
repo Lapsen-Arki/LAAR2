@@ -9,15 +9,22 @@ interface EditProfileData {
   birthdate: string;
   avatar: string;
   accessRights: boolean;
+  userId: string | null;
 }
 
-export const editProfile = async (data: EditProfileData) => {
+export const editProfile = async (data: EditProfileData, idToken: string | null) => {
   try {
-    console.log("Sending editProfile request with data:", data); // Lisää tämä console.log-pyyntö
+    console.log("Sending editProfile request with data:", data);
 
-    const response = await axios.post(`${API_BASE_URL}/editProfile`, data);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${idToken}`
+      }
+    };
 
-    console.log("Response from editProfile:", response.data); // Lisää tämä console.log-vastaus
+    const response = await axios.post(`${API_BASE_URL}/editProfile`, data, config);
+
+    console.log("Response from editProfile:", response.data);
 
     return response.data;
   } catch (error) {
@@ -25,7 +32,7 @@ export const editProfile = async (data: EditProfileData) => {
       console.error("Editing profile error: ", error.response.data);
       return { error: error.response.data };
     }
-    console.error("Error in editProfile:", error); // Lisää tämä console.log-virhe
+    console.error("Error in editProfile:", error);
     throw error;
   }
 };
