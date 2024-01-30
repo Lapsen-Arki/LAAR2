@@ -11,6 +11,10 @@ import {
 import { SelectChangeEvent } from "@mui/material";
 import { AddDataToDatabase } from "../../types/types";
 import { adminAddData } from "../../api/adminAddData";
+import { useContext } from "react";
+import { TokenContext } from "../contexts/tokenContext";
+import PleaseLoginModal from "../../components/pleaseLoginModal";
+import { TokenContextType } from "../../types/types";
 
 // TODO: add following features: 1. Remove data from recommendation database collection
 // 2. Adding feature for adding and removing admin users by superuser
@@ -19,6 +23,7 @@ const AdminPage = () => {
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
   const [category, setCategory] = React.useState("");
+  const [openLoginModal, setOpenLoginModal] = React.useState(false);
   const [formData, setFormData] = React.useState<AddDataToDatabase>({
     choice: "",
     name: "",
@@ -26,6 +31,13 @@ const AdminPage = () => {
     photoLink: "",
     photoFileName: "",
   });
+  const { idToken } = useContext(TokenContext) as TokenContextType;
+
+  if (!idToken) {
+    return (
+      <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
+    );
+  }
 
   const handleCategoryChange = (event: SelectChangeEvent<string>) => {
     setCategory(event.target.value);
