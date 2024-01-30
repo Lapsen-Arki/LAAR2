@@ -2,20 +2,14 @@ import { createContext, useState, ReactNode, useEffect } from "react";
 
 import { getAuth, signOut } from "firebase/auth";
 import { jwtAuth } from "../api/jwtAuth";
+import { TokenContextType } from "../types/types";
 
 type Props = {
   children: ReactNode;
 };
 
-type TokenContext = {
-  isLoggedIn: boolean;
-  idToken: string | null;
-  signOutMethod: () => void;
-  setIdToken: React.Dispatch<React.SetStateAction<string | null>>;
-};
-
 // 1. CREATE CONTEXT
-const TokenContext = createContext<TokenContext>({
+const TokenContext = createContext<TokenContextType>({
   isLoggedIn: false,
   idToken: "",
   signOutMethod: () => null,
