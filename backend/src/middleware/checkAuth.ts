@@ -29,6 +29,10 @@ const checkAuth = async (
 
     const userId = decodedToken.uid;
 
+    // saving id for next middleware:
+    // TODO: Configure and enable type checking
+    (res as any).userId = userId;
+
     const db = admin.firestore();
     const userDoc = await db.collection("users").doc(userId).get();
 

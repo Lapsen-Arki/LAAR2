@@ -3,7 +3,8 @@ import admin from "../config/firebseConfig";
 
 const adminAuth = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const userId = req.body;
+    // TODO: Configure and enable type checking
+    const userId = (res as any).userId;
 
     const db = admin.firestore();
     const userDoc = await db.collection("users").doc(userId).get();
@@ -15,9 +16,11 @@ const adminAuth = async (req: Request, res: Response, next: NextFunction) => {
 
     const isAdmin = userDoc.data().admin;
     if (!isAdmin) {
-      res.status(401);
+      return res
+        .status(400)
+        .send("Et ole admin käyttäjä | You are not admin user");
     }
-    if (admin === true) {
+    if (isAdmin === true) {
       next();
     }
   } catch (error) {
