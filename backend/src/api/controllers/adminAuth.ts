@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import admin from "../../config/firebseConfig";
 
-const adminAuth = async (req: Request, res: Response) => {
+const adminAuth = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.body;
 
@@ -18,7 +18,7 @@ const adminAuth = async (req: Request, res: Response) => {
       res.status(401);
     }
     if (admin === true) {
-      res.status(200).json({ message: "Success" });
+      next();
     }
   } catch (error) {
     console.error("Virhe todentamisessa.", error);

@@ -5,11 +5,6 @@ import admin from "../../config/firebseConfig";
 const adminPage = async (req: Request, res: Response) => {
   try {
     const addDataObject = req.body as unknown as AddDataToDatabase;
-    console.log(addDataObject); // FOR TESTING ONLY
-
-    // TODO: 1. Adding normal authentication here -> chckAuth.ts
-    // 2. Adding ADMIN auth here -> adminAuth.ts
-    // 3. Continuing normally:
 
     const validCategories = [
       "aktiviteetti",

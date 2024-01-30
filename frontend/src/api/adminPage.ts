@@ -4,6 +4,8 @@ import { AddDataToDatabase } from "../types/types";
 // TODO: Move to env variables etc:
 const API_BASE_URL = "http://localhost:3000/api";
 
+// Backend needs: userId, idToken,
+
 export const adminAddData = async (submitData: AddDataToDatabase) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/admin`, submitData);

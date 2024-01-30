@@ -18,8 +18,7 @@ const router = express.Router();
 
 router.post("/register", registerUser);
 router.post("/auth", checkAuth);
-router.post("/admin", adminPage);
-router.post("/adminAuth", adminAuth);
+router.post("/admin", checkAuth, adminAuth, adminPage);
 
 // Profile routes:
 router.post("/editProfile", createProfile);
