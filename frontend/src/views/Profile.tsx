@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Profile.css';
 import Button from '@mui/material/Button';
@@ -16,6 +16,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+
+import { TokenContext } from "../contexts/tokenContext";
 import { getProfiles } from '../api/getProfiles';
 import deleteProfile from '../api/deleteProfile';
 
@@ -98,9 +101,11 @@ interface ChildProfile {
   avatar: string;
   birthdate: string;
   childName: string;
+  userId: string;
 }
 
 export default function Profile() {
+  const { idToken } = useContext(TokenContext); // Käytä vain idToken
   const navigate = useNavigate();
   const [profiles, setProfiles] = useState<ChildProfile[]>([]);
   const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
@@ -108,20 +113,32 @@ export default function Profile() {
 
   useEffect(() => {
     const fetchProfiles = async () => {
+      if (!idToken) {
+        console.error("JWT token puuttuu");
+        return;
+      }
+
       try {
-        const response = await getProfiles();
+        console.log("Haetaan profiileja...");
+        const response = await getProfiles(idToken);
+        console.log("Profiilit haettu onnistuneesti:", response);
+
         if ('error' in response) {
-          console.error('Virhe profiilien haussa', response.error);
+          console.error('Virhe profiilien haussa:', response.error);
         } else {
           setProfiles(response);
         }
       } catch (error) {
-        console.error('Virhe profiilien haussa', error);
+        console.error('Virhe profiilien haussa:', error);
       }
     };
 
-    fetchProfiles();
-  }, []);
+    if (idToken) {
+      fetchProfiles();
+    }
+  }, [idToken]);
+
+  console.log("Renderöidään profiilisivu, profiilit:", profiles);
 
   const handleClickDelete = async (profileId: string) => {
     setSelectedProfileId(profileId);
@@ -130,8 +147,12 @@ export default function Profile() {
 
   const handleDeleteConfirmed = async () => {
     if (selectedProfileId) {
-      await deleteProfile(selectedProfileId, profiles, setProfiles);
-      setSelectedProfileId(null);
+      try {
+        await deleteProfile(selectedProfileId, idToken, profiles, setProfiles);
+        setSelectedProfileId(null);
+      } catch (error) {
+        console.error('Profiilin poisto epäonnistui', error);
+      }
     }
     setConfirmationDialogOpen(false);
   };
@@ -144,12 +165,23 @@ export default function Profile() {
     navigate('/profile-edit');
   };
 
+  function printToken() {
+    console.log(idToken);
+  }
+
   return (
     <div className="profile-container">
       <div className="profile-view">
-        <Button variant="contained" sx={{ mx: 'auto', display: 'block', marginBottom: 3 }} className="custom-button" onClick={handleAddProfileClick}>
-          Lisää profiili
-        </Button>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Tooltip title="Lisää profiili">
+            <Button variant="contained" className="custom-button" onClick={handleAddProfileClick}>Lisää profiili</Button>
+          </Tooltip>
+          
+          <Tooltip title="Lisää hoitaja">
+            <Button variant="contained" className="custom-button" onClick={printToken}>Lisää hoitaja</Button>
+          </Tooltip>
+        </div>
 
         {/* Varmistusdialogi */}
         <Dialog
@@ -178,112 +210,128 @@ export default function Profile() {
           </DialogActions>
         </Dialog>
 
-        {/* Profiilit */}
-        <Box className="profiles">
-          <div style={{ flex: 1 }}>
-            <Typography variant="h6" gutterBottom>
-              Lapset:
-            </Typography>
+          <Box className="profiles">
+            <div style={{ flex: 1 }}>
+              <Typography variant="h6" gutterBottom>
+                Lapset:
+              </Typography>
 
-            <div className="children">
-              {profiles.map((profile) => (
-                <div className="cards-wrap" key={profile.id}>
+                {/* Ei profiileja */}
+                {profiles.length === 0 ? (
+                  <div className="cards-wrap">
+                    <Card className="children-card">
+                    <Tooltip title="Profiileja ei ole vielä luotu">
+                    <HelpOutlineIcon sx={{ fontSize: 48, color: 'white', borderRadius: '50%', backgroundColor: '#63c8cc' }} />
+                    </Tooltip>
+                      <Box className="card-content">
+                        <Typography variant="h6" gutterBottom sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'  }}>
+                            Profiileja ei ole vielä luotu
+                        </Typography>
+                      </Box>
+                    </Card>
+                  </div>
+                ) : (
+              <div className="children">
+                {/* Profiileja */}
+                {profiles.map((profile) => (
+                  <div className="cards-wrap" key={profile.id}>
 
-                  <Card className="children-card">
-                    <Avatar
-                      className="card-avatar"
-                      src={profile.avatar || '/broken-image.jpg'}
-                      alt="Avatar"
-                    />
-                    
-                    <Box className="card-content">
-                      <Typography component="div" variant="h6" className="multiline-text">
-                        {splitNameToFitWidth(profile.childName, 14)}
-                      </Typography>
+                    <Card className="children-card">
+                      <Avatar
+                        className="card-avatar"
+                        src={profile.avatar || '/broken-image.jpg'}
+                        alt="Avatar"
+                      />
                       
-                      <Typography variant="subtitle1" color="text.secondary" component="div">
-                        {calculateAge(new Date(profile.birthdate)).age}
-                      </Typography>
+                      <Box className="card-content">
+                        <Typography component="div" variant="h6" className="multiline-text">
+                          {splitNameToFitWidth(profile.childName, 14)}
+                        </Typography>
+                        
+                        <Typography variant="subtitle1" color="text.secondary" component="div">
+                          {calculateAge(new Date(profile.birthdate)).age}
+                        </Typography>
 
-                      <Typography variant="subtitle1" color="text.secondary" component="div">
-                        {calculateAge(new Date(profile.birthdate)).birthdayWish}
-                      </Typography>
+                        <Typography variant="subtitle1" color="text.secondary" component="div">
+                          {calculateAge(new Date(profile.birthdate)).birthdayWish}
+                        </Typography>
 
 
-                      <Typography variant="subtitle1" color="text.secondary" component="div">
-                        {`Pääsy muilla: ${profile.accessRights ? 'Kyllä' : 'Ei'}`}
-                      </Typography>
-                    </Box>
+                        <Typography variant="subtitle1" color="text.secondary" component="div">
+                          {`Pääsy muilla: ${profile.accessRights ? 'Kyllä' : 'Ei'}`}
+                        </Typography>
+                      </Box>
 
-                    <div className="card-icons">
+                      <div className="card-icons">
+                        <Tooltip title="Muokkaa profiilia">
+                          <IconButton color="primary" aria-label="Edit" onClick={() => handleEditClick(profile.id)}>
+                            <EditIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Poista profiili">
+                          <IconButton color="error" aria-label="Delete" onClick={() => handleClickDelete(profile.id)}>
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </div>
+                    </Card>
+                  </div>
+                ))}
+              </div>
+              )}
+            </div>
+
+            <div style={{ flex: 1 }}>
+              <Typography variant="h6" gutterBottom>
+                Hoitajat:
+              </Typography>
+              <div className="carer">
+
+                <Card className="carer-cards">
+                  <CardContent className="cards-content">
+                    <Typography component="div" variant="h6">
+                      Kortti1
+                    </Typography>
+                    <div>
                       <Tooltip title="Muokkaa profiilia">
-                        <IconButton color="primary" aria-label="Edit" onClick={() => handleEditClick(profile.id)}>
+                        <IconButton color="primary" aria-label="Edit">
                           <EditIcon />
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Poista profiili">
-                        <IconButton color="error" aria-label="Delete" onClick={() => handleClickDelete(profile.id)}>
+                        <IconButton color="error" aria-label="Delete">
                           <DeleteIcon />
                         </IconButton>
                       </Tooltip>
                     </div>
-                  </Card>
-                </div>
-              ))}
+                  </CardContent>
+                </Card>
+
+                <Card className="carer-cards">
+                  <CardContent className="cards-content">
+                    <Typography component="div" variant="h6">
+                      Kortti2
+                    </Typography>
+                    <div>
+                      <Tooltip title="Muokkaa profiilia">
+                        <IconButton color="primary" aria-label="Edit">
+                          <EditIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Poista profiili">
+                        <IconButton color="error" aria-label="Delete">
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </div>
+                  </CardContent>
+                </Card>
+
+              </div>
             </div>
-          </div>
+          </Box>
 
-          <div style={{ flex: 1 }}>
-            <Typography variant="h6" gutterBottom>
-              Hoitajat:
-            </Typography>
-            <div className="carer">
-
-              <Card className="carer-cards">
-                <CardContent className="cards-content">
-                  <Typography component="div" variant="h6">
-                    Kortti1
-                  </Typography>
-                  <div>
-                    <Tooltip title="Muokkaa profiilia">
-                      <IconButton color="primary" aria-label="Edit">
-                        <EditIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Poista profiili">
-                      <IconButton color="error" aria-label="Delete">
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="carer-cards">
-                <CardContent className="cards-content">
-                  <Typography component="div" variant="h6">
-                    Kortti2
-                  </Typography>
-                  <div>
-                    <Tooltip title="Muokkaa profiilia">
-                      <IconButton color="primary" aria-label="Edit">
-                        <EditIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Poista profiili">
-                      <IconButton color="error" aria-label="Delete">
-                        <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </div>
-                </CardContent>
-              </Card>
-
-            </div>
-          </div>
-        </Box>
-
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
