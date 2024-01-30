@@ -2,28 +2,43 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  TextField,
   Button,
   Typography,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-type VerifyEmailModalProps = {
+type PleaseLoginModalProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const goToLoginPageHandler = async () => {};
-const returnHandler = async () => {};
-
-const PleaseLoginModal: React.FC<VerifyEmailModalProps> = ({
+const PleaseLoginModal: React.FC<PleaseLoginModalProps> = ({
   open,
   setOpen,
 }) => {
+  setOpen(true);
+  const navigate = useNavigate();
+
+  const goToLoginPageHandler = async () => {
+    return navigate("/login");
+  };
+
+  const returnHandler = async () => {
+    navigate(-1);
+  };
   return (
-    <Dialog open={open} onClose={() => {}} disableEscapeKeyDown>
-      <DialogTitle>Palauta salasana</DialogTitle>
+    <Dialog
+      open={open}
+      onClose={() => {
+        setOpen;
+      }}
+      disableEscapeKeyDown
+    >
+      <DialogTitle>Kirjaudu sisään</DialogTitle>
       <DialogContent>
-        <Typography>Sinun tulee kirjatua sisään</Typography>
+        <Typography>
+          Sinun tulee kirjatua sisään jatkaaksesi tälle sivulle.
+        </Typography>
 
         <Button
           style={{ marginTop: "16px", marginBottom: "10px" }}

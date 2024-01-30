@@ -6,7 +6,10 @@ const API_BASE_URL = "http://localhost:3000/api";
 
 // Backend needs: userId, idToken, data
 
-export const adminAddData = async (submitData: AddDataToDatabase) => {
+export const adminAddData = async (
+  token: string,
+  submitData: AddDataToDatabase
+) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/admin`, submitData);
     return response.data;
