@@ -8,12 +8,18 @@ interface ChildProfile {
     avatar: string;
     birthdate: string;
     childName: string;
+    userId: string;
 }
 
-export const getProfiles = async () => {
+export const getProfiles = async (idToken: string | null) => {
     try {
         console.log("Haetaan profiileja...");
-        const response = await axios.get<ChildProfile[]>(`${API_BASE_URL}/profiles`);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${idToken}`
+            }
+        };
+        const response = await axios.get<ChildProfile[]>(`${API_BASE_URL}/profiles`, config);
         console.log("Profiilit haettu onnistuneesti:", response.data);
         return response.data;
     } catch (error) {
@@ -26,10 +32,15 @@ export const getProfiles = async () => {
     }
 };
 
-export const getProfileById = async (id: string) => {
+export const getProfileById = async (id: string, idToken: string | null) => {
     try {
         console.log(`Haetaan profiilia ID:llä ${id}...`);
-        const response = await axios.get<ChildProfile>(`${API_BASE_URL}/profiles/${id}`);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${idToken}`
+            }
+        };
+        const response = await axios.get<ChildProfile>(`${API_BASE_URL}/profiles/${id}`, config);
         console.log("Profiili haettu onnistuneesti:", response.data);
         return response.data;
     } catch (error) {

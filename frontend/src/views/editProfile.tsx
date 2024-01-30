@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import '../styles/editProfile.css';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
@@ -13,6 +13,7 @@ import Box from '@mui/material/Box';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import Tooltip from '@mui/material/Tooltip';
 
+import { TokenContext } from "../contexts/tokenContext";
 import { editProfile } from '../api/editProfilePost.ts';
 import { getProfileById } from '../api/getProfiles';
 
@@ -22,6 +23,7 @@ interface ChildProfile {
   birthdate: string; // Päivämäärä on nyt merkkijono "YYYY-MM-DD"
   avatar: string;
   accessRights: boolean;
+  userId: string;
 }
 
 const EditProfile = () => {
@@ -34,6 +36,7 @@ const EditProfile = () => {
   const [birthdateError, setBirthdateError] = useState('');
   const [accessRights, setAccessRights] = useState(false);
   const navigate = useNavigate();
+  const { idToken } = useContext(TokenContext);
 
   // Tyhjä merkkijono, jos id ei ole määritetty URL:ssä
   console.log(id)
@@ -45,7 +48,7 @@ const EditProfile = () => {
       try {
         if (profileId) {
           console.log('Haetaan profiilin tiedot ID:llä:', profileId);
-          const profileData: ChildProfile | { error: Error } = await getProfileById(profileId);
+          const profileData: ChildProfile | { error: Error } = await getProfileById(profileId, idToken);
           if ('childName' in profileData) {
             console.log('Haettu profiilin tiedot:', profileData);
             setChildName(profileData.childName);
@@ -66,7 +69,7 @@ const EditProfile = () => {
     };
 
     fetchProfileData();
-  }, [profileId]);
+  }, [profileId, idToken]);
 
   const handleShowAnimalAvatar = () => {
     setShowAnimalAvatar(true);
@@ -93,10 +96,11 @@ const EditProfile = () => {
           birthdate: dayjs(birthdate).format("YYYY-MM-DD"), // Muunna takaisin merkkijonoksi tallennusta varten
           avatar: selectedAvatar || '/broken-image.jpg',
           accessRights,
+          userId: idToken,
         };
 
         // Luo uusi profiili tai päivitä olemassa oleva
-        await editProfile(userData);
+        await editProfile(userData, idToken);
         console.log('Profiili tallennettu onnistuneesti:', userData);
         navigate('/profile');
       } catch (error) {

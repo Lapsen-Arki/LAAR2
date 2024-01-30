@@ -8,12 +8,19 @@ interface ChildProfile {
   avatar: string;
   birthdate: string;
   childName: string;
+  userId: string;
 }
 
-const deleteProfile = async (profileId: string, profiles: ChildProfile[], setProfiles: React.Dispatch<React.SetStateAction<ChildProfile[]>>) => {
+const deleteProfile = async (profileId: string, idToken: string | null, profiles: ChildProfile[], setProfiles: React.Dispatch<React.SetStateAction<ChildProfile[]>>) => {
   try {
-    // Lähetä DELETE-pyyntö backendiin käyttäen axiosia
-    await axios.delete(`${API_BASE_URL}/profiles/${profileId}`);
+    // Lähetä DELETE-pyyntö backendiin käyttäen axiosia ja oikeaa idTokenia
+    const config = {
+      headers: {
+        Authorization: `Bearer ${idToken}`
+      }
+    };
+    await axios.delete(`${API_BASE_URL}/profiles/${profileId}`, config);
+    
     // Päivitä frontend uusilla profiileilla
     const updatedProfiles = profiles.filter((profile) => profile.id !== profileId);
     setProfiles(updatedProfiles);
