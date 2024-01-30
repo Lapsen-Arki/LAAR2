@@ -12,6 +12,7 @@ import {
   getProfileById,
   deleteProfile,
 } from "./controllers/profiles";
+import emailVerification from "./controllers/emailVerification";
 
 const router = express.Router();
 
@@ -28,6 +29,7 @@ router.delete("/profiles/:profileId", deleteProfile);
 
 // Email related routes, forgot pw, new verification etc:
 router.post("/email-test", emailTest);
+router.post("/emailVerification", emailVerification);
 
 // alive check
 router.get("/alive", (req, res) => {
