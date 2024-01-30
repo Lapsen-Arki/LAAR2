@@ -1,67 +1,60 @@
-import '../styles/Subscription.css'
-import Button from '@mui/material/Button';
-/* import { useState, useEffect } from 'react'
-import { useStripe } from "@stripe/react-stripe-js"; */
+import React, { useState, useContext } from 'react';
+import { loadStripe, Stripe } from '@stripe/stripe-js';
+import { TokenContext } from '../contexts/tokenContext';
+import startSubscription from '../api/startSubscription';
+import cancelSubscription from '../api/cancelSubscription';
 
-// Tähän saa varmasti jonkun paremmankin logiikan
-// Missään näistä kentistä ei ole arvoa jos ei ole koskaan ollut tilausta
-/*
-interface SubscriptionData {
-	start_date?: Date;
-	next_invoice?: Date;
-	canceled_at?: Date;
-  }
-*/
-const Subscription = () => {
-	/*
-	const stripe = useStripe()
-	const [isSubscription, setIsSubscription] = useState(false)
-	const [subscriptionInfo, setSubscriptionInfo] = useState<SubscriptionData>({});
-	*/
-	const tempSubscriptionBoolean = false;
-	  /*
-	  useEffect(() => {
-		const fetchSubscriptionInfo = async () => {
-		  try {
-			// TO-DO tähän haku kannasta asiakas-id:llä
-			setIsSubscription(onko tilaus vai ei)
-			setSubscriptionInfo(customerSubscription);
-		  } catch (error) {
-			console.error('Error fetching subscription information:', error);
-		  }
-		};
-	
-		if (stripe) {
-		  fetchSubscriptionInfo();
-		}
-	  }, [stripe]);
-	*/
+interface SubscriptionManagementProps {}
 
-	return (
-		<div className="subscription-page">
-			{tempSubscriptionBoolean ?
-			<div className="subscription-content">
-				<p>Tilauksesi on voimassa! Seuraava laskutus tapahtuu {/* subscriptionInfo.next_invoice?.toDateString()*/}</p>
-				<br></br>
-				<Button href="linkki" variant="contained" sx={{ backgroundColor: '#39C4A3'}}>
-					Keskeytä tilaus
-				</Button>
-			</div>
-			:
-			<div className="subscription-content">
-				<p>Sinulla ei ole voimassaolevaa tilausta.
-					{/* subscriptionInfo.canceled_at? 
-					<p>Tilaus on lopetettu {subscriptionInfo.canceled_at.toDateString()}</p>
-			: null */}
-				</p>
-				<br></br>
-				<Button href="linkki" variant="contained" sx={{ backgroundColor: '#39C4A3'}}>
-					Aloita tilaus
-				</Button>
-			</div>
-			}
-		</div>
-	)
-}
+const SubscriptionManagement: React.FC<SubscriptionManagementProps> = () => {
+  const { idToken } = useContext(TokenContext);
+  const [subscriptionStatus, setSubscriptionStatus] = useState<string | null>(null);
+  const [stripe, setStripe] = useState<Stripe | null>(null);
 
-export default Subscription
+  const handleStartSubscription = async () => {
+    try {
+      const data = await startSubscription(idToken);
+
+      const stripeInstance = await loadStripe('pk_test_51HqdGcK45umi2LZdJtYVobHqBd8GGJjr0ggqdhGTRNisO9fdkOdHIXc1kH96Tpex7dYyj9VlIEGTv90hiMExVn2S00w1xYoflk');
+      setStripe(stripeInstance);
+
+      if (stripeInstance) {
+        const { error } = await stripeInstance.redirectToCheckout({
+          sessionId: data.sessionId,
+        });
+
+        if (error) {
+          console.error('Error redirecting to Checkout:', error);
+        }
+      } else {
+        console.error('Stripe is not initialized');
+      }
+    } catch (error) {
+      console.error('Error starting subscription:', error);
+    }
+  };
+
+  const handleCancelSubscription = async () => {
+    try {
+      const data = await cancelSubscription(idToken);
+      setSubscriptionStatus(data.status);
+    } catch (error) {
+      console.error('Error canceling subscription:', error);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Your Subscription</h2>
+      <p>Status: {subscriptionStatus}</p>
+
+      {subscriptionStatus === 'active' ? (
+        <button onClick={handleCancelSubscription}>Cancel Subscription</button>
+      ) : (
+        <button onClick={handleStartSubscription}>Start Subscription</button>
+      )}
+    </div>
+  );
+};
+
+export default SubscriptionManagement;

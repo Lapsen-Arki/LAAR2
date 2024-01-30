@@ -35,8 +35,8 @@ router.delete("/profiles/:profileId", deleteProfile);
 router.post("/email-test", emailTest);
 
 // Stripe routes
-router.post("/subscription/start/:id", startSubscription)
-router.post("/subscription/cancel/:id", cancelSubscription);
+router.post("/start-subscription/:id", startSubscription)
+router.post("/cancel-subscription/:id", cancelSubscription);
 router.post("/subscription/:id", getSubscriptionById);
 
 // alive check
