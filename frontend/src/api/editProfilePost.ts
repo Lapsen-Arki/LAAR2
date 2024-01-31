@@ -9,7 +9,7 @@ interface EditProfileData {
   birthdate: string;
   avatar: string;
   accessRights: boolean;
-  userId: string | null;
+  creatorId: string | null;
 }
 
 export const editProfile = async (data: EditProfileData, idToken: string | null) => {
