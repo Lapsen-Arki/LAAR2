@@ -21,3 +21,10 @@ export interface AddDataToDatabase {
   photoLink: string;
   photoFileName: string;
 }
+
+export type TokenContextType = {
+  isLoggedIn: boolean;
+  idToken: string | null;
+  signOutMethod: () => void;
+  setIdToken: React.Dispatch<React.SetStateAction<string | null>>;
+};
