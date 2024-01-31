@@ -41,6 +41,7 @@ jobs:
         id: parse_results
         working-directory: utils
         run: |
+          npm install
           node html-to-json.js
           node json-to-markdown.js
           echo "::set-output name=content::$(cat output.md)"
