@@ -34,8 +34,19 @@ jobs:
 
       - name: Run tests
         uses: ArtiomTr/jest-coverage-report-action@v2
+        id: coverage
         with:
           working-directory: backend
+          skip-step: all
+          coverage-file: ./coverage/coverage-final.json
+          test-script: npm run test
+
+      - name: Post comment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: |
+            ## Backend Coverage
+            ${{ steps.coverage.outputs.report }}
 
       - name: Run backend
         run: |

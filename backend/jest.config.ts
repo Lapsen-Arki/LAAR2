@@ -39,11 +39,8 @@ const config: Config = {
   coverageReporters: [
     ["text", { file: "coverage.txt" }],
     "lcov",
-    "clover",
-    "html",
     "json",
     "text-summary",
-    "markdown",
   ],
 
   // An object that configures minimum threshold enforcement for coverage results

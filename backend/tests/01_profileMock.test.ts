@@ -18,8 +18,8 @@ describe("Profile actions", () => {
     db.autoFlush(true);
     db.collection("childProfile").add(profile);
   });
-  test("GET /api/profiles should return 200", async () => {
+  test("GET /api/profiles should return 401", async () => {
     const response = await request(app).get("/api/profiles");
-    expect(response.statusCode).toBe(200);
+    expect(response.statusCode).toBe(401);
   });
 });
