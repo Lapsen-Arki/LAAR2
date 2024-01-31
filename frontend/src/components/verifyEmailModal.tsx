@@ -6,6 +6,7 @@ import {
   DialogTitle,
   TextField,
   Button,
+  Typography,
 } from "@mui/material";
 
 type VerifyEmailModalProps = {
@@ -47,8 +48,20 @@ const VerifyEmailModal: React.FC<VerifyEmailModalProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={() => {}} disableEscapeKeyDown>
+    <Dialog
+      open={open}
+      onClose={() => {
+        setOpen(false);
+      }}
+      disableEscapeKeyDown
+    >
       <DialogTitle>Vahvista sähköpostisi</DialogTitle>
+      <Typography
+        style={{ maxWidth: "300px", marginLeft: "25px", marginRight: "25px" }}
+      >
+        Mikäli sähköpostiasi ei vahvisteta, tilauksesi mitätöidään
+        automaattisesti.
+      </Typography>
       <DialogContent>
         <form onSubmit={handleSubmit}>
           <TextField
