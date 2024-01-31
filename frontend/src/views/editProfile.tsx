@@ -27,7 +27,7 @@ interface ChildProfile {
   birthdate: string; // Päivämäärä on nyt merkkijono "YYYY-MM-DD"
   avatar: string;
   accessRights: boolean;
-  userId: string;
+  creatorId: string;
 }
 
 const EditProfile = () => {
@@ -108,7 +108,7 @@ const EditProfile = () => {
           birthdate: dayjs(birthdate).format("YYYY-MM-DD"), // Muunna takaisin merkkijonoksi tallennusta varten
           avatar: selectedAvatar || '/broken-image.jpg',
           accessRights,
-          userId: idToken,
+          creatorId: idToken,
         };
 
         // Luo uusi profiili tai päivitä olemassa oleva

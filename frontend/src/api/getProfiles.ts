@@ -8,7 +8,7 @@ interface ChildProfile {
     avatar: string;
     birthdate: string;
     childName: string;
-    userId: string;
+    creatorId: string;
 }
 
 export const getProfiles = async (idToken: string | null) => {
