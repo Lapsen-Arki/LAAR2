@@ -1,23 +1,28 @@
+import React from "react";
 import { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Profile.css';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
+import {
+  Button,
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Avatar,
+  IconButton,
+  Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from '@mui/material';
+
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Tooltip from '@mui/material/Tooltip';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogActions from '@mui/material/DialogActions';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
+import PleaseLoginModal from "../components/pleaseLoginModal";
 import { TokenContext } from "../contexts/tokenContext";
 import { getProfiles } from '../api/getProfiles';
 import deleteProfile from '../api/deleteProfile';
@@ -105,7 +110,8 @@ interface ChildProfile {
 }
 
 export default function Profile() {
-  const { idToken } = useContext(TokenContext); // Käytä vain idToken
+  const [openLoginModal, setOpenLoginModal] = React.useState(false);
+  const { idToken } = useContext(TokenContext);
   const navigate = useNavigate();
   const [profiles, setProfiles] = useState<ChildProfile[]>([]);
   const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
@@ -137,6 +143,12 @@ export default function Profile() {
       fetchProfiles();
     }
   }, [idToken]);
+
+  if (!idToken) {
+    return (
+      <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
+    );
+  }
 
   console.log("Renderöidään profiilisivu, profiilit:", profiles);
 
