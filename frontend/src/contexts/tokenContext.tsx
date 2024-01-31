@@ -4,10 +4,6 @@ import { getAuth, signOut } from "firebase/auth";
 import { jwtAuth } from "../api/jwtAuth";
 import { TokenContextType } from "../types/types";
 
-type Props = {
-  children: ReactNode;
-};
-
 // 1. CREATE CONTEXT
 const TokenContext = createContext<TokenContextType>({
   isLoggedIn: false,
@@ -16,7 +12,7 @@ const TokenContext = createContext<TokenContextType>({
   setIdToken: () => null,
 });
 
-function TokenProvider({ children }: Props) {
+function TokenProvider({ children }: { children: ReactNode }) {
   const [idToken, setIdToken] = useState(() => {
     const storageType = localStorage.getItem("storageType") || "session";
     return storageType === "local"
