@@ -177,9 +177,9 @@ export default function Profile() {
     navigate('/profile-edit');
   };
 
-  function printToken() {
-    console.log(idToken);
-  }
+  const handleAddCarersClick = () => {
+    navigate('/profile-share');
+  };
 
   return (
     <div className="profile-container">
@@ -191,7 +191,7 @@ export default function Profile() {
           </Tooltip>
           
           <Tooltip title="Lisää hoitaja">
-            <Button variant="contained" className="custom-button" onClick={printToken}>Lisää hoitaja</Button>
+            <Button variant="contained" className="custom-button" onClick={handleAddCarersClick}>Lisää hoitaja</Button>
           </Tooltip>
         </div>
 
@@ -231,9 +231,9 @@ export default function Profile() {
                 {/* Ei profiileja */}
                 {profiles.length === 0 ? (
                   <div className="cards-wrap">
-                    <Card className="children-card">
+                    <Card className="children-card" sx={{ height: '100px' }} >
                     <Tooltip title="Profiileja ei ole vielä luotu">
-                    <HelpOutlineIcon sx={{ fontSize: 48, color: 'white', borderRadius: '50%', backgroundColor: '#63c8cc' }} />
+                    <HelpOutlineIcon sx={{ fontSize: 40, color: 'white', borderRadius: '50%', backgroundColor: '#63c8cc', marginLeft: '16px' }} />
                     </Tooltip>
                       <Box className="card-content">
                         <Typography variant="h6" gutterBottom sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'  }}>
@@ -253,6 +253,10 @@ export default function Profile() {
                         className="card-avatar"
                         src={profile.avatar || '/broken-image.jpg'}
                         alt="Avatar"
+                        sx={{
+                          borderRadius: '50%',
+                          backgroundColor: '#90c2c5',
+                        }}
                       />
                       
                       <Box className="card-content">
@@ -298,47 +302,18 @@ export default function Profile() {
                 Hoitajat:
               </Typography>
               <div className="carer">
-
                 <Card className="carer-cards">
                   <CardContent className="cards-content">
-                    <Typography component="div" variant="h6">
-                      Kortti1
-                    </Typography>
-                    <div>
-                      <Tooltip title="Muokkaa profiilia">
-                        <IconButton color="primary" aria-label="Edit">
-                          <EditIcon />
-                        </IconButton>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <Tooltip title="Hoitajia ei ole vielä lisätty">
+                        <HelpOutlineIcon sx={{ fontSize: 40, color: 'white', borderRadius: '50%', backgroundColor: '#63c8cc' }} />
                       </Tooltip>
-                      <Tooltip title="Poista profiili">
-                        <IconButton color="error" aria-label="Delete">
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
+                      <Typography variant="h6" gutterBottom sx={{ marginLeft: '10px' }}>
+                        Hoitajia ei ole vielä lisätty
+                      </Typography>
                     </div>
                   </CardContent>
                 </Card>
-
-                <Card className="carer-cards">
-                  <CardContent className="cards-content">
-                    <Typography component="div" variant="h6">
-                      Kortti2
-                    </Typography>
-                    <div>
-                      <Tooltip title="Muokkaa profiilia">
-                        <IconButton color="primary" aria-label="Edit">
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Poista profiili">
-                        <IconButton color="error" aria-label="Delete">
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </div>
-                  </CardContent>
-                </Card>
-
               </div>
             </div>
           </Box>
