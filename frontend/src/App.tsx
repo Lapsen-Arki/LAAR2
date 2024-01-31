@@ -15,6 +15,7 @@ import AdminPage from "./views/Auth/admin";
 import Subscription from "./views/Subscription";
 import "./conf/firebaseSdkConfig";
 import { TokenProvider } from "./contexts/tokenContext";
+import UserSettings from "./views/UserSettings"
 
 import Example from "./views/example";
 
@@ -47,6 +48,7 @@ function App() {
               <Route path="/timeblocking" element={<TimeBlocking />} />
               <Route path="/admin" element={<AdminPage />} />
               <Route path="/subscription" element={<Subscription />} />
+			  <Route path="/settings" element={<UserSettings />} />
             </Routes>
           </Layout>
         </Elements>
