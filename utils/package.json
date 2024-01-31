@@ -1,5 +1,8 @@
 {
   "dependencies": {
-    "markdown-include": "^0.4.3"
+    "istanbul": "^0.4.5",
+    "markdown-include": "^0.4.3",
+    "nyc": "^15.1.0",
+    "remap-istanbul": "^0.13.0"
   }
 }
