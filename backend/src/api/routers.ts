@@ -8,6 +8,7 @@ import { emailTest } from "./controllers/testingEmail";
 import adminAuth from "../middleware/adminAuth";
 import createProfile from "./controllers/editProfile";
 import editProfile from "./controllers/editProfile";
+import testController from "../utils/testController";
 import {
   getProfiles,
   getProfileById,
@@ -34,6 +35,9 @@ router.delete("/profiles/:profileId", deleteProfile);
 // Email related routes, forgot pw, new verification etc:
 router.post("/email-test", emailTest);
 router.post("/emailVerification", emailVerification);
+
+// General test route:
+router.get("/test", testController);
 
 // alive check
 router.get("/alive", (req, res) => {

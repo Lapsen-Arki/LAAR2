@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
-import { firestore } from 'firebase-admin';
-import { getUserIdFromToken } from "./authUtils";
+import { firestore } from "firebase-admin";
+import { getUserIdFromToken } from "../../utils/getUserIdFromTokenUtil";
 
 interface ChildProfile {
   id: string;
@@ -14,21 +14,23 @@ interface ChildProfile {
 
 const getProfiles = async (req: Request, res: Response): Promise<void> => {
   try {
-    const idToken = req.headers.authorization?.split('Bearer ')[1];
+    const idToken = req.headers.authorization?.split("Bearer ")[1];
     if (!idToken) {
-      res.status(401).json({ error: 'Token puuttuu' });
+      res.status(401).json({ error: "Token puuttuu" });
       return;
     }
 
     const userId = await getUserIdFromToken(idToken);
     if (!userId) {
-      res.status(403).json({ error: 'Virheellinen token' });
+      res.status(403).json({ error: "Virheellinen token" });
       return;
     }
 
     const db = admin.firestore();
     const childProfilesCollection = db.collection("childProfile");
-    const profilesSnapshot = await childProfilesCollection.where("userId", "==", userId).get();
+    const profilesSnapshot = await childProfilesCollection
+      .where("userId", "==", userId)
+      .get();
     const profiles: ChildProfile[] = [];
 
     profilesSnapshot.forEach((doc: FirebaseFirestore.DocumentSnapshot) => {
@@ -39,25 +41,24 @@ const getProfiles = async (req: Request, res: Response): Promise<void> => {
 
     res.status(200).json(profiles);
   } catch (error: any) {
-    console.error('Profiilien hakeminen epäonnistui', error);
-    res.status(500).json({ error: 'Jotain meni pieleen' });
+    console.error("Profiilien hakeminen epäonnistui", error);
+    res.status(500).json({ error: "Jotain meni pieleen" });
   }
 };
-
 
 const getProfileById = async (req: Request, res: Response): Promise<void> => {
   const profileId = req.params.id;
 
   try {
-    const idToken = req.headers.authorization?.split('Bearer ')[1];
+    const idToken = req.headers.authorization?.split("Bearer ")[1];
     if (!idToken) {
-      res.status(401).json({ error: 'Token puuttuu' });
+      res.status(401).json({ error: "Token puuttuu" });
       return;
     }
 
     const userId = await getUserIdFromToken(idToken);
     if (!userId) {
-      res.status(403).json({ error: 'Virheellinen token' });
+      res.status(403).json({ error: "Virheellinen token" });
       return;
     }
 
@@ -66,7 +67,7 @@ const getProfileById = async (req: Request, res: Response): Promise<void> => {
     const profileDoc = await childProfilesCollection.doc(profileId).get();
 
     if (!profileDoc.exists) {
-      res.status(404).json({ error: 'Profiilia ei löydy' });
+      res.status(404).json({ error: "Profiilia ei löydy" });
       return;
     }
 
@@ -74,7 +75,7 @@ const getProfileById = async (req: Request, res: Response): Promise<void> => {
 
     // Tarkista, että profiili kuuluu oikealle käyttäjälle käyttäen UID:tä
     if (profileData.userId !== userId) {
-      res.status(403).json({ error: 'Ei oikeuksia tähän profiiliin' });
+      res.status(403).json({ error: "Ei oikeuksia tähän profiiliin" });
       return;
     }
 
@@ -82,25 +83,24 @@ const getProfileById = async (req: Request, res: Response): Promise<void> => {
 
     res.status(200).json(profileData);
   } catch (error: any) {
-    console.error('Profiilin hakeminen epäonnistui', error);
-    res.status(500).json({ error: 'Jotain meni pieleen' });
+    console.error("Profiilin hakeminen epäonnistui", error);
+    res.status(500).json({ error: "Jotain meni pieleen" });
   }
 };
-
 
 const deleteProfile = async (req: Request, res: Response): Promise<void> => {
   const profileId = req.params.profileId;
 
   try {
-    const idToken = req.headers.authorization?.split('Bearer ')[1];
+    const idToken = req.headers.authorization?.split("Bearer ")[1];
     if (!idToken) {
-      res.status(401).json({ error: 'Token puuttuu' });
+      res.status(401).json({ error: "Token puuttuu" });
       return;
     }
 
     const userId = await getUserIdFromToken(idToken);
     if (!userId) {
-      res.status(403).json({ error: 'Virheellinen token' });
+      res.status(403).json({ error: "Virheellinen token" });
       return;
     }
 
@@ -109,7 +109,7 @@ const deleteProfile = async (req: Request, res: Response): Promise<void> => {
     const profileDoc = await childProfilesCollection.doc(profileId).get();
 
     if (!profileDoc.exists) {
-      res.status(404).json({ error: 'Profiilia ei löydy' });
+      res.status(404).json({ error: "Profiilia ei löydy" });
       return;
     }
 
@@ -117,16 +117,20 @@ const deleteProfile = async (req: Request, res: Response): Promise<void> => {
 
     // Tarkista, että profiili kuuluu oikealle käyttäjälle käyttäen UID:tä
     if (profileData.userId !== userId) {
-      res.status(403).json({ error: 'Ei oikeuksia tähän profiiliin' });
+      res.status(403).json({ error: "Ei oikeuksia tähän profiiliin" });
       return;
     }
 
     await childProfilesCollection.doc(profileId).delete();
 
-    res.status(200).json({ success: true, message: 'Profiili poistettu onnistuneesti.' });
+    res
+      .status(200)
+      .json({ success: true, message: "Profiili poistettu onnistuneesti." });
   } catch (error: any) {
-    console.error('Profiilin poisto epäonnistui', error);
-    res.status(500).json({ success: false, message: 'Profiilin poisto epäonnistui.' });
+    console.error("Profiilin poisto epäonnistui", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Profiilin poisto epäonnistui." });
   }
 };
 

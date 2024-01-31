@@ -36,7 +36,13 @@ const ResetPasswordModal: React.FC<VerifyEmailModalProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={() => {}} disableEscapeKeyDown>
+    <Dialog
+      open={open}
+      onClose={() => {
+        setOpen(false);
+      }}
+      disableEscapeKeyDown
+    >
       <DialogTitle>Palauta salasana</DialogTitle>
       <DialogContent>
         <Typography>Lähetä salasanan palautusviesti sähköposiisi:</Typography>
