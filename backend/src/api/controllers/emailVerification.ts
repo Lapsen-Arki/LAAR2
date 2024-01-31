@@ -1,5 +1,6 @@
 import admin from "firebase-admin";
 import { Request, Response } from "express";
+import stripeConf from "../../config/stripeClient";
 
 export default async function emailVerification(req: Request, res: Response) {
   const { email, verificationCode } = req.body; // Assuming you're sending the code in the request body
@@ -27,6 +28,12 @@ export default async function emailVerification(req: Request, res: Response) {
 
         // 3. Update Firestore to set emailVerified to true
         await usersCollection.doc(userDoc.id).update({ emailVerified: true });
+
+        // Update subscription cancel_at_period_end: false
+        const stripe = stripeConf();
+        await stripe.subscriptions.update(userData.stripeSubscriptionId, {
+          cancel_at_period_end: false,
+        });
 
         return res
           .status(200)

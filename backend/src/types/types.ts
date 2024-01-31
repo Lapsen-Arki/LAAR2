@@ -20,3 +20,5 @@ export interface AddDataToDatabase {
   photoLink: string;
   photoFileName: string;
 }
+
+export interface UserData {}
