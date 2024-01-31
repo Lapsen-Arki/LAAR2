@@ -5,6 +5,7 @@ import Register from "./views/Auth/Register";
 import Login from "./views/Auth/Login";
 import Profile from "./views/Profile";
 import EditProfile from "./views/editProfile";
+import CaresProfile from "./views/carersProfile";
 import ProfileDemo from "./views/ProfileDemo";
 import Meals from "./views/Meals";
 import TimeBlocking from "./views/TimeBlocking";
@@ -42,6 +43,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/profile-edit/:id?" element={<EditProfile />} />
+                <Route path="/profile-share" element={<CaresProfile />} />
                 <Route path="/profile-demo" element={<ProfileDemo />} />
                 <Route path="/meals" element={<Meals />} />
                 <Route path="/timeblocking" element={<TimeBlocking />} />
