@@ -107,14 +107,14 @@ export default function CaresProfile() {
 
                     <div className="input-group shareProfile" style={{display: 'flex', justifyContent: 'center'}}>
                         <ul style={{ listStyle: 'none', paddingInlineStart: '0' }}>
-                            <li style={{ display: 'flex', alignItems: 'center' }}>
-                                <EditNoteIcon /> Muokata minun profiileitani.
+                            <li style={{ display: 'flex', alignItems: 'center', margin: '8px 0px' }}>
+                                <EditNoteIcon style={{ color: '#1976d2',  marginRight: '8px' }} /> Muokata minun profiileitani.
                             </li>
-                            <li style={{ display: 'flex', alignItems: 'center' }}>
-                                <PersonRemoveIcon /> Poistaa minun profiileitani.
+                            <li style={{ display: 'flex', alignItems: 'center', margin: '8px 0px' }}>
+                                <PersonRemoveIcon style={{ color: '#d32f2f',  marginRight: '8px' }} /> Poistaa minun profiileitani.
                             </li>
-                            <li style={{ display: 'flex', alignItems: 'center' }}>
-                                <PersonAddAlt1Icon /> Lisää minulle profiileita.
+                            <li style={{ display: 'flex', alignItems: 'center', margin: '8px 0px' }}>
+                                <PersonAddAlt1Icon style={{ color: '#39C4A3',  marginRight: '8px' }} /> Lisää minulle profiileita.
                             </li>
                         </ul>
                     </div>

@@ -11,7 +11,11 @@ const AnimalAvatarWidget: React.FC<{ onSelect: (selectedAvatar: string) => void 
     {
       name: 'Ei avataria',
       imageComponent: (
-        <Avatar src="/broken-image.jpg" onClick={() => handleSelect({ name: 'Ei avataria', imageUrl: '/broken-image.jpg' })} />
+        <Avatar src="/broken-image.jpg" onClick={() => handleSelect({ name: 'Ei avataria', imageUrl: '/broken-image.jpg' })}
+        sx={{
+          borderRadius: '50%',
+          backgroundColor: '#90c2c5',
+        }}/>
       ),
     },
     {

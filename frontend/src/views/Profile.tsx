@@ -252,7 +252,6 @@ export default function Profile() {
                       <Avatar
                         className="card-avatar"
                         src={profile.avatar || '/broken-image.jpg'}
-                        alt="Avatar"
                         sx={{
                           borderRadius: '50%',
                           backgroundColor: '#90c2c5',
