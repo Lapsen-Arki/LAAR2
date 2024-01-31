@@ -1,21 +1,27 @@
 import { firestore } from 'firebase-admin';
 import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
+import Stripe from 'stripe';
 
-const stripe = require('stripe')('tahan_testi_token');
+const stripe = require('stripe')('pk_test_51HqdGcK45umi2LZdJtYVobHqBd8GGJjr0ggqdhGTRNisO9fdkOdHIXc1kH96Tpex7dYyj9VlIEGTv90hiMExVn2S00w1xYoflk');
 
 const startSubscription = async (req: Request, res: Response): Promise<void> => {
 	try {
+		console.log("start subscription aloitettu")
 		const db = admin.firestore();
-		const userId = req.params.id;
+		const userId = req.params.idToken; // tässä antaa vielä arvoksi undefined?
+		console.log(userId)
+		// tähän väliin logiikka, jolla saa userId:n käyttäjän hakua varten
 		const userDocRef = db.collection('users').doc(userId);
 	
 		const userDoc = await userDocRef.get();
 	
 		if (!userDoc.exists) {
+			console.log("käyttäjää ei löytynyt")
 			res.status(404).json({ error: 'User not found' });
 		}
-	
+		console.log("käyttäjä löydetty")
+		
 		const stripeCustomerId = userDoc.data().stripeCustomerId;
 	
 		const session = await stripe.checkout.sessions.create({
@@ -40,6 +46,7 @@ const startSubscription = async (req: Request, res: Response): Promise<void> => 
 
 const cancelSubscription = async (req: Request, res: Response): Promise<void> => {
 	try {
+		console.log("cancel subscription aloitettu")
 		const db = admin.firestore();
 		const userId = req.params.id;
 		const userDocRef = db.collection('users').doc(userId);
@@ -69,7 +76,6 @@ const cancelSubscription = async (req: Request, res: Response): Promise<void> =>
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 };
-
 
 const getSubscriptionById = async (req: Request, res: Response): Promise<void> => {
 	try {

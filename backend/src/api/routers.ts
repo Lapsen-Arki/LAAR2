@@ -37,7 +37,7 @@ router.post("/email-test", emailTest);
 // Stripe routes
 router.post("/start-subscription/:id", startSubscription)
 router.post("/cancel-subscription/:id", cancelSubscription);
-router.post("/subscription/:id", getSubscriptionById);
+router.post("/get-subscription/:id", getSubscriptionById);
 
 // alive check
 router.get("/alive", (req, res) => {

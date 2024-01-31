@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { TokenContext } from '../contexts/tokenContext';
 import startSubscription from '../api/startSubscription';
