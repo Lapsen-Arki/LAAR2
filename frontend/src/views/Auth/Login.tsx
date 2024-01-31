@@ -12,6 +12,8 @@ import { userLogin } from "../../api/userLogin";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
+import ResetPasswordModal from "../../components/resetPasswordModal";
+import VerifyEmailModal from "../../components/verifyEmailModal";
 
 const Login: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState("");
@@ -19,6 +21,9 @@ const Login: React.FC = (): JSX.Element => {
   const [rememberMe, setRememberMe] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const [openResetModel, setOpenResetModal] = useState(false);
+  const [openVerifyEmail, setOpenVerifyEmail] = useState(false);
   const { setIdToken } = useContext(TokenContext);
 
   const navigate = useNavigate();
@@ -28,15 +33,11 @@ const Login: React.FC = (): JSX.Element => {
 
     const response = await userLogin(email, password, rememberMe);
 
-    if (response && response.error) {
-      setErrorMessage(`Kirjautuminen epäonnistui`);
-      // VAIHTOEHTOINEN TAPA -> NÄYTTÄÄ ERROR VIESTIN:
-      /*       setErrorMessage(
-        `Kirjautuminen epäonnistui: ${
-          response.error.message || response.error.error
-        }`
-      ); */
-    } else {
+    if (response === "emailNotVerified") {
+      setOpenVerifyEmail(true);
+    }
+
+    if (response === "success") {
       // TALLENTAA JWT TOKENIN GLOBAALIIN TOKEN CONTEXTIIN
       const newToken =
         localStorage.getItem("idToken") || sessionStorage.getItem("idToken");
@@ -54,6 +55,14 @@ const Login: React.FC = (): JSX.Element => {
       setTimeout(() => {
         navigate("/");
       }, 3000);
+    } else {
+      if (response === "emailNotVerified") {
+        setErrorMessage(
+          "Vahvista sähköpostiositeessi ja kirjaudu sisään uudelleen"
+        );
+      } else {
+        setErrorMessage(`Kirjautuminen epäonnistui`);
+      }
     }
   };
 
@@ -76,6 +85,11 @@ const Login: React.FC = (): JSX.Element => {
       <Typography variant="h5" component="h1" gutterBottom>
         Kirjaudu sisään
       </Typography>
+      <VerifyEmailModal
+        open={openVerifyEmail}
+        email={email}
+        setOpen={setOpenVerifyEmail}
+      />
       <form onSubmit={handleLogin}>
         <TextField
           style={{ background: "white" }}
@@ -115,7 +129,13 @@ const Login: React.FC = (): JSX.Element => {
           }
           label="Muista minut"
         />
-        <Button type="submit" fullWidth variant="contained" color="primary" sx={{ backgroundColor: '#39C4A3', color: '#000000'}}>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          sx={{ backgroundColor: "#39C4A3", color: "#000000" }}
+        >
           Kirjaudu sisään
         </Button>
         <Typography
@@ -134,9 +154,26 @@ const Login: React.FC = (): JSX.Element => {
         >
           {errorMessage}
         </Typography>
-        <Link href="/register" variant="body2" sx={{ color: '#298E77'}}>
+        <Link href="/register" variant="body2" sx={{ color: "#298E77" }}>
           Eikö sinulla ole tiliä? Luo tili tästä!
         </Link>
+        <br />
+        <Link
+          href="#"
+          onClick={() => {
+            setOpenResetModal(true);
+          }}
+          variant="body2"
+          sx={{ color: "#298E77" }}
+        >
+          Unohtuiko salasana?
+        </Link>
+        <ResetPasswordModal
+          open={openResetModel}
+          email={email}
+          setEmail={setEmail}
+          setOpen={setOpenResetModal}
+        />
       </form>
     </Container>
   );

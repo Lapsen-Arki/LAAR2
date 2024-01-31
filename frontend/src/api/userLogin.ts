@@ -1,6 +1,6 @@
-import axios from "axios";
 import {
   getAuth,
+  signOut,
   signInWithEmailAndPassword,
   setPersistence,
   browserLocalPersistence,
@@ -34,7 +34,11 @@ export const userLogin = async (
     let authResponse;
     if (newIdToken) {
       authResponse = await jwtAuth(newIdToken);
-      if (authResponse.message && !authResponse.error) {
+      if (authResponse === "emailNotVerified") {
+        await signOut(auth);
+        return "emailNotVerified";
+      }
+      if (authResponse === "success") {
         if (rememberMe) {
           localStorage.setItem("idToken", newIdToken);
           localStorage.setItem("storageType", "local");
@@ -44,15 +48,12 @@ export const userLogin = async (
         }
       }
     } else {
+      await signOut(auth);
       console.error("newIdToken not defined");
     }
 
     return authResponse;
   } catch (error) {
-    if (axios.isAxiosError(error) && error.response) {
-      console.error("Login error: ", error.response.data);
-      return { error: error.response.data };
-    }
-    return { error: error };
+    return false;
   }
 };

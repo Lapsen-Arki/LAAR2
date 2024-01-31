@@ -10,7 +10,10 @@ import {
 } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material";
 import { AddDataToDatabase } from "../../types/types";
-import { adminAddData } from "../../api/adminPage";
+import { adminAddData } from "../../api/adminAddData";
+import { useContext } from "react";
+import { TokenContext } from "../../contexts/tokenContext";
+import PleaseLoginModal from "../../components/pleaseLoginModal";
 
 // TODO: add following features: 1. Remove data from recommendation database collection
 // 2. Adding feature for adding and removing admin users by superuser
@@ -19,6 +22,7 @@ const AdminPage = () => {
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
   const [category, setCategory] = React.useState("");
+  const [openLoginModal, setOpenLoginModal] = React.useState(false);
   const [formData, setFormData] = React.useState<AddDataToDatabase>({
     choice: "",
     name: "",
@@ -26,6 +30,13 @@ const AdminPage = () => {
     photoLink: "",
     photoFileName: "",
   });
+  const { idToken } = useContext(TokenContext);
+
+  if (!idToken) {
+    return (
+      <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
+    );
+  }
 
   const handleCategoryChange = (event: SelectChangeEvent<string>) => {
     setCategory(event.target.value);
@@ -38,7 +49,7 @@ const AdminPage = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const submitData = { category, ...formData };
-    const response = await adminAddData(submitData);
+    const response = await adminAddData(idToken, submitData);
     if (response && response.error) {
       setErrorMessage(response.error);
     } else {

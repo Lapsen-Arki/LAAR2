@@ -5,9 +5,6 @@ import admin from "../../config/firebseConfig";
 const adminPage = async (req: Request, res: Response) => {
   try {
     const addDataObject = req.body as unknown as AddDataToDatabase;
-    console.log(addDataObject); // FOR TESTING ONLY
-
-    // TODO: Adding authentication here and passing JWT from frontend
 
     const validCategories = [
       "aktiviteetti",

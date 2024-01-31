@@ -2,27 +2,17 @@ import { createContext, useState, ReactNode, useEffect } from "react";
 
 import { getAuth, signOut } from "firebase/auth";
 import { jwtAuth } from "../api/jwtAuth";
-
-type Props = {
-  children: ReactNode;
-};
-
-type TokenContext = {
-  isLoggedIn: boolean;
-  idToken: string | null;
-  signOutMethod: () => void;
-  setIdToken: React.Dispatch<React.SetStateAction<string | null>>;
-};
+import { TokenContextType } from "../types/types";
 
 // 1. CREATE CONTEXT
-const TokenContext = createContext<TokenContext>({
+const TokenContext = createContext<TokenContextType>({
   isLoggedIn: false,
   idToken: "",
   signOutMethod: () => null,
   setIdToken: () => null,
 });
 
-function TokenProvider({ children }: Props) {
+function TokenProvider({ children }: { children: ReactNode }) {
   const [idToken, setIdToken] = useState(() => {
     const storageType = localStorage.getItem("storageType") || "session";
     return storageType === "local"
@@ -43,7 +33,7 @@ function TokenProvider({ children }: Props) {
 
       if (idToken) {
         const result = await jwtAuth(idToken);
-        if (!result.message && result.error) {
+        if (result === "error" || result === "emailNotVerified") {
           signOutMethod();
         }
       } else {

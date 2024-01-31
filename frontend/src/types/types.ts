@@ -21,3 +21,28 @@ export interface AddDataToDatabase {
   photoLink: string;
   photoFileName: string;
 }
+
+export type TokenContextType = {
+  isLoggedIn: boolean;
+  idToken: string | null;
+  signOutMethod: () => void;
+  setIdToken: React.Dispatch<React.SetStateAction<string | null>>;
+};
+
+export interface DecodedToken {
+  iss: string;
+  aud: string;
+  auth_time: number;
+  user_id: string;
+  sub: string;
+  iat: number;
+  exp: number;
+  email: string;
+  email_verified: boolean;
+  firebase: {
+    identities: {
+      email: string[];
+    };
+    sign_in_provider: string;
+  };
+}
