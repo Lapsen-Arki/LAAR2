@@ -154,9 +154,17 @@ const EditProfile = () => {
             {showAnimalAvatar ? (
               <AnimalAvatarWidget onSelect={handleAvatarSelect} />
             ) : selectedAvatar ? (
-              <Avatar src={selectedAvatar} />
+              <Avatar src={selectedAvatar}
+              sx={{
+                borderRadius: '50%',
+                backgroundColor: '#90c2c5',
+              }} />
             ) : (
-              <Avatar src="/broken-image.jpg" />
+              <Avatar src="/broken-image.jpg"
+              sx={{
+                borderRadius: '50%',
+                backgroundColor: '#90c2c5',
+              }} />
             )}
             {showAnimalAvatar ? null : (
               <Tooltip title="Valitse kuva">
