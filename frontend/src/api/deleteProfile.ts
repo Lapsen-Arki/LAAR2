@@ -8,7 +8,7 @@ interface ChildProfile {
   avatar: string;
   birthdate: string;
   childName: string;
-  userId: string;
+  creatorId: string;
 }
 
 const deleteProfile = async (profileId: string, idToken: string | null, profiles: ChildProfile[], setProfiles: React.Dispatch<React.SetStateAction<ChildProfile[]>>) => {
