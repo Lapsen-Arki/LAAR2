@@ -1,0 +1,51 @@
+[
+  {
+    "path": "src",
+    "statements": "",
+    "branches": "85.18%",
+    "functions": "23/27",
+    "lines": "0%"
+  },
+  {
+    "path": "src/api",
+    "statements": "",
+    "branches": "94.44%",
+    "functions": "51/54",
+    "lines": "100%"
+  },
+  {
+    "path": "src/api/controllers",
+    "statements": "",
+    "branches": "14.28%",
+    "functions": "50/350",
+    "lines": "50%"
+  },
+  {
+    "path": "src/api/controllers/register",
+    "statements": "",
+    "branches": "13.79%",
+    "functions": "24/174",
+    "lines": "100%"
+  },
+  {
+    "path": "src/config",
+    "statements": "",
+    "branches": "60.43%",
+    "functions": "55/91",
+    "lines": "66.66%"
+  },
+  {
+    "path": "src/middleware",
+    "statements": "",
+    "branches": "15.21%",
+    "functions": "14/92",
+    "lines": "100%"
+  },
+  {
+    "path": "src/utils",
+    "statements": "",
+    "branches": "15.71%",
+    "functions": "11/70",
+    "lines": "100%"
+  }
+]

@@ -33,20 +33,24 @@ jobs:
           npm run build
 
       - name: Run tests
-        uses: ArtiomTr/jest-coverage-report-action@v2
-        id: coverage
-        with:
-          working-directory: backend
-          skip-step: all
-          coverage-file: ./coverage/coverage-final.json
-          test-script: npm run test
+        working-directory: backend
+        run: |
+          npm run test
 
-      - name: Post comment
-        uses: marocchino/sticky-pull-request-comment@v2
+      - name: Parse results
+        id: parse_results
+        working-directory: utils
+        run: |
+          node html-to-json.js
+          node json-to-markdown.js
+          echo "::set-output name=content::$(cat output.md)"
+        shell: bash
+
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v2
         with:
-          message: |
-            ## Backend Coverage
-            ${{ steps.coverage.outputs.report }}
+          message: ${{ steps.parse_results.outputs.content }}
+          comment_tag: "backend-test-results"
 
       - name: Run backend
         run: |

@@ -1,8 +1,10 @@
 {
   "dependencies": {
     "istanbul": "^0.4.5",
+    "jsdom": "^24.0.0",
     "markdown-include": "^0.4.3",
     "nyc": "^15.1.0",
-    "remap-istanbul": "^0.13.0"
+    "remap-istanbul": "^0.13.0",
+    "turndown": "^7.1.2"
   }
 }
