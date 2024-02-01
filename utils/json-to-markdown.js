@@ -15,6 +15,7 @@ fs.readFile("output.json", "utf8", function (err, data) {
 
   fs.writeFile("output.md", table, "utf8", function (err) {
     if (err) throw err;
-    console.log("Saved Markdown table to output.md");
+    console.log("Saved Markdown table to output.md: \n");
+    console.log(table);
   });
 });
