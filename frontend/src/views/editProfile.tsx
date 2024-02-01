@@ -1,18 +1,22 @@
+import React from "react";
 import { useContext, useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../styles/editProfile.css';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import Avatar from '@mui/material/Avatar';
 import AnimalAvatarWidget from '../components/AnimalAvatarWidget.tsx';
-import Switch from '@mui/material/Switch';
-import Button from '@mui/material/Button';
-import Alert from '@mui/material/Alert';
-import { useNavigate, useParams } from 'react-router-dom';
-import Box from '@mui/material/Box';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import Tooltip from '@mui/material/Tooltip';
+import {
+  Avatar,
+  Switch,
+  Button,
+  Alert,
+  Box,
+  Tooltip,
+} from "@mui/material";
 
+import PleaseLoginModal from "../components/pleaseLoginModal";
 import { TokenContext } from "../contexts/tokenContext";
 import { editProfile } from '../api/editProfilePost.ts';
 import { getProfileById } from '../api/getProfiles';
@@ -23,7 +27,7 @@ interface ChildProfile {
   birthdate: string; // Päivämäärä on nyt merkkijono "YYYY-MM-DD"
   avatar: string;
   accessRights: boolean;
-  userId: string;
+  creatorId: string;
 }
 
 const EditProfile = () => {
@@ -37,6 +41,7 @@ const EditProfile = () => {
   const [accessRights, setAccessRights] = useState(false);
   const navigate = useNavigate();
   const { idToken } = useContext(TokenContext);
+  const [openLoginModal, setOpenLoginModal] = React.useState(false);
 
   // Tyhjä merkkijono, jos id ei ole määritetty URL:ssä
   console.log(id)
@@ -71,6 +76,13 @@ const EditProfile = () => {
     fetchProfileData();
   }, [profileId, idToken]);
 
+  // Tarkista, onko käyttäjä kirjautunut
+  if (!idToken) {
+    return (
+      <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
+    );
+  }
+
   const handleShowAnimalAvatar = () => {
     setShowAnimalAvatar(true);
   };
@@ -96,7 +108,7 @@ const EditProfile = () => {
           birthdate: dayjs(birthdate).format("YYYY-MM-DD"), // Muunna takaisin merkkijonoksi tallennusta varten
           avatar: selectedAvatar || '/broken-image.jpg',
           accessRights,
-          userId: idToken,
+          creatorId: idToken,
         };
 
         // Luo uusi profiili tai päivitä olemassa oleva
@@ -142,9 +154,17 @@ const EditProfile = () => {
             {showAnimalAvatar ? (
               <AnimalAvatarWidget onSelect={handleAvatarSelect} />
             ) : selectedAvatar ? (
-              <Avatar src={selectedAvatar} />
+              <Avatar src={selectedAvatar}
+              sx={{
+                borderRadius: '50%',
+                backgroundColor: '#90c2c5',
+              }} />
             ) : (
-              <Avatar src="/broken-image.jpg" />
+              <Avatar src="/broken-image.jpg"
+              sx={{
+                borderRadius: '50%',
+                backgroundColor: '#90c2c5',
+              }} />
             )}
             {showAnimalAvatar ? null : (
               <Tooltip title="Valitse kuva">

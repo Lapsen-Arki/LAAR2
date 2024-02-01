@@ -19,8 +19,8 @@ const editProfile = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const userId = await getUserIdFromToken(idToken);
-    if (!userId) {
+    const creatorId = await getUserIdFromToken(idToken);
+    if (!creatorId) {
       res.status(403).json({ error: "Virheellinen token" });
       return;
     }
@@ -44,7 +44,7 @@ const editProfile = async (req: Request, res: Response): Promise<void> => {
         birthdate: birthdate,
         avatar: avatar,
         accessRights: accessRights,
-        userId: userId, // Lisää userId tähän
+        creatorId: creatorId, // Käyttäjän UID
       });
 
       res.status(200).json({ message: "Profiili päivitetty onnistuneesti" });
@@ -55,7 +55,7 @@ const editProfile = async (req: Request, res: Response): Promise<void> => {
         birthdate: birthdate,
         avatar: avatar,
         accessRights: accessRights,
-        userId: userId, // Lisää userId tähän
+        creatorId: creatorId, // Käyttäjän UID
       });
 
       res.status(200).json({ message: "Uusi profiili luotu onnistuneesti" });

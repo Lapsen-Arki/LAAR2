@@ -9,7 +9,7 @@ interface ChildProfile {
   avatar: string;
   birthdate: string;
   childName: string;
-  userId: string; // Käyttäjän UID
+  creatorId: string; // Käyttäjän UID
 }
 
 const getProfiles = async (req: Request, res: Response): Promise<void> => {
@@ -20,8 +20,8 @@ const getProfiles = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const userId = await getUserIdFromToken(idToken);
-    if (!userId) {
+    const creatorId = await getUserIdFromToken(idToken);
+    if (!creatorId) {
       res.status(403).json({ error: "Virheellinen token" });
       return;
     }
@@ -29,7 +29,7 @@ const getProfiles = async (req: Request, res: Response): Promise<void> => {
     const db = admin.firestore();
     const childProfilesCollection = db.collection("childProfile");
     const profilesSnapshot = await childProfilesCollection
-      .where("userId", "==", userId)
+      .where("creatorId", "==", creatorId)
       .get();
     const profiles: ChildProfile[] = [];
 
@@ -56,8 +56,8 @@ const getProfileById = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const userId = await getUserIdFromToken(idToken);
-    if (!userId) {
+    const creatorId = await getUserIdFromToken(idToken);
+    if (!creatorId) {
       res.status(403).json({ error: "Virheellinen token" });
       return;
     }
@@ -74,7 +74,7 @@ const getProfileById = async (req: Request, res: Response): Promise<void> => {
     const profileData = profileDoc.data() as ChildProfile;
 
     // Tarkista, että profiili kuuluu oikealle käyttäjälle käyttäen UID:tä
-    if (profileData.userId !== userId) {
+    if (profileData.creatorId !== creatorId) {
       res.status(403).json({ error: "Ei oikeuksia tähän profiiliin" });
       return;
     }
@@ -98,8 +98,8 @@ const deleteProfile = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const userId = await getUserIdFromToken(idToken);
-    if (!userId) {
+    const creatorId = await getUserIdFromToken(idToken);
+    if (!creatorId) {
       res.status(403).json({ error: "Virheellinen token" });
       return;
     }
@@ -116,7 +116,7 @@ const deleteProfile = async (req: Request, res: Response): Promise<void> => {
     const profileData = profileDoc.data() as ChildProfile;
 
     // Tarkista, että profiili kuuluu oikealle käyttäjälle käyttäen UID:tä
-    if (profileData.userId !== userId) {
+    if (profileData.creatorId !== creatorId) {
       res.status(403).json({ error: "Ei oikeuksia tähän profiiliin" });
       return;
     }
