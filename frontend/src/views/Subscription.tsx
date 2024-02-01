@@ -1,4 +1,4 @@
-import React, { useState /*, useContext, useEffect*/ } from 'react';
+import React, { useState, useContext /*, useEffect*/ } from 'react';
 //import { loadStripe, Stripe } from '@stripe/stripe-js';
 //import { TokenContext } from '../contexts/tokenContext';
 //import startSubscription from '../api/startSubscription';
@@ -23,6 +23,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Switch from '@mui/material/Switch';
 import '../styles/Subscription.css'
+import { TokenContext } from "../contexts/tokenContext";
+import PleaseLoginModal from "../components/pleaseLoginModal";
 
 // Sivu on vielä kesken, keskeneräisiä funktioita kommentoitu pois
 
@@ -31,6 +33,7 @@ const SubscriptionManagement: React.FC = () => {
 //const [subscription, setSubscription] = useState<string | null>(null);
 //const [stripe, setStripe] = useState<Stripe | null>(null);
   const [testiboolean, setTestiboolean] = useState(true) // väliaikainen muuttuja testausta varte, true = käyttäjällä on tilaus, false = tilausta ei ole
+  const [openLoginModal, setOpenLoginModal] = React.useState(false);
 /*
   useEffect(() => {
     const fetchSubscription = async () => {
@@ -89,6 +92,14 @@ const SubscriptionManagement: React.FC = () => {
     }
 	*/
   };
+
+  const { idToken } = useContext(TokenContext);
+
+  if (!idToken) {
+    return (
+      <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
+    );
+  }
 
   return (
 	<div className="subscription-page">
