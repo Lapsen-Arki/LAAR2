@@ -5,6 +5,7 @@ import Register from "./views/Auth/Register";
 import Login from "./views/Auth/Login";
 import Profile from "./views/Profile";
 import EditProfile from "./views/editProfile";
+import CaresProfile from "./views/carersProfile";
 import ProfileDemo from "./views/ProfileDemo";
 import Meals from "./views/Meals";
 import TimeBlocking from "./views/TimeBlocking";
@@ -14,7 +15,8 @@ import AdminPage from "./views/Auth/admin";
 import Subscription from "./views/Subscription";
 import "./conf/firebaseSdkConfig";
 import { TokenProvider } from "./contexts/tokenContext";
-import UserSettings from "./views/UserSettings"
+import UserSettings from "./views/UserSettings";
+import { UserProvider } from "./contexts/userContext";
 
 import Example from "./views/example";
 
@@ -31,25 +33,27 @@ function App() {
   return (
     <Router>
       <TokenProvider>
-        <Elements stripe={stripePromise}>
-          <Layout>
-            <Routes>
-              <Route path="/example" element={<Example />} />
-
-              <Route path="/" element={<Home />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/profile-edit/:id?" element={<EditProfile />} />
-              <Route path="/profile-demo" element={<ProfileDemo />} />
-              <Route path="/meals" element={<Meals />} />
-              <Route path="/timeblocking" element={<TimeBlocking />} />
-              <Route path="/admin" element={<AdminPage />} />
-              <Route path="/subscription" element={<Subscription />} />
-			  <Route path="/settings" element={<UserSettings />} />
-            </Routes>
-          </Layout>
-        </Elements>
+        <UserProvider>
+          <Elements stripe={stripePromise}>
+            <Layout>
+              <Routes>
+                <Route path="/example" element={<Example />} />
+                <Route path="/" element={<Home />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/profile-edit/:id?" element={<EditProfile />} />
+                <Route path="/profile-share" element={<CaresProfile />} />
+                <Route path="/profile-demo" element={<ProfileDemo />} />
+                <Route path="/meals" element={<Meals />} />
+                <Route path="/timeblocking" element={<TimeBlocking />} />
+                <Route path="/admin" element={<AdminPage />} />
+                <Route path="/subscription" element={<Subscription />} />
+                <Route path="/settings" element={<UserSettings />} />
+              </Routes>
+            </Layout>
+          </Elements>
+        </UserProvider>
       </TokenProvider>
     </Router>
   );

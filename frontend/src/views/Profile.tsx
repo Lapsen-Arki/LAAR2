@@ -1,23 +1,28 @@
+import React from "react";
 import { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Profile.css';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
+import {
+  Button,
+  Box,
+  Card,
+  CardContent,
+  Typography,
+  Avatar,
+  IconButton,
+  Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from '@mui/material';
+
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Tooltip from '@mui/material/Tooltip';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogActions from '@mui/material/DialogActions';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
+import PleaseLoginModal from "../components/pleaseLoginModal";
 import { TokenContext } from "../contexts/tokenContext";
 import { getProfiles } from '../api/getProfiles';
 import deleteProfile from '../api/deleteProfile';
@@ -101,11 +106,12 @@ interface ChildProfile {
   avatar: string;
   birthdate: string;
   childName: string;
-  userId: string;
+  creatorId: string;
 }
 
 export default function Profile() {
-  const { idToken } = useContext(TokenContext); // Käytä vain idToken
+  const [openLoginModal, setOpenLoginModal] = React.useState(false);
+  const { idToken } = useContext(TokenContext);
   const navigate = useNavigate();
   const [profiles, setProfiles] = useState<ChildProfile[]>([]);
   const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
@@ -138,6 +144,12 @@ export default function Profile() {
     }
   }, [idToken]);
 
+  if (!idToken) {
+    return (
+      <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
+    );
+  }
+
   console.log("Renderöidään profiilisivu, profiilit:", profiles);
 
   const handleClickDelete = async (profileId: string) => {
@@ -165,9 +177,9 @@ export default function Profile() {
     navigate('/profile-edit');
   };
 
-  function printToken() {
-    console.log(idToken);
-  }
+  const handleAddCarersClick = () => {
+    navigate('/profile-share');
+  };
 
   return (
     <div className="profile-container">
@@ -179,7 +191,7 @@ export default function Profile() {
           </Tooltip>
           
           <Tooltip title="Lisää hoitaja">
-            <Button variant="contained" className="custom-button" onClick={printToken}>Lisää hoitaja</Button>
+            <Button variant="contained" className="custom-button" onClick={handleAddCarersClick}>Lisää hoitaja</Button>
           </Tooltip>
         </div>
 
@@ -219,9 +231,9 @@ export default function Profile() {
                 {/* Ei profiileja */}
                 {profiles.length === 0 ? (
                   <div className="cards-wrap">
-                    <Card className="children-card">
+                    <Card className="children-card" sx={{ height: '100px' }} >
                     <Tooltip title="Profiileja ei ole vielä luotu">
-                    <HelpOutlineIcon sx={{ fontSize: 48, color: 'white', borderRadius: '50%', backgroundColor: '#63c8cc' }} />
+                    <HelpOutlineIcon sx={{ fontSize: 40, color: 'white', borderRadius: '50%', backgroundColor: '#63c8cc', marginLeft: '16px' }} />
                     </Tooltip>
                       <Box className="card-content">
                         <Typography variant="h6" gutterBottom sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center'  }}>
@@ -240,7 +252,10 @@ export default function Profile() {
                       <Avatar
                         className="card-avatar"
                         src={profile.avatar || '/broken-image.jpg'}
-                        alt="Avatar"
+                        sx={{
+                          borderRadius: '50%',
+                          backgroundColor: '#90c2c5',
+                        }}
                       />
                       
                       <Box className="card-content">
@@ -286,47 +301,18 @@ export default function Profile() {
                 Hoitajat:
               </Typography>
               <div className="carer">
-
                 <Card className="carer-cards">
                   <CardContent className="cards-content">
-                    <Typography component="div" variant="h6">
-                      Kortti1
-                    </Typography>
-                    <div>
-                      <Tooltip title="Muokkaa profiilia">
-                        <IconButton color="primary" aria-label="Edit">
-                          <EditIcon />
-                        </IconButton>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <Tooltip title="Hoitajia ei ole vielä lisätty">
+                        <HelpOutlineIcon sx={{ fontSize: 40, color: 'white', borderRadius: '50%', backgroundColor: '#63c8cc' }} />
                       </Tooltip>
-                      <Tooltip title="Poista profiili">
-                        <IconButton color="error" aria-label="Delete">
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
+                      <Typography variant="h6" gutterBottom sx={{ marginLeft: '10px' }}>
+                        Hoitajia ei ole vielä lisätty
+                      </Typography>
                     </div>
                   </CardContent>
                 </Card>
-
-                <Card className="carer-cards">
-                  <CardContent className="cards-content">
-                    <Typography component="div" variant="h6">
-                      Kortti2
-                    </Typography>
-                    <div>
-                      <Tooltip title="Muokkaa profiilia">
-                        <IconButton color="primary" aria-label="Edit">
-                          <EditIcon />
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Poista profiili">
-                        <IconButton color="error" aria-label="Delete">
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </div>
-                  </CardContent>
-                </Card>
-
               </div>
             </div>
           </Box>
