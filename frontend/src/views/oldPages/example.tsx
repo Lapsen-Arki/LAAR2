@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { TokenContext } from "../contexts/tokenContext";
+import { TokenContext } from "../../contexts/tokenContext";
 
 export default function Example() {
   const { idToken, signOutMethod } = useContext(TokenContext);

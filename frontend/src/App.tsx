@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./views/Home";
 import Layout from "./components/Layout/Layout";
 import Register from "./views/Auth/Register";
 import Login from "./views/Auth/Login";
@@ -6,8 +7,8 @@ import Profile from "./views/Profile";
 import EditProfile from "./views/editProfile";
 import CaresProfile from "./views/carersProfile";
 import ProfileDemo from "./views/ProfileDemo";
-import Meals from "./views/Meals";
-import TimeBlocking from "./views/TimeBlocking";
+import Meals from "./views/oldPages/Meals";
+import TimeBlocking from "./views/oldPages/TimeBlocking";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import AdminPage from "./views/Auth/admin";
@@ -18,7 +19,7 @@ import UserSettings from "./views/UserSettings";
 import { UserProvider } from "./contexts/userContext";
 import IndexPage from "./views";
 
-import Example from "./views/example";
+import Example from "./views/oldPages/example";
 
 // Stripe Publishable testing key:
 // Production version needs: 1. HTTPS connection and 2. pk_live live key
