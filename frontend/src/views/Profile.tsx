@@ -10,11 +10,6 @@ import {
   Avatar,
   IconButton,
   Tooltip,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
 } from '@mui/material';
 
 import EditIcon from '@mui/icons-material/Edit';
@@ -27,6 +22,7 @@ import { getChildProfiles } from '../api/getChildProfiles';
 import deleteChildProfile from '../api/deleteChildProfile';
 
 import { calculateAge, splitNameToFitWidth } from './utils/profileUtils';
+import ConfirmationDialog from './utils/profileConfirmationDialog';
 
 interface ChildProfile {
   id: string;
@@ -137,31 +133,11 @@ export default function Profile() {
         </div>
 
         {/* Varmistusdialogi */}
-        <Dialog
-          open={confirmationDialogOpen}
-          onClose={() => setConfirmationDialogOpen(false)}
-        >
-          <DialogTitle>Oletko varma että haluat poistaa profiilin?</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Tämä toiminto poistaa profiilin pysyvästi.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => setConfirmationDialogOpen(false)}
-              color="primary"
-            >
-              Ei
-            </Button>
-            <Button
-              onClick={handleDeleteConfirmed}
-              color="error"
-            >
-              Kyllä
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <ConfirmationDialog
+        open={confirmationDialogOpen}
+        onClose={() => setConfirmationDialogOpen(false)}
+        onConfirm={handleDeleteConfirmed}
+      />
 
           <Box className="profiles">
             <div style={{ flex: 1 }}>
