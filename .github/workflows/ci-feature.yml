@@ -39,6 +39,7 @@ jobs:
           npm run test
 
       - name: Parse results
+        if: success() || failure()
         id: parse_results
         working-directory: utils
         run: |
