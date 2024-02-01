@@ -117,7 +117,7 @@ export default function Profile() {
   const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
 
   const fetchProfilesFromSessionStorage = () => {
-    const storedProfilesJson = sessionStorage.getItem('storedProfiles');
+    const storedProfilesJson = sessionStorage.getItem('childProfiles');
     if (storedProfilesJson) {
       return JSON.parse(storedProfilesJson) as ChildProfile[];
     }
