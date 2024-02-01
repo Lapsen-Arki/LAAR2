@@ -56,7 +56,7 @@ jobs:
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@v2
         with:
-          message: "${{ steps.parse_results.outputs.content }}"
+          filePath: "utils/output.md"
           comment_tag: "backend-test-results"
 
       - name: Run backend
