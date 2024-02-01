@@ -24,6 +24,14 @@ const deleteChildProfile = async (profileId: string, idToken: string | null, pro
     // Päivitä frontend uusilla profiileilla
     const updatedProfiles = profiles.filter((profile) => profile.id !== profileId);
     setProfiles(updatedProfiles);
+
+    // Päivitä myös Session Storage poistamalla poistettu profiili
+    const storedProfilesJson = sessionStorage.getItem("childProfiles");
+    if (storedProfilesJson) {
+      const storedProfiles = JSON.parse(storedProfilesJson) as ChildProfile[];
+      const updatedStoredProfiles = storedProfiles.filter((profile) => profile.id !== profileId);
+      sessionStorage.setItem("childProfiles", JSON.stringify(updatedStoredProfiles));
+    }
   } catch (error) {
     console.error('Profiilin poisto epäonnistui', error);
   }
