@@ -8,11 +8,11 @@ import { emailTest } from "./controllers/testingEmail";
 import adminAuth from "../middleware/adminAuth";
 import testController from "../utils/testController";
 
-import createChildProfile from "./controllers/createChildProfile";
-import editChildProfile from "./controllers/editChildProfile";
-import { getChildProfiles } from "./controllers/getChildProfiles";
-import { getChildProfileById } from "./controllers/getChildProfileById";
-import { deleteChildProfile } from "./controllers/deleteChildProfile";
+import createChildProfile from "./controllers/childProfile/createChildProfile";
+import editChildProfile from "./controllers/childProfile/editChildProfile";
+import { getChildProfiles } from "./controllers/childProfile/getChildProfiles";
+import { getChildProfileById } from "./controllers/childProfile/getChildProfileById";
+import { deleteChildProfile } from "./controllers/childProfile/deleteChildProfile";
 
 import {
   startSubscription,

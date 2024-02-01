@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import admin from "../../config/firebseConfig";
-import { getUserIdFromToken } from "../../utils/getUserIdFromTokenUtil";
+import admin from "../../../config/firebseConfig";
+import { getUserIdFromToken } from "../../../utils/getUserIdFromTokenUtil";
 
 const createChildProfile = async (req: Request, res: Response): Promise<void> => {
   try {

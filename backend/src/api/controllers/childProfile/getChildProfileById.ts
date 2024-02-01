@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import admin from "../../config/firebseConfig";
+import admin from "../../../config/firebseConfig";
 import { firestore } from "firebase-admin";
-import { getUserIdFromToken } from "../../utils/getUserIdFromTokenUtil";
+import { getUserIdFromToken } from "../../../utils/getUserIdFromTokenUtil";
 
 interface ChildProfile {
   id: string;
@@ -12,8 +12,8 @@ interface ChildProfile {
   creatorId: string; // Käyttäjän UID
 }
 
-const deleteChildProfile = async (req: Request, res: Response): Promise<void> => {
-  const profileId = req.params.profileId;
+const getChildProfileById = async (req: Request, res: Response): Promise<void> => {
+  const profileId = req.params.id;
 
   try {
     const idToken = req.headers.authorization?.split("Bearer ")[1];
@@ -45,17 +45,13 @@ const deleteChildProfile = async (req: Request, res: Response): Promise<void> =>
       return;
     }
 
-    await childProfilesCollection.doc(profileId).delete();
+    profileData.id = profileDoc.id;
 
-    res
-      .status(200)
-      .json({ success: true, message: "Profiili poistettu onnistuneesti." });
+    res.status(200).json(profileData);
   } catch (error: any) {
-    console.error("Profiilin poisto epäonnistui", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Profiilin poisto epäonnistui." });
+    console.error("Profiilin hakeminen epäonnistui", error);
+    res.status(500).json({ error: "Jotain meni pieleen" });
   }
 };
 
-export { deleteChildProfile };
+  export { getChildProfileById };

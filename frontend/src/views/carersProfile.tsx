@@ -18,7 +18,7 @@ import {
     PersonAddAlt1 as PersonAddAlt1Icon,
 } from "@mui/icons-material";
 
-import PleaseLoginModal from "../components/pleaseLoginModal";
+import PleaseLoginModal from "../components/modals/pleaseLoginModal";
 import { TokenContext } from "../contexts/tokenContext";
 
 export default function CaresProfile() {

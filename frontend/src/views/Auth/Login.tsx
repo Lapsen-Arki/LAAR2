@@ -12,8 +12,8 @@ import { userLogin } from "../../api/userLogin";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
-import ResetPasswordModal from "../../components/resetPasswordModal";
-import VerifyEmailModal from "../../components/verifyEmailModal";
+import ResetPasswordModal from "../../components/modals/resetPasswordModal";
+import VerifyEmailModal from "../../components/modals/verifyEmailModal";
 
 const Login: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState("");

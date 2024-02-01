@@ -16,10 +16,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
-import PleaseLoginModal from "../components/pleaseLoginModal";
+import PleaseLoginModal from "../components/modals/pleaseLoginModal";
 import { TokenContext } from "../contexts/tokenContext";
-import { getChildProfiles } from '../api/getChildProfiles';
-import deleteChildProfile from '../api/deleteChildProfile';
+import { getChildProfiles } from '../api/childProfile/getChildProfiles';
+import deleteChildProfile from '../api/childProfile/deleteChildProfile';
 
 import { calculateAge, splitNameToFitWidth } from './utils/profileUtils';
 import ConfirmationDialog from './utils/profileConfirmationDialog';

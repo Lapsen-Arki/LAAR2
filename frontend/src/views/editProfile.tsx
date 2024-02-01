@@ -16,11 +16,11 @@ import {
   Tooltip,
 } from "@mui/material";
 
-import PleaseLoginModal from "../components/pleaseLoginModal";
+import PleaseLoginModal from "../components/modals/pleaseLoginModal.tsx";
 import { TokenContext } from "../contexts/tokenContext";
-import { createChildProfile } from '../api/createChildProfile.ts';
-import { editChildProfile } from '../api/editChildProfile.ts';
-import { getChildProfileById } from '../api/getChildProfileById.ts';
+import { createChildProfile } from '../api/childProfile/createChildProfile.ts';
+import { editChildProfile } from '../api/childProfile/editChildProfile.ts';
+import { getChildProfileById } from '../api/childProfile/getChildProfileById.ts';
 
 interface ChildProfile {
   id: string;

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import admin from "../../config/firebseConfig";
+import admin from "../../../config/firebseConfig";
 import { firestore } from "firebase-admin";
-import { getUserIdFromToken } from "../../utils/getUserIdFromTokenUtil";
+import { getUserIdFromToken } from "../../../utils/getUserIdFromTokenUtil";
 
 interface ChildProfile {
   id: string;
