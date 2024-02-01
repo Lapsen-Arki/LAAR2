@@ -45,7 +45,7 @@ jobs:
           node html-to-json.js
           node json-to-markdown.js
           content=$(cat output.md | awk '{print $0"\n"}')
-          echo "::set-output name=content::content"
+          echo "::set-output name=content::$content"
         shell: bash
 
       - name: Comment PR
