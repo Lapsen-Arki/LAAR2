@@ -45,7 +45,7 @@ fs.readFile(inputFilePath, "utf8", function (err, _data) {
   let json = JSON.stringify(data);
   fs.writeFile(outputFilePath, json, "utf8", function (err) {
     if (err) throw err;
-    console.log("Saved JSON data to output.json: ");
+    console.log("Saved JSON data to: " + outputFilePath);
     console.log(json);
   });
 });
