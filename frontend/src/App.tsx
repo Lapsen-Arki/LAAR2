@@ -1,26 +1,26 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./views/Home";
-import Layout from "./components/Layout/Layout";
+
+// Page component imports:
+import IndexPage from "./views";
+import TestingPage from "./views/oldPages/testingPage";
 import Register from "./views/Auth/Register";
 import Login from "./views/Auth/Login";
 import Profile from "./views/Profile";
 import EditProfile from "./views/editProfile";
 import CaresProfile from "./views/carersProfile";
-import ProfileDemo from "./views/ProfileDemo";
-import Meals from "./views/oldPages/Meals";
-import TimeBlocking from "./views/oldPages/TimeBlocking";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 import AdminPage from "./views/Auth/admin";
 import Subscription from "./views/Subscription";
-import "./conf/firebaseSdkConfig";
-import { TokenProvider } from "./contexts/tokenContext";
 import UserSettings from "./views/UserSettings";
+
+// Higher Order Components (HOC):
+import Layout from "./components/Layout/Layout";
+import { Elements } from "@stripe/react-stripe-js";
+import { TokenProvider } from "./contexts/tokenContext";
 import { UserProvider } from "./contexts/userContext";
-import IndexPage from "./views";
 
-import Example from "./views/oldPages/example";
-
+// Configs etc
+import "./conf/firebaseSdkConfig";
+import { loadStripe } from "@stripe/stripe-js";
 // Stripe Publishable testing key:
 // Production version needs: 1. HTTPS connection and 2. pk_live live key
 const stripePromise = loadStripe(
@@ -39,18 +39,15 @@ function App() {
             <Layout>
               <Routes>
                 <Route path="/" element={<IndexPage />} />
-                <Route path="/example" element={<Example />} />
+                <Route path="/testing" element={<TestingPage />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/profile-edit/:id?" element={<EditProfile />} />
                 <Route path="/profile-share" element={<CaresProfile />} />
-                <Route path="/profile-demo" element={<ProfileDemo />} />
-                <Route path="/meals" element={<Meals />} />
-                <Route path="/timeblocking" element={<TimeBlocking />} />
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/subscription" element={<Subscription />} />
-                <Route path="/settings" element={<UserSettings />} />
+                <Route path="/account" element={<UserSettings />} />
               </Routes>
             </Layout>
           </Elements>
