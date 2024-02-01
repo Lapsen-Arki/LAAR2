@@ -1,59 +1,19 @@
-import { Container, MenuItem, Select, Box, InputLabel } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Container } from "@mui/material";
 
 import LandingComp from "../components/index/landingComp";
 import TimeBlockComp from "../components/index/timeBlockComp";
 import { useContext } from "react";
 import { TokenContext } from "../contexts/tokenContext";
+import NameDropDown from "../components/index/nameDropDown";
 
 export default function IndexPage() {
   const { isLoggedIn } = useContext(TokenContext);
-  const [childNames, setchildNames] = useState([""]);
-  const [selectedChild, setSelectedChild] = useState(() => {
-    return localStorage.getItem("selectedChild") || childNames[0];
-  });
-
-  // Updating the children names in dropdown based on login status:
-  useEffect(() => {
-    localStorage.setItem("selectedChild", selectedChild);
-    if (isLoggedIn) {
-      // Fetch the children's names and ages here
-      // Later fetching also each child's allergies if adding the
-      // feature later
-      const listOfNames = ["fetching", "the", "names", "here"];
-
-      setchildNames(listOfNames);
-    } else {
-      // Setting preview names
-      setchildNames(["Ulpukka", "Kullervo"]);
-    }
-  }, [isLoggedIn, selectedChild]);
 
   return (
     <>
       <Container>
         {!isLoggedIn && <LandingComp />}
-
-        {/* Lapsen valinta dropdown */}
-        <Box sx={{ display: "flex-1", justifyContent: "flex-start", mt: 5 }}>
-          <InputLabel id="preview-target-label">Valitse Lapsi</InputLabel>
-          <Select
-            labelId="preview-target-label"
-            id="preview-target-select"
-            label="Valitse Lapsi"
-            value={selectedChild}
-            onChange={(e) => setSelectedChild(e.target.value)}
-            sx={{ width: 150, alignContent: "right" }}
-          >
-            {/* Mapping child names to dropdown: */}
-            {childNames.map((name, index) => (
-              <MenuItem key={index} value={name}>
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </Box>
-
+        <NameDropDown />
         <TimeBlockComp />
       </Container>
     </>
