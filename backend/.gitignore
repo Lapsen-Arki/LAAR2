@@ -3,3 +3,4 @@ build
 .env
 coverage
 fireBasePrivateKey.json
+result.json

@@ -169,7 +169,7 @@ const config: Config = {
   // testRegex: [],
 
   // This option allows the use of a custom results processor
-  // testResultsProcessor: undefined,
+  testResultsProcessor: "./tests/resultsProcessor.js",
 
   // This option allows use of a custom test runner
   // testRunner: "jest-circus/runner",

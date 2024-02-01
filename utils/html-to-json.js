@@ -5,11 +5,12 @@ const path = require("path");
 
 const args = process.argv.slice(2);
 
-const inputFilePath =
-  path.join("../", args[0], "coverage/lcov-report/index.html") ||
-  "../backend/coverage/lcov-report/index.html";
-const outputFilePath =
-  path.join("./results", args[1] + ".json") || "./results/output.json";
+const inputFilePath = path.join(
+  "../",
+  args[0],
+  "coverage/lcov-report/index.html"
+);
+const outputFilePath = path.join("./results", args[1] + ".json");
 
 fs.readFile(inputFilePath, "utf8", function (err, _data) {
   if (err) throw err;

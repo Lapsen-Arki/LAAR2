@@ -46,7 +46,7 @@ jobs:
           title="Backend Coverage Summary"
           path="backend"
           file="backend-summary"
-          node html-to-json.js "$path" "$file"
+          node html-to-json.js "$path" "$file" "$path"
           node json-to-markdown.js "$title" "$file" "$file"
           echo "::set-output name=file::$file"
         shell: bash
