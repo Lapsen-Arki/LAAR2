@@ -1,78 +1,88 @@
-import * as React from 'react';
-import { headingTheme } from './themeMUI';
-import { Link } from 'react-router-dom';
-import {
-	AppBar,
-	Box,
-	Toolbar,
-	Typography,
-	IconButton,
-	MenuItem,
-	Menu
-} from '@mui/material';
+import { headingTheme } from "./themeMUI";
+import { Link } from "react-router-dom";
+import { AppBar, Box, Toolbar, Typography, IconButton } from "@mui/material";
 
-import MenuIcon from '@mui/icons-material/Menu';
-import LoginIcon from '@mui/icons-material/Login';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import { ThemeProvider } from '@mui/material/styles';
+import MenuIcon from "@mui/icons-material/Menu";
+
+import { ThemeProvider } from "@mui/material/styles";
+import HeaderLinks from "../header/headerLinks";
+import SessionButtons from "../header/sessionButtons";
+import { useState, useEffect } from "react";
 
 export default function Header() {
-	const [auth] = React.useState(false);
-	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-	
-	const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorEl(event.currentTarget);
-	};
+  const [openBurger, setOpenBurger] = useState(false);
+  const [smallScreen, setSmallScreen] = useState(false);
 
-	const handleClose = () => {
-		setAnchorEl(null);
-	};
+  useEffect(() => {
+    const handleResize = () => {
+      // Update the state based on window width
+      setSmallScreen(window.innerWidth < 600);
+    };
 
-	return (
-		<header>
-			<Box sx={{ flexGrow: 1 }}>
-				<ThemeProvider theme={headingTheme}>
-					<AppBar position='fixed' sx={{ width: '100%' }}>
-						<Toolbar>
-							<Typography variant='h6' component={Link} to='/' sx={{ flexGrow: 1, textDecoration: 'none' }}>
-								LAAR
-							</Typography>
-							<Box sx={{ display: { xs: 'block', md: 'none' } }}>
-								<IconButton size='large' edge='start' color='inherit' aria-label='menu' onClick={handleMenu} sx={{ mr: 2 }}>
-									<MenuIcon />
-								</IconButton>
-								<Menu id='menu-appbar' anchorEl={anchorEl} anchorOrigin={{vertical: 'top', horizontal: 'right',}} keepMounted transformOrigin={{vertical: 'top', horizontal: 'right',}} open={Boolean(anchorEl)} onClose={handleClose}>
-									<MenuItem>
-										<Typography variant='h6'component={Link} to='/' sx={{ flexGrow: 1, textDecoration: 'none', fontWeight: 'normal', color: 'black' }}>
-											Kauppa
-										</Typography>
-									</MenuItem>
-								</Menu>
-							</Box>
+    // Add event listener
+    window.addEventListener("resize", handleResize);
 
-							<Box sx={{ display: { xs: 'none', md: 'block' } }}>
-								<Typography variant='h6'component={Link} to='/' sx={{ flexGrow: 1, textDecoration: 'none', fontWeight: 'normal' }}>
-									Kauppa
-								</Typography>
-							</Box>
+    // Cleanup function to remove the event listener
+    return () => window.removeEventListener("resize", handleResize);
+  }, []); // Empty dependency array means this effect runs only once after the initial render
 
-							{auth ? (
-								<div>
-									<IconButton size='large' component={Link} to='/profile' color='inherit'>
-										<AccountCircle />
-									</IconButton>
-								</div>
-							) : (
-								<div>
-									<IconButton size='large' component={Link} to='/login' color='inherit'>
-										<LoginIcon />
-									</IconButton>
-								</div>
-							)}
-						</Toolbar>
-					</AppBar>
-				</ThemeProvider>
-			</Box>
-		</header>
-	);
+  return (
+    <header>
+      <Box>
+        <ThemeProvider theme={headingTheme}>
+          <AppBar position="fixed" sx={{ width: "100%" }}>
+            <Toolbar>
+              <Typography
+                variant="h5"
+                component={Link}
+                to="/"
+                sx={{ flexGrow: 1, ml: 0.5 }}
+              >
+                LAAR
+              </Typography>
+
+              <div>
+                <Box
+                  sx={{
+                    position: "fixed",
+                    top: 5, // Adjust according to your AppBar height
+                    right: 8, // Position it from the right edge of the viewport
+                    zIndex: 1, // Ensure it's above other content
+                    display: { xs: "block", sm: "none" },
+                  }}
+                >
+                  <IconButton
+                    size="large"
+                    edge="start"
+                    color="inherit"
+                    onClick={() => setOpenBurger((openBurger) => !openBurger)}
+                    aria-label="menu"
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                </Box>
+
+                {/* NavBar Navigation links */}
+                <Box
+                  sx={{
+                    display: {
+                      xs: openBurger && smallScreen ? "block" : "none",
+                      sm: "flex",
+                      marginRight: openBurger && smallScreen ? "25px" : "0px",
+                      width: openBurger && smallScreen ? "180px" : "maxWidth",
+                    },
+                  }}
+                >
+                  <HeaderLinks navLinkTo="#" navLinkName="Päiväkirja" />
+                  <HeaderLinks navLinkTo="#" navLinkName="Blogi" />
+                  <HeaderLinks navLinkTo="#" navLinkName="Kauppa" />
+                  <SessionButtons />
+                </Box>
+              </div>
+            </Toolbar>
+          </AppBar>
+        </ThemeProvider>
+      </Box>
+    </header>
+  );
 }
