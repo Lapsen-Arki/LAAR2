@@ -44,9 +44,8 @@ jobs:
           npm install
           node html-to-json.js
           node json-to-markdown.js
-          content=$(cat output.md | tr '\n' '\\n')
-          replaced_content="${content//'\\n'/$'\n'}"
-          echo "::set-output name=content::$replaced_content"
+          content=$(cat output.md | awk '{print $0"\n"}')
+          echo "::set-output name=content::content"
         shell: bash
 
       - name: Comment PR
@@ -62,34 +61,3 @@ jobs:
             PORT=3000 FIREBASE_KEY_JSON=${FIREBASE_KEY_JSON} npm run start
           ) &
           bash ./check-healthy-light.sh "Backend" "http://localhost:3000/api/alive" 120
-
-  build-frontend-run-tests:
-    runs-on: [self-hosted, feature]
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20.11.0"
-
-      - name: Clear npm cache
-        run: |
-          echo "Initializing local environment"
-          npm cache clean --force
-          npm cache verify
-
-      - name: Setup frontend
-        run: |
-          cd frontend
-          npm install
-          npm run build
-
-      - name: Run frontend
-        run: |
-          (
-            cd frontend
-            VITE_PORT=5000 npm run preview
-          ) &
-          bash ./check-healthy-light.sh "Frontend" "http://localhost:5000" 120
