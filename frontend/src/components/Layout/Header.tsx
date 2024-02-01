@@ -32,6 +32,7 @@ export default function Header() {
         <ThemeProvider theme={headingTheme}>
           <AppBar position="fixed" sx={{ width: "100%" }}>
             <Toolbar>
+              {/* LAAR text logo: */}
               <Typography
                 variant="h5"
                 component={Link}
@@ -42,6 +43,7 @@ export default function Header() {
                 LAAR
               </Typography>
 
+              {/* Burger menu icon: */}
               <div>
                 <Box
                   sx={{
