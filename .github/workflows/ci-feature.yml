@@ -44,9 +44,8 @@ jobs:
           npm install
           node html-to-json.js
           node json-to-markdown.js
-          content=$(cat output.md)
-          content_base64=$(echo "$content" | base64)
-          echo "::set-output name=content::$content_base64"
+          content=$(cat output.md | sed 's/$/\\n/')
+          echo "::set-output name=content::$content"
         shell: bash
 
       - name: Comment PR
