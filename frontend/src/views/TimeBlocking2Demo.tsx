@@ -100,7 +100,7 @@ const TimeBlock = () => {
   return (
     <div className="timeBlocking">
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}>
+        <Grid container spacing={5}>
           {events.map((event, index) =>
             Object.keys(event).map((key) => (
               <Grid item xs={12} md={4} key={key}>

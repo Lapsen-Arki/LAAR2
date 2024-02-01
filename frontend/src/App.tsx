@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./views/Home";
 import Layout from "./components/Layout/Layout";
 import Register from "./views/Auth/Register";
 import Login from "./views/Auth/Login";
@@ -17,6 +16,7 @@ import "./conf/firebaseSdkConfig";
 import { TokenProvider } from "./contexts/tokenContext";
 import UserSettings from "./views/UserSettings";
 import { UserProvider } from "./contexts/userContext";
+import IndexPage from "./views";
 
 import Example from "./views/example";
 
@@ -37,8 +37,8 @@ function App() {
           <Elements stripe={stripePromise}>
             <Layout>
               <Routes>
+                <Route path="/" element={<IndexPage />} />
                 <Route path="/example" element={<Example />} />
-                <Route path="/" element={<Home />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/profile" element={<Profile />} />
