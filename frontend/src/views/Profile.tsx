@@ -1,4 +1,3 @@
-import React from "react";
 import { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Profile.css';
@@ -24,8 +23,8 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 import PleaseLoginModal from "../components/pleaseLoginModal";
 import { TokenContext } from "../contexts/tokenContext";
-import { getProfiles } from '../api/getProfiles';
-import deleteProfile from '../api/deleteProfile';
+import { getChildProfiles } from '../api/getChildProfiles';
+import deleteChildProfile from '../api/deleteChildProfile';
 
 // kalenteri näytetään oikein, huomioiden synttärit ja karkausvuodet
 function calculateAge(birthdate: Date): { age: string, birthdayWish?: string } {
@@ -110,38 +109,50 @@ interface ChildProfile {
 }
 
 export default function Profile() {
-  const [openLoginModal, setOpenLoginModal] = React.useState(false);
+  const [openLoginModal, setOpenLoginModal] = useState(false);
   const { idToken } = useContext(TokenContext);
   const navigate = useNavigate();
   const [profiles, setProfiles] = useState<ChildProfile[]>([]);
   const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
   const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
 
+  const fetchProfilesFromSessionStorage = () => {
+    const storedProfilesJson = sessionStorage.getItem('storedProfiles');
+    if (storedProfilesJson) {
+      return JSON.parse(storedProfilesJson) as ChildProfile[];
+    }
+    return null;
+  };
+
   useEffect(() => {
-    const fetchProfiles = async () => {
-      if (!idToken) {
-        console.error("JWT token puuttuu");
-        return;
-      }
+    if (!idToken) {
+      console.error('JWT token puuttuu');
+      setOpenLoginModal(true);
+      return;
+    }
 
-      try {
-        console.log("Haetaan profiileja...");
-        const response = await getProfiles(idToken);
-        console.log("Profiilit haettu onnistuneesti:", response);
-
-        if ('error' in response) {
-          console.error('Virhe profiilien haussa:', response.error);
-        } else {
-          setProfiles(response);
-        }
-      } catch (error) {
-        console.error('Virhe profiilien haussa:', error);
+    const fetchProfilesFromServer = async () => {
+      console.log('Haetaan profiileja palvelimelta...');
+      const response = await getChildProfiles(idToken);
+      if (!('error' in response)) {
+        sessionStorage.setItem('storedProfiles', JSON.stringify(response));
+        setProfiles(response);
+      } else {
+        console.error('Virhe profiilien haussa:', response.error);
       }
     };
-
-    if (idToken) {
-      fetchProfiles();
-    }
+  
+    const fetchProfiles = async () => {
+      const storedProfiles = fetchProfilesFromSessionStorage();
+      if (storedProfiles) {
+        console.log('Käytetään Session Storagessa olevia profiileja');
+        setProfiles(storedProfiles);
+      } else {
+        await fetchProfilesFromServer();
+      }
+    };
+  
+    fetchProfiles();
   }, [idToken]);
 
   if (!idToken) {
@@ -156,11 +167,12 @@ export default function Profile() {
     setSelectedProfileId(profileId);
     setConfirmationDialogOpen(true);
   };
-
+  
   const handleDeleteConfirmed = async () => {
     if (selectedProfileId) {
       try {
-        await deleteProfile(selectedProfileId, idToken, profiles, setProfiles);
+        // Lisää tyyppiannotaatiot profiles ja setProfiles parametreille
+        await deleteChildProfile(selectedProfileId, idToken, profiles, setProfiles);
         setSelectedProfileId(null);
       } catch (error) {
         console.error('Profiilin poisto epäonnistui', error);

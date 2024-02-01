@@ -6,14 +6,14 @@ import adminAddData from "./controllers/adminAddData";
 import checkAuth from "../middleware/checkAuth";
 import { emailTest } from "./controllers/testingEmail";
 import adminAuth from "../middleware/adminAuth";
-import createProfile from "./controllers/editProfile";
-import editProfile from "./controllers/editProfile";
 import testController from "../utils/testController";
-import {
-  getProfiles,
-  getProfileById,
-  deleteProfile,
-} from "./controllers/profiles";
+
+import createChildProfile from "./controllers/createChildProfile";
+import editChildProfile from "./controllers/editChildProfile";
+import { getChildProfiles } from "./controllers/getChildProfiles";
+import { getChildProfileById } from "./controllers/getChildProfileById";
+import { deleteChildProfile } from "./controllers/deleteChildProfile";
+
 import emailVerification from "./controllers/emailVerification";
 
 const router = express.Router();
@@ -25,12 +25,16 @@ router.post("/auth", checkAuth, (req: Request, res: Response) => {
 
 router.post("/admin", checkAuth, adminAuth, adminAddData);
 
-// Profile routes:
-router.post("/editProfile", createProfile);
-router.post("/editProfile/:id", editProfile);
-router.get("/profiles", getProfiles);
-router.get("/profiles/:id", getProfileById);
-router.delete("/profiles/:profileId", deleteProfile);
+// Profile routes:                                           // Selitteet:
+router.post("/createChildProfile", createChildProfile);      // Luo uusi profiili käyttäjälle
+router.post("/editChildProfile/:id", editChildProfile);      // Muokkaa käyttäjän luomaa profiilia, profiilin idn perusteella
+router.get("/profiles", getChildProfiles);                   // Hae kaikki käyttäjän luomat profiilit
+router.get("/profile/:id", getChildProfileById);             // Hae käyttäjän luoma profiili idn perusteella
+router.delete("/profile/:profileId", deleteChildProfile);    // Poista käyttäjän luoma profiili
+
+// Future User routes plan (?):
+// router.get("/settings", editAccount);
+// router.get("/settings/:accountId", deleteAccount);
 
 // Email related routes, forgot pw, new verification etc:
 router.post("/email-test", emailTest);

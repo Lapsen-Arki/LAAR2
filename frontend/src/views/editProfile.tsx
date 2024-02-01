@@ -18,8 +18,9 @@ import {
 
 import PleaseLoginModal from "../components/pleaseLoginModal";
 import { TokenContext } from "../contexts/tokenContext";
-import { editProfile } from '../api/editProfilePost.ts';
-import { getProfileById } from '../api/getProfiles';
+import { createChildProfile } from '../api/createChildProfile.ts';
+import { editChildProfile } from '../api/editChildProfile.ts';
+import { getChildProfileById } from '../api/getChildProfileById.ts';
 
 interface ChildProfile {
   id: string;
@@ -47,25 +48,43 @@ const EditProfile = () => {
   console.log(id)
   const profileId = id || '';
 
+  // Etsii ja palauttaa lapsiprofiilin Session Storagesta annetun ID:n perusteella.
+  // Jos profiilia ei löydy, palauttaa null.
+  const findProfileInSessionStorage = (profileId: string): ChildProfile | null => {
+    const storedProfilesJson = sessionStorage.getItem('childProfiles');
+    if (!storedProfilesJson) return null;
+    
+    const storedProfiles: ChildProfile[] = JSON.parse(storedProfilesJson);
+    return storedProfiles.find(p => p.id === profileId) || null;
+  };
+
   useEffect(() => {
-    // Haetaan valitun profiilin tiedot, kun komponentti latautuu
     const fetchProfileData = async () => {
       try {
         if (profileId) {
           console.log('Haetaan profiilin tiedot ID:llä:', profileId);
-          const profileData: ChildProfile | { error: Error } = await getProfileById(profileId, idToken);
-          if ('childName' in profileData) {
-            console.log('Haettu profiilin tiedot:', profileData);
-            setChildName(profileData.childName);
-            
-            // Muunnetaan saatu päivämäärä dayjs-objektiksi
-            const birthdateFromApi = profileData.birthdate ? dayjs(profileData.birthdate, "YYYY-MM-DD") : null;
-            setBirthdate(birthdateFromApi);
 
-            setSelectedAvatar(profileData.avatar);
-            setAccessRights(profileData.accessRights);
+          // Ensin yritetään löytää profiili Session Storagesta
+          const profileDataFromStorage = findProfileInSessionStorage(profileId);
+          
+          if (profileDataFromStorage) {
+            console.log('Käytetään Session Storagessa olevaa profiilia:', profileDataFromStorage);
+            setChildName(profileDataFromStorage.childName);
+            setBirthdate(profileDataFromStorage.birthdate ? dayjs(profileDataFromStorage.birthdate, "YYYY-MM-DD") : null);
+            setSelectedAvatar(profileDataFromStorage.avatar);
+            setAccessRights(profileDataFromStorage.accessRights);
           } else {
-            console.error('Virheellinen profiilidata', profileData.error);
+            // Jos ei löydy Session Storagesta, haetaan palvelimelta
+            const profileData: ChildProfile | { error: Error } = await getChildProfileById(profileId, idToken);
+            if ('childName' in profileData) {
+              console.log('Haettu profiilin tiedot:', profileData);
+              setChildName(profileData.childName);
+              setBirthdate(profileData.birthdate ? dayjs(profileData.birthdate, "YYYY-MM-DD") : null);
+              setSelectedAvatar(profileData.avatar);
+              setAccessRights(profileData.accessRights);
+            } else {
+              console.error('Virheellinen profiilidata', profileData.error);
+            }
           }
         }
       } catch (error) {
@@ -101,18 +120,23 @@ const EditProfile = () => {
     else setBirthdateError('');
 
     if (childName && birthdate) {
-      try {
-        const userData = {
-          id: profileId,
-          childName,
-          birthdate: dayjs(birthdate).format("YYYY-MM-DD"), // Muunna takaisin merkkijonoksi tallennusta varten
-          avatar: selectedAvatar || '/broken-image.jpg',
-          accessRights,
-          creatorId: idToken,
-        };
+      const userData = {
+        id: profileId,
+        childName,
+        birthdate: dayjs(birthdate).format("YYYY-MM-DD"),
+        avatar: selectedAvatar || '/broken-image.jpg',
+        accessRights,
+        creatorId: idToken,
+      };
 
-        // Luo uusi profiili tai päivitä olemassa oleva
-        await editProfile(userData, idToken);
+      try {
+        if (profileId) {
+          // Tarkista, onko ID määritelty
+          await editChildProfile(userData, idToken);
+        } else {
+          // Jos ID:tä ei ole määritelty, luo uusi profiili
+          await createChildProfile(userData, idToken);
+        }
         console.log('Profiili tallennettu onnistuneesti:', userData);
         navigate('/profile');
       } catch (error) {

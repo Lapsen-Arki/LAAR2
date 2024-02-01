@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
 import { getUserIdFromToken } from "../../utils/getUserIdFromTokenUtil";
 
-const editProfile = async (req: Request, res: Response): Promise<void> => {
+const editChildProfile = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id, childName, birthdate, avatar, accessRights } = req.body;
 
@@ -49,16 +49,7 @@ const editProfile = async (req: Request, res: Response): Promise<void> => {
 
       res.status(200).json({ message: "Profiili päivitetty onnistuneesti" });
     } else {
-      // Luo uusi profiili, jos id ei ole mukana
-      await childProfilesCollection.add({
-        childName: childName,
-        birthdate: birthdate,
-        avatar: avatar,
-        accessRights: accessRights,
-        creatorId: creatorId, // Käyttäjän UID
-      });
-
-      res.status(200).json({ message: "Uusi profiili luotu onnistuneesti" });
+      res.status(400).json({ error: "Id on pakollinen tieto päivityksessä" });
     }
   } catch (error: any) {
     console.error("Profiilin päivitys epäonnistui", error);
@@ -66,4 +57,4 @@ const editProfile = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export default editProfile;
+export default editChildProfile;

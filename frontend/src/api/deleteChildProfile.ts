@@ -11,7 +11,7 @@ interface ChildProfile {
   creatorId: string;
 }
 
-const deleteProfile = async (profileId: string, idToken: string | null, profiles: ChildProfile[], setProfiles: React.Dispatch<React.SetStateAction<ChildProfile[]>>) => {
+const deleteChildProfile = async (profileId: string, idToken: string | null, profiles: ChildProfile[], setProfiles: React.Dispatch<React.SetStateAction<ChildProfile[]>>) => {
   try {
     // Lähetä DELETE-pyyntö backendiin käyttäen axiosia ja oikeaa idTokenia
     const config = {
@@ -19,7 +19,7 @@ const deleteProfile = async (profileId: string, idToken: string | null, profiles
         Authorization: `Bearer ${idToken}`
       }
     };
-    await axios.delete(`${API_BASE_URL}/profiles/${profileId}`, config);
+    await axios.delete(`${API_BASE_URL}/profile/${profileId}`, config);
     
     // Päivitä frontend uusilla profiileilla
     const updatedProfiles = profiles.filter((profile) => profile.id !== profileId);
@@ -29,4 +29,4 @@ const deleteProfile = async (profileId: string, idToken: string | null, profiles
   }
 };
 
-export default deleteProfile;
+export default deleteChildProfile;
