@@ -44,7 +44,7 @@ jobs:
           npm install
           node html-to-json.js
           node json-to-markdown.js
-          content=$(cat output.md | sed 's/$/\\n/')
+          content=$(cat output.md | tr '\n' '\\n')
           echo "::set-output name=content::$content"
         shell: bash
 
