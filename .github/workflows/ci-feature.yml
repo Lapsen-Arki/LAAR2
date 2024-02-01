@@ -42,21 +42,17 @@ jobs:
         working-directory: utils
         run: |
           npm install
-          node html-to-json.js
-          node json-to-markdown.js
-          content=$(cat output.md)
-          echo "::set-output name=content | $content"
-        shell: bash
-
-      - name: Debug parse
-        run: |
-          echo "content: ${{ steps.parse_results.outputs.content }}"
+          title="Backend Coverage Summary"
+          path="backend"
+          file="backend-summary"
+          node html-to-json.js $path $file
+          node json-to-markdown.js $title $file $file
         shell: bash
 
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@v2
         with:
-          filePath: "utils/output.md"
+          filePath: "utils/${{ steps.parse_results.outputs.file }}.md"
           comment_tag: "backend-test-results"
 
       - name: Run backend
