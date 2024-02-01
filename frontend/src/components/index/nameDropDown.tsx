@@ -17,7 +17,7 @@ export default function NameDropDown() {
       // Fetch the children's names and ages here
       // Later fetching also each child's allergies if adding the
       // feature later
-      const listOfNames = ["fetching", "the", "names", "here"];
+      const listOfNames = ["fetching", "the", "childProfileNames", "here"];
 
       setchildNames(listOfNames);
     } else {
@@ -28,7 +28,9 @@ export default function NameDropDown() {
 
   return (
     <>
-      <Box sx={{ display: "flex-1", justifyContent: "flex-start", mt: 5 }}>
+      <Box
+        sx={{ display: "flex-1", justifyContent: "flex-start", mt: 5, mb: 5 }}
+      >
         <InputLabel id="preview-target-label">Valitse Lapsi</InputLabel>
         <Select
           labelId="preview-target-label"
