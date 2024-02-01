@@ -90,6 +90,7 @@ jobs:
           cd frontend
           npm install
           npm run build
+
       - name: Run frontend
         run: |
           (

@@ -12,16 +12,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/*.lock') }}
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20.11.0"
-
-      - name: Clear npm cache
-        run: |
-          echo "Initializing local environment"
-          npm cache clean --force
-          npm cache verify
 
       - name: Set up backend
         working-directory: backend
