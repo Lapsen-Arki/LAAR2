@@ -5,7 +5,7 @@ import { AppBar, Box, Toolbar, Typography, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { ThemeProvider } from "@mui/material/styles";
-import HeaderLinks from "../header/headerLinks";
+import HeaderLink from "../header/headerLink";
 import SessionButtons from "../header/sessionButtons";
 import { useState, useEffect } from "react";
 
@@ -35,6 +35,7 @@ export default function Header() {
               <Typography
                 variant="h5"
                 component={Link}
+                onClick={() => setOpenBurger(false)}
                 to="/"
                 sx={{ flexGrow: 1, ml: 0.5 }}
               >
@@ -73,10 +74,22 @@ export default function Header() {
                     },
                   }}
                 >
-                  <HeaderLinks navLinkTo="#" navLinkName="Päiväkirja" />
-                  <HeaderLinks navLinkTo="#" navLinkName="Blogi" />
-                  <HeaderLinks navLinkTo="#" navLinkName="Kauppa" />
-                  <SessionButtons />
+                  <HeaderLink
+                    setOpen={setOpenBurger}
+                    navLinkTo="#"
+                    navLinkName="Päiväkirja"
+                  />
+                  <HeaderLink
+                    setOpen={setOpenBurger}
+                    navLinkTo="#"
+                    navLinkName="Blogi"
+                  />
+                  <HeaderLink
+                    setOpen={setOpenBurger}
+                    navLinkTo="#"
+                    navLinkName="Kauppa"
+                  />
+                  <SessionButtons setOpen={setOpenBurger} />
                 </Box>
               </div>
             </Toolbar>

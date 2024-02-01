@@ -6,14 +6,25 @@ import { Link } from "react-router-dom";
 import { TokenContext } from "../../contexts/tokenContext";
 import { useContext } from "react";
 
-export default function SessionButtons() {
+export default function SessionButtons({
+  setOpen,
+}: {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const { isLoggedIn, signOutMethod } = useContext(TokenContext);
   return (
     <Box sx={{ display: "flex", alignItems: "center", mb: 2, mt: 1.5 }}>
       {/* Logout icon: */}
       {isLoggedIn && (
         <div>
-          <IconButton size="large" onClick={signOutMethod} color="inherit">
+          <IconButton
+            size="large"
+            onClick={() => {
+              setOpen(false);
+              signOutMethod();
+            }}
+            color="inherit"
+          >
             <LogoutIcon />
           </IconButton>
         </div>
@@ -25,6 +36,7 @@ export default function SessionButtons() {
           <IconButton
             size="large"
             component={Link}
+            onClick={() => setOpen(false)}
             to="/profile"
             color="inherit"
           >
@@ -33,7 +45,13 @@ export default function SessionButtons() {
         </div>
       ) : (
         <div>
-          <IconButton size="large" component={Link} to="/login" color="inherit">
+          <IconButton
+            onClick={() => setOpen(false)}
+            size="large"
+            component={Link}
+            to="/login"
+            color="inherit"
+          >
             <LoginIcon />
           </IconButton>
         </div>

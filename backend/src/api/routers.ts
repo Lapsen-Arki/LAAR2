@@ -14,6 +14,11 @@ import { getChildProfiles } from "./controllers/getChildProfiles";
 import { getChildProfileById } from "./controllers/getChildProfileById";
 import { deleteChildProfile } from "./controllers/deleteChildProfile";
 
+import {
+  startSubscription,
+  cancelSubscription,
+  getSubscriptionById
+} from './controllers/stripe';
 import emailVerification from "./controllers/emailVerification";
 
 const router = express.Router();
@@ -43,6 +48,11 @@ router.post("/emailVerification", emailVerification);
 // General test route:
 router.get("/test", testController);
 
+// Stripe routes
+router.post("/start-subscription/:id", startSubscription)
+router.post("/cancel-subscription/:id", cancelSubscription);
+router.post("/get-subscription/:id", getSubscriptionById);
+
 // alive check
 router.get("/alive", (req, res) => {
   res.status(200);
@@ -52,7 +62,7 @@ router.get("/alive", (req, res) => {
 // for testing purposes, remove later
 router.get("/secret", (req, res) => {
   res.status(200);
-  res.send(process.env.SECRET_IS_SET);
+  res.send(process.env.SECRET_IS_SET + " + " + process.env.NODE_ENV);
 });
 
 export default router;
