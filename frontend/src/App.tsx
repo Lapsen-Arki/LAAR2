@@ -11,6 +11,7 @@ import CaresProfile from "./views/carersProfile";
 import AdminPage from "./views/Auth/admin";
 import Subscription from "./views/Subscription";
 import UserSettings from "./views/UserSettings";
+import ChoicesPage from "./views/choices";
 
 // Higher Order Components (HOC):
 import Layout from "./components/Layout/Layout";
@@ -39,6 +40,7 @@ function App() {
             <Layout>
               <Routes>
                 <Route path="/" element={<IndexPage />} />
+                <Route path="/choices" element={<ChoicesPage />} />
                 <Route path="/testing" element={<TestingPage />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
