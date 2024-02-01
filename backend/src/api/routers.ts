@@ -14,6 +14,11 @@ import {
   getProfileById,
   deleteProfile,
 } from "./controllers/profiles";
+import {
+  startSubscription,
+  cancelSubscription,
+  getSubscriptionById
+} from './controllers/stripe';
 import emailVerification from "./controllers/emailVerification";
 
 const router = express.Router();
@@ -38,6 +43,11 @@ router.post("/emailVerification", emailVerification);
 
 // General test route:
 router.get("/test", testController);
+
+// Stripe routes
+router.post("/start-subscription/:id", startSubscription)
+router.post("/cancel-subscription/:id", cancelSubscription);
+router.post("/get-subscription/:id", getSubscriptionById);
 
 // alive check
 router.get("/alive", (req, res) => {
