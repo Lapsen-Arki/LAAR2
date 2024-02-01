@@ -20,4 +20,4 @@ const getSubscription = async (idToken : string | null) => {
   }
 };
 
-export default startSubscription;
+export default getSubscription;
