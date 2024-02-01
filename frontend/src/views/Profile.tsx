@@ -1,4 +1,3 @@
-import React from "react";
 import { useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Profile.css';
@@ -11,94 +10,19 @@ import {
   Avatar,
   IconButton,
   Tooltip,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
 } from '@mui/material';
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
-import PleaseLoginModal from "../components/pleaseLoginModal";
+import PleaseLoginModal from "../components/modals/pleaseLoginModal";
 import { TokenContext } from "../contexts/tokenContext";
-import { getProfiles } from '../api/getProfiles';
-import deleteProfile from '../api/deleteProfile';
+import { getChildProfiles } from '../api/childProfile/getChildProfiles';
+import deleteChildProfile from '../api/childProfile/deleteChildProfile';
 
-// kalenteri näytetään oikein, huomioiden synttärit ja karkausvuodet
-function calculateAge(birthdate: Date): { age: string, birthdayWish?: string } {
-  if (!birthdate) return { age: '' };
-
-  const today = new Date();
-  const birthDate = new Date(birthdate);
-  const result: { age: string, birthdayWish?: string } = { age: '' };
-
-  if (
-    birthDate.getDate() === today.getDate() &&
-    birthDate.getMonth() === today.getMonth()
-  ) {
-    const ageInMilliseconds = today.getTime() - birthDate.getTime();
-    const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25);
-
-    const years = Math.floor(ageInYears);
-    const monthsInMilliseconds = (ageInYears - years) * (365.25 * 24 * 60 * 60 * 1000);
-    const months = Math.floor(monthsInMilliseconds / (1000 * 60 * 60 * 24 * (365.25 / 12)));
-    const daysInMilliseconds = monthsInMilliseconds % (1000 * 60 * 60 * 24 * (365.25 / 12));
-    const days = Math.floor(daysInMilliseconds / (1000 * 60 * 60 * 24));
-
-    const yearLabel = years === 1 ? 'v' : 'v';
-    const monthLabel = months === 1 ? 'kk' : 'kk';
-    const dayLabel = days === 1 ? 'pv' : 'pv';
-
-    result.age = `${years}${yearLabel} ${months}${monthLabel} ${days}${dayLabel}`;
-    result.birthdayWish = 'Hyvää Syntymäpäivää! 🥳🎈';
-  } else if (birthDate.getTime() > today.getTime()) {
-    const timeDifference = birthDate.getTime() - today.getTime();
-    const millisecondsInDay = 1000 * 60 * 60 * 24;
-    const daysRemaining = Math.floor(timeDifference / millisecondsInDay);
-    const monthsRemaining = Math.floor(daysRemaining / 30);
-    const yearsRemaining = Math.floor(monthsRemaining / 12);
-
-    result.age = `Syntymään jäljellä: ${yearsRemaining}v ${monthsRemaining % 12}kk ${daysRemaining % 30}pv`;
-  } else {
-    const ageInMilliseconds = today.getTime() - birthDate.getTime();
-    const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25);
-
-    const years = Math.floor(ageInYears);
-    const monthsInMilliseconds = (ageInYears - years) * (365.25 * 24 * 60 * 60 * 1000);
-    const months = Math.floor(monthsInMilliseconds / (1000 * 60 * 60 * 24 * (365.25 / 12)));
-    const daysInMilliseconds = monthsInMilliseconds % (1000 * 60 * 60 * 24 * (365.25 / 12));
-    const days = Math.floor(daysInMilliseconds / (1000 * 60 * 60 * 24));
-
-    const yearLabel = years === 1 ? 'v' : 'v';
-    const monthLabel = months === 1 ? 'kk' : 'kk';
-    const dayLabel = days === 1 ? 'pv' : 'pv';
-
-    result.age = `${years}${yearLabel} ${months}${monthLabel} ${days}${dayLabel}`;
-  }
-
-  return result;
-}
-
-// nimen rivinvaihtaja
-function splitNameToFitWidth(name: string, maxLineLength: number) {
-  let result = '';
-  let lineLength = 0;
-
-  name.split(' ').forEach(word => {
-    if (lineLength + word.length > maxLineLength) {
-      result += '\n';
-      lineLength = 0;
-    }
-
-    result += word + ' ';
-    lineLength += word.length + 1; // +1 for the space
-  });
-
-  return result.trim();
-}
+import { calculateAge, splitNameToFitWidth } from './utils/profileUtils';
+import ConfirmationDialog from './utils/profileConfirmationDialog';
 
 interface ChildProfile {
   id: string;
@@ -110,38 +34,50 @@ interface ChildProfile {
 }
 
 export default function Profile() {
-  const [openLoginModal, setOpenLoginModal] = React.useState(false);
+  const [openLoginModal, setOpenLoginModal] = useState(false);
   const { idToken } = useContext(TokenContext);
   const navigate = useNavigate();
   const [profiles, setProfiles] = useState<ChildProfile[]>([]);
   const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
   const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
 
+  const fetchProfilesFromSessionStorage = () => {
+    const storedProfilesJson = sessionStorage.getItem('childProfiles');
+    if (storedProfilesJson) {
+      return JSON.parse(storedProfilesJson) as ChildProfile[];
+    }
+    return null;
+  };
+
   useEffect(() => {
-    const fetchProfiles = async () => {
-      if (!idToken) {
-        console.error("JWT token puuttuu");
-        return;
-      }
+    if (!idToken) {
+      console.error('JWT token puuttuu');
+      setOpenLoginModal(true);
+      return;
+    }
 
-      try {
-        console.log("Haetaan profiileja...");
-        const response = await getProfiles(idToken);
-        console.log("Profiilit haettu onnistuneesti:", response);
-
-        if ('error' in response) {
-          console.error('Virhe profiilien haussa:', response.error);
-        } else {
-          setProfiles(response);
-        }
-      } catch (error) {
-        console.error('Virhe profiilien haussa:', error);
+    const fetchProfilesFromServer = async () => {
+      console.log('Haetaan profiileja palvelimelta...');
+      const response = await getChildProfiles(idToken);
+      if (!('error' in response)) {
+        sessionStorage.setItem('storedProfiles', JSON.stringify(response));
+        setProfiles(response);
+      } else {
+        console.error('Virhe profiilien haussa:', response.error);
       }
     };
-
-    if (idToken) {
-      fetchProfiles();
-    }
+  
+    const fetchProfiles = async () => {
+      const storedProfiles = fetchProfilesFromSessionStorage();
+      if (storedProfiles) {
+        console.log('Käytetään Session Storagessa olevia profiileja');
+        setProfiles(storedProfiles);
+      } else {
+        await fetchProfilesFromServer();
+      }
+    };
+  
+    fetchProfiles();
   }, [idToken]);
 
   if (!idToken) {
@@ -156,11 +92,12 @@ export default function Profile() {
     setSelectedProfileId(profileId);
     setConfirmationDialogOpen(true);
   };
-
+  
   const handleDeleteConfirmed = async () => {
     if (selectedProfileId) {
       try {
-        await deleteProfile(selectedProfileId, idToken, profiles, setProfiles);
+        // Lisää tyyppiannotaatiot profiles ja setProfiles parametreille
+        await deleteChildProfile(selectedProfileId, idToken, profiles, setProfiles);
         setSelectedProfileId(null);
       } catch (error) {
         console.error('Profiilin poisto epäonnistui', error);
@@ -196,31 +133,11 @@ export default function Profile() {
         </div>
 
         {/* Varmistusdialogi */}
-        <Dialog
-          open={confirmationDialogOpen}
-          onClose={() => setConfirmationDialogOpen(false)}
-        >
-          <DialogTitle>Oletko varma että haluat poistaa profiilin?</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Tämä toiminto poistaa profiilin pysyvästi.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => setConfirmationDialogOpen(false)}
-              color="primary"
-            >
-              Ei
-            </Button>
-            <Button
-              onClick={handleDeleteConfirmed}
-              color="error"
-            >
-              Kyllä
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <ConfirmationDialog
+        open={confirmationDialogOpen}
+        onClose={() => setConfirmationDialogOpen(false)}
+        onConfirm={handleDeleteConfirmed}
+      />
 
           <Box className="profiles">
             <div style={{ flex: 1 }}>

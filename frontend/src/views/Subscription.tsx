@@ -24,7 +24,7 @@ import Paper from '@mui/material/Paper';
 import Switch from '@mui/material/Switch';
 import '../styles/Subscription.css'
 import { TokenContext } from "../contexts/tokenContext";
-import PleaseLoginModal from "../components/pleaseLoginModal";
+import PleaseLoginModal from "../components/modals/pleaseLoginModal";
 
 // Sivu on vielä kesken, keskeneräisiä funktioita kommentoitu pois
 

@@ -13,7 +13,7 @@ import { AddDataToDatabase } from "../../types/types";
 import { adminAddData } from "../../api/adminAddData";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
-import PleaseLoginModal from "../../components/pleaseLoginModal";
+import PleaseLoginModal from "../../components/modals/pleaseLoginModal";
 
 // TODO: add following features: 1. Remove data from recommendation database collection
 // 2. Adding feature for adding and removing admin users by superuser
