@@ -2,10 +2,12 @@ import { Box, Typography } from "@mui/material";
 import { Link } from "react-router-dom"; // Assuming you're using react-router
 
 // HeaderLinks component for individual links
-const HeaderLinks = ({
+const HeaderLink = ({
+  setOpen,
   navLinkTo,
   navLinkName,
 }: {
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   navLinkTo: string;
   navLinkName: string;
 }) => {
@@ -24,6 +26,7 @@ const HeaderLinks = ({
       <Typography
         component={Link}
         to={navLinkTo}
+        onClick={() => setOpen(false)}
         sx={{
           flexGrow: 1,
           // Any additional styling
@@ -36,4 +39,4 @@ const HeaderLinks = ({
   );
 };
 
-export default HeaderLinks;
+export default HeaderLink;
