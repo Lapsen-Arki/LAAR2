@@ -105,6 +105,7 @@ jobs:
           title="Frontend Coverage Summary"
           path="frontend"
           file="frontend-summary"
+          node parse-frontend-results.js
           node html-to-json.js "$path" "$file"
           node json-to-markdown.js "$title" "$file" "$path"
           echo "::set-output name=file::$file"

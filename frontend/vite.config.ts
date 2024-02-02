@@ -10,6 +10,10 @@ export default defineConfig({
     port: parseInt(process.env.VITE_PORT) || null,
   },
   test: {
+    reporters: ["default", "json"],
+    outputFile: {
+      json: "./coverage/rawResults.json",
+    },
     coverage: {
       provider: "v8",
       reporter: ["text-summary", "lcov"],

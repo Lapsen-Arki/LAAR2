@@ -30,23 +30,38 @@ fs.readFile(jsonPath, "utf8", function (err, data) {
   let resultsData = JSON.parse(fs.readFileSync(testResults, "utf8"));
   if (resultsData.numTestsFailed > 0) {
     // Second table creation
-    let secondTableHeader = "Suite Name | Test Case Name | Actual | Expected";
+    let secondTableHeader;
+    if (args[2] === "frontend") {
+      secondTableHeader = "Suite Name | Test Case Name | Message";
+    } else {
+      secondTableHeader = "Suite Name | Test Case Name | Actual | Expected";
+    }
     let secondTableSeparator =
       Object.keys(resultsData.failedTestNames[0])
         .map(() => "---")
         .join(" | ") +
       " | " +
       "---";
-    let secondTableRows = resultsData.failedTestNames
-      .map(
-        (failedTest) =>
-          `| ${failedTest.suiteName} | ${
-            failedTest.testCaseName
-          } | ${failedTest.matcherResult.actual.join(
-            ", "
-          )} | ${failedTest.matcherResult.expected.join(", ")} |`
-      )
-      .join("\n");
+    let secondTableRows;
+    if (args[2] === "frontend") {
+      secondTableRows = resultsData.failedTestNames
+        .map(
+          (failedTest) =>
+            `| ${failedTest.suiteName} | ${failedTest.testCaseName} | ${failedTest.message} |`
+        )
+        .join("\n");
+    } else {
+      resultsData.failedTestNames
+        .map(
+          (failedTest) =>
+            `| ${failedTest.suiteName} | ${
+              failedTest.testCaseName
+            } | ${failedTest.matcherResult.actual.join(
+              ", "
+            )} | ${failedTest.matcherResult.expected.join(", ")} |`
+        )
+        .join("\n");
+    }
 
     let secondTable = `| ${secondTableHeader} |\n| ${secondTableSeparator} |\n${secondTableRows}`;
     markdownContent += `\n\n# Failed Tests\n\n${secondTable}\n\n`;
