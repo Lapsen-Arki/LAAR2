@@ -1,10 +1,11 @@
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
+import SettingsIcon from "@mui/icons-material/Settings";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { IconButton, Box, Tooltip } from "@mui/material";
+import { IconButton, Box, Tooltip, Menu, MenuItem } from "@mui/material";
 import { Link } from "react-router-dom";
 import { TokenContext } from "../../contexts/tokenContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 export default function HeaderIcons({
   setOpen,
@@ -12,6 +13,15 @@ export default function HeaderIcons({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const { isLoggedIn, signOutMethod } = useContext(TokenContext);
+  const [settingsAnchor, setSettingsAnchor] = useState<null | HTMLElement>(
+    null
+  );
+
+  const handleAnchorClose = () => {
+    setSettingsAnchor(null);
+    setOpen(false);
+  };
+
   return (
     <Box sx={{ display: "flex", alignItems: "center", mb: 2, mt: 1.5 }}>
       {/* Logout icon: */}
@@ -46,6 +56,54 @@ export default function HeaderIcons({
               <AccountCircle />
             </IconButton>
           </Tooltip>
+
+          <Tooltip title="Asetukset">
+            <IconButton
+              size="large"
+              onClick={(e) => setSettingsAnchor(e.currentTarget)}
+              color="inherit"
+            >
+              <SettingsIcon />
+            </IconButton>
+          </Tooltip>
+          <Menu
+            anchorEl={settingsAnchor}
+            keepMounted
+            open={Boolean(settingsAnchor)}
+            onClose={() => setSettingsAnchor(null)}
+          >
+            <MenuItem
+              component={Link}
+              to="/profile"
+              onClick={handleAnchorClose}
+            >
+              Profiilisivu
+            </MenuItem>
+            <MenuItem
+              component={Link}
+              to="/account"
+              onClick={handleAnchorClose}
+            >
+              Tilin asetukset
+            </MenuItem>
+            <MenuItem
+              component={Link}
+              to="/subscription"
+              onClick={handleAnchorClose}
+            >
+              Tilaus asetukset
+            </MenuItem>
+            <MenuItem
+              component={Link}
+              to="/profile"
+              onClick={() => {
+                handleAnchorClose();
+                signOutMethod();
+              }}
+            >
+              Kirjaudu ulos
+            </MenuItem>
+          </Menu>
         </div>
       ) : (
         <div>
