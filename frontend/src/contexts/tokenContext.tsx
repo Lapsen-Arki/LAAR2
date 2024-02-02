@@ -58,7 +58,6 @@ function TokenProvider({ children }: { children: ReactNode }) {
         sessionStorage.clear();
         localStorage.clear();
         navigate("/");
-        // ADD REDIRECT HERE TO IMPROVE UX -> YOU HAVE SIGNED OUT ETC
       })
       .catch((error) => {
         // An error happened.
