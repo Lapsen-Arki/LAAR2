@@ -18,6 +18,7 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text-summary", "lcov"],
       reportsDirectory: "coverage",
+      reportOnFailure: true,
     },
   },
 });
