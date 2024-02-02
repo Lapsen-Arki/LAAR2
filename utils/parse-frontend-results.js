@@ -29,6 +29,7 @@ results.testResults.forEach((suite) => {
 
 // Write the processed results back to the file
 fs.writeFileSync(
-  "../frontend/coverage/results.json",
-  JSON.stringify(simplifiedResults)
+  "../frontend/coverage/result.json",
+  JSON.stringify(simplifiedResults),
+  "utf8"
 );
