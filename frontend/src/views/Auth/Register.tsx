@@ -13,6 +13,7 @@ import { registerUser } from "../../api/registerPost";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { RegisterData } from "../../types/types";
 import { useNavigate } from "react-router-dom";
+import ReturnBtn from "../../components/returnBtn";
 
 // TODO: 1. Pankkikortin vahvistuksen lisääminen 2. EXTRA: Google ja Facebook kirjautumis vaihtoehdot
 const CARD_ELEMENT_STYLES = {
@@ -89,11 +90,19 @@ export default function Register() {
     }
   };
   return (
-    <Container component="main" maxWidth="xs">
+    <Container
+      component="main"
+      maxWidth="sm"
+      style={{
+        marginTop: "64px",
+        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+        padding: 20,
+      }}
+    >
+      <ReturnBtn />
       <Typography
         sx={{
           marginBottom: 3,
-          marginTop: 10,
         }}
         component="h1"
         variant="h5"
