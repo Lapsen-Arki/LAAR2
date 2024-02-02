@@ -6,7 +6,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 import { ThemeProvider } from "@mui/material/styles";
 import HeaderLink from "../header/headerLink";
-import SessionButtons from "../header/sessionButtons";
+import HeaderIcons from "../header/headerIcons";
 import { useState, useEffect } from "react";
 
 export default function Header() {
@@ -91,7 +91,7 @@ export default function Header() {
                     navLinkTo="#"
                     navLinkName="Kauppa"
                   />
-                  <SessionButtons setOpen={setOpenBurger} />
+                  <HeaderIcons setOpen={setOpenBurger} />
                 </Box>
               </div>
             </Toolbar>
