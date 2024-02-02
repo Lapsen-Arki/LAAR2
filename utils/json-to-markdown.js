@@ -36,12 +36,19 @@ fs.readFile(jsonPath, "utf8", function (err, data) {
     } else {
       secondTableHeader = "Suite Name | Test Case Name | Actual | Expected";
     }
-    let secondTableSeparator =
-      Object.keys(resultsData.failedTestNames[0])
+    let secondTableSeparator;
+    if (args[2] === "frontend") {
+      secondTableSeparator = Object.keys(resultsData.failedTestNames[0])
         .map(() => "---")
-        .join(" | ") +
-      " | " +
-      "---";
+        .join(" | ");
+    } else {
+      secondTableSeparator =
+        Object.keys(resultsData.failedTestNames[0])
+          .map(() => "---")
+          .join(" | ") +
+        " | " +
+        "---";
+    }
     let secondTableRows;
     if (args[2] === "frontend") {
       secondTableRows = resultsData.failedTestNames
@@ -51,7 +58,7 @@ fs.readFile(jsonPath, "utf8", function (err, data) {
         )
         .join("\n");
     } else {
-      resultsData.failedTestNames
+      secondTableRows = resultsData.failedTestNames
         .map(
           (failedTest) =>
             `| ${failedTest.suiteName} | ${
