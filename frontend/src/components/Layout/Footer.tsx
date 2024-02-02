@@ -34,13 +34,13 @@ export default function Footer() {
       </Typography>
       <div className="footer-column-right">
         <div className="footer-list" style={{ marginBottom: 19 }}>
-          <Link className="footer-li footer-link" to="/">
+          <Link className="footer-li footer-link" to="#">
             Kauppa
           </Link>
-          <Link className="footer-li footer-link" to="/">
+          <Link className="footer-li footer-link" to="/about-us">
             Tietoa meistä
           </Link>
-          <Link className="footer-li footer-link" to="/">
+          <Link className="footer-li footer-link" to="/terms">
             Tietosuojaseloste
           </Link>
         </div>
