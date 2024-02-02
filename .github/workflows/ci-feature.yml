@@ -86,10 +86,36 @@ jobs:
           node-version: "20.11.0"
 
       - name: Setup frontend
+        working-directory: frontend
         run: |
-          cd frontend
           npm install
           npm run build
+
+      - name: Run tests
+        working-directory: frontend
+        run: |
+          npm run test
+
+      - name: Parse results
+        if: success() || failure()
+        id: parse_results
+        working-directory: utils
+        run: |
+          npm install
+          title="Frontend Coverage Summary"
+          path="frontend"
+          file="frontend-summary"
+          node html-to-json.js "$path" "$file"
+          node json-to-markdown.js "$title" "$file" "$path"
+          echo "::set-output name=file::$file"
+        shell: bash
+
+      - name: Comment PR
+        if: success() || failure()
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          filePath: "utils/results/${{ steps.parse_results.outputs.file }}.md"
+          comment_tag: "frontend-test-results"
 
       - name: Run frontend
         run: |
