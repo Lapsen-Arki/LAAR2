@@ -12,7 +12,11 @@ const ReturnBtn: React.FC<ReturnBtnProps> = ({ message = "🡨 Paluu" }) => {
   const navigate = useNavigate();
 
   return (
-    <Button variant="contained" onClick={() => navigate(-1)}>
+    <Button
+      sx={{ mb: 5, background: "none" }}
+      variant="text"
+      onClick={() => navigate(-1)}
+    >
       {message}
     </Button>
   );
