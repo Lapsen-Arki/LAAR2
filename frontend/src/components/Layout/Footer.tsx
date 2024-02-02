@@ -1,6 +1,6 @@
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import { Typography } from "@mui/material";
+import { Typography, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
@@ -13,12 +13,16 @@ export default function Footer() {
             lapsen-arki.fi
           </Link>
           <div className="footer-icons">
-            <a href="link" target="_blank" rel="noopener noreferrer">
-              <FacebookIcon />
-            </a>
-            <a href="link" target="_blank" rel="noopener noreferrer">
-              <InstagramIcon />
-            </a>
+            <Tooltip title="Facebook">
+              <Link to="#" className="footer-link">
+                <FacebookIcon />
+              </Link>
+            </Tooltip>
+            <Tooltip title="Instagram">
+              <Link to="#" className="footer-link">
+                <InstagramIcon sx={{ ml: 1 }} />
+              </Link>
+            </Tooltip>
           </div>
         </div>
       </div>
