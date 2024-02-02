@@ -1,10 +1,5 @@
 /* EditProfile.tsx -sivun tyylit */
-.profile-container {
-    max-width: 850px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: 0 auto;
-    padding: 20px;
-  }
+
   
   .profile-modification {
     margin-bottom: 30px;
