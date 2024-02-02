@@ -41,7 +41,7 @@ export default function Footer() {
             Tietoa meistä
           </Link>
           <Link className="footer-li footer-link" to="/terms">
-            Tietosuojaseloste
+            Käyttöehdot ja Tietosuojaseloste
           </Link>
         </div>
       </div>
