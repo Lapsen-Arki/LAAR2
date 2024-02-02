@@ -13,7 +13,7 @@ interface FoodDropDownProps {
   id: string;
   value: string;
   options: string[];
-  onChange: (event: SelectChangeEvent<any>) => void;
+  onChange: (event: SelectChangeEvent<string | number | unknown>) => void;
 }
 
 const FoodDropDown: React.FC<FoodDropDownProps> = ({
@@ -61,19 +61,6 @@ export default function TimeBlockPreview() {
     color: theme.palette.text.secondary,
   }));
 
-  const handleChange = (
-    setState: React.Dispatch<React.SetStateAction<string>>,
-    value: string
-  ) => {
-    setState(value);
-  };
-
-  const handleSelectChange =
-    (stateSetter: React.Dispatch<React.SetStateAction<string>>) =>
-    (e: SelectChangeEvent<string | number>) => {
-      handleChange(stateSetter, e.target.value as string);
-    };
-
   return (
     <div className="preview-grid">
       <Box sx={{ flexGrow: 1 }}>
@@ -85,7 +72,7 @@ export default function TimeBlockPreview() {
                 id="porridge"
                 value={porridge}
                 options={["kaurapuuro", "mannapuuro"]}
-                onChange={handleSelectChange(setPorridge)}
+                onChange={(e) => setPorridge(e.target.value as string)}
               />
             </Item>
           </Grid>
@@ -96,7 +83,7 @@ export default function TimeBlockPreview() {
                 id="drink"
                 value={drink}
                 options={["maito", "kauramaito"]}
-                onChange={handleSelectChange(setDrink)}
+                onChange={(e) => setDrink(e.target.value as string)}
               />
             </Item>
           </Grid>
@@ -107,7 +94,7 @@ export default function TimeBlockPreview() {
                 id="fruit"
                 value={fruit}
                 options={["mustikka", "banaani"]}
-                onChange={handleSelectChange(setFruit)}
+                onChange={(e) => setFruit(e.target.value as string)}
               />
             </Item>
           </Grid>
@@ -118,7 +105,7 @@ export default function TimeBlockPreview() {
                 id="bread"
                 value={bread}
                 options={["ruisleipä", "kauraleipä"]}
-                onChange={handleSelectChange(setBread)}
+                onChange={(e) => setBread(e.target.value as string)}
               />
             </Item>
           </Grid>
@@ -129,7 +116,7 @@ export default function TimeBlockPreview() {
                 id="cultured-dairy"
                 value={culturedDairy}
                 options={["rahka", "piimä"]}
-                onChange={handleSelectChange(setCulturedDairy)}
+                onChange={(e) => setCulturedDairy(e.target.value as string)}
               />
             </Item>
           </Grid>
@@ -140,7 +127,7 @@ export default function TimeBlockPreview() {
                 id="vegetable"
                 value={vegetable}
                 options={["porkkana", "kurkku"]}
-                onChange={handleSelectChange(setVegetable)}
+                onChange={(e) => setVegetable(e.target.value as string)}
               />
             </Item>
           </Grid>
