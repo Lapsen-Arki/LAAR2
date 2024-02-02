@@ -1,5 +1,6 @@
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
@@ -21,6 +22,12 @@ export default function Footer() {
           </div>
         </div>
       </div>
+      <Typography sx={{ mt: 3 }}>
+        &copy; Copyright {new Date().getFullYear()}{" "}
+        <Link className="footer-li footer-link" to="https://www.lapsen-arki.fi">
+          lapsen-arki.fi
+        </Link>
+      </Typography>
       <div className="footer-column-right">
         <div className="footer-list">
           <Link className="footer-li footer-link" to="/">
