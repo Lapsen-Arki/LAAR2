@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 export default function Footer() {
   return (
     <footer>
-      <div className="footer-column-left">
+      <div className="footer-column-left" style={{ marginTop: 5 }}>
         <h3>LAAR</h3>
         <div className="footer-contact-info">
           <Link to="/" className="footer-link">
@@ -33,7 +33,7 @@ export default function Footer() {
         </Link>
       </Typography>
       <div className="footer-column-right">
-        <div className="footer-list">
+        <div className="footer-list" style={{ marginBottom: 19 }}>
           <Link className="footer-li footer-link" to="/">
             Kauppa
           </Link>
