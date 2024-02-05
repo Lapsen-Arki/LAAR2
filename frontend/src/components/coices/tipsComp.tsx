@@ -11,7 +11,7 @@ export default function TipsComp({
   return (
     <>
       <h1>Vinkkejä</h1>
-      <Typography>Lapsen ikään sopivia vinkkejä: (map methodilla)</Typography>
+      <Typography>Lapsen ikään ja aktiviteettiin sopivia vinkkejä:</Typography>
       <hr />
     </>
   );

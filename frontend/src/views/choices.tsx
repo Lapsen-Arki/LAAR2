@@ -62,6 +62,7 @@ export default function ChoicesPage() {
     }
   }, [renderIdentifier]);
 
+  // Conditionally rendering correct components to the page by using renderIdentirfier:
   return (
     <>
       <Container
@@ -84,16 +85,16 @@ export default function ChoicesPage() {
         {smallMeal && (
           <div>
             <AllergiesComp />
-            <MealComp /> {/* <-- bigMeal identifier prop */}
+            <MealComp /> {/* <-- bigMeal identifier prop or correct data */}
           </div>
         )}
         {bigMeal && (
           <div>
             <AllergiesComp />
-            <MealComp /> {/* <-- smallMeal identifier prop */}
+            <MealComp /> {/* <-- bigMeal identifier prop or correct data */}
           </div>
         )}
-        {activity && <ActivityComp />}
+        {activity && <ActivityComp />} {/* <- Identifier prop or corr data */}
         {nap && <TipsComp renderIdentifier={renderIdentifier} />}
       </Container>
     </>

@@ -13,13 +13,19 @@ export default function MealComp() {
     { id: 3, title: "Kasvis", menuItems: { kurkku: 1, tomaatti: 1 } },
   ];
 
+  // 1. Lisää iso vs pieni ateria tunniste
+  // 2. Tee aterian valinta useState list
+  // 3. Valittujen laatikoiden tyylin muutos
+  // 4. Refactoroi suositukset omaan komponenttin -> käytä aterioissa ja aktiviteeteissa
+  // 5. Button tulos sivulle ja routtaus
+
   return (
     <>
       <Typography sx={{ mt: 5 }} variant="h3">
         Kokoa ateria:
       </Typography>
-      <Typography>Lapsen ikään sopivia ruokia: (map methodilla)</Typography>
-      {/* Iterate trough all the objects */}
+      <Typography>Lapsen ikään sopivia ruokia:</Typography>
+      {/* RECOMMENDATIONS: */}
       {recommendations.map((recommendation) => (
         <div style={{ marginTop: 25 }}>
           <Typography variant="h5">{recommendation.title}: </Typography>
