@@ -1,4 +1,11 @@
-import { Typography, Grid, Card, CardActionArea } from "@mui/material";
+import {
+  Typography,
+  Grid,
+  Card,
+  CardActionArea,
+  styled,
+  Paper,
+} from "@mui/material";
 
 export default function MealComp() {
   // Example data:
@@ -28,7 +35,7 @@ export default function MealComp() {
             {Object.entries(recommendation.menuItems).map(([key, value]) => {
               if (value <= childAge) {
                 return (
-                  <Grid item xs={5} sm={5} md={6} key={key}>
+                  <Grid item xs={12} sm={6} md={4} key={key}>
                     <Card>
                       <CardActionArea
                         key={key}
