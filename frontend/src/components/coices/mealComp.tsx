@@ -1,9 +1,11 @@
-import { Typography, Grid, Card, CardActionArea } from "@mui/material";
+import { Typography } from "@mui/material";
+import RecommComp from "./recommComp";
+import { RecommendationsType } from "../../types/types";
 
 export default function MealComp() {
   // Example data:
-  const childAge = 12;
-  const recommendations = [
+
+  const recommendations: RecommendationsType[] = [
     {
       id: 1,
       title: "Juoma",
@@ -29,31 +31,8 @@ export default function MealComp() {
       </Typography>
       <Typography>Lapsen ikään sopivia ruoka suosituksia:</Typography>
       {/* RECOMMENDATIONS: */}
+      <RecommComp recommendations={recommendations} />
       {/* TODO: refactor this to recommComp.tsx, so it will be reusable: */}
-      {recommendations.map((recommendation) => (
-        <div style={{ marginTop: 25 }}>
-          <Typography variant="h5">{recommendation.title}: </Typography>
-          <Grid container spacing={2} sx={{ textAlign: "center" }}>
-            {/* Iterate trough all the recommendations in the object */}
-            {Object.entries(recommendation.menuItems).map(([key, value]) => {
-              if (value <= childAge) {
-                return (
-                  <Grid item xs={11} sm={6} md={4} key={key}>
-                    <Card>
-                      <CardActionArea
-                        key={key}
-                        sx={{ padding: 2, minHeight: 100 }}
-                      >
-                        <Typography variant="h6">{key}</Typography>
-                      </CardActionArea>
-                    </Card>
-                  </Grid>
-                );
-              }
-            })}
-          </Grid>
-        </div>
-      ))}
     </>
   );
 }
