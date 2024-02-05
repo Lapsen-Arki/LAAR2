@@ -24,7 +24,7 @@ export default function ChoicesPage() {
 
   //
   const [selectedChild, setSelectedChild] = useState(() => {
-    return localStorage.getItem("selectedChild");
+    return sessionStorage.getItem("selectedChild");
   });
 
   // Handling parent component change of selectedChild
