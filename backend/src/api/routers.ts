@@ -13,7 +13,7 @@ import editChildProfile from "./controllers/childProfile/editChildProfile";
 import { getChildProfiles } from "./controllers/childProfile/getChildProfiles";
 import { getChildProfileById } from "./controllers/childProfile/getChildProfileById";
 import { deleteChildProfile } from "./controllers/childProfile/deleteChildProfile";
-import inviteAccountToProfile from "./controllers/childProfile/inviteAccountToProfile";
+import inviteAccountToProfile from "./controllers/carersProfile/inviteAccountToProfile";
 
 import {
   startSubscription,
