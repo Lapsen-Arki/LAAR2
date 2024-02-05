@@ -120,24 +120,29 @@ export default function Profile() {
 
   return (
     <div className="profile-container">
-      <div className="profile-view">
+  <div className="profile-view">
 
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Tooltip title="Lisää profiili">
-            <Button variant="contained" className="custom-button" onClick={handleAddProfileClick}>Lisää profiili</Button>
-          </Tooltip>
-          
-          <Tooltip title="Lisää hoitaja">
-            <Button variant="contained" className="custom-button" onClick={handleAddCarersClick}>Lisää hoitaja</Button>
-          </Tooltip>
-        </div>
+    <ConfirmationDialog
+      open={confirmationDialogOpen}
+      onClose={() => setConfirmationDialogOpen(false)}
+      onConfirm={handleDeleteConfirmed}
+    />
 
-        {/* Varmistusdialogi */}
-        <ConfirmationDialog
-        open={confirmationDialogOpen}
-        onClose={() => setConfirmationDialogOpen(false)}
-        onConfirm={handleDeleteConfirmed}
-      />
+    {/* Otsikkorivi painikkeille */}
+    <div className="buttons-header">
+      <Tooltip title="Lisää profiili">
+        <Button variant="contained" className="custom-button" onClick={handleAddProfileClick}>
+          Lisää profiili
+        </Button>
+      </Tooltip>
+      <Tooltip title="Kutsu hoitaja">
+        <Button variant="contained" className="custom-button Carer" onClick={handleAddCarersClick}>
+          Kutsu hoitaja
+        </Button>
+      </Tooltip>
+      {/* Tyhjä tila tai näkymätön painike joka täyttää kolmannen painikkeen paikan */}
+      <div className="custom-button-placeholder"></div>
+    </div>
 
           <Box className="profiles">
             <div style={{ flex: 1 }}>
@@ -148,7 +153,7 @@ export default function Profile() {
                 {/* Ei profiileja */}
                 {profiles.length === 0 ? (
                   <div className="cards-wrap">
-                    <Card className="children-card" sx={{ height: '100px' }} >
+                    <Card className="children-card" sx={{ height: '111px' }} >
                     <Tooltip title="Profiileja ei ole vielä luotu">
                     <HelpOutlineIcon sx={{ fontSize: 40, color: 'white', borderRadius: '50%', backgroundColor: '#63c8cc', marginLeft: '16px' }} />
                     </Tooltip>
@@ -217,21 +222,43 @@ export default function Profile() {
               <Typography variant="h6" gutterBottom>
                 Hoitajat:
               </Typography>
-              <div className="carer">
-                <Card className="carer-cards">
-                  <CardContent className="cards-content">
+              <div className="Carer">
+                <Card className="Carer-cards">
+                  <CardContent className="Carer-content">
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                       <Tooltip title="Hoitajia ei ole vielä lisätty">
                         <HelpOutlineIcon sx={{ fontSize: 40, color: 'white', borderRadius: '50%', backgroundColor: '#63c8cc' }} />
                       </Tooltip>
                       <Typography variant="h6" gutterBottom sx={{ marginLeft: '10px' }}>
-                        Hoitajia ei ole vielä lisätty
+                        
+                        Hoitajia ei ole vielä <br /> lisätty
                       </Typography>
                     </div>
                   </CardContent>
                 </Card>
               </div>
             </div>
+
+            <div style={{ flex: 1 }}>
+              <Typography variant="h6" gutterBottom>
+                Hoidettavat lapset:
+              </Typography>
+              <div className="Carer">
+                <Card className="Carer-cards">
+                  <CardContent className="Carer-content">
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <Tooltip title="Sinua ei ole kutsuttu hoitajaksi">
+                        <HelpOutlineIcon sx={{ fontSize: 40, color: 'white', borderRadius: '50%', backgroundColor: '#63c8cc' }} />
+                      </Tooltip>
+                      <Typography variant="h6" gutterBottom sx={{ marginLeft: '10px' }}>
+                        Sinua ei ole kutsuttu hoitajaksi
+                      </Typography>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+            
           </Box>
 
         </div>
