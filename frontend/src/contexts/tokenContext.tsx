@@ -3,6 +3,7 @@ import { createContext, useState, ReactNode, useEffect } from "react";
 import { getAuth, signOut } from "firebase/auth";
 import { jwtAuth } from "../api/jwtAuth";
 import { TokenContextType } from "../types/types";
+import { useNavigate } from "react-router-dom";
 
 // 1. CREATE CONTEXT
 const TokenContext = createContext<TokenContextType>({
@@ -20,6 +21,7 @@ function TokenProvider({ children }: { children: ReactNode }) {
       : sessionStorage.getItem("idToken");
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   // Update isLoggedIn if idToken value changes:
   useEffect(() => {
@@ -55,7 +57,7 @@ function TokenProvider({ children }: { children: ReactNode }) {
         setIdToken(null);
         sessionStorage.clear();
         localStorage.clear();
-        // ADD REDIRECT HERE TO IMPROVE UX -> YOU HAVE SIGNED OUT ETC
+        navigate("/");
       })
       .catch((error) => {
         // An error happened.
