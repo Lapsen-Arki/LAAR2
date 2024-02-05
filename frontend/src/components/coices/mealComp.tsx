@@ -7,25 +7,25 @@ export default function MealComp({ mealType }: { mealType: string }) {
 
   // Tämä on oikea datamuoto nyt:
   // Fetching here the real data or taking it form sessionStorage/context
-  // Aterioiden tunnisteet on iso, pieni ja molemmat
+  // Meal types are big, small and both
   const recommendations: RecommendationsType[] = [
     {
       id: 1,
-      mealType: "molemmat",
+      mealType: "both",
       title: "Juoma",
       menuItems: { maito: 0, mehu: 14, vesi: 0 },
     },
     {
       id: 2,
-      mealType: "pieni",
+      mealType: "small",
       title: "Aamupala juttu",
-      menuItems: { jugurtti: 12, marjoja: 14, kiisseli: 15 },
+      menuItems: { jugurtti: 12, marjoja: 14, kiisseli: 15, puuro: 4 },
     },
     {
       id: 3,
-      mealType: "iso",
-      title: "Kasvis",
-      menuItems: { kurkku: 1, tomaatti: 1 },
+      mealType: "big",
+      title: "Proteiini",
+      menuItems: { kebab: 1, lihapata: 1 },
     },
   ];
 

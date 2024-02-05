@@ -37,30 +37,30 @@ export default function ChoicesPage() {
     switch (renderIdentifier) {
       case "Aamiainen":
         setSmallMeal(true);
-        setMealType("pieni");
+        setMealType("small");
         break;
       case "Aktiviteetti":
         setActivity(true);
         break;
       case "Lounas":
         setBigMeal(true);
-        setMealType("iso");
+        setMealType("big");
         break;
       case "Päiväunet":
         setNap(true);
         break;
       case "Välipala":
         setSmallMeal(true);
-        setMealType("pieni");
+        setMealType("small");
         break;
       case "Päivällinen":
         setBigMeal(true);
-        setMealType("iso");
+        setMealType("big");
         break;
       case "Iltapala ja iltatoimet":
         setSmallMeal(true);
         setTipsFor(true);
-        setMealType("pieni");
+        setMealType("small");
         break;
       case "Hyvää yötä":
         setTipsFor(true);

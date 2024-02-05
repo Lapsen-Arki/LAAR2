@@ -40,7 +40,7 @@ export default function RecommComp({
         if (mealType) {
           if (
             recommendation.mealType !== mealType &&
-            recommendation.mealType !== "molemmat"
+            recommendation.mealType !== "both"
           ) {
             return;
           }
