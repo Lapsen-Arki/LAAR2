@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 
 // Fetching here the real data or taking it form sessionStorage/context
-const recommendations: RecommendationsType[] = [
+/* const recommendations: RecommendationsType[] = [
   {
     id: 1,
     title: "Juoma",
@@ -9,7 +9,7 @@ const recommendations: RecommendationsType[] = [
   },
   { id: 2, title: "Leipä", menuItems: { näkkileipä: 12, hapankorppu: 14 } },
   { id: 3, title: "Kasvis", menuItems: { kurkku: 1, tomaatti: 1 } },
-];
+]; */
 
 export default function TipsComp({
   renderIdentifier,
