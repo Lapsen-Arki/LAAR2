@@ -64,7 +64,16 @@ export default function ChoicesPage() {
 
   return (
     <>
-      <Container>
+      <Container
+        sx={{
+          width: {
+            xs: "100%", // 100% width on extra-small and small screens for responsiveness
+            sm: "600px", // You can adjust this value as needed for small screens
+            md: "1000px", // Fixed width starting from medium screens and up
+          },
+          maxWidth: "100%",
+        }}
+      >
         <ReturnBtn message="🡨 palaa etusivulle" />
         <Typography variant="h2">{renderIdentifier}</Typography>
         <ChildInfoComp selectedChild={selectedChild} />{" "}
