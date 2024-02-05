@@ -1,11 +1,4 @@
-import {
-  Typography,
-  Grid,
-  Card,
-  CardActionArea,
-  styled,
-  Paper,
-} from "@mui/material";
+import { Typography, Grid, Card, CardActionArea } from "@mui/material";
 
 export default function MealComp() {
   // Example data:
@@ -22,20 +15,20 @@ export default function MealComp() {
 
   return (
     <>
-      <Typography sx={{ mt: 12 }} variant="h3">
+      <Typography sx={{ mt: 5 }} variant="h3">
         Kokoa ateria:
       </Typography>
       <Typography>Lapsen ikään sopivia ruokia: (map methodilla)</Typography>
       {/* Iterate trough all the objects */}
       {recommendations.map((recommendation) => (
-        <div style={{ marginTop: 20 }}>
+        <div style={{ marginTop: 25 }}>
           <Typography variant="h5">{recommendation.title}: </Typography>
           <Grid container spacing={2} sx={{ textAlign: "center" }}>
             {/* Iterate trough all the recommendations in the object */}
             {Object.entries(recommendation.menuItems).map(([key, value]) => {
               if (value <= childAge) {
                 return (
-                  <Grid item xs={12} sm={6} md={4} key={key}>
+                  <Grid item xs={11} sm={6} md={4} key={key}>
                     <Card>
                       <CardActionArea
                         key={key}
