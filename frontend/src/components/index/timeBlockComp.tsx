@@ -5,8 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function TimeBlockComp() {
   const navigate = useNavigate();
 
-  //   Routing to next page and sending block title as renderIdentifier
-  //   to render correct page contents
+  //   Routing to next page with renderIdentifier:
   const handleBlockClick = (blockTitle: string) => {
     navigate("/choices", { state: { renderIdentifier: blockTitle } });
   };

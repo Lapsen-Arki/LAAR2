@@ -21,10 +21,11 @@ export default function ChoicesPage() {
   const [bigMeal, setBigMeal] = useState(false);
   const [nap, setNap] = useState(false);
   const [tipsFor, setTipsFor] = useState(false);
+  const [mealType, setMealType] = useState("");
 
   //
   const [selectedChild, setSelectedChild] = useState(() => {
-    return localStorage.getItem("selectedChild");
+    return sessionStorage.getItem("selectedChild");
   });
 
   // Handling parent component change of selectedChild
@@ -36,25 +37,30 @@ export default function ChoicesPage() {
     switch (renderIdentifier) {
       case "Aamiainen":
         setSmallMeal(true);
+        setMealType("small");
         break;
       case "Aktiviteetti":
         setActivity(true);
         break;
       case "Lounas":
         setBigMeal(true);
+        setMealType("big");
         break;
       case "Päiväunet":
         setNap(true);
         break;
       case "Välipala":
         setSmallMeal(true);
+        setMealType("small");
         break;
       case "Päivällinen":
         setBigMeal(true);
+        setMealType("big");
         break;
       case "Iltapala ja iltatoimet":
         setSmallMeal(true);
         setTipsFor(true);
+        setMealType("small");
         break;
       case "Hyvää yötä":
         setTipsFor(true);
@@ -62,9 +68,21 @@ export default function ChoicesPage() {
     }
   }, [renderIdentifier]);
 
+  // Conditionally rendering correct components to the page by using renderIdentirfier:
+  // Components will fetch the correct recommendation data and caching it.
+  // So for now mealComp and TipsComp will be doing all the recomm data fetching.
   return (
     <>
-      <Container>
+      <Container
+        sx={{
+          width: {
+            xs: "100%", // 100% width on extra-small and small screens for responsiveness
+            sm: "600px", // You can adjust this value as needed for small screens
+            md: "1000px", // Fixed width starting from medium screens and up
+          },
+          maxWidth: "100%",
+        }}
+      >
         <ReturnBtn message="🡨 palaa etusivulle" />
         <Typography variant="h2">{renderIdentifier}</Typography>
         <ChildInfoComp selectedChild={selectedChild} />{" "}
@@ -75,16 +93,18 @@ export default function ChoicesPage() {
         {smallMeal && (
           <div>
             <AllergiesComp />
-            <MealComp /> {/* <-- bigMeal identifier prop */}
+            <MealComp mealType={mealType} />{" "}
+            {/* <-- bigMeal identifier prop or correct data */}
           </div>
         )}
         {bigMeal && (
           <div>
             <AllergiesComp />
-            <MealComp /> {/* <-- smallMeal identifier prop */}
+            <MealComp mealType={mealType} />{" "}
+            {/* <-- bigMeal identifier prop or correct data */}
           </div>
         )}
-        {activity && <ActivityComp />}
+        {activity && <ActivityComp />} {/* <- Identifier prop or corr data */}
         {nap && <TipsComp renderIdentifier={renderIdentifier} />}
       </Container>
     </>
