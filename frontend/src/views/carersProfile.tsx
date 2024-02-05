@@ -4,6 +4,7 @@ import {
   TextField,
   Button,
   Alert,
+  AlertTitle,
   Typography,
   Box,
   Checkbox,
@@ -32,6 +33,8 @@ export default function CarersProfile() {
   const [showEmailError, setShowEmailError] = useState(false);
   const [showTermsError, setShowTermsError] = useState(false);
   const [inviteResult, setInviteResult] = useState('');
+  const [invitedSuccess, setInvitedSuccess] = useState(false);
+  const [emailForAlert, setEmailForAlert] = useState('');
 
   if (!idToken) {
     return <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />;
@@ -40,6 +43,7 @@ export default function CarersProfile() {
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
+    setEmailForAlert(newEmail);
   
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     setIsEmailValid(emailPattern.test(newEmail));
@@ -74,9 +78,13 @@ export default function CarersProfile() {
         const response = await inviteAccountToProfile({ accountEmail: email }, idToken);
     
         if (response.error) {
-          setInviteResult(`Error Kutsuttava käyttäjä ei ole olemassa - ${response.error}`);
+          setInviteResult(`Error Kutsuttava käyttäjä ei ole olemassa`);
+          setAcceptTerms(false); // alusta checkbox
         } else {
-          setInviteResult(`Success ${email} kutsuttu hoitajaksi onnistuneesti, voit halutessa kutsua toisen käyttäjän.`);
+          setInvitedSuccess(true); // Aseta invitedSuccess todeksi
+          setInviteResult(`Success Voit halutessa kutsua toisen käyttäjän.`);
+          setEmail(''); // alusta sähköposti onnistumisen jälkeen
+          setAcceptTerms(false); // alusta checkbox
         }
         // tarkistus
         console.log('Kutsu hoitajaksi vastaus:', response);
@@ -151,9 +159,10 @@ export default function CarersProfile() {
             )}
 
             {inviteResult && (
-              <Alert severity={inviteResult.startsWith('Success') ? 'success' : 'error'}>
+              <Alert severity={invitedSuccess ? 'success' : 'error'}>
+                <AlertTitle>{invitedSuccess ? `${emailForAlert} kutsuttu hoitajaksi onnistuneesti!` : 'Virhe'}</AlertTitle>
                 <Typography variant="inherit" component="span">
-                  {inviteResult.startsWith('Success') ? inviteResult.replace('Success', '') : inviteResult}
+                  {inviteResult.replace('Success', '').replace('Error', '')}
                 </Typography>
               </Alert>
             )}
