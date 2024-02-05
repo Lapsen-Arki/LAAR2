@@ -17,9 +17,7 @@ export default function ActivityComp() {
   return (
     <>
       <Typography variant="h4">Aktiviteetteja:</Typography>
-      <Typography>
-        Lapsen ikään sopivia aktiviteetteja: (map methodilla)
-      </Typography>
+      <Typography>Lapsen ikään sopivia aktiviteetteja:</Typography>
       <RecommComp
         recommendations={recommendations}
         multipleSelections={false}

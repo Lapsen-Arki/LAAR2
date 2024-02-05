@@ -2,26 +2,37 @@ import { Typography } from "@mui/material";
 import RecommComp from "./recommComp";
 import { RecommendationsType } from "../../types/types";
 
-export default function MealComp() {
+export default function MealComp({ mealType }: { mealType: string }) {
   // Example data:
 
+  // Tämä on oikea datamuoto nyt:
   // Fetching here the real data or taking it form sessionStorage/context
+  // Aterioiden tunnisteet on iso, pieni ja molemmat
   const recommendations: RecommendationsType[] = [
     {
       id: 1,
+      mealType: "molemmat",
       title: "Juoma",
-      menuItems: { maito: 0, mehu: 14, kiisseli: 1, juusto: 5 },
+      menuItems: { maito: 0, mehu: 14, vesi: 0 },
     },
-    { id: 2, title: "Leipä", menuItems: { näkkileipä: 12, hapankorppu: 14 } },
-    { id: 3, title: "Kasvis", menuItems: { kurkku: 1, tomaatti: 1 } },
+    {
+      id: 2,
+      mealType: "pieni",
+      title: "Aamupala juttu",
+      menuItems: { jugurtti: 12, marjoja: 14, kiisseli: 15 },
+    },
+    {
+      id: 3,
+      mealType: "iso",
+      title: "Kasvis",
+      menuItems: { kurkku: 1, tomaatti: 1 },
+    },
   ];
 
   // 1 This component will be fetching meal recommendation data
   // 2. And passing it to recommComp.tsx to render the recommendations.
 
   // - Lisää iso vs pieni ateria tunniste
-  // - Tee aterian valinta useState list
-  // - Valittujen laatikoiden tyylin muutos
   // - Button tulos sivulle ja routtaus
 
   return (
@@ -30,7 +41,11 @@ export default function MealComp() {
         Kokoa ateria:
       </Typography>
       <Typography>Lapsen ikään sopivia ruoka suosituksia:</Typography>
-      <RecommComp recommendations={recommendations} multipleSelections={true} />
+      <RecommComp
+        recommendations={recommendations}
+        multipleSelections={true}
+        mealType={mealType}
+      />
     </>
   );
 }

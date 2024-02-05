@@ -53,6 +53,7 @@ export type RecomMenuItemType = {
 
 export type RecommendationsType = {
   id: number;
+  mealType: string;
   title: string;
   menuItems: RecomMenuItemType;
 };

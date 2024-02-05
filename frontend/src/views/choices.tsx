@@ -21,6 +21,7 @@ export default function ChoicesPage() {
   const [bigMeal, setBigMeal] = useState(false);
   const [nap, setNap] = useState(false);
   const [tipsFor, setTipsFor] = useState(false);
+  const [mealType, setMealType] = useState("");
 
   //
   const [selectedChild, setSelectedChild] = useState(() => {
@@ -36,25 +37,30 @@ export default function ChoicesPage() {
     switch (renderIdentifier) {
       case "Aamiainen":
         setSmallMeal(true);
+        setMealType("pieni");
         break;
       case "Aktiviteetti":
         setActivity(true);
         break;
       case "Lounas":
         setBigMeal(true);
+        setMealType("iso");
         break;
       case "Päiväunet":
         setNap(true);
         break;
       case "Välipala":
         setSmallMeal(true);
+        setMealType("pieni");
         break;
       case "Päivällinen":
         setBigMeal(true);
+        setMealType("iso");
         break;
       case "Iltapala ja iltatoimet":
         setSmallMeal(true);
         setTipsFor(true);
+        setMealType("pieni");
         break;
       case "Hyvää yötä":
         setTipsFor(true);
@@ -87,13 +93,15 @@ export default function ChoicesPage() {
         {smallMeal && (
           <div>
             <AllergiesComp />
-            <MealComp /> {/* <-- bigMeal identifier prop or correct data */}
+            <MealComp mealType={mealType} />{" "}
+            {/* <-- bigMeal identifier prop or correct data */}
           </div>
         )}
         {bigMeal && (
           <div>
             <AllergiesComp />
-            <MealComp /> {/* <-- bigMeal identifier prop or correct data */}
+            <MealComp mealType={mealType} />{" "}
+            {/* <-- bigMeal identifier prop or correct data */}
           </div>
         )}
         {activity && <ActivityComp />} {/* <- Identifier prop or corr data */}
