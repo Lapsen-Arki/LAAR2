@@ -8,6 +8,8 @@ import {
   FormControl,
   InputLabel,
 } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import { formTheme } from '../../components/Layout/formThemeMUI';
 import { SelectChangeEvent } from "@mui/material";
 import { AddDataToDatabase } from "../../types/types";
 import { adminAddData } from "../../api/adminAddData";
@@ -61,112 +63,89 @@ const AdminPage = () => {
 
   return (
     <div style={{ maxWidth: 500 }}>
-      <Typography variant="h3">Admin Page</Typography>
-      <h3>Lisää tiedot:</h3>
+      <ThemeProvider theme={formTheme}>
+        <Typography variant="h3">Admin Page</Typography>
+        <h3>Lisää tiedot:</h3>
 
-      <form onSubmit={handleSubmit}>
-        <FormControl fullWidth margin="normal">
-          <InputLabel id="category-label">Kategoria</InputLabel>
-          <Select
-            sx={{
-              marginTop: 0,
-              background: "white",
-            }}
-            name="category"
-            labelId="category-label"
-            id="category-select"
-            value={category}
-            label="Category"
-            onChange={handleCategoryChange}
+        <form onSubmit={handleSubmit}>
+          <FormControl fullWidth margin="normal">
+            <InputLabel id="category-label">Kategoria</InputLabel>
+            <Select
+              name="category"
+              labelId="category-label"
+              id="category-select"
+              value={category}
+              label="Category"
+              onChange={handleCategoryChange}
+              required
+            >
+              {/* Replace these MenuItem values with your actual categories */}
+              <MenuItem value="aktiviteetti">Aktiviteetti</MenuItem>
+              <MenuItem value="pieniAteria">Pieni ateria</MenuItem>
+              <MenuItem value="isoAteria">Iso ateria</MenuItem>
+              <MenuItem value="iltatoimi">Iltatoimi</MenuItem>
+              <MenuItem value="nukkuminen">Nukkuminen</MenuItem>
+            </Select>
+          </FormControl>
+
+          <TextField
+            name="choice"
+            fullWidth
+            label="Valikko"
+            margin="normal"
+            onChange={handleChange}
             required
+          />
+          <TextField
+            name="name"
+            fullWidth
+            label="Nimi"
+            margin="normal"
+            onChange={handleChange}
+            required
+          />
+          <TextField
+            name="ageLimit"
+            fullWidth
+            label="Ikäraja/kk"
+            margin="normal"
+            type="number"
+            onChange={handleChange}
+            required
+          />
+          <h3>Kuva</h3>
+          <p>Valitse kuvan URL linkki tai valitse tiedosto:</p>
+          <TextField
+            name="photoLink"
+            fullWidth
+            label="Kuvan linkki"
+            margin="normal"
+            onChange={handleChange}
+          />
+
+          <TextField
+            name="photoFileName"
+            fullWidth
+            margin="normal"
+            type="file"
+            onChange={handleChange}
+          />
+
+          <Button
+            variant="contained"
+            type="submit"
+            style={{ marginTop: "20px" }}
           >
-            {/* Replace these MenuItem values with your actual categories */}
-            <MenuItem value="aktiviteetti">Aktiviteetti</MenuItem>
-            <MenuItem value="pieniAteria">Pieni ateria</MenuItem>
-            <MenuItem value="isoAteria">Iso ateria</MenuItem>
-            <MenuItem value="iltatoimi">Iltatoimi</MenuItem>
-            <MenuItem value="nukkuminen">Nukkuminen</MenuItem>
-          </Select>
-        </FormControl>
-
-        <TextField
-          sx={{
-            marginTop: 0,
-            background: "white",
-          }}
-          name="choice"
-          fullWidth
-          label="Valikko"
-          margin="normal"
-          onChange={handleChange}
-          required
-        />
-        <TextField
-          sx={{
-            marginTop: 0,
-            background: "white",
-          }}
-          name="name"
-          fullWidth
-          label="Nimi"
-          margin="normal"
-          onChange={handleChange}
-          required
-        />
-        <TextField
-          sx={{
-            marginTop: 0,
-            background: "white",
-          }}
-          name="ageLimit"
-          fullWidth
-          label="Ikäraja/kk"
-          margin="normal"
-          type="number"
-          onChange={handleChange}
-          required
-        />
-        <h3>Kuva</h3>
-        <p>Valitse kuvan URL linkki tai valitse tiedosto:</p>
-        <TextField
-          sx={{
-            marginTop: 0,
-            background: "white",
-          }}
-          name="photoLink"
-          fullWidth
-          label="Kuvan linkki"
-          margin="normal"
-          onChange={handleChange}
-        />
-
-        <TextField
-          sx={{
-            marginTop: 0,
-            background: "white",
-          }}
-          name="photoFileName"
-          fullWidth
-          margin="normal"
-          type="file"
-          onChange={handleChange}
-        />
-
-        <Button
-          variant="contained"
-          color="primary"
-          type="submit"
-          style={{ marginTop: "20px" }}
-        >
-          Tallenna tietokantaan
-        </Button>
-        <Typography sx={{ color: "red", marginBottom: 2, marginTop: 2 }}>
-          {errorMessage}
-        </Typography>
-        <Typography sx={{ color: "green", marginBottom: 2, marginTop: 2 }}>
-          {successMessage}
-        </Typography>
-      </form>
+            Tallenna tietokantaan
+          </Button>
+          <Typography sx={{ color: "red", marginBottom: 2, marginTop: 2 }}>
+            {errorMessage}
+          </Typography>
+          <Typography sx={{ color: "green", marginBottom: 2, marginTop: 2 }}>
+            {successMessage}
+          </Typography>
+        </form>
+      </ThemeProvider>
     </div>
   );
 };

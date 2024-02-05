@@ -8,6 +8,8 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import { formTheme } from '../../components/Layout/formThemeMUI';
 import { userLogin } from "../../api/userLogin";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
@@ -74,110 +76,106 @@ const Login: React.FC = (): JSX.Element => {
   };
 
   return (
-    <Container
-      component="main"
-      maxWidth="sm"
-      style={{
-        marginTop: "64px",
-        boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-        padding: 20,
-      }}
-    >
-      <ReturnBtn />
-      <Typography variant="h5" component="h1" gutterBottom>
-        Kirjaudu sisään
-      </Typography>
-      <VerifyEmailModal
-        open={openVerifyEmail}
-        email={email}
-        setOpen={setOpenVerifyEmail}
-      />
-      <form onSubmit={handleLogin}>
-        <TextField
-          style={{ background: "white" }}
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          label="Sähköposti"
-          autoComplete="email"
-          autoFocus
-          value={email}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setEmail(e.target.value)
-          }
-        />
-        <TextField
-          style={{ background: "white" }}
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          label="Salasana"
-          type="password"
-          autoComplete="current-password"
-          value={password}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setPassword(e.target.value)
-          }
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={rememberMe}
-              onChange={handleRememberMeChange}
-              color="primary"
-            />
-          }
-          label="Muista minut"
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          sx={{ backgroundColor: "#39C4A3", color: "#000000" }}
-        >
+    <ThemeProvider theme={formTheme}>
+      <Container
+        component="main"
+        maxWidth="sm"
+        style={{
+          marginTop: "64px",
+          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+          padding: 20,
+        }}
+      >
+        <ReturnBtn />
+        <Typography variant="h5" component="h1" gutterBottom>
           Kirjaudu sisään
-        </Button>
-        <Typography
-          color="success"
-          variant="body2"
-          align="center"
-          style={{ marginTop: "16px", color: "green", marginBottom: "10px" }}
-        >
-          {successMessage}
         </Typography>
-        <Typography
-          color="error"
-          variant="body2"
-          align="center"
-          style={{ marginTop: "16px", marginBottom: "10px" }}
-        >
-          {errorMessage}
-        </Typography>
-        <Link href="/register" variant="body2" sx={{ color: "#298E77" }}>
-          Eikö sinulla ole tiliä? Luo tili tästä!
-        </Link>
-        <br />
-        <Link
-          href="#"
-          onClick={() => {
-            setOpenResetModal(true);
-          }}
-          variant="body2"
-          sx={{ color: "#298E77" }}
-        >
-          Unohtuiko salasana?
-        </Link>
-        <ResetPasswordModal
-          open={openResetModel}
+        <VerifyEmailModal
+          open={openVerifyEmail}
           email={email}
-          setEmail={setEmail}
-          setOpen={setOpenResetModal}
+          setOpen={setOpenVerifyEmail}
         />
-      </form>
-    </Container>
+        <form onSubmit={handleLogin}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Sähköposti"
+            autoComplete="email"
+            autoFocus
+            value={email}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setEmail(e.target.value)
+            }
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Salasana"
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setPassword(e.target.value)
+            }
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={rememberMe}
+                onChange={handleRememberMeChange}
+              />
+            }
+            label="Muista minut"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+          >
+            Kirjaudu sisään
+          </Button>
+          <Typography
+            color="success"
+            variant="body2"
+            align="center"
+            style={{ marginTop: "16px", marginBottom: "10px" }}
+          >
+            {successMessage}
+          </Typography>
+          <Typography
+            color="error"
+            variant="body2"
+            align="center"
+            style={{ marginTop: "16px", marginBottom: "10px" }}
+          >
+            {errorMessage}
+          </Typography>
+          <Link href="/register" variant="body2">
+            Eikö sinulla ole tiliä? Luo tili tästä!
+          </Link>
+          <br />
+          <Link
+            href="#"
+            onClick={() => {
+              setOpenResetModal(true);
+            }}
+            variant="body2"
+          >
+            Unohtuiko salasana?
+          </Link>
+          <ResetPasswordModal
+            open={openResetModel}
+            email={email}
+            setEmail={setEmail}
+            setOpen={setOpenResetModal}
+          />
+        </form>
+      </Container>
+    </ThemeProvider>
   );
 };
 
