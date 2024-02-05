@@ -16,9 +16,8 @@ export default function IndexPage() {
     <>
       <Container>
         {!isLoggedIn && <LandingComp />}
-        <NameDropDown /> {/* <-- will be fetching the child name and age? */}
-        {/* And saving it to sessionStorage/context for easy access. -> no prop drilling*/}
-        <TimeBlockComp />
+        <NameDropDown /> {/* <-- Fetching the child name and age */}
+        <TimeBlockComp /> {/* <-- Routes to choices page with renderIdentif */}
       </Container>
     </>
   );
