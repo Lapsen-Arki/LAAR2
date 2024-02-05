@@ -13,6 +13,7 @@ import editChildProfile from "./controllers/childProfile/editChildProfile";
 import { getChildProfiles } from "./controllers/childProfile/getChildProfiles";
 import { getChildProfileById } from "./controllers/childProfile/getChildProfileById";
 import { deleteChildProfile } from "./controllers/childProfile/deleteChildProfile";
+import inviteAccountToProfile from "./controllers/childProfile/inviteAccountToProfile";
 
 import {
   startSubscription,
@@ -36,6 +37,8 @@ router.post("/editChildProfile/:id", editChildProfile);      // Muokkaa käyttä
 router.get("/profiles", getChildProfiles);                   // Hae kaikki käyttäjän luomat profiilit
 router.get("/profile/:id", getChildProfileById);             // Hae käyttäjän luoma profiili idn perusteella
 router.delete("/profile/:profileId", deleteChildProfile);    // Poista käyttäjän luoma profiili
+
+router.post("/inviteAccountToProfile", inviteAccountToProfile); // Kutsu käyttäjä hoitajaksi profiileihin
 
 // Future User routes plan (?):
 // router.get("/settings", editAccount);
