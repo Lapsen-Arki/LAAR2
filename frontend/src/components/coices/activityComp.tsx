@@ -2,6 +2,7 @@ import { Typography } from "@mui/material";
 import RecommComp from "./recommComp";
 import { RecommendationsType } from "../../types/types";
 
+// Fetching here the real data or taking it form sessionStorage/context
 const recommendations: RecommendationsType[] = [
   {
     id: 1,
@@ -19,7 +20,10 @@ export default function ActivityComp() {
       <Typography>
         Lapsen ikään sopivia aktiviteetteja: (map methodilla)
       </Typography>
-      <RecommComp recommendations={recommendations} />
+      <RecommComp
+        recommendations={recommendations}
+        multipleSelections={false}
+      />
     </>
   );
 }

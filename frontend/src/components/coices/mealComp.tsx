@@ -5,6 +5,7 @@ import { RecommendationsType } from "../../types/types";
 export default function MealComp() {
   // Example data:
 
+  // Fetching here the real data or taking it form sessionStorage/context
   const recommendations: RecommendationsType[] = [
     {
       id: 1,
@@ -21,7 +22,6 @@ export default function MealComp() {
   // - Lisää iso vs pieni ateria tunniste
   // - Tee aterian valinta useState list
   // - Valittujen laatikoiden tyylin muutos
-  // - Refactoroi suositukset omaan komponenttin -> käytä aterioissa ja aktiviteeteissa
   // - Button tulos sivulle ja routtaus
 
   return (
@@ -30,9 +30,7 @@ export default function MealComp() {
         Kokoa ateria:
       </Typography>
       <Typography>Lapsen ikään sopivia ruoka suosituksia:</Typography>
-      {/* RECOMMENDATIONS: */}
-      <RecommComp recommendations={recommendations} />
-      {/* TODO: refactor this to recommComp.tsx, so it will be reusable: */}
+      <RecommComp recommendations={recommendations} multipleSelections={true} />
     </>
   );
 }
