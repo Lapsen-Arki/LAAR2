@@ -64,7 +64,7 @@ export default function ChoicesPage() {
 
   // Conditionally rendering correct components to the page by using renderIdentirfier:
   // Components will fetch the correct recommendation data and caching it.
-  // So for now mealComp and TipsComp will be doing the recomm data fetching.
+  // So for now mealComp and TipsComp will be doing all the recomm data fetching.
   return (
     <>
       <Container

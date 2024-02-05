@@ -13,19 +13,23 @@ export default function MealComp() {
     { id: 3, title: "Kasvis", menuItems: { kurkku: 1, tomaatti: 1 } },
   ];
 
-  // 1. Lisää iso vs pieni ateria tunniste
-  // 2. Tee aterian valinta useState list
-  // 3. Valittujen laatikoiden tyylin muutos
-  // 4. Refactoroi suositukset omaan komponenttin -> käytä aterioissa ja aktiviteeteissa
-  // 5. Button tulos sivulle ja routtaus
+  // 1 This component will be fetching meal recommendation data
+  // 2. And passing it to recommComp.tsx to render the recommendations.
+
+  // - Lisää iso vs pieni ateria tunniste
+  // - Tee aterian valinta useState list
+  // - Valittujen laatikoiden tyylin muutos
+  // - Refactoroi suositukset omaan komponenttin -> käytä aterioissa ja aktiviteeteissa
+  // - Button tulos sivulle ja routtaus
 
   return (
     <>
       <Typography sx={{ mt: 5 }} variant="h3">
         Kokoa ateria:
       </Typography>
-      <Typography>Lapsen ikään sopivia ruokia:</Typography>
+      <Typography>Lapsen ikään sopivia ruoka suosituksia:</Typography>
       {/* RECOMMENDATIONS: */}
+      {/* TODO: refactor this to recommComp.tsx, so it will be reusable: */}
       {recommendations.map((recommendation) => (
         <div style={{ marginTop: 25 }}>
           <Typography variant="h5">{recommendation.title}: </Typography>
