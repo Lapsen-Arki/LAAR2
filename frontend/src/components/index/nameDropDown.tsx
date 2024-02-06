@@ -3,20 +3,23 @@ import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 
-export default function NameDropDown() {
+export default function NameDropDown({
+  changerFunc,
+}: {
+  changerFunc?: (newValue: string) => void | undefined;
+}) {
   const { isLoggedIn } = useContext(TokenContext);
   const [childNames, setchildNames] = useState([""]);
   const [selectedChild, setSelectedChild] = useState(() => {
-    return localStorage.getItem("selectedChild") || childNames[0];
+    return sessionStorage.getItem("selectedChild") || childNames[0];
   });
 
   // Updating the children names in dropdown based on login status:
   useEffect(() => {
-    localStorage.setItem("selectedChild", selectedChild);
+    sessionStorage.setItem("selectedChild", selectedChild);
     if (isLoggedIn) {
       // Fetch the children's names and ages here
-      // Later fetching also each child's allergies if adding the
-      // feature later
+      // Later fetching also each child's allergies if adding the feature
       const listOfNames = ["fetching", "the", "childProfileNames", "here"];
 
       setchildNames(listOfNames);
@@ -37,7 +40,12 @@ export default function NameDropDown() {
           id="preview-target-select"
           label="Valitse Lapsi"
           value={selectedChild}
-          onChange={(e) => setSelectedChild(e.target.value)}
+          onChange={(e) => {
+            if (changerFunc) {
+              changerFunc(e.target.value);
+            }
+            setSelectedChild(e.target.value);
+          }}
           sx={{ width: 150, alignContent: "right" }}
         >
           {/* Mapping child names to dropdown: */}

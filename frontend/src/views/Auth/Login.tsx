@@ -14,6 +14,7 @@ import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 import ResetPasswordModal from "../../components/modals/resetPasswordModal";
 import VerifyEmailModal from "../../components/modals/verifyEmailModal";
+import ReturnBtn from "../../components/returnBtn";
 
 const Login: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState("");
@@ -75,13 +76,14 @@ const Login: React.FC = (): JSX.Element => {
   return (
     <Container
       component="main"
-      maxWidth="xs"
+      maxWidth="sm"
       style={{
         marginTop: "64px",
         boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
         padding: 20,
       }}
     >
+      <ReturnBtn />
       <Typography variant="h5" component="h1" gutterBottom>
         Kirjaudu sisään
       </Typography>

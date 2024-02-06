@@ -1,12 +1,12 @@
-import { headingTheme } from "./themeMUI";
+import { headingTheme } from "../Layout/themeMUI";
 import { Link } from "react-router-dom";
 import { AppBar, Box, Toolbar, Typography, IconButton } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { ThemeProvider } from "@mui/material/styles";
-import HeaderLink from "../header/headerLink";
-import SessionButtons from "../header/sessionButtons";
+import HeaderLink from "./headerLink";
+import HeaderIcons from "./headerIcons";
 import { useState, useEffect } from "react";
 
 export default function Header() {
@@ -91,7 +91,7 @@ export default function Header() {
                     navLinkTo="#"
                     navLinkName="Kauppa"
                   />
-                  <SessionButtons setOpen={setOpenBurger} />
+                  <HeaderIcons setOpen={setOpenBurger} />
                 </Box>
               </div>
             </Toolbar>

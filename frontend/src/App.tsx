@@ -10,8 +10,10 @@ import EditProfile from "./views/editProfile";
 import CaresProfile from "./views/carersProfile";
 import AdminPage from "./views/Auth/admin";
 import Subscription from "./views/Subscription";
-import UserSettings from "./views/UserSettings";
+import AccountSettings from "./views/AccountSettings";
 import ChoicesPage from "./views/choices";
+import TermsAndPrivacy from "./views/termsAndPrivacy";
+import AboutUs from "./views/aboutUs";
 
 // Higher Order Components (HOC):
 import Layout from "./components/Layout/Layout";
@@ -49,7 +51,9 @@ function App() {
                 <Route path="/profile-share" element={<CaresProfile />} />
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/subscription" element={<Subscription />} />
-                <Route path="/account" element={<UserSettings />} />
+                <Route path="/account" element={<AccountSettings />} />
+                <Route path="/terms" element={<TermsAndPrivacy />} />
+                <Route path="/about-us" element={<AboutUs />} />
               </Routes>
             </Layout>
           </Elements>

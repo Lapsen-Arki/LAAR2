@@ -46,3 +46,14 @@ export interface DecodedToken {
     sign_in_provider: string;
   };
 }
+
+export type RecomMenuItemType = {
+  [key: string]: number;
+};
+
+export type RecommendationsType = {
+  id: number;
+  mealType?: string;
+  title: string;
+  menuItems: RecomMenuItemType;
+};
