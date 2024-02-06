@@ -11,12 +11,12 @@ export default function NameDropDown({
   const { isLoggedIn } = useContext(TokenContext);
   const [childNames, setchildNames] = useState([""]);
   const [selectedChild, setSelectedChild] = useState(() => {
-    return localStorage.getItem("selectedChild") || childNames[0];
+    return sessionStorage.getItem("selectedChild") || childNames[0];
   });
 
   // Updating the children names in dropdown based on login status:
   useEffect(() => {
-    localStorage.setItem("selectedChild", selectedChild);
+    sessionStorage.setItem("selectedChild", selectedChild);
     if (isLoggedIn) {
       // Fetch the children's names and ages here
       // Later fetching also each child's allergies if adding the feature

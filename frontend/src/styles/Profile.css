@@ -1,17 +1,26 @@
 .profile-container {
-    max-width: 850px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
     padding: 20px;
     border-radius: 10px;
   }
 
+/* Otsikkorivin painikkeet */
 .custom-button {
-    margin: 0 auto;
-    display: block;
-    margin-bottom: 10px; 
-    background-color: #63c8cc !important;
-  }
+  margin: 0 auto;
+  display: block;
+  margin-bottom: 10px; 
+  background-color: #63c8cc !important;
+}
+
+.buttons-header {
+  margin-bottom: 20px;
+}
+
+.custom-button.Carer {
+  margin-left: 180px;
+}
+
 
 /* Lasten profiilit */
 
@@ -33,10 +42,11 @@
   }
 
   .children-card {
-    width: 430px;
-    height: auto;
+    width: 304px;
+    height: 111px;
     display: flex;
     align-items: center;
+    margin-right: 5px;
     
   }
 
@@ -59,41 +69,47 @@
 
   /* Hoitajien profiilit */
 
-  .carer-cards {
-    width: 300px;
-    height: 100px;
-    display: flex;
+  .Carer {
+    margin-right: 15px;
+  }
+
+
+  /* Responsiivisuus mobiilille */
+  @media (max-width: 760px) {
+
+  /* Otsikkorivin painikkeet */
+  .buttons-header {
+    text-align: center;
     align-items: center;
     margin-bottom: 10px;
   }
 
-  .cards-content {
-    flex: 1 0 auto;
+  .custom-button.Carer {
+    margin-left: 10px;
   }
 
-  /* Responsiivisuus mobiilille */
-  @media (max-width: 767px) {
-    .profiles {
-      display: block;
-      text-align: center;
-    }
+  /* Lasten profiilit */
+  .profiles {
+    display: block;
+    text-align: center;
+  }
 
-    .children-card {
-      width: 100%;
-      flex-direction: column;
-    }
+  .children-card {
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+  }
   
   
   /* Hoitajien profiilit */
-  .carer-cards {
-    width: 100%;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .cards-content {
-    flex: 1 0 auto;
-  }
+
 }
+
+  /* Responsiivisuus mobiilille */
+  @media (max-width: 280px) {
+
+    /* Otsikkorivin painikkeet */  
+    .custom-button.Carer {
+      margin: 5px 0px 0px 0px;
+    }
+  }

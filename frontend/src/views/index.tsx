@@ -9,12 +9,15 @@ import NameDropDown from "../components/index/nameDropDown";
 export default function IndexPage() {
   const { isLoggedIn } = useContext(TokenContext);
 
+  // 1. Have to fetch child age and name at some point -> using useContext
+  // may be easiest way. And savin it to sessionStorage
+
   return (
     <>
       <Container>
         {!isLoggedIn && <LandingComp />}
-        <NameDropDown />
-        <TimeBlockComp />
+        <NameDropDown /> {/* <-- Fetching the child name and age */}
+        <TimeBlockComp /> {/* <-- Routes to choices page with renderIdentif */}
       </Container>
     </>
   );
