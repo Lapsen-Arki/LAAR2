@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// TODO: Move to env variables etc:
 const API_BASE_URL = "http://localhost:3000/api";
 
 interface InviteAccountToProfileData {
@@ -18,26 +17,32 @@ export const inviteAccountToProfile = async (
       },
     };
 
-    console.log("Lähetä kutsupyyntö tietoineen:", data); // Tarkistus
     const response = await axios.post(
       `${API_BASE_URL}/inviteAccountToProfile`,
-      { accountEmail: data.accountEmail }, // Muokkaa tietorakenne yhteensopivaksi
+      { accountEmail: data.accountEmail },
       config
     );
 
-    console.log("Kutsupyynnönvastaus:", response.data); // Tarkistus
-    return response.data;
+    return { data: response.data, status: response.status };
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      if (typeof error.response.data === 'string') {
-        console.error("Tilin kutsuessa profiiliin error:", error.response.data);
-      } else if (typeof error.response.data === 'object') {
-        console.error("Tilin kutsuessa profiiliin error:", JSON.stringify(error.response.data));
-      } else {
-        console.error("Tilin kutsuessa profiiliin error:", error.response.data);
+      // Käsittele virheet, mutta älä tulosta niitä konsoliin tuotantotilassa
+      if (process.env.NODE_ENV !== 'production') {
+        console.error("Kutsu hoitajaksi virhe:", error);
       }
-      return { error: error.response.data };
+
+      if (typeof error.response.data === 'string') {
+        // Käsittele virheet ja palauta viesti käyttäjälle
+        return { error: error.response.data, status: error.response.status };
+      } else if (typeof error.response.data === 'object') {
+        // Käsittele virheet ja palauta viesti käyttäjälle
+        return { error: JSON.stringify(error.response.data), status: error.response.status };
+      } else {
+        // Käsittele virheet ja palauta viesti käyttäjälle
+        return { error: error.response.data, status: error.response.status };
+      }
     }
+    // Heitä virhe eteenpäin, jos se ei ole Axios-virhe tai ei sisällä vastausta
     throw error;
   }
 };

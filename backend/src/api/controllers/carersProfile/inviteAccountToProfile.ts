@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import admin from "../../../config/firebseConfig";
 import { getUserIdFromToken } from "../../../utils/getUserIdFromTokenUtil";
+import { DocumentSnapshot } from "firebase-admin/firestore";
 
 const inviteAccountToProfile = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { accountEmail } = req.body;
+    const accountEmail = req.body.accountEmail;
 
     if (!accountEmail) {
       console.error("Tarvittavat tiedot puuttuvat");
@@ -30,7 +31,6 @@ const inviteAccountToProfile = async (req: Request, res: Response): Promise<void
     const childCarersCollection = db.collection("childCarers");
     const usersCollection = db.collection("users");
 
-    // Tarkista, onko käyttäjä olemassa "users" -kokoelmassa
     const invitedUserQuery = await usersCollection
       .where("email", "==", accountEmail)
       .get();
@@ -40,19 +40,30 @@ const inviteAccountToProfile = async (req: Request, res: Response): Promise<void
       return;
     }
 
-    // Oletetaan, että sähköposti on uniikki, joten otetaan ensimmäinen tulos
     const invitedUserDoc = invitedUserQuery.docs[0];
-    const invitedUserUid = invitedUserDoc.id; // Käyttäjän UID
+    const invitedUserUid = invitedUserDoc.id;
 
-    // Tarkista, onko käyttäjä jo kutsumassa profiileihin
     const existingCarerQuery = await childCarersCollection
       .where("invitedUserUid", "==", invitedUserUid)
       .get();
 
+    // Tarkistetaan, onko käyttäjä jo kutsuttu
+    let isAlreadyInvited = false;
+    existingCarerQuery.forEach((doc: DocumentSnapshot) => {
+      const data = doc.data();
+      if (data?.sharedAccountUid?.includes(inviterId)) {
+        isAlreadyInvited = true;
+      }
+    });
+
+    if (isAlreadyInvited) {
+      res.status(409).json({ error: "Käyttäjä on jo kutsuttu" });
+      return;
+    }
+
     if (existingCarerQuery.empty) {
-      // Luo uusi hoitaja-profiili käyttäen käyttäjän UID:tä
       const newCarerRef = await childCarersCollection.add({
-        invitedUserUid: invitedUserUid, // Käytä saatuja UID-tietoja
+        invitedUserUid: invitedUserUid,
         sharedAccountUid: [inviterId],
       });
 
@@ -61,14 +72,11 @@ const inviteAccountToProfile = async (req: Request, res: Response): Promise<void
         id: newCarerRef.id,
       });
     } else {
-      // Päivitä olemassa oleva hoitajaprofiili
       const existingCarer = existingCarerQuery.docs[0];
       const carerId = existingCarer.id;
       const carerData = existingCarer.data();
-      const sharedAccounts = carerData.sharedAccountUid || [];
-      if (!sharedAccounts.includes(inviterId)) {
-        sharedAccounts.push(inviterId);
-      }
+      const sharedAccounts = carerData?.sharedAccountUid || [];
+      sharedAccounts.push(inviterId);
 
       await childCarersCollection.doc(carerId).update({
         sharedAccountUid: sharedAccounts,

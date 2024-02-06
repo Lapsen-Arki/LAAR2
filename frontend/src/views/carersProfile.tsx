@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   TextField,
@@ -21,7 +21,7 @@ import {
 
 import PleaseLoginModal from '../components/modals/pleaseLoginModal';
 import { TokenContext } from '../contexts/tokenContext';
-import { inviteAccountToProfile } from '../api/carersProfile/inviteAccountToProfile'; // Import backend API function
+import { inviteAccountToProfile } from '../api/carersProfile/inviteAccountToProfile';
 
 export default function CarersProfile() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
@@ -32,8 +32,7 @@ export default function CarersProfile() {
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [showEmailError, setShowEmailError] = useState(false);
   const [showTermsError, setShowTermsError] = useState(false);
-  const [inviteResult, setInviteResult] = useState('');
-  const [invitedSuccess, setInvitedSuccess] = useState(false);
+  const [inviteResult, setInviteResult] = useState<null | string>(null);
   const [emailForAlert, setEmailForAlert] = useState('');
 
   if (!idToken) {
@@ -44,22 +43,16 @@ export default function CarersProfile() {
     const newEmail = e.target.value;
     setEmail(newEmail);
     setEmailForAlert(newEmail);
-  
+
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     setIsEmailValid(emailPattern.test(newEmail));
     setShowEmailError(!emailPattern.test(newEmail));
-
-    // tarkistus
-    console.log('Email muuttui:', newEmail);
   };
 
   const handleAcceptTermsChange = () => {
     setAcceptTerms(!acceptTerms);
     if (showTermsError) {
       setShowTermsError(false);
-
-      // tarkistus
-      console.log('Hyväksy ehdot muuttui:', acceptTerms);
     }
   };
 
@@ -75,24 +68,27 @@ export default function CarersProfile() {
     }
 
     try {
-        const response = await inviteAccountToProfile({ accountEmail: email }, idToken);
-    
-        if (response.error) {
-          setInviteResult(`Error Tarkista sähköpostiosoite`);
-          setAcceptTerms(false); // alusta checkbox
-        } else {
-          setInvitedSuccess(true); // Aseta invitedSuccess todeksi
-          setInviteResult(`Success Voit halutessa kutsua toisen käyttäjän.`);
-          setEmail(''); // alusta sähköposti onnistumisen jälkeen
-          setAcceptTerms(false); // alusta checkbox
-        }
-        // tarkistus
-        console.log('Kutsu hoitajaksi vastaus:', response);
-        
-      } catch (error) {
-        console.error('Kutsu hoitajaksi virhe:', error);
+      const result = await inviteAccountToProfile({ accountEmail: email }, idToken);
+  
+      if (result.status === 200) {
+        setInviteResult('200');
+      } else if (result.status === 409) {
+        setInviteResult('409');
+      } else if (result.status === 404) {
+        setInviteResult('404');
+      } else {
+        setInviteResult('500');
       }
-    };
+    } catch (e) {
+      const errorMessage = e instanceof Error ? e.message : 'Jokin meni pieleen, yritä uudelleen.';
+      console.error('Kutsu hoitajaksi virhe:', errorMessage);
+      setInviteResult('500');
+    }
+
+    setEmailForAlert(email);
+    setEmail('');
+    setAcceptTerms(false);
+  };
 
   return (
     <div className="profile-container" style={{ textAlign: 'center' }}>
@@ -158,12 +154,31 @@ export default function CarersProfile() {
               </Alert>
             )}
 
-            {inviteResult && (
-              <Alert severity={invitedSuccess ? 'success' : 'error'}>
-                <AlertTitle>{invitedSuccess ? `${emailForAlert} kutsuttu hoitajaksi onnistuneesti!` : 'No höh, jokin meni pieleen.'}</AlertTitle>
-                <Typography variant="inherit" component="span">
-                  {inviteResult.replace('Success', '').replace('Error', '')}
-                </Typography>
+            {inviteResult && inviteResult.includes('200') && (
+              <Alert severity="success">
+                <AlertTitle>{`${emailForAlert} kutsuttu hoitajaksi onnistuneesti!`}</AlertTitle>
+                  Voit halutessasi kutsua toisen henkilön.
+              </Alert>
+            )}
+
+            {inviteResult && inviteResult.includes('500') && (
+              <Alert severity="error">
+                <AlertTitle>No höh, jokin meni pieleen.</AlertTitle>
+                  Kutsu hoitajaksi epäonnistui.
+              </Alert>
+            )}
+
+            {inviteResult && inviteResult.includes('409') && (
+              <Alert severity="info">
+                <AlertTitle>Hups!</AlertTitle>
+                  Käyttäjä on jo kutsuttu.
+              </Alert>
+            )}
+
+            {inviteResult && inviteResult.includes('404') && (
+              <Alert severity="warning">
+                <AlertTitle>No höh, jokin meni pieleen.</AlertTitle>
+                  Kutsuttava käyttäjä ei ole olemassa, tarkista sähköpostiosoite.
               </Alert>
             )}
           </div>
