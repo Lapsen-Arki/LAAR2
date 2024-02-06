@@ -34,6 +34,7 @@ export default function CarersProfile() {
   const [showTermsError, setShowTermsError] = useState(false);
   const [inviteResult, setInviteResult] = useState<null | string>(null);
   const [emailForAlert, setEmailForAlert] = useState('');
+  const [isAlertClosed, setIsAlertClosed] = useState(false);
 
   if (!idToken) {
     return <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />;
@@ -154,34 +155,36 @@ export default function CarersProfile() {
               </Alert>
             )}
 
-            {inviteResult && inviteResult.includes('200') && (
-              <Alert severity="success">
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            {!isAlertClosed && inviteResult && inviteResult.includes('200') && (
+              <Alert severity="success" onClose={() => setIsAlertClosed(true)}>
                 <AlertTitle>{`${emailForAlert} kutsuttu hoitajaksi onnistuneesti!`}</AlertTitle>
                   Voit halutessasi kutsua toisen henkilön.
               </Alert>
             )}
 
-            {inviteResult && inviteResult.includes('500') && (
-              <Alert severity="error">
+            {!isAlertClosed && inviteResult && inviteResult.includes('500') && (
+              <Alert severity="error" onClose={() => setIsAlertClosed(true)}>
                 <AlertTitle>No höh, jokin meni pieleen.</AlertTitle>
                   Kutsu hoitajaksi epäonnistui.
               </Alert>
             )}
 
-            {inviteResult && inviteResult.includes('409') && (
-              <Alert severity="info">
+            {!isAlertClosed && inviteResult && inviteResult.includes('409') && (
+              <Alert severity="info" onClose={() => setIsAlertClosed(true)}>
                 <AlertTitle>Hups!</AlertTitle>
                   Käyttäjä on jo kutsuttu.
               </Alert>
             )}
 
-            {inviteResult && inviteResult.includes('404') && (
-              <Alert severity="warning">
+            {!isAlertClosed && inviteResult && inviteResult.includes('404') && (
+              <Alert severity="warning" onClose={() => setIsAlertClosed(true)}>
                 <AlertTitle>No höh, jokin meni pieleen.</AlertTitle>
                   Kutsuttava käyttäjä ei ole olemassa, tarkista sähköpostiosoite.
               </Alert>
             )}
           </div>
+        </div>
 
           <Box>
             <div className="input-group shareProfile">
