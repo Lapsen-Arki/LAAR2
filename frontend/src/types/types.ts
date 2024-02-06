@@ -67,4 +67,5 @@ export type TipsType = {
   adviseType: string;
   title: string;
   textContents: string;
+  photo?: string;
 };

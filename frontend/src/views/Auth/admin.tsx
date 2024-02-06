@@ -194,50 +194,51 @@ const AdminPage = () => {
           </div>
         )}
 
-        {category !== "vinkki" && (
-          <div>
-            <h3>Kuva</h3>
-            <p>Valitse kuvan URL linkki tai valitse tiedosto:</p>
-            <TextField
-              sx={{
-                marginTop: 0,
-                background: "white",
-              }}
-              name="photoLink"
-              fullWidth
-              label="Kuvan linkki"
-              margin="normal"
-              onChange={handleChange}
-            />
+        {/* Backend is checking if there is photo, but if category is tip it's optional  */}
+        {/* TODO: add opitional photo for tips and required for meals and activity */}
 
-            <TextField
-              sx={{
-                marginTop: 0,
-                background: "white",
-              }}
-              name="photoFileName"
-              fullWidth
-              margin="normal"
-              type="file"
-              onChange={handleChange}
-            />
+        <div>
+          <h3>Kuva</h3>
+          <p>Valitse kuvan URL linkki tai valitse tiedosto:</p>
+          <TextField
+            sx={{
+              marginTop: 0,
+              background: "white",
+            }}
+            name="photoLink"
+            fullWidth
+            label="Kuvan linkki"
+            margin="normal"
+            onChange={handleChange}
+          />
 
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              style={{ marginTop: "20px" }}
-            >
-              Tallenna tietokantaan
-            </Button>
-            <Typography sx={{ color: "red", marginBottom: 2, marginTop: 2 }}>
-              {errorMessage}
-            </Typography>
-            <Typography sx={{ color: "green", marginBottom: 2, marginTop: 2 }}>
-              {successMessage}
-            </Typography>
-          </div>
-        )}
+          <TextField
+            sx={{
+              marginTop: 0,
+              background: "white",
+            }}
+            name="photoFileName"
+            fullWidth
+            margin="normal"
+            type="file"
+            onChange={handleChange}
+          />
+
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            style={{ marginTop: "20px" }}
+          >
+            Tallenna tietokantaan
+          </Button>
+          <Typography sx={{ color: "red", marginBottom: 2, marginTop: 2 }}>
+            {errorMessage}
+          </Typography>
+          <Typography sx={{ color: "green", marginBottom: 2, marginTop: 2 }}>
+            {successMessage}
+          </Typography>
+        </div>
       </form>
     </div>
   );
