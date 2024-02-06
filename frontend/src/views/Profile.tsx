@@ -20,6 +20,7 @@ import PleaseLoginModal from "../components/modals/pleaseLoginModal";
 import { TokenContext } from "../contexts/tokenContext";
 import { getChildProfiles } from '../api/childProfile/getChildProfiles';
 import deleteChildProfile from '../api/childProfile/deleteChildProfile';
+import { getCaresProfiles } from '../api/carersProfile/getCaresProfiles';
 
 import { calculateAge, splitNameToFitWidth } from './utils/profileUtils';
 import ConfirmationDialog from './utils/profileConfirmationDialog';
@@ -33,11 +34,18 @@ interface ChildProfile {
   creatorId: string;
 }
 
+interface CareProfile {
+  id: string;
+  email: string;
+  name: string;
+}
+
 export default function Profile() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const { idToken } = useContext(TokenContext);
   const navigate = useNavigate();
   const [profiles, setProfiles] = useState<ChildProfile[]>([]);
+  const [careProfiles, setCareProfiles] = useState<CareProfile[]>([]); // Lisää hoitajien profiilit
   const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
   const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
 
@@ -66,6 +74,20 @@ export default function Profile() {
         console.error('Virhe profiilien haussa:', response.error);
       }
     };
+
+    // Alusta hoitajien profiilit käyttäen getCaresProfiles-funktiota
+    const fetchCareProfiles = async () => {
+      try {
+        const careProfilesResponse = await getCaresProfiles(idToken);
+        if (!('error' in careProfilesResponse)) {
+          setCareProfiles(careProfilesResponse);
+        } else {
+          console.error('Virhe hoitajien haussa:', careProfilesResponse.error);
+        }
+      } catch (error) {
+        console.error('Virhe hoitajien haussa:', error);
+      }
+    };
   
     const fetchProfiles = async () => {
       const storedProfiles = fetchProfilesFromSessionStorage();
@@ -75,6 +97,7 @@ export default function Profile() {
       } else {
         await fetchProfilesFromServer();
       }
+      await fetchCareProfiles(); // Haetaan hoitajien profiilit
     };
   
     fetchProfiles();
@@ -219,25 +242,46 @@ export default function Profile() {
             </div>
 
             <div style={{ flex: 1 }}>
-              <Typography variant="h6" gutterBottom>
-                Hoitajat:
-              </Typography>
-              <div className="Carer">
-                <Card className="Carer-cards">
-                  <CardContent className="Carer-content">
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <Tooltip title="Hoitajia ei ole vielä lisätty">
-                        <HelpOutlineIcon sx={{ fontSize: 40, color: 'white', borderRadius: '50%', backgroundColor: '#63c8cc' }} />
-                      </Tooltip>
-                      <Typography variant="h6" gutterBottom sx={{ marginLeft: '10px' }}>
-                        
-                        Hoitajia ei ole vielä <br /> lisätty
-                      </Typography>
-                    </div>
-                  </CardContent>
+            <Typography variant="h6" gutterBottom>
+              Hoitajat:
+            </Typography>
+
+            {/* Ei hoitajia */}
+            {careProfiles.length === 0 ? (
+              <div className="cards-wrap">
+                <Card className="children-card" sx={{ height: '111px' }}>
+                  <Tooltip title="Hoitajia ei ole vielä lisätty">
+                    <HelpOutlineIcon sx={{ fontSize: 40, color: 'white', borderRadius: '50%', backgroundColor: '#63c8cc', marginLeft: '16px' }} />
+                  </Tooltip>
+                  <Box className="card-content">
+                    <Typography variant="h6" gutterBottom sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                      Hoitajia ei ole vielä lisätty
+                    </Typography>
+                  </Box>
                 </Card>
               </div>
-            </div>
+            ) : (
+              <div className="children">
+                {/* Hoitajat */}
+                {careProfiles.map((profile) => (
+                  <div className="cards-wrap" key={profile.id}>
+                    <Card className="children-card">
+                      
+                      <Box className="card-content">
+                        <Typography component="div" variant="h6" className="multiline-text">
+                          {profile.name}
+                        </Typography>
+                        <Typography variant="subtitle1" color="text.secondary" component="div">
+                          {profile.email}
+                        </Typography>
+                        {/* Voit lisätä muita hoitajan tietoja tarpeen mukaan */}
+                      </Box>
+                    </Card>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
             <div style={{ flex: 1 }}>
               <Typography variant="h6" gutterBottom>

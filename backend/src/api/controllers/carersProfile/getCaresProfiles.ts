@@ -1,37 +1,56 @@
 import { Request, Response } from "express";
 import admin from "../../../config/firebseConfig";
-import { firestore } from "firebase-admin";
+import { getUserIdFromToken } from "../../../utils/getUserIdFromTokenUtil";
 
-interface CareProfile {
+interface UserProfile {
   id: string;
   email: string;
-  // Lisää muita tarvittavia kenttiä
+  name: string;
 }
 
 const getCaresProfiles = async (req: Request, res: Response): Promise<void> => {
   try {
-    const sharedAccountId = req.query.sharedAccountId as string;
+    const idToken = req.headers.authorization?.split("Bearer ")[1];
+    if (!idToken) {
+      res.status(401).json({ error: "Token puuttuu" });
+      return;
+    }
 
-    if (!sharedAccountId) {
-      console.error("sharedAccountId puuttuu"); // Lisätty console log -tarkistus
-      res.status(400).json({ error: "sharedAccountId puuttuu" });
+    const sharedAccountUid = await getUserIdFromToken(idToken);
+    if (!sharedAccountUid) {
+      res.status(403).json({ error: "Virheellinen token" });
       return;
     }
 
     const db = admin.firestore();
-    const careProfilesCollection = db.collection("careProfiles"); // Oletan, että hoitajaprofiilit tallennetaan "careProfiles"-kokoelmaan
-    const profilesSnapshot = await careProfilesCollection
-      .where("sharedAccountId", "==", sharedAccountId)
+    const childCarersCollection = db.collection("childCarers");
+    const usersCollection = db.collection("users");
+
+    const profilesSnapshot = await childCarersCollection
+      .where("sharedAccountUid", "array-contains", sharedAccountUid)
       .get();
-    const profiles: CareProfile[] = [];
 
-    profilesSnapshot.forEach((doc: FirebaseFirestore.DocumentSnapshot) => {
-      const profileData = doc.data() as CareProfile;
-      profileData.id = doc.id;
-      profiles.push(profileData);
-    });
+    if (profilesSnapshot.empty) {
+      res.status(404).json({ error: "Hoitajaprofiilia ei löydy" });
+      return;
+    }
 
-    console.log("Hoitajaprofiilit noudettu onnistuneesti"); // Lisätty console log -tarkistus
+    const profiles: UserProfile[] = [];
+
+    for (const doc of profilesSnapshot.docs) {
+      const profileData = doc.data() as { invitedUserUid: string };
+      const invitedUserUid = profileData.invitedUserUid;
+
+      const userDoc = await usersCollection.doc(invitedUserUid).get();
+
+      if (userDoc.exists) {
+        const userData = userDoc.data() as UserProfile;
+        userData.id = userDoc.id;
+        profiles.push(userData);
+      }
+    }
+
+    console.log("Hoitajaprofiilit noudettu onnistuneesti");
 
     res.status(200).json(profiles);
   } catch (error: any) {
