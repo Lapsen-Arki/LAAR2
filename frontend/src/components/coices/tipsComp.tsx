@@ -1,6 +1,9 @@
 import { Typography } from "@mui/material";
 import { TipsType } from "../../types/types";
 
+// Now there is 3 types of tips: "päiväunet", "iltatoimet", "nukkuminen".
+// More tips can be added by changing the choices page and adding more advise types.
+// This component renders all advises with matching adviseType
 // Fetching here the real data or taking it form sessionStorage/context
 const recommendations: TipsType[] = [
   {
@@ -55,6 +58,8 @@ Pienen lapsen päiväunien suhteen on tärkeää luoda rauhallinen ja säännöl
 `,
   },
 ];
+
+// EXTRA FEATURE: make feature to hide and show tips.
 
 export default function TipsComp({ adviseType }: { adviseType: string }) {
   return (
