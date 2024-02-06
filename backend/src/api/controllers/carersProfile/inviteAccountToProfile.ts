@@ -26,8 +26,6 @@ const inviteAccountToProfile = async (req: Request, res: Response): Promise<void
       return;
     }
 
-    //console.log("Tiedot tarkistettu onnistuneesti");
-
     const db = admin.firestore();
     const childCarersCollection = db.collection("childCarers");
     const usersCollection = db.collection("users");
@@ -38,23 +36,24 @@ const inviteAccountToProfile = async (req: Request, res: Response): Promise<void
       .get();
 
     if (invitedUserQuery.empty) {
-      //console.log("Kutsuttava käyttäjä ei ole olemassa");
       res.status(404).json({ error: "Kutsuttava käyttäjä ei ole olemassa" });
       return;
     }
 
+    // Oletetaan, että sähköposti on uniikki, joten otetaan ensimmäinen tulos
+    const invitedUserDoc = invitedUserQuery.docs[0];
+    const invitedUserUid = invitedUserDoc.id; // Käyttäjän UID
+
     // Tarkista, onko käyttäjä jo kutsumassa profiileihin
     const existingCarerQuery = await childCarersCollection
-      .where("carersAccountId", "==", accountEmail)
+      .where("invitedUserUid", "==", invitedUserUid)
       .get();
 
     if (existingCarerQuery.empty) {
-      //console.log("Kutsuttavaa käyttäjää ei löydy hoitajista");
-
-      // Luo uusi hoitaja-profiili
+      // Luo uusi hoitaja-profiili käyttäen käyttäjän UID:tä
       const newCarerRef = await childCarersCollection.add({
-        carersAccountId: accountEmail, // Kutsutun käyttäjän UID
-        sharedAccountId: [inviterId], // Kutsujan UID
+        invitedUserUid: invitedUserUid, // Käytä saatuja UID-tietoja
+        sharedAccountUid: [inviterId],
       });
 
       res.status(200).json({
@@ -62,19 +61,17 @@ const inviteAccountToProfile = async (req: Request, res: Response): Promise<void
         id: newCarerRef.id,
       });
     } else {
-      //console.log("Hoitajaprofiili löytyy jo, päivitetään tiedot");
-
-      // Hoitajaprofiili löytyy jo, päivitä sen tiedot lisäämällä kutsujan UID
+      // Päivitä olemassa oleva hoitajaprofiili
       const existingCarer = existingCarerQuery.docs[0];
       const carerId = existingCarer.id;
       const carerData = existingCarer.data();
-      const sharedAccounts = carerData.sharedAccountId || [];
+      const sharedAccounts = carerData.sharedAccountUid || [];
       if (!sharedAccounts.includes(inviterId)) {
         sharedAccounts.push(inviterId);
       }
 
       await childCarersCollection.doc(carerId).update({
-        sharedAccountId: sharedAccounts,
+        sharedAccountUid: sharedAccounts,
       });
 
       res.status(200).json({ message: "Kutsuttu käyttäjä lisätty hoitajaksi" });

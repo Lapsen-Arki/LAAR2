@@ -13,6 +13,7 @@ const getCaresProfiles = async (req: Request, res: Response): Promise<void> => {
     const sharedAccountId = req.query.sharedAccountId as string;
 
     if (!sharedAccountId) {
+      console.error("sharedAccountId puuttuu"); // Lisätty console log -tarkistus
       res.status(400).json({ error: "sharedAccountId puuttuu" });
       return;
     }
@@ -29,6 +30,8 @@ const getCaresProfiles = async (req: Request, res: Response): Promise<void> => {
       profileData.id = doc.id;
       profiles.push(profileData);
     });
+
+    console.log("Hoitajaprofiilit noudettu onnistuneesti"); // Lisätty console log -tarkistus
 
     res.status(200).json(profiles);
   } catch (error: any) {

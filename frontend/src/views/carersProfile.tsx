@@ -21,7 +21,7 @@ import {
 
 import PleaseLoginModal from '../components/modals/pleaseLoginModal';
 import { TokenContext } from '../contexts/tokenContext';
-import { inviteAccountToProfile } from '../api/childProfile/inviteAccountToProfile'; // Import backend API function
+import { inviteAccountToProfile } from '../api/carersProfile/inviteAccountToProfile'; // Import backend API function
 
 export default function CarersProfile() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
@@ -78,7 +78,7 @@ export default function CarersProfile() {
         const response = await inviteAccountToProfile({ accountEmail: email }, idToken);
     
         if (response.error) {
-          setInviteResult(`Error Kutsuttava käyttäjä ei ole olemassa`);
+          setInviteResult(`Error Tarkista sähköpostiosoite`);
           setAcceptTerms(false); // alusta checkbox
         } else {
           setInvitedSuccess(true); // Aseta invitedSuccess todeksi
@@ -160,7 +160,7 @@ export default function CarersProfile() {
 
             {inviteResult && (
               <Alert severity={invitedSuccess ? 'success' : 'error'}>
-                <AlertTitle>{invitedSuccess ? `${emailForAlert} kutsuttu hoitajaksi onnistuneesti!` : 'Virhe'}</AlertTitle>
+                <AlertTitle>{invitedSuccess ? `${emailForAlert} kutsuttu hoitajaksi onnistuneesti!` : 'No höh, jokin meni pieleen.'}</AlertTitle>
                 <Typography variant="inherit" component="span">
                   {inviteResult.replace('Success', '').replace('Error', '')}
                 </Typography>
