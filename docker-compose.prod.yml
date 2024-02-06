@@ -16,6 +16,7 @@ services:
       retries: 10
       start_period: 10s
       timeout: 10s
+    hostname: api.laar.local
 
   frontend:
     container_name: laar_frontend
@@ -35,11 +36,7 @@ services:
       retries: 10
       start_period: 10s
       timeout: 10s
-
-  nginx:
-    image: nginx:latest
-    ports:
-      - "8080:80"
+    hostname: laar.local
 
 networks:
   devnet:

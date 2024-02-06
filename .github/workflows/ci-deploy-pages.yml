@@ -36,9 +36,25 @@ jobs:
           echo "Running backend tests"
           npm run test
 
-      - name: Copy coverage to docs
+      - name: Set up frontend
+        working-directory: frontend
+        run: |
+          echo "Installing frontend dependencies"
+          npm install
+
+      - name: Run frontend tests
+        working-directory: frontend
+        run: |
+          echo "Running frontend tests"
+          npm run test
+
+      - name: Copy backend coverage to docs
         run: |
           cd ./backend/coverage/lcov-report && find . -type f | grep -vE "\.(js|ts|tsx)\.html$" | rsync -av --files-from=- . ../../../docs/backendcoverage/
+
+      - name: Copy frontend coverage to docs
+        run: |
+          cd ./frontend/coverage/lcov-report && find . -type f | grep -vE "\.(js|ts|tsx)\.html$" | rsync -av --files-from=- . ../../../docs/frontendcoverage/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

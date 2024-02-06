@@ -9,13 +9,19 @@ export default defineConfig({
     host: true,
     port: parseInt(process.env.VITE_PORT) || null,
   },
+  server: {
+    proxy: {
+      "/api": { target: "http://localhost:3000", changeOrigin: true },
+    },
+  },
   test: {
+    environment: "happy-dom",
     reporters: ["default", "json"],
     outputFile: {
       json: "./coverage/rawResults.json",
     },
     coverage: {
-      provider: "v8",
+      provider: "istanbul",
       reporter: ["text-summary", "lcov"],
       reportsDirectory: "coverage",
       reportOnFailure: true,

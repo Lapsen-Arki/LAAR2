@@ -10,7 +10,7 @@ export const registerUser = async (
   token: Token
 ) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/register`, {
+    const response = await axios.post(`/api/register`, {
       ...registerData,
       token,
     });
