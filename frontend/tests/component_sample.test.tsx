@@ -5,16 +5,7 @@ import { expect, test, describe, beforeAll } from "vitest";
 import { BrowserRouter as Router } from "react-router-dom";
 import Login from "../src/views/Auth/Login";
 describe("Login component test", () => {
-  let handleLogin: (email: string, password: string) => void;
-  let email: string;
-  let password: string;
-
   beforeAll(() => {
-    handleLogin = (e, p) => {
-      email = e;
-      password = p;
-    };
-
     render(
       <Router>
         <Login />

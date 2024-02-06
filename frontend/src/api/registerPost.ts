@@ -3,7 +3,7 @@ import { RegisterData } from "../types/types";
 import { Token } from "@stripe/stripe-js";
 
 // TODO: Move to env variables etc:
-const API_BASE_URL = "http://localhost:3000/api";
+/* const API_BASE_URL = "http://localhost:3000/api"; */
 
 export const registerUser = async (
   registerData: RegisterData,
