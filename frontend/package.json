@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "vitest run --coverage --browser=chrome"
+    "test-dev": "vitest run --coverage --browser=chrome",
+    "test": "vitest run --coverage"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
