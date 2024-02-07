@@ -2,20 +2,30 @@ import { Container } from "@mui/material";
 
 import LandingComp from "../components/index/landingComp";
 import TimeBlockComp from "../components/index/timeBlockComp";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TokenContext } from "../contexts/tokenContext";
 import NameDropDown from "../components/index/nameDropDown";
 
 import { getChildProfiles } from "../api/childProfile/getChildProfiles";
+import makeChildObject from "../utils/makeChildObject";
 
 export default function IndexPage() {
   const { isLoggedIn, idToken } = useContext(TokenContext);
+  const [childObjectLoading, setChildObjectLoading] = useState(() => {
+    const data = sessionStorage.getItem("childNamesAndAges");
+    return data !== null;
+  });
 
-  // 1. Have to fetch child age and name at some point -> saving to sessionStorage
+  // Fetching child profiles and making child object in sessionStorage with name and age:
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && idToken) {
       // Fetching childProfiles
-      getChildProfiles(idToken);
+      const retrieveDataAndMakeObject = async () => {
+        await getChildProfiles(idToken);
+        await makeChildObject();
+        setChildObjectLoading(false);
+      };
+      retrieveDataAndMakeObject();
     }
   }, [idToken, isLoggedIn]);
 
@@ -23,7 +33,7 @@ export default function IndexPage() {
     <>
       <Container>
         {!isLoggedIn && <LandingComp />}
-        <NameDropDown /> {/* <-- Fetching the child name and age */}
+        {!childObjectLoading && <NameDropDown />}
         <TimeBlockComp /> {/* <-- Routes to choices page with renderIdentif */}
       </Container>
     </>

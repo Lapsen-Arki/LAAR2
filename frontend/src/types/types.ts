@@ -78,3 +78,8 @@ export interface ChildProfile {
   childName: string;
   creatorId: string;
 }
+
+export interface NamesAndAgesType {
+  childName: string;
+  age: number;
+}

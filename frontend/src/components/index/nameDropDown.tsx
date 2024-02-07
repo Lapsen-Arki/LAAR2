@@ -2,6 +2,7 @@ import { MenuItem, Select, Box, InputLabel } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
+import { NamesAndAgesType } from "../../types/types";
 
 export default function NameDropDown({
   changerFunc,
@@ -9,24 +10,27 @@ export default function NameDropDown({
   changerFunc?: (newValue: string) => void | undefined;
 }) {
   const { isLoggedIn } = useContext(TokenContext);
-  const [childNames, setchildNames] = useState([""]);
+  const [childNames, setChildNames] = useState([""]);
   const [selectedChild, setSelectedChild] = useState(() => {
     return sessionStorage.getItem("selectedChild") || childNames[0];
   });
 
-  // Updating the children names in dropdown based on login status:
+  // Updating and loading the children names in dropdown:
   useEffect(() => {
     sessionStorage.setItem("selectedChild", selectedChild);
     if (isLoggedIn) {
-      // Fetch the children's names and ages here
-      // Later fetching also each child's allergies if adding the feature
+      const childNamesAndAgesStr = sessionStorage.getItem("childNamesAndAges");
+      if (childNamesAndAgesStr) {
+        const childNamesAndAges: NamesAndAgesType[] =
+          JSON.parse(childNamesAndAgesStr);
 
-      const listOfNames = ["fetching", "the", "childProfileNames", "here"];
+        const listOfNames = childNamesAndAges.map((child) => child.childName);
 
-      setchildNames(listOfNames);
+        setChildNames(listOfNames);
+      }
     } else {
-      // Setting preview names
-      setchildNames(["Ulpukka", "Kullervo"]);
+      // Preview names
+      setChildNames(["Ulpukka", "Kullervo", "Liisa"]);
     }
   }, [isLoggedIn, selectedChild]);
 
@@ -40,9 +44,10 @@ export default function NameDropDown({
           labelId="preview-target-label"
           id="preview-target-select"
           label="Valitse Lapsi"
-          value={selectedChild}
+          value={childNames.includes(selectedChild) ? selectedChild : ""}
           onChange={(e) => {
             if (changerFunc) {
+              // Send new value to parent:
               changerFunc(e.target.value);
             }
             setSelectedChild(e.target.value);

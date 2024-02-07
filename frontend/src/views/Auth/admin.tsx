@@ -46,7 +46,6 @@ const AdminPage = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const submitData = { category, typeSelect, ...formData };
-    console.log(submitData);
 
     const response = await adminAddData(idToken, submitData);
     if (response && response.error) {
