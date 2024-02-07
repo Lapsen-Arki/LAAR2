@@ -5,7 +5,6 @@ const API_BASE_URL = "http://localhost:3000/api";
 
 const getChildProfiles = async (idToken: string | null) => {
   try {
-    console.log("Haetaan profiileja...");
     const config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
@@ -18,15 +17,12 @@ const getChildProfiles = async (idToken: string | null) => {
         `${API_BASE_URL}/profiles`,
         config
       );
-      console.log("Profiilit haettu onnistuneesti:", response.data);
     }
 
     // Tallenna profiilit Session Storageen, jos ne ovat muuttuneet
     if (response) {
       updateSessionStorage(response.data);
       return response.data;
-    } else {
-      console.log("profillit löytyi sessionStoragesta");
     }
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
