@@ -1,48 +1,92 @@
 import { firestore } from 'firebase-admin';
 import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
-import Stripe from 'stripe';
+import stripeConf from "../../config/stripeClient"
+/*
+const Stripe = require('stripe');
+const stripe = Stripe(process.env.REACT_APP_STRIPE_SECRET_KEY);
+*/
 
-const stripe = require('stripe')('pk_test_51HqdGcK45umi2LZdJtYVobHqBd8GGJjr0ggqdhGTRNisO9fdkOdHIXc1kH96Tpex7dYyj9VlIEGTv90hiMExVn2S00w1xYoflk');
+const stripe = stripeConf()
 
-const startSubscription = async (req: Request, res: Response): Promise<void> => {
+const startSubscription = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
 	try {
 		console.log("start subscription aloitettu")
 		const db = admin.firestore();
-		const userId = req.params.idToken; // tässä antaa vielä arvoksi undefined?
-		console.log(userId)
-		// tähän väliin logiikka, jolla saa userId:n käyttäjän hakua varten
+		const userId = req.params.idToken;
 		const userDocRef = db.collection('users').doc(userId);
 	
 		const userDoc = await userDocRef.get();
 	
 		if (!userDoc.exists) {
 			console.log("käyttäjää ei löytynyt")
-			res.status(404).json({ error: 'User not found' });
+			return res.status(404).json({ error: 'User not found' });
 		}
 		console.log("käyttäjä löydetty")
 		
-		const stripeCustomerId = userDoc.data().stripeCustomerId;
-	
+		const stripeCustomerId = userDoc.data()?.stripeCustomerId;
+
+		if (!stripeCustomerId) {
+			try {
+			console.log("stripe id:tä ei löytynyt")
+			const stripeCustomer = await stripe.customers.create({
+				name: userDoc.data().name,
+				email: userDoc.data().email,
+			  });
+			
+			console.log("stripe id luotu, seuraavaksi tallennetaan")
+			await userDoc.set({
+				stripeCustomerId: stripeCustomer.id,
+			  });
+			console.log('Customer created and Stripe ID saved:', stripeCustomer.id);
+		} catch (error) {
+			console.error('Error creating customer and saving to Firebase:', error);
+		  }
+		}
+
 		const session = await stripe.checkout.sessions.create({
 			payment_method_types: ['card'],
 			mode: 'subscription',
 			customer: stripeCustomerId,
 			line_items: [
 				{
-					price: 'your-stripe-price-id',
+					price: 'price_1ObLeAK45umi2LZd5XwwYvam',
 				},
 			],
-			success_url: 'http://localhost:5173/success',
-			cancel_url: 'http://localhost:5173/cancel',
+			success_url: 'http://localhost:5173/subscription-success',
+			cancel_url: 'http://localhost:5173/subscription-cancel',
 		});
-	
-		res.json({ sessionId: session.id });
+		return res.json({ sessionId: session.id });
 	} catch (error) {
 		console.error('Error starting subscription:', error);
-		res.status(500).json({ error: 'Internal Server Error' });
+		return res.status(500).json({ error: 'Internal Server Error' });
 	  }
 };
+
+const saveSubscription = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+	try {
+
+	  const { subscriptionId, userId } = req.body;
+  
+	  if (!subscriptionId || !userId) {
+		return res.status(400).json({ error: 'Missing required parameters' });
+	  }
+
+	  const db = admin.firestore();
+  
+	  const userRef = db.collection('users').doc(userId);
+	  await userRef.set(
+		{
+		  subscriptionId: subscriptionId,
+		},
+		{ merge: true }
+	  );
+	  return res.status(200).json({ success: true });
+	} catch (error) {
+	  console.error('Error saving subscription:', error);
+	  return res.status(500).json({ error: 'Internal Server Error' });
+	}
+  };
 
 const cancelSubscription = async (req: Request, res: Response): Promise<void> => {
 	try {
@@ -66,7 +110,7 @@ const cancelSubscription = async (req: Request, res: Response): Promise<void> =>
 		const stripeCustomerId = userDoc.data().stripeCustomerId;
 		const subscriptionId = userDoc.data().stripeSubscriptionId;
 
-		await stripe.subscriptions.del(subscriptionId);
+		//await stripe.subscriptions.del(subscriptionId);
 
 		await userDocRef.update({ subscriptionStatus: 'canceled' });
 
@@ -77,29 +121,36 @@ const cancelSubscription = async (req: Request, res: Response): Promise<void> =>
 	}
 };
 
-const getSubscriptionById = async (req: Request, res: Response): Promise<void> => {
-	try {
-		const db = admin.firestore();
-		const userId = req.params.id;
-		const userDocRef = db.collection('users').doc(userId);
-  
-		const userDoc = await userDocRef.get();
-  
-		if (!userDoc.exists) {
-			res.status(404).json({ error: 'User not found' });
+const getSubscriptionById = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
+    try {
+		console.log("backend - luodaan db")
+        const db = admin.firestore();
+        const userId = req.params.id;
+		console.log(userId)
+        const userDocRef = db.collection('users').doc(userId);
+
+        const userDoc = await userDocRef.get();
+		console.log("backend - käyttäjä haettu")
+        if (!userDoc.exists) {
+			console.log("backend - käyttäjää ei löytynyt")
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const stripeCustomerId = userDoc.data()?.stripeCustomerId;
+		console.log("backend - asetettu stripecustomerid")
+
+		if (stripeCustomerId) {
+			console.log("backend - stripecustomerid löytyi")
+			const subscription = await stripe.subscriptions.retrieve(stripeCustomerId);
+			return res.status(200).json({ subscription });
+		} else {
+		console.log("backend - stripecustomerid:tä ei löytynyt")
+		return res.json({ message: "No subscription found" });
 		}
-
-		const stripeCustomerId = userDoc.data().stripeCustomerId;
-
-		const subscriptions = await stripe.subscriptions.list({
-			customer: stripeCustomerId,
-		});
-
-		res.json({ subscriptions });
-	} catch (error) {
-		console.error('Error fetching subscription information:', error);
-		res.status(500).json({ error: 'Internal Server Error' });
-	}
+    } catch (error) {
+        console.error('backend - backendissä tapahtui error:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
 };
 
 /*
@@ -111,4 +162,4 @@ const getSubscriptionById = async (req: Request, res: Response): Promise<void> =
 	return subscriptions;
   };
 */
-export { startSubscription, cancelSubscription, getSubscriptionById }
+export { startSubscription, saveSubscription, cancelSubscription, getSubscriptionById }

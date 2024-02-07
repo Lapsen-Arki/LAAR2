@@ -14,6 +14,7 @@ import AccountSettings from "./views/AccountSettings";
 import ChoicesPage from "./views/choices";
 import TermsAndPrivacy from "./views/termsAndPrivacy";
 import AboutUs from "./views/aboutUs";
+import SubscriptionSuccessPage from "./views/SubscriptionSuccess";
 
 // Higher Order Components (HOC):
 import Layout from "./components/Layout/Layout";
@@ -54,6 +55,7 @@ function App() {
                 <Route path="/account" element={<AccountSettings />} />
                 <Route path="/terms" element={<TermsAndPrivacy />} />
                 <Route path="/about-us" element={<AboutUs />} />
+				<Route path="/subscription-success" element={<SubscriptionSuccessPage />} />
               </Routes>
             </Layout>
           </Elements>

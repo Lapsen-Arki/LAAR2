@@ -1,9 +1,8 @@
-import React, { useState, useContext /*, useEffect*/ } from 'react';
-//import { loadStripe, Stripe } from '@stripe/stripe-js';
-//import { TokenContext } from '../contexts/tokenContext';
-//import startSubscription from '../api/startSubscription';
-//import cancelSubscription from '../api/cancelSubscription';
-//import getSubscription from '../api/getSubscription';
+import React, { useState, useContext, useEffect } from 'react';
+import { loadStripe, Stripe } from '@stripe/stripe-js';
+import startSubscription from '../api/startSubscription';
+import cancelSubscription from '../api/cancelSubscription';
+import getSubscription from '../api/getSubscription';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
@@ -24,43 +23,52 @@ import Paper from '@mui/material/Paper';
 import Switch from '@mui/material/Switch';
 import '../styles/Subscription.css'
 import { TokenContext } from "../contexts/tokenContext";
+import { UserContext } from "../contexts/userContext";
 import PleaseLoginModal from "../components/modals/pleaseLoginModal";
 
 // Sivu on vielä kesken, keskeneräisiä funktioita kommentoitu pois
 
 const SubscriptionManagement: React.FC = () => {
-//const { idToken } = useContext(TokenContext);
-//const [subscription, setSubscription] = useState<string | null>(null);
-//const [stripe, setStripe] = useState<Stripe | null>(null);
-  const [testiboolean, setTestiboolean] = useState(true) // väliaikainen muuttuja testausta varte, true = käyttäjällä on tilaus, false = tilausta ei ole
-  const [openLoginModal, setOpenLoginModal] = React.useState(false);
-/*
+	const { idToken } = useContext(TokenContext);
+	const { userId } = useContext(UserContext);
+	const [subscription, setSubscription] = useState<string | null>(null);
+	const [stripe, setStripe] = useState<Stripe | null>(null);
+	const [testiboolean, setTestiboolean] = useState(true) // väliaikainen muuttuja testausta varte, true = käyttäjällä on tilaus, false = tilausta ei ole
+	const [openLoginModal, setOpenLoginModal] = React.useState(false);
+
   useEffect(() => {
     const fetchSubscription = async () => {
 	
       try {
-        const response = await getSubscription(idToken);
+		if (userId) {
+			console.log("client - fetching response")
+       		const response = await getSubscription(idToken, userId);
 
-        if ('error' in response) {
-          console.error('Error', response.error);
-        } else {
-          setSubscription(response);
-        }
-      } catch (error) {
-        console.error('Error', error);
-      }
-    };
+        	if ('error' in response) {
+				console.log("client - error in response")
+          		console.error('Error', response.error);
+        	} else {
+				console.log("client - ei erroria responsessa")
+				console.log(response)
+          		setSubscription(response);
+        	}
+		}
+      	} catch (error) {
+			
+        	console.error('client - Error statusta haettaessa ');
+      	}
+	}
 
     if (idToken) {
-    	//getSubscription(idToken);
+    	fetchSubscription();
     }
-  }, [idToken]);
-*/
+  }, [userId]);
+
 
   const handleStartSubscription = async () => {
-	/*
+
     try {
-      const data = await startSubscription(idToken);
+      const data = await startSubscription(idToken, userId);
 
       const stripeInstance = await loadStripe('pk_test_51HqdGcK45umi2LZdJtYVobHqBd8GGJjr0ggqdhGTRNisO9fdkOdHIXc1kH96Tpex7dYyj9VlIEGTv90hiMExVn2S00w1xYoflk');
       setStripe(stripeInstance);
@@ -79,21 +87,17 @@ const SubscriptionManagement: React.FC = () => {
     } catch (error) {
       console.error('Error starting subscription:', error);
     }
-	*/
+
   };
 
   const handleCancelSubscription = async () => {
-	/*
     try {
       const data = await cancelSubscription(idToken);
       setSubscription(data.status);
     } catch (error) {
       console.error('Error canceling subscription:', error);
     }
-	*/
-  };
-
-  const { idToken } = useContext(TokenContext);
+}
 
   if (!idToken) {
     return (
@@ -115,7 +119,7 @@ const SubscriptionManagement: React.FC = () => {
 		<Card variant="outlined">
 			<CardContent>
 			{
-				testiboolean ? (
+				subscription ? (
 				<div>
 					<Typography sx={{ fontSize: 14 }} color="text.secondary">
 						Sinulla on voimassaoleva tilaus!
@@ -179,7 +183,7 @@ const SubscriptionManagement: React.FC = () => {
 		</Card>
 	</Box>
 	<br></br>
-	{testiboolean ? (
+	{subscription ? (
 		<Button onClick={handleCancelSubscription} variant="contained" sx={{ backgroundColor: '#63c8cc'}}>
 			Keskeytä tilaus
 		</Button>

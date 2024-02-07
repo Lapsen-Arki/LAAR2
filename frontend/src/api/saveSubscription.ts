@@ -1,11 +1,10 @@
 import axios from "axios";
 const API_BASE_URL = "http://localhost:3000/api";
 
-const getSubscription = async (idToken : string | null, userId : string | undefined) => {
+const saveSubscription = async (idToken : string | null, subId : string | undefined) => {
   try {
-	console.log("client api - fetching response")
     const response = await axios.post(
-      `${API_BASE_URL}/get-subscription/${userId}`,
+      `${API_BASE_URL}/save-subscription/${subId}`,
       {},
       {
         headers: {
@@ -14,12 +13,11 @@ const getSubscription = async (idToken : string | null, userId : string | undefi
         },
       }
     );
-	console.log("client api - response fetched")
+
     return response.data;
   } catch (error) {
-	console.log("client api - error tapahtui")
     throw error;
   }
 };
 
-export default getSubscription;
+export default saveSubscription;
