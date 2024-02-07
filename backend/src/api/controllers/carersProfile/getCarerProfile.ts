@@ -2,13 +2,13 @@ import { Request, Response } from "express";
 import admin from "../../../config/firebseConfig";
 import { getUserIdFromToken } from "../../../utils/getUserIdFromTokenUtil";
 
-interface UserProfile {
+interface CarerProfile {
   id: string;
   email: string;
   name: string;
 }
 
-const getCaresProfiles = async (req: Request, res: Response): Promise<void> => {
+const getCarerProfile = async (req: Request, res: Response): Promise<void> => {
   try {
     const idToken = req.headers.authorization?.split("Bearer ")[1];
     if (!idToken) {
@@ -35,7 +35,7 @@ const getCaresProfiles = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const profiles: UserProfile[] = [];
+    const profiles: CarerProfile[] = [];
 
     for (const doc of profilesSnapshot.docs) {
       const profileData = doc.data() as { invitedUserUid: string };
@@ -44,7 +44,7 @@ const getCaresProfiles = async (req: Request, res: Response): Promise<void> => {
       const userDoc = await usersCollection.doc(invitedUserUid).get();
 
       if (userDoc.exists) {
-        const userData = userDoc.data() as UserProfile;
+        const userData = userDoc.data() as CarerProfile;
         userData.id = userDoc.id;
         profiles.push(userData);
       }
@@ -59,4 +59,4 @@ const getCaresProfiles = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { getCaresProfiles };
+export { getCarerProfile };
