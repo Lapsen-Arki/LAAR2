@@ -20,6 +20,7 @@ export default function NameDropDown({
     if (isLoggedIn) {
       // Fetch the children's names and ages here
       // Later fetching also each child's allergies if adding the feature
+
       const listOfNames = ["fetching", "the", "childProfileNames", "here"];
 
       setchildNames(listOfNames);
