@@ -50,12 +50,16 @@ export interface DecodedToken {
 export type RecomMenuItemType = {
   [key: string]: number;
 };
+export type RecomPhotosType = {
+  [key: string]: string;
+};
 
 export type RecommendationsType = {
   id: number;
   mealType?: string;
   title: string;
   menuItems: RecomMenuItemType;
+  photos: RecomPhotosType;
 };
 
 export type TipsType = {
@@ -63,4 +67,5 @@ export type TipsType = {
   adviseType: string;
   title: string;
   textContents: string;
+  photo?: string;
 };
