@@ -4,6 +4,7 @@ import ReturnBtn from "../components/returnBtn";
 import { useEffect, useState } from "react";
 import { Container, Typography } from "@mui/material";
 import { NamesAndAgesType } from "../types/types";
+import makeChildObject from "../utils/makeChildObject";
 
 // comp imports:
 import ActivityComp from "../components/coices/activityComp";
@@ -31,6 +32,7 @@ export default function ChoicesPage() {
 
   useEffect(() => {
     const childNamesAndAgesJSON = sessionStorage.getItem("childNamesAndAges");
+    makeChildObject();
     if (childNamesAndAgesJSON) {
       const childNamesAndAges = JSON.parse(
         childNamesAndAgesJSON
