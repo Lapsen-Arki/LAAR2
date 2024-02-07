@@ -12,6 +12,9 @@ import {
   Tooltip,
 } from '@mui/material';
 
+import { ThemeProvider } from "@mui/material/styles";
+import { formTheme } from '../components/Layout/formThemeMUI';
+
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';

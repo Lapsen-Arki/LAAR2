@@ -15,7 +15,6 @@ import { registerUser } from "../../api/registerPost";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { RegisterData } from "../../types/types";
 import { useNavigate } from "react-router-dom";
-import ReturnBtn from "../../components/returnBtn";
 
 // TODO: 1. Pankkikortin vahvistuksen lisääminen 2. EXTRA: Google ja Facebook kirjautumis vaihtoehdot
 const CARD_ELEMENT_STYLES = {
@@ -96,24 +95,10 @@ export default function Register() {
       <Container
         component="main"
         maxWidth="sm"
-        style={{
-          marginTop: "64px",
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-          padding: 20,
-        }}
       >
-        <ReturnBtn />
-        <Typography
-          sx={{
-            marginBottom: 3,
-          }}
-          component="h1"
-          variant="h5"
-        >
-          Rekisteröityminen
-        </Typography>
+        {/*<ReturnBtn />*/}
+        <Typography variant="h4">Rekisteröityminen</Typography>
         <form onSubmit={handleSubmit}>
-          <Typography variant="subtitle1"></Typography>
           <TextField
             name="email"
             variant="outlined"
@@ -126,7 +111,6 @@ export default function Register() {
             value={formData.email}
             onChange={handleChange}
           />
-          <Typography variant="subtitle1"></Typography>
           <TextField
             name="name"
             variant="outlined"
@@ -138,7 +122,6 @@ export default function Register() {
             value={formData.name}
             onChange={handleChange}
           />
-          <Typography variant="subtitle1"></Typography>
           <TextField
             name="password"
             variant="outlined"
@@ -151,7 +134,6 @@ export default function Register() {
             value={formData.password}
             onChange={handleChange}
           />
-          <Typography variant="subtitle1"></Typography>
           <TextField
             name="confirmPassword"
             variant="outlined"
@@ -165,14 +147,26 @@ export default function Register() {
             onChange={handleChange}
           />
 
-          <Typography>Vahvista maksukorttisi:</Typography>
+          <Typography variant="body1">Vahvista maksukorttisi:</Typography>
           <Box
             sx={{
               background: "white",
               padding: 2,
-              border: isFocused ? 2 : 1,
-              borderRadius: "4px",
-              borderColor: isFocused ? "#1a73e8" : "rgba(0, 0, 0, 0.23)", // Google blue when focused
+              margin: '7px',
+              width: 218, 
+              maxWidth: '90%',
+              border: isFocused ? 1 : 1,
+              borderRadius: "5px",
+              borderColor: isFocused ? "#000000" : "rgba(0, 0, 0, 0.23)",
+              '&:hover': {
+                borderColor: '#000000',
+              },
+              '@media (min-width:400px)': {
+                width: '82%'
+              },
+              '@media (min-width:576px)': {
+                width: 335,
+              },
             }}
           >
             <CardElement
@@ -182,20 +176,14 @@ export default function Register() {
             />
           </Box>
           <Typography
-            variant="subtitle1"
-        
-          >
-            <b>Emme veloita sinua vielä tässä kohtaa.</b><br /> Turvallisen maksukortin
-            vahvistuksen käsittelee <Link href="https://stripe.com/en-fi" target="_blank">Stripe</Link>.
-          </Typography>
-
-          <Typography
-            sx={{
-              marginBottom: 2,
-              marginTop: 2,
-            }}
             variant="body1"
           >
+            <b>Emme veloita sinua vielä tässä kohtaa.</b> Turvallisen maksukortin
+            vahvistuksen käsittelee <Link href="https://stripe.com/en-fi" target="_blank">Stripe</Link>.
+          </Typography>
+          
+
+          <Typography variant="body1">
             Rekisteröitymällä aloitan 14 vrk ilmaisen kokeulujakson ja palvelun
             hinta on tämän jälkeen 6,99€/kk. Tilauksen voit peruttaa koska tahansa
             päättymään maksukauden loppuun.
@@ -214,8 +202,8 @@ export default function Register() {
           />
           <Button
             type="submit"
-            fullWidth
             variant="contained"
+            fullWidth
           >
             Rekisteröidy
           </Button>
@@ -227,7 +215,7 @@ export default function Register() {
           </Typography>
           
           <Link href="/login" variant="body2">
-            <p>Onko sinulla valmiiksi tili? Kirjaudu tästä!</p>
+            Onko sinulla valmiiksi tili? Kirjaudu tästä!
           </Link>
         </form>
       </Container>

@@ -65,7 +65,7 @@ const AdminPage = () => {
     <div style={{ maxWidth: 500 }}>
       <ThemeProvider theme={formTheme}>
         <Typography variant="h3">Admin Page</Typography>
-        <h3>Lisää tiedot:</h3>
+        <Typography variant="h6">Lisää tiedot:</Typography>
 
         <form onSubmit={handleSubmit}>
           <FormControl fullWidth margin="normal">
@@ -113,8 +113,8 @@ const AdminPage = () => {
             onChange={handleChange}
             required
           />
-          <h3>Kuva</h3>
-          <p>Valitse kuvan URL linkki tai valitse tiedosto:</p>
+          <Typography variant="h6">Kuva</Typography>
+          <Typography variant="body1">Valitse kuvan URL linkki tai valitse tiedosto:</Typography>
           <TextField
             name="photoLink"
             fullWidth

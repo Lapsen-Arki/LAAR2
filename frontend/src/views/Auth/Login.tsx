@@ -7,6 +7,7 @@ import {
   Link,
   Checkbox,
   FormControlLabel,
+  Grid,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from '../../components/Layout/formThemeMUI';
@@ -16,7 +17,6 @@ import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 import ResetPasswordModal from "../../components/modals/resetPasswordModal";
 import VerifyEmailModal from "../../components/modals/verifyEmailModal";
-import ReturnBtn from "../../components/returnBtn";
 
 const Login: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState("");
@@ -80,16 +80,9 @@ const Login: React.FC = (): JSX.Element => {
       <Container
         component="main"
         maxWidth="sm"
-        style={{
-          marginTop: "64px",
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-          padding: 20,
-        }}
+        style={{ textAlign: 'center' }}
       >
-        <ReturnBtn />
-        <Typography variant="h5" component="h1" gutterBottom>
-          Kirjaudu sisään
-        </Typography>
+        <Typography variant="h4">Kirjaudu sisään</Typography>
         <VerifyEmailModal
           open={openVerifyEmail}
           email={email}
@@ -122,57 +115,73 @@ const Login: React.FC = (): JSX.Element => {
               setPassword(e.target.value)
             }
           />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={rememberMe}
-                onChange={handleRememberMeChange}
+
+          <Grid 
+          container
+          direction="row" 
+          justifyContent="space-between" 
+          alignItems="baseline"
+          style={{ padding: 5, }}
+          >
+            <Grid item>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={rememberMe}
+                    onChange={handleRememberMeChange}
+                  />
+                }
+                label="Muista minut"
               />
-            }
-            label="Muista minut"
-          />
+            </Grid>
+            <Grid item>
+              <Link
+                href="#"
+                onClick={() => {
+                  setOpenResetModal(true);
+                }}
+                variant="body1"
+              >
+                Unohtuiko salasana?
+              </Link>
+              <ResetPasswordModal
+                open={openResetModel}
+                email={email}
+                setEmail={setEmail}
+                setOpen={setOpenResetModal}
+              />
+            </Grid>
+          </Grid>
           <Button
             type="submit"
-            fullWidth
             variant="contained"
+            fullWidth
           >
             Kirjaudu sisään
           </Button>
+
           <Typography
-            color="success"
-            variant="body2"
-            align="center"
-            style={{ marginTop: "16px", marginBottom: "10px" }}
+            variant="subtitle1"
           >
             {successMessage}
           </Typography>
           <Typography
-            color="error"
-            variant="body2"
-            align="center"
-            style={{ marginTop: "16px", marginBottom: "10px" }}
+            variant="subtitle2"
           >
             {errorMessage}
           </Typography>
+          <Grid 
+          container
+          direction="row" 
+          justifyContent="flex-start" 
+          alignItems="baseline">
+            <Grid item>
           <Link href="/register" variant="body2">
-            Eikö sinulla ole tiliä? Luo tili tästä!
+            Eikö vielä tiliä? Rekisteröidy tästä!
           </Link>
-          <br />
-          <Link
-            href="#"
-            onClick={() => {
-              setOpenResetModal(true);
-            }}
-            variant="body2"
-          >
-            Unohtuiko salasana?
-          </Link>
-          <ResetPasswordModal
-            open={openResetModel}
-            email={email}
-            setEmail={setEmail}
-            setOpen={setOpenResetModal}
-          />
+          </Grid>
+          </Grid>
+          
         </form>
       </Container>
     </ThemeProvider>
