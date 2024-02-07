@@ -22,7 +22,7 @@ export default function IndexPage() {
       // Fetching childProfiles
       const retrieveDataAndMakeObject = async () => {
         await getChildProfiles(idToken);
-        await makeChildObject();
+        makeChildObject();
         setChildObjectLoading(false);
       };
       retrieveDataAndMakeObject();
