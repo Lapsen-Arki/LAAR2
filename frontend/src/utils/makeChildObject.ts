@@ -1,6 +1,10 @@
 // Makes object including childs name and age
 import { ChildProfile } from "../types/types";
 
+// THIS FILE IS:
+// Making object of child name and age in months
+// And saving it in sessionStorage as "childNameAndAge"
+
 export default function makeChildObject() {
   const childProfilesJSON = sessionStorage.getItem("childProfiles");
   const childNameAndAge = sessionStorage.getItem("childNameAndAge");
