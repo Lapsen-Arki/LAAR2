@@ -1,14 +1,15 @@
 // Makes object including childs name and age
+import { ChildProfile } from "../types/types";
 
 export default function makeChildObject() {
   const childProfilesJSON = sessionStorage.getItem("childProfiles");
   const childNameAndAge = sessionStorage.getItem("childNameAndAge");
   if (childProfilesJSON && !childNameAndAge) {
     // Parse the JSON string back into an array of objects
-    const childProfiles = JSON.parse(childProfilesJSON);
+    const childProfiles = JSON.parse(childProfilesJSON) as ChildProfile[];
 
     // Function to calculate age in months from birthdate
-    const calculateAgeInMonths = (birthdate: Date) => {
+    const calculateAgeInMonths = (birthdate: string) => {
       const birthDate = new Date(birthdate);
       const differenceInMonths =
         (new Date().getTime() - birthDate.getTime()) / (1000 * 3600 * 24 * 30);
@@ -21,7 +22,9 @@ export default function makeChildObject() {
       age: calculateAgeInMonths(child.birthdate),
     }));
 
-    sessionStorage.setItem("childNameAndAge", childNameAndAge);
+    if (childNameAndAge) {
+      sessionStorage.setItem("childNameAndAge", childNameAndAge);
+    }
 
     console.log(childNamesAndAges);
   }
