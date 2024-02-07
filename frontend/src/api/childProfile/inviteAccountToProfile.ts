@@ -1,7 +1,8 @@
 import axios from "axios";
 
 // TODO: Move to env variables etc:
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
 
 interface InviteAccountToProfileData {
   accountEmail: string;
@@ -29,10 +30,13 @@ export const inviteAccountToProfile = async (
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
-      if (typeof error.response.data === 'string') {
+      if (typeof error.response.data === "string") {
         console.error("Tilin kutsuessa profiiliin error:", error.response.data);
-      } else if (typeof error.response.data === 'object') {
-        console.error("Tilin kutsuessa profiiliin error:", JSON.stringify(error.response.data));
+      } else if (typeof error.response.data === "object") {
+        console.error(
+          "Tilin kutsuessa profiiliin error:",
+          JSON.stringify(error.response.data)
+        );
       } else {
         console.error("Tilin kutsuessa profiiliin error:", error.response.data);
       }

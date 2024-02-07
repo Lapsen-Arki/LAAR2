@@ -11,6 +11,7 @@ export default function LandingComp() {
         />
       </Grid>
       <Grid item xs={12} md={6}>
+        <Typography variant="h3">Version 1.0</Typography>
         <Typography variant="h3">Lapsen Arki</Typography>
         <Typography variant="h5">Tueksi vanhemmuuden polulla.</Typography>
         <hr />
