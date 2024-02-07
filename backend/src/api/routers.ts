@@ -40,7 +40,7 @@ router.get("/profile/:id", getChildProfileById);             // Hae käyttäjän
 router.delete("/profile/:profileId", deleteChildProfile);    // Poista käyttäjän luoma profiili
 
 router.post("/inviteAccountToProfile", inviteAccountToProfile); // Kutsu käyttäjä hoitajaksi profiileihin
-router.post("/carers", getCarerProfile);                         // Hae hoitaja profiilit
+router.get("/carers", getCarerProfile);                         // Hae hoitaja profiilit
 
 // Future User routes plan (?):
 // router.get("/settings", editAccount);

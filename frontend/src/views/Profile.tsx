@@ -20,6 +20,7 @@ import PleaseLoginModal from "../components/modals/pleaseLoginModal";
 import { TokenContext } from "../contexts/tokenContext";
 import { getChildProfiles } from '../api/childProfile/getChildProfiles';
 import deleteChildProfile from '../api/childProfile/deleteChildProfile';
+import { getCarerProfile } from '../api/carersProfile/getCarerProfile';
 
 import { calculateAge, splitNameToFitWidth } from './utils/profileUtils';
 import ConfirmationDialog from './utils/profileConfirmationDialog';
@@ -33,13 +34,27 @@ interface ChildProfile {
   creatorId: string;
 }
 
+interface CarerProfile {
+  id: string;
+  email: string;
+  name: string;
+}
+
 export default function Profile() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const { idToken } = useContext(TokenContext);
   const navigate = useNavigate();
   const [childProfiles, setChildProfiles] = useState<ChildProfile[]>([]);
+  const [carerProfiles, setCarerProfiles] = useState<CarerProfile[]>([]);
   const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
   const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!idToken) {
+      console.error('JWT token puuttuu');
+      setOpenLoginModal(true);
+      return;
+    }
 
   const fetchProfilesFromSessionStorage = () => {
     const storedProfilesJson = sessionStorage.getItem('childProfiles');
@@ -48,13 +63,6 @@ export default function Profile() {
     }
     return null;
   };
-
-  useEffect(() => {
-    if (!idToken) {
-      console.error('JWT token puuttuu');
-      setOpenLoginModal(true);
-      return;
-    }
 
     const fetchProfilesFromServer = async () => {
       console.log('Haetaan profiileja palvelimelta...');
@@ -76,8 +84,24 @@ export default function Profile() {
         await fetchProfilesFromServer();
       }
     };
+
+    const fetchCarerProfiles = async () => {
+      const storedCarerProfilesJson = sessionStorage.getItem('carerProfiles');
+      if (storedCarerProfilesJson) {
+        setCarerProfiles(JSON.parse(storedCarerProfilesJson));
+      } else {
+        try {
+          const carerProfiles = await getCarerProfile(idToken);
+          sessionStorage.setItem('carerProfiles', JSON.stringify(carerProfiles));
+          setCarerProfiles(carerProfiles);
+        } catch (error) {
+          console.error('Virhe hoitajaprofiilien haussa:', error);
+        }
+      }
+    };
   
     fetchProfiles();
+    fetchCarerProfiles();
   }, [idToken]);
 
   if (!idToken) {
@@ -222,21 +246,37 @@ export default function Profile() {
               <Typography variant="h6" gutterBottom>
                 Hoitajat:
               </Typography>
-              <div className="Carer">
-                <Card className="Carer-cards">
-                  <CardContent className="Carer-content">
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <Tooltip title="Hoitajia ei ole vielä lisätty">
-                        <HelpOutlineIcon sx={{ fontSize: 40, color: 'white', borderRadius: '50%', backgroundColor: '#63c8cc' }} />
-                      </Tooltip>
-                      <Typography variant="h6" gutterBottom sx={{ marginLeft: '10px' }}>
-                        
-                        Hoitajia ei ole vielä <br /> lisätty
-                      </Typography>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+              {carerProfiles.length > 0 ? (
+                <div className="Carer">
+                  {carerProfiles.map((carer) => (
+                    <Card className="Carer-cards" key={carer.id}>
+                      <CardContent className="Carer-content">
+                        <Typography variant="h5" component="div">
+                          {carer.name}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {carer.email}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="Carer">
+                  <Card className="Carer-cards">
+                    <CardContent className="Carer-content">
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Tooltip title="Hoitajia ei ole vielä lisätty">
+                          <HelpOutlineIcon sx={{ fontSize: 40, color: 'white', borderRadius: '50%', backgroundColor: '#63c8cc' }} />
+                        </Tooltip>
+                        <Typography variant="h6" gutterBottom sx={{ marginLeft: '10px' }}>
+                          Hoitajia ei ole vielä <br /> lisätty
+                        </Typography>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
             </div>
 
             <div style={{ flex: 1 }}>
