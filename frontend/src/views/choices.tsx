@@ -2,6 +2,8 @@ import { useLocation } from "react-router-dom";
 import NameDropDown from "../components/index/nameDropDown";
 import ReturnBtn from "../components/returnBtn";
 import { useEffect, useState } from "react";
+import { Container, Typography } from "@mui/material";
+import { NamesAndAgesType } from "../types/types";
 
 // comp imports:
 import ActivityComp from "../components/coices/activityComp";
@@ -9,7 +11,6 @@ import AllergiesComp from "../components/coices/allergiesComp";
 import ChildInfoComp from "../components/coices/childInfoComp";
 import MealComp from "../components/coices/mealComp";
 import TipsComp from "../components/coices/tipsComp";
-import { Container, Typography } from "@mui/material";
 
 export default function ChoicesPage() {
   const location = useLocation();
@@ -22,10 +23,27 @@ export default function ChoicesPage() {
   const [tipsFor, setTipsFor] = useState<null | string>(null);
   const [mealType, setMealType] = useState("");
 
-  //
+  // selected child states:
   const [selectedChild, setSelectedChild] = useState(() => {
     return sessionStorage.getItem("selectedChild");
   });
+  const [selectedChildAge, setSelectedChildAge] = useState<number>();
+
+  useEffect(() => {
+    const childNamesAndAgesJSON = sessionStorage.getItem("childNamesAndAges");
+    if (childNamesAndAgesJSON) {
+      const childNamesAndAges = JSON.parse(
+        childNamesAndAgesJSON
+      ) as NamesAndAgesType[];
+
+      const child = childNamesAndAges.find(
+        (child) => child.childName === selectedChild
+      );
+      if (child) {
+        setSelectedChildAge(child.age);
+      }
+    }
+  }, [selectedChild]);
 
   // Handling parent component change of selectedChild
   const handleParentChange = (newValue: string) => {
@@ -93,16 +111,22 @@ export default function ChoicesPage() {
         {smallMeal && (
           <div>
             <AllergiesComp />
-            <MealComp mealType={mealType} />{" "}
+            {selectedChildAge && (
+              <MealComp mealType={mealType} childAge={selectedChildAge} />
+            )}{" "}
           </div>
         )}
         {bigMeal && (
           <div>
             <AllergiesComp />
-            <MealComp mealType={mealType} />
+            {selectedChildAge && (
+              <MealComp mealType={mealType} childAge={selectedChildAge} />
+            )}
           </div>
         )}
-        {activity && <ActivityComp />}
+        {activity && selectedChildAge && (
+          <ActivityComp childAge={selectedChildAge} />
+        )}
       </Container>
     </>
   );

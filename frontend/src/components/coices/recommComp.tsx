@@ -3,16 +3,17 @@ import { RecommendationsType } from "../../types/types";
 import { useState } from "react";
 
 // Getting real child data somewhere:
-const childAge = 11;
 
 export default function RecommComp({
   recommendations,
   multipleSelections,
   mealType = null,
+  childAge,
 }: {
   recommendations: RecommendationsType[];
   multipleSelections: boolean;
   mealType?: string | null;
+  childAge: number;
 }) {
   const [selectedBox, setSelectedBox] = useState<string | string[]>("");
 

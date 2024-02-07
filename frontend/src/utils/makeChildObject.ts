@@ -7,8 +7,8 @@ import { ChildProfile } from "../types/types";
 
 export default function makeChildObject() {
   const childProfilesJSON = sessionStorage.getItem("childProfiles");
-  const childNamesAndAges = sessionStorage.getItem("childNamesAndAges");
-  if (childProfilesJSON && !childNamesAndAges) {
+
+  if (childProfilesJSON) {
     // Parse the JSON string back into an array of objects
     const childProfiles = JSON.parse(childProfilesJSON) as ChildProfile[];
 
@@ -32,7 +32,5 @@ export default function makeChildObject() {
         JSON.stringify(childNamesAndAges)
       );
     }
-
-    console.log(childNamesAndAges);
   }
 }
