@@ -1,4 +1,4 @@
-import "../styles/timeBlocking.css";
+import "../styles/oldStyles/timeBlocking.css";
 import { useState, useEffect } from "react";
 import { Box, Grid, Paper, styled } from "@mui/material";
 
