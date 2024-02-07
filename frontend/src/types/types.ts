@@ -57,3 +57,10 @@ export type RecommendationsType = {
   title: string;
   menuItems: RecomMenuItemType;
 };
+
+export type TipsType = {
+  id: number;
+  adviseType: string;
+  title: string;
+  textContents: string;
+};
