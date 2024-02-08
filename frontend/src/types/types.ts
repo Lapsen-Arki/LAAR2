@@ -14,6 +14,7 @@ export interface RegisterData {
   };
 }
 
+// Admin page data adding feature:
 // Category and typeSelect comes from separate useStates:
 export interface FormDataToBackend {
   title: string;
@@ -25,7 +26,7 @@ export interface FormDataToBackend {
 // -->
 export interface FinalDataToBackend {
   category: string;
-  typeSelect: string;
+  typeSelect?: string;
   title: string;
   content: string; // <- This will be saved in a list in the backend
   ageLimit?: number;

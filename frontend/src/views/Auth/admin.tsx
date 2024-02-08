@@ -81,7 +81,13 @@ const AdminPage = () => {
   return (
     <div style={{ maxWidth: 500 }}>
       <Typography variant="h3">Admin Page</Typography>
-      <h3>Lisää tiedot:</h3>
+      <Typography variant="h5">Lisää tieto:</Typography>
+      <Typography variant="body1">
+        HUOM! Täytä lomakkeet hyvin huolellisesti ja tarkista oikeinkirjoitus.
+      </Typography>
+      <Typography variant="body1">
+        Jos teet virheitä, niin ne tulee korjata tietokannan kautta.
+      </Typography>
 
       {/*main category */}
       <form onSubmit={handleSubmit}>
@@ -158,7 +164,7 @@ const AdminPage = () => {
                 marginTop: 0,
                 background: "white",
               }}
-              name="name"
+              name="content"
               fullWidth
               label="Nimi"
               margin="normal"
@@ -184,7 +190,7 @@ const AdminPage = () => {
             <Typography>Teksti sisältö:</Typography>
 
             <TextareaAutosize
-              name="textContents"
+              name="content"
               minRows={8} // Minimum number of rows
               maxRows={8} // Maximum number of rows
               style={{ width: 495 }}
