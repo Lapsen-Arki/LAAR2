@@ -14,12 +14,15 @@ export interface RegisterData {
   };
 }
 
+// Category and typeSelect comes from separate useStates:
+// category: string;
+// type: string
 export interface AddDataToDatabase {
-  choice: string;
-  name: string;
-  ageLimit: number;
-  photoLink: string;
-  photoFileName: string;
+  title: string;
+  content: string; // <- This will be saved in a list in the backend
+  ageLimit?: number;
+  photoLink?: string;
+  photoFileName?: string;
 }
 
 export type TokenContextType = {

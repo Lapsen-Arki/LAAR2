@@ -6,13 +6,7 @@ const adminPage = async (req: Request, res: Response) => {
   try {
     const addDataObject = req.body as unknown as AddDataToDatabase;
 
-    const validCategories = [
-      "aktiviteetti",
-      "pieniAteria",
-      "isoAteria",
-      "iltatoimi",
-      "nukkuminen",
-    ];
+    const validCategories = ["ateria", "aktiviteetti", "vinkki"];
     // Validate category:
     if (!validCategories.includes(addDataObject.category)) {
       return res.status(400).send({

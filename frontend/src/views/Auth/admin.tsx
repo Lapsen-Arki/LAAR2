@@ -25,8 +25,8 @@ const AdminPage = () => {
   const [typeSelect, setTypeSelect] = React.useState("");
   const [openLoginModal, setOpenLoginModal] = React.useState(false);
   const [formData, setFormData] = React.useState<AddDataToDatabase>({
-    choice: "",
-    name: "",
+    title: "",
+    content: "",
     ageLimit: 0,
     photoLink: "",
     photoFileName: "",
