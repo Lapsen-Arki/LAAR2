@@ -23,6 +23,9 @@ import PleaseLoginModal from '../components/modals/pleaseLoginModal';
 import { TokenContext } from '../contexts/tokenContext';
 import { inviteAccountToProfile, getCarerProfile, updateSessionStorage } from '../api/carersProfile/inviteAccountToProfile';
 
+import { ThemeProvider } from "@mui/material/styles";
+import { formTheme } from '../components/Layout/formThemeMUI';
+
 export default function CarersProfile() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const { idToken } = useContext(TokenContext);
@@ -96,121 +99,123 @@ export default function CarersProfile() {
   };
 
   return (
-    <div className="profile-container" style={{ textAlign: 'center' }}>
-      <div className="profile-modification">
-        <form>
-          <div className="input-group shareProfile" style={{ marginBottom: '10px' }}>
-            <Typography variant="h5" component="h1" gutterBottom>
-              Kutsu hoitaja
-            </Typography>
+    <ThemeProvider theme={formTheme}>
+      <div className="profile-container" style={{ textAlign: 'center' }}>
+        <div className="profile-modification">
+          <form>
+            <div className="input-group shareProfile" style={{ marginBottom: '10px' }}>
+              <Typography variant="h5" component="h1" gutterBottom>
+                Kutsu hoitaja
+              </Typography>
 
-            <TextField
-              style={{ background: 'white' }}
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              label="Sähköposti"
-              autoComplete="email"
-              autoFocus
-              value={email}
-              onChange={handleEmailChange}
-              error={showEmailError}
-              helperText={showEmailError ? 'Anna kelvollinen sähköpostiosoite' : ''}
-            />
-          </div>
-
-          <div className="input-group shareProfile">
-            <Typography>
-              Hyväksyessäni otan vastuun toisen henkilön toiminnasta ja <br />
-              <span style={{ fontWeight: 'bold' }}>valtuutan hänet seuraavin oikeuksin:</span>
-            </Typography>
-
-            <div className="input-group shareProfile" style={{ display: 'flex', justifyContent: 'center' }}>
-              <ul style={{ listStyle: 'none', paddingInlineStart: '0' }}>
-                <li style={{ display: 'flex', alignItems: 'center', margin: '8px 0px' }}>
-                  <EditNoteIcon style={{ color: '#1976d2', marginRight: '8px' }} /> Muokata minun profiileitani.
-                </li>
-                <li style={{ display: 'flex', alignItems: 'center', margin: '8px 0px' }}>
-                  <PersonRemoveIcon style={{ color: '#d32f2f', marginRight: '8px' }} /> Poistaa minun profiileitani.
-                </li>
-                <li style={{ display: 'flex', alignItems: 'center', margin: '8px 0px' }}>
-                  <PersonAddAlt1Icon style={{ color: '#39C4A3', marginRight: '8px' }} /> Lisää minulle profiileita.
-                </li>
-              </ul>
+              <TextField
+                style={{ background: 'white' }}
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                label="Sähköposti"
+                autoComplete="email"
+                autoFocus
+                value={email}
+                onChange={handleEmailChange}
+                error={showEmailError}
+                helperText={showEmailError ? 'Anna kelvollinen sähköpostiosoite' : ''}
+              />
             </div>
 
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={acceptTerms}
-                  onChange={handleAcceptTermsChange}
-                  name="acceptTerms"
-                  color="primary"
-                />
-              }
-              label="Olen tietoinen oikeuksista ja ehdoista sekä hyväksyn ne."
-            />
-            {showTermsError && (
-              <Alert severity="error">
-                <Typography variant="inherit" component="span">
-                  Sinun on hyväksyttävä ehdot, ennen kuin voit kutsua hoitajan.
-                </Typography>
-              </Alert>
-            )}
-
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            {!isAlertClosed && inviteResult && inviteResult.includes('200') && (
-              <Alert severity="success" onClose={() => setIsAlertClosed(true)}>
-                <AlertTitle>{`${emailForAlert} kutsuttu hoitajaksi onnistuneesti!`}</AlertTitle>
-                  Voit halutessasi kutsua toisen henkilön.
-              </Alert>
-            )}
-
-            {!isAlertClosed && inviteResult && inviteResult.includes('500') && (
-              <Alert severity="error" onClose={() => setIsAlertClosed(true)}>
-                <AlertTitle>No höh, jokin meni pieleen.</AlertTitle>
-                  Kutsu hoitajaksi epäonnistui.
-              </Alert>
-            )}
-
-            {!isAlertClosed && inviteResult && inviteResult.includes('409') && (
-              <Alert severity="info" onClose={() => setIsAlertClosed(true)}>
-                <AlertTitle>Hups!</AlertTitle>
-                  Käyttäjä on jo kutsuttu.
-              </Alert>
-            )}
-
-            {!isAlertClosed && inviteResult && inviteResult.includes('404') && (
-              <Alert severity="warning" onClose={() => setIsAlertClosed(true)}>
-                <AlertTitle>No höh, jokin meni pieleen.</AlertTitle>
-                  Kutsuttava käyttäjä ei ole olemassa, tarkista sähköpostiosoite.
-              </Alert>
-            )}
-          </div>
-        </div>
-
-          <Box>
             <div className="input-group shareProfile">
-              <Tooltip title="Takaisin profiiliin">
-                <Button variant="contained" className="custom-button editProfile" onClick={() => navigate('/profile')}>
-                  <ArrowBackIosIcon /> Takaisin
-                </Button>
-              </Tooltip>
+              <Typography>
+                Hyväksyessäni otan vastuun toisen henkilön toiminnasta ja <br />
+                <span style={{ fontWeight: 'bold' }}>valtuutan hänet seuraavin oikeuksin:</span>
+              </Typography>
 
-              <Tooltip title="Kutsu hoitaja sähköpostilla">
-                <Button
-                  variant="contained"
-                  className="custom-button"
-                  onClick={handleInviteClick}
-                >
-                  Kutsu hoitaja
-                </Button>
-              </Tooltip>
+              <div className="input-group shareProfile" style={{ display: 'flex', justifyContent: 'center' }}>
+                <ul style={{ listStyle: 'none', paddingInlineStart: '0' }}>
+                  <li style={{ display: 'flex', alignItems: 'center', margin: '8px 0px' }}>
+                    <EditNoteIcon style={{ color: '#1976d2', marginRight: '8px' }} /> Muokata minun profiileitani.
+                  </li>
+                  <li style={{ display: 'flex', alignItems: 'center', margin: '8px 0px' }}>
+                    <PersonRemoveIcon style={{ color: '#d32f2f', marginRight: '8px' }} /> Poistaa minun profiileitani.
+                  </li>
+                  <li style={{ display: 'flex', alignItems: 'center', margin: '8px 0px' }}>
+                    <PersonAddAlt1Icon style={{ color: '#39C4A3', marginRight: '8px' }} /> Lisää minulle profiileita.
+                  </li>
+                </ul>
+              </div>
+
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={acceptTerms}
+                    onChange={handleAcceptTermsChange}
+                    name="acceptTerms"
+                    color="primary"
+                  />
+                }
+                label="Olen tietoinen oikeuksista ja ehdoista sekä hyväksyn ne."
+              />
+              {showTermsError && (
+                <Alert severity="error">
+                  <Typography variant="inherit" component="span">
+                    Sinun on hyväksyttävä ehdot, ennen kuin voit kutsua hoitajan.
+                  </Typography>
+                </Alert>
+              )}
+
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              {!isAlertClosed && inviteResult && inviteResult.includes('200') && (
+                <Alert severity="success" onClose={() => setIsAlertClosed(true)}>
+                  <AlertTitle>{`${emailForAlert} kutsuttu hoitajaksi onnistuneesti!`}</AlertTitle>
+                    Voit halutessasi kutsua toisen henkilön.
+                </Alert>
+              )}
+
+              {!isAlertClosed && inviteResult && inviteResult.includes('500') && (
+                <Alert severity="error" onClose={() => setIsAlertClosed(true)}>
+                  <AlertTitle>No höh, jokin meni pieleen.</AlertTitle>
+                    Kutsu hoitajaksi epäonnistui.
+                </Alert>
+              )}
+
+              {!isAlertClosed && inviteResult && inviteResult.includes('409') && (
+                <Alert severity="info" onClose={() => setIsAlertClosed(true)}>
+                  <AlertTitle>Hups!</AlertTitle>
+                    Käyttäjä on jo kutsuttu.
+                </Alert>
+              )}
+
+              {!isAlertClosed && inviteResult && inviteResult.includes('404') && (
+                <Alert severity="warning" onClose={() => setIsAlertClosed(true)}>
+                  <AlertTitle>No höh, jokin meni pieleen.</AlertTitle>
+                    Kutsuttava käyttäjä ei ole olemassa, tarkista sähköpostiosoite.
+                </Alert>
+              )}
             </div>
-          </Box>
-        </form>
+          </div>
+
+            <Box>
+              <div className="input-group shareProfile">
+                <Tooltip title="Takaisin profiiliin">
+                  <Button variant="contained" className="custom-button editProfile" onClick={() => navigate('/profile')}>
+                    <ArrowBackIosIcon /> Takaisin
+                  </Button>
+                </Tooltip>
+
+                <Tooltip title="Kutsu hoitaja sähköpostilla">
+                  <Button
+                    variant="contained"
+                    className="custom-button"
+                    onClick={handleInviteClick}
+                  >
+                    Kutsu hoitaja
+                  </Button>
+                </Tooltip>
+              </div>
+            </Box>
+          </form>
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 }
