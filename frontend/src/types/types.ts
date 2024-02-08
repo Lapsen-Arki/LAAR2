@@ -15,9 +15,17 @@ export interface RegisterData {
 }
 
 // Category and typeSelect comes from separate useStates:
-// category: string;
-// type: string
-export interface AddDataToDatabase {
+export interface FormDataToBackend {
+  title: string;
+  content: string; // <- This will be saved in a list in the backend
+  ageLimit?: number;
+  photoLink?: string;
+  photoFileName?: string;
+}
+// -->
+export interface FinalDataToBackend {
+  category: string;
+  typeSelect: string;
   title: string;
   content: string; // <- This will be saved in a list in the backend
   ageLimit?: number;
