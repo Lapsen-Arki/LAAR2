@@ -16,7 +16,8 @@ const formTheme = createTheme({
     //Buttonin tyylimääreet
     MuiButton: {
       styleOverrides: {
-        root: {
+        //Primary
+        contained: {
           backgroundColor: '#63c8cc',
           width: 250,
           marginTop: 20,
@@ -38,6 +39,41 @@ const formTheme = createTheme({
             width: 370,
           },
         },
+        //Secondary
+        outlined: {
+          width: 250,
+          marginTop: 20,
+          marginBottom: 20,
+          marginLeft: 10,
+          marginRight: 10,
+          fontFamily: ["Righteous", "sans-serif"].join(","),
+          color: '#A68477',
+          fontWeight: 'bold',
+          borderColor: '#A68477',
+          fontSize: 13,
+          
+          '&:hover': {
+            backgroundColor: '#fff',
+            borderColor: 'transparent',
+          },
+        },
+        //Tertiary
+        text: {
+          width: 250,
+          marginTop: 20,
+          marginBottom: 20,
+          marginLeft: 10,
+          marginRight: 10,
+          fontFamily: ["Righteous", "sans-serif"].join(","),
+          color: '#A68477',
+          fontWeight: 'bold',
+          fontSize: 13,
+          
+          '&:hover': {
+            backgroundColor: 'transparent',
+            textDecoration: 'underline',
+          },
+        },
       },
     },
     //Checkboxin tyylimääreet
@@ -46,6 +82,9 @@ const formTheme = createTheme({
         root: {
           marginLeft: 10,
           marginRight: 0,
+          paddingRight: 0,
+          marginTop: 5,
+          alignSelf: 'flex-start',
           color: 'black',
           '&.Mui-checked': {
             color: '#63c8cc',
@@ -60,17 +99,19 @@ const formTheme = createTheme({
     MuiContainer: {
       styleOverrides: {
         root: {
+          width: 320,
+          margin: 0,
+          marginTop: 'auto',
+          padding: 20,
           display: 'flex',
           flexDirection: 'column',
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-          margin: 0,
-          padding: 20,
-          width: 320,
+          flexWrap: 'wrap',    
           '@media (min-width:400px)': {
             width: '95%',
           },
           '@media (min-width:576px)': {
             width: 450,
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
           },
         },
       },
@@ -210,34 +251,37 @@ const formTheme = createTheme({
         },
         //success
         subtitle1: {
-          color: '#63c8cc',
-          fontFamily: ["Righteous", "sans-serif"].join(","),
+          fontFamily: ["Quicksand", "sans-serif"].join(","),
           fontSize: 14,
+          fontWeight: 'bold',
           letterSpacing: 0.1,
-          backgroundColor: 'white',
           textAlign: 'center',
           margin: 10,
           display: 'inline-flex'
         },
         //error
         subtitle2: {
-          color: 'red',
-          fontFamily: ["Righteous", "sans-serif"].join(","),
+          fontFamily: ["Quicksand", "sans-serif"].join(","),
           fontSize: 14,
+          fontWeight: 'bold',
           letterSpacing: 0.1,
-          backgroundColor: 'white',
           textAlign: 'center',
           margin: 10,
           display: 'inline-flex'
         },
         body1: {
           color: '#000000',
-          fontFamily: ["Righteous", "sans-serif"].join(","),
+          fontFamily: ["Quicksand", "sans-serif"].join(","),
           margin: 10,
         },
         body2: {
           color: '#000000',
-          fontFamily: ["Righteous", "sans-serif"].join(","),
+          fontFamily: ["Quicksand", "sans-serif"].join(","),
+          margin: 10,
+        },
+        caption: {
+          color: '#000000',
+          fontFamily: ["Quicksand", "sans-serif"].join(","),
           margin: 10,
         },
       },
