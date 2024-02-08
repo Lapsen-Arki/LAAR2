@@ -108,6 +108,13 @@ const AdminPage = () => {
                 // Reset type field if selected to prevent out of range warning
                 setTypeSelect("");
               }
+              setFormData({
+                title: "",
+                content: "",
+                ageLimit: 0,
+                photoLink: "",
+                photoFileName: "",
+              });
               setCategory(e.target.value);
             }}
             required
@@ -194,7 +201,9 @@ const AdminPage = () => {
               minRows={8} // Minimum number of rows
               maxRows={8} // Maximum number of rows
               style={{ width: 495 }}
-              onChange={() => handleChange}
+              onChange={(e) =>
+                setFormData({ ...formData, [e.target.name]: e.target.value })
+              }
               required
             />
             <Typography>

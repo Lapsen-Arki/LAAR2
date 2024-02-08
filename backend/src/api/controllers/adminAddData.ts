@@ -2,6 +2,7 @@ import { AddDataToDatabase } from "../../types/types";
 import { FrontendDataObject } from "../../types/types";
 import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
+import { TipContents, contents } from "../../types/types";
 
 const adminPage = async (req: Request, res: Response) => {
   try {
@@ -52,10 +53,18 @@ const adminPage = async (req: Request, res: Response) => {
     console.log("printing the addDataObject: ", addDataObject);
 
     // Restructuring the data:
-    const { category, title, content, ageLimit } = addDataObject;
-    const contentObj = {
-      [content]: ageLimit || 0,
-    };
+    const { category, title, content, ageLimit, typeSelect } = addDataObject;
+
+    let contentObj: TipContents | contents;
+    if (addDataObject.category !== "vinkki") {
+      contentObj = {
+        [content]: ageLimit || 0,
+      };
+    } else {
+      contentObj = {
+        [title]: content,
+      };
+    }
 
     const photos = {
       [title]: "Photo Path or link",
@@ -72,7 +81,7 @@ const adminPage = async (req: Request, res: Response) => {
     console.log("printing the newData: ", newData);
 
     // Saving data to firebase
-    const queryFields = { category, title };
+    const queryFields = { category, title, typeSelect };
     const db = admin.firestore();
     const recommCollection = db.collection("recommendations");
 
@@ -88,14 +97,13 @@ const adminPage = async (req: Request, res: Response) => {
       const docId = querySnapshot.docs[0].id;
 
       interface Updates {
-        [key: `content.${string}`]: number; // Assuming ageLimit is a number
-        [key: `photos.${string}`]: string; // Assuming photo paths/links are strings
+        [key: `content.${string}`]: string | number;
+        [key: `photos.${string}`]: string;
       }
       const updates: Updates = {};
 
-      // Assuming `content` and `photos` are your new key-value pairs to add
       const newContentKey = Object.keys(contentObj)[0];
-      const newContentValue = contentObj[newContentKey];
+      const newContentValue: string | number = contentObj[newContentKey];
       updates[`content.${newContentKey}`] = newContentValue;
 
       const newPhotoKey = Object.keys(photos)[0];
