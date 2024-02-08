@@ -20,6 +20,7 @@ import PleaseLoginModal from "../components/modals/pleaseLoginModal";
 import { TokenContext } from "../contexts/tokenContext";
 import { getChildProfiles } from '../api/childProfile/getChildProfiles';
 import deleteChildProfile from '../api/childProfile/deleteChildProfile';
+import { getCarerProfile } from '../api/carersProfile/getCarerProfile';
 
 import { calculateAge, splitNameToFitWidth } from './utils/profileUtils';
 import ConfirmationDialog from './utils/profileConfirmationDialog';
@@ -33,13 +34,27 @@ interface ChildProfile {
   creatorId: string;
 }
 
+interface CarerProfile {
+  id: string;
+  email: string;
+  name: string;
+}
+
 export default function Profile() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const { idToken } = useContext(TokenContext);
   const navigate = useNavigate();
-  const [profiles, setProfiles] = useState<ChildProfile[]>([]);
+  const [childProfiles, setChildProfiles] = useState<ChildProfile[]>([]);
+  const [carerProfiles, setCarerProfiles] = useState<CarerProfile[]>([]);
   const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
   const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!idToken) {
+      console.error('JWT token puuttuu');
+      setOpenLoginModal(true);
+      return;
+    }
 
   const fetchProfilesFromSessionStorage = () => {
     const storedProfilesJson = sessionStorage.getItem('childProfiles');
@@ -49,19 +64,12 @@ export default function Profile() {
     return null;
   };
 
-  useEffect(() => {
-    if (!idToken) {
-      console.error('JWT token puuttuu');
-      setOpenLoginModal(true);
-      return;
-    }
-
     const fetchProfilesFromServer = async () => {
       console.log('Haetaan profiileja palvelimelta...');
       const response = await getChildProfiles(idToken);
       if (!('error' in response)) {
-        sessionStorage.setItem('storedProfiles', JSON.stringify(response));
-        setProfiles(response);
+        sessionStorage.setItem('childProfiles', JSON.stringify(response));
+        setChildProfiles(response);
       } else {
         console.error('Virhe profiilien haussa:', response.error);
       }
@@ -71,13 +79,29 @@ export default function Profile() {
       const storedProfiles = fetchProfilesFromSessionStorage();
       if (storedProfiles) {
         console.log('Käytetään Session Storagessa olevia profiileja');
-        setProfiles(storedProfiles);
+        setChildProfiles(storedProfiles);
       } else {
         await fetchProfilesFromServer();
       }
     };
+
+    const fetchCarerProfiles = async () => {
+      const storedCarerProfilesJson = sessionStorage.getItem('carerProfiles');
+      if (storedCarerProfilesJson) {
+        setCarerProfiles(JSON.parse(storedCarerProfilesJson));
+      } else {
+        try {
+          const carerProfiles = await getCarerProfile(idToken, true);
+          sessionStorage.setItem('carerProfiles', JSON.stringify(carerProfiles));
+          setCarerProfiles(carerProfiles);
+        } catch (error) {
+          console.error('Virhe hoitajaprofiilien haussa:', error);
+        }
+      }
+    };
   
     fetchProfiles();
+    fetchCarerProfiles();
   }, [idToken]);
 
   if (!idToken) {
@@ -86,9 +110,10 @@ export default function Profile() {
     );
   }
 
-  console.log("Renderöidään profiilisivu, profiilit:", profiles);
+  //console.log("Renderöidään profiilisivu, profiilit:", childProfiles);
+  //console.log("Renderöidään profiilisivu, hoitajaprofiilit:", carerProfiles);
 
-  const handleClickDelete = async (profileId: string) => {
+  const handleClickDeleteProfile = async (profileId: string) => {
     setSelectedProfileId(profileId);
     setConfirmationDialogOpen(true);
   };
@@ -96,8 +121,8 @@ export default function Profile() {
   const handleDeleteConfirmed = async () => {
     if (selectedProfileId) {
       try {
-        // Lisää tyyppiannotaatiot profiles ja setProfiles parametreille
-        await deleteChildProfile(selectedProfileId, idToken, profiles, setProfiles);
+        // Lisää tyyppiannotaatiot childProfiles ja setChildProfiles parametreille
+        await deleteChildProfile(selectedProfileId, idToken, childProfiles, setChildProfiles);
         setSelectedProfileId(null);
       } catch (error) {
         console.error('Profiilin poisto epäonnistui', error);
@@ -151,7 +176,7 @@ export default function Profile() {
               </Typography>
 
                 {/* Ei profiileja */}
-                {profiles.length === 0 ? (
+                {childProfiles.length === 0 ? (
                   <div className="cards-wrap">
                     <Card className="children-card" sx={{ height: '111px' }} >
                     <Tooltip title="Profiileja ei ole vielä luotu">
@@ -167,7 +192,7 @@ export default function Profile() {
                 ) : (
               <div className="children">
                 {/* Profiileja */}
-                {profiles.map((profile) => (
+                {childProfiles.map((profile) => (
                   <div className="cards-wrap" key={profile.id}>
 
                     <Card className="children-card">
@@ -206,7 +231,7 @@ export default function Profile() {
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Poista profiili">
-                          <IconButton color="error" aria-label="Delete" onClick={() => handleClickDelete(profile.id)}>
+                          <IconButton color="error" aria-label="Delete" onClick={() => handleClickDeleteProfile(profile.id)}>
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>
@@ -222,22 +247,46 @@ export default function Profile() {
               <Typography variant="h6" gutterBottom>
                 Hoitajat:
               </Typography>
-              <div className="Carer">
-                <Card className="Carer-cards">
-                  <CardContent className="Carer-content">
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <Tooltip title="Hoitajia ei ole vielä lisätty">
-                        <HelpOutlineIcon sx={{ fontSize: 40, color: 'white', borderRadius: '50%', backgroundColor: '#63c8cc' }} />
-                      </Tooltip>
-                      <Typography variant="h6" gutterBottom sx={{ marginLeft: '10px' }}>
-                        
-                        Hoitajia ei ole vielä <br /> lisätty
-                      </Typography>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+              {carerProfiles.length === 0 ? (
+                <div className="Carer">
+                  <Card className="Carer-cards">
+                    <CardContent className="Carer-content">
+                      <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Tooltip title="Hoitajia ei ole vielä lisätty">
+                          <HelpOutlineIcon sx={{ fontSize: 40, color: 'white', borderRadius: '50%', backgroundColor: '#63c8cc' }} />
+                        </Tooltip>
+                        <Typography variant="h6" gutterBottom sx={{ marginLeft: '10px' }}>
+                          Hoitajia ei ole vielä <br /> lisätty
+                        </Typography>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              ) : (
+                <div className="Carer">
+                  {carerProfiles.map((carer) => (
+                    <Card className="cards-wrap" key={carer.id} style={{ marginBottom: '10px' }}>
+                      <CardContent className="card-content">
+                        <Typography variant="h6" component="div">
+                          {carer.name}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {carer.email}
+                        </Typography>
+                      </CardContent>
+                      <div className="card-icons">
+                        <Tooltip title="Poista hoitaja">
+                          <IconButton color="error" aria-label="Delete"> {/* onClick={() => handleClickDeleteCarer(carer.id)} */}
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              )}
             </div>
+
 
             <div style={{ flex: 1 }}>
               <Typography variant="h6" gutterBottom>
