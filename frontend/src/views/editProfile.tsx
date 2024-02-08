@@ -5,13 +5,12 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import AnimalAvatarWidget from '../components/AnimalAvatarWidget.tsx';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ReturnBtn from '../components/returnBtn.tsx';
 import {
   Avatar,
   Switch,
   Button,
   Alert,
-  Box,
   Tooltip,
   Container,
   Typography,
@@ -152,10 +151,6 @@ const EditProfile = () => {
     }
   };
 
-  const handleNavigateToProfile = () => {
-    navigate('/profile');
-  };
-
   return (
     <ThemeProvider theme={formTheme}>
     <Container
@@ -163,9 +158,10 @@ const EditProfile = () => {
       maxWidth="sm"
       style={{ textAlign: 'center' }}
     >
+      <ReturnBtn />
       <form>
         {/* Lapsen nimi -kenttä */}
-        <Typography variant="h6">Tallenna lapsen tiedot</Typography>
+        <Typography variant="h5">Tallenna lapsen tiedot</Typography>
         <TextField
           variant="outlined"
           margin="normal"
@@ -194,7 +190,7 @@ const EditProfile = () => {
           <Avatar src={selectedAvatar}
           sx={{
             borderRadius: '50%',
-            backgroundColor: '#90c2c5',
+            backgroundColor: '#A68477',
             margin: 'auto',
             marginTop: '20px',
           }} />
@@ -202,35 +198,27 @@ const EditProfile = () => {
           <Avatar src="/broken-image.jpg"
           sx={{
             borderRadius: '50%',
-            backgroundColor: '#90c2c5',
+            backgroundColor: '#A68477',
             margin: 'auto',
             marginTop: '20px',
           }} />
         )}
         {showAnimalAvatar ? null : (
           <Tooltip title="Valitse kuva">
-          <Button variant="contained" onClick={handleShowAnimalAvatar}>Valitse avatar</Button>
+          <Button variant="text" style={{ marginTop: 5, marginBottom: 20 }} onClick={handleShowAnimalAvatar}>Valitse avatar</Button>
           </Tooltip>
         )}
 
         {/* Pääsyoikeudet -kytkin */}
-        <Typography variant="body2">Tarvitsetko pääsyoikeudet myös muille ihmisille?</Typography>
+        <Typography variant="body1">Näytä kortti lapsen hoitajille</Typography>
         <span>Ei</span>
           <Switch checked={accessRights} onChange={() => setAccessRights(!accessRights)} />
-        <span>Kyllä</span>
+        <span>Näytä</span>
 
         {/* Tallennus- ja paluupainikkeet */}
-        <Box sx={{ marginTop: 5 }}>
-          <Tooltip title="Takaisin profiiliin">
-            <Button variant="contained" onClick={handleNavigateToProfile}>
-              <ArrowBackIosIcon /> Takaisin
-            </Button>
-          </Tooltip>
-
         <Tooltip title="Tallenna profiili">
           <Button variant="contained" onClick={handleSave}>Tallenna</Button>
         </Tooltip>
-      </Box>
     </form>
   </Container>
   </ThemeProvider>

@@ -10,6 +10,7 @@ import {
   Checkbox,
   FormControlLabel,
   Tooltip,
+  Grid,
 } from '@mui/material';
 
 import {
@@ -25,6 +26,7 @@ import { inviteAccountToProfile, getCarerProfile, updateSessionStorage } from '.
 
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from '../components/Layout/formThemeMUI';
+import ReturnBtn from '../components/returnBtn.tsx';
 
 export default function CarersProfile() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
@@ -101,10 +103,11 @@ export default function CarersProfile() {
   return (
     <ThemeProvider theme={formTheme}>
       <div className="profile-container" style={{ textAlign: 'center' }}>
+      <ReturnBtn />
         <div className="profile-modification">
           <form>
             <div className="input-group shareProfile" style={{ marginBottom: '10px' }}>
-              <Typography variant="h5" component="h1" gutterBottom>
+              <Typography variant="h4" gutterBottom>
                 Kutsu hoitaja
               </Typography>
 
@@ -125,24 +128,26 @@ export default function CarersProfile() {
             </div>
 
             <div className="input-group shareProfile">
-              <Typography>
+              <Typography variant="body1">
                 Hyväksyessäni otan vastuun toisen henkilön toiminnasta ja <br />
                 <span style={{ fontWeight: 'bold' }}>valtuutan hänet seuraavin oikeuksin:</span>
               </Typography>
 
-              <div className="input-group shareProfile" style={{ display: 'flex', justifyContent: 'center' }}>
-                <ul style={{ listStyle: 'none', paddingInlineStart: '0' }}>
-                  <li style={{ display: 'flex', alignItems: 'center', margin: '8px 0px' }}>
-                    <EditNoteIcon style={{ color: '#1976d2', marginRight: '8px' }} /> Muokata minun profiileitani.
-                  </li>
-                  <li style={{ display: 'flex', alignItems: 'center', margin: '8px 0px' }}>
-                    <PersonRemoveIcon style={{ color: '#d32f2f', marginRight: '8px' }} /> Poistaa minun profiileitani.
-                  </li>
-                  <li style={{ display: 'flex', alignItems: 'center', margin: '8px 0px' }}>
-                    <PersonAddAlt1Icon style={{ color: '#39C4A3', marginRight: '8px' }} /> Lisää minulle profiileita.
-                  </li>
-                </ul>
-              </div>
+              <Grid style={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'space-between', margin: 20 }}>
+                <Grid item sx={{ display: { xs: 'none', sm: 'block' } }}></Grid>
+                <Grid item style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+                  <Typography variant="body1" style={{ margin: 3, display: 'flex', alignItems: 'center' }}>
+                    <EditNoteIcon style={{ marginRight: 10, color: '#1976d2'}} /> Muokata profiileitani
+                  </Typography>
+                  <Typography variant="body1" style={{ margin: 3, display: 'flex', alignItems: 'center' }}>
+                    <PersonRemoveIcon style={{ marginRight: 10, color: '#d32f2f'}} /> Poistaa profiileitani
+                  </Typography>
+                  <Typography variant="body1" style={{ margin: 3, display: 'flex', alignItems: 'center' }}>
+                    <PersonAddAlt1Icon style={{ marginRight: 10, color: '#39C4A3'}} /> Lisätä profiileita tililleni
+                  </Typography>
+                </Grid>
+                <Grid item sx={{ display: { xs: 'none', sm: 'block' } }}></Grid>
+              </Grid>
 
               <FormControlLabel
                 control={
@@ -193,26 +198,17 @@ export default function CarersProfile() {
               )}
             </div>
           </div>
-
-            <Box>
-              <div className="input-group shareProfile">
-                <Tooltip title="Takaisin profiiliin">
-                  <Button variant="contained" className="custom-button editProfile" onClick={() => navigate('/profile')}>
-                    <ArrowBackIosIcon /> Takaisin
-                  </Button>
-                </Tooltip>
-
-                <Tooltip title="Kutsu hoitaja sähköpostilla">
-                  <Button
-                    variant="contained"
-                    className="custom-button"
-                    onClick={handleInviteClick}
-                  >
-                    Kutsu hoitaja
-                  </Button>
-                </Tooltip>
-              </div>
-            </Box>
+          <div className="input-group shareProfile">
+            <Tooltip title="Kutsu hoitaja sähköpostilla">
+              <Button
+                variant="contained"
+                className="custom-button"
+                onClick={handleInviteClick}
+              >
+                Kutsu hoitaja
+              </Button>
+            </Tooltip>
+          </div>
           </form>
         </div>
       </div>

@@ -9,17 +9,19 @@ html, body {
 	min-height: 100vh;
 	align-items: center;
 	justify-content: center !important;
-	font-family: 'Arial', sans-serif;
 	background-color: #FFE9D7;
 }
     
 .page {
-	margin-top: 11vh;
+	display: flex;
+	align-items: center;
+	margin-top: 10vh;
 	margin-bottom: 5vh;
 }
 
 .content-container {
-	padding: 2vh;
+	margin: 0;
+	padding: 0;
 }
 /* Yleiset tyylit Headerille ja Footerille */
 .MuiBox-root .MuiPaper-root {
@@ -86,6 +88,7 @@ footer {
 .footer-link {
 	text-decoration: none;
 	color: black;
+	font-family: 'Quicksand', sans-serif;
 }
 
 @media (max-width: 768px) {
