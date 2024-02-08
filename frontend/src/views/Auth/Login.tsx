@@ -80,7 +80,8 @@ const Login: React.FC = (): JSX.Element => {
       <Container
         component="main"
         maxWidth="sm"
-        style={{ textAlign: 'center' }}
+        sx={{ display: 'flex', textAlign: 'center', marginTop: { md: 10 } }}
+
       >
         <Typography variant="h4">Kirjaudu sisään</Typography>
         <VerifyEmailModal
@@ -157,29 +158,29 @@ const Login: React.FC = (): JSX.Element => {
             variant="contained"
             fullWidth
           >
-            Kirjaudu sisään
+            Kirjaudu
           </Button>
 
           <Typography
-            variant="subtitle1"
+            variant="subtitle1" style={{ color: 'green' }}
           >
             {successMessage}
           </Typography>
           <Typography
-            variant="subtitle2"
+            variant="subtitle2" style={{ color: 'red' }}
           >
             {errorMessage}
           </Typography>
           <Grid 
-          container
-          direction="row" 
-          justifyContent="flex-start" 
-          alignItems="baseline">
+            container
+            direction="row" 
+            justifyContent="flex-start" 
+            alignItems="baseline">
             <Grid item>
-          <Link href="/register" variant="body2">
-            Eikö vielä tiliä? Rekisteröidy tästä!
-          </Link>
-          </Grid>
+              <Link href="/register" variant="body2">
+                Eikö vielä tiliä? Rekisteröidy tästä!
+              </Link>
+            </Grid>
           </Grid>
           
         </form>
