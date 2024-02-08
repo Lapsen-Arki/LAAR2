@@ -16,8 +16,7 @@ import { TokenContext } from "../../contexts/tokenContext";
 import PleaseLoginModal from "../../components/modals/pleaseLoginModal";
 import { FinalDataToBackend } from "../../types/types";
 
-// TODO: add following features: 1. Remove data from recommendation database collection
-// 2. Adding feature for adding and removing admin users by superuser
+// TODO: 1. More frequent login status checks
 
 const AdminPage = () => {
   const [errorMessage, setErrorMessage] = React.useState("");
@@ -55,10 +54,16 @@ const AdminPage = () => {
     const response = await adminAddData(idToken, submitData);
     if (response && response.error) {
       setErrorMessage(response.error);
+      setInterval(() => {
+        setErrorMessage("");
+      }, 5000);
     } else {
       setSuccessMessage(
         "Tietokantaan tallentaminen onnistui! Lisää uusi tieto tai voit poistua sivulta."
       );
+      setInterval(() => {
+        setSuccessMessage("");
+      }, 5000);
     }
   };
 

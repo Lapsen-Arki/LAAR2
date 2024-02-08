@@ -53,7 +53,7 @@ const adminPage = async (req: Request, res: Response) => {
     console.log("printing the addDataObject: ", addDataObject);
 
     // Restructuring the data:
-    const { category, title, content, ageLimit, typeSelect } = addDataObject;
+    const { category, title, content, ageLimit } = addDataObject;
 
     let contentObj: TipContents | contents;
     if (addDataObject.category !== "vinkki") {
@@ -81,14 +81,13 @@ const adminPage = async (req: Request, res: Response) => {
     console.log("printing the newData: ", newData);
 
     // Saving data to firebase
-    const queryFields = { category, title, typeSelect };
     const db = admin.firestore();
     const recommCollection = db.collection("recommendations");
 
-    let query = recommCollection;
-    Object.entries(queryFields).forEach(([key, value]) => {
-      query = recommCollection.where(key, "==", value);
-    });
+    let query = recommCollection
+      .where("category", "==", newData.category)
+      .where("type", "==", newData.type)
+      .where("title", "==", newData.title);
 
     const querySnapshot = await query.get();
 
