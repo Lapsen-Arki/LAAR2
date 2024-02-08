@@ -9,15 +9,14 @@ import {
   FormControlLabel,
   Grid,
 } from "@mui/material";
-import { userLogin } from "../../utils/userLogin";
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from "../../components/Layout/formThemeMUI";
+import { userLogin } from "../../utils/userLogin";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 import ResetPasswordModal from "../../components/modals/resetPasswordModal";
 import VerifyEmailModal from "../../components/modals/verifyEmailModal";
-
 const Login: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -77,7 +76,11 @@ const Login: React.FC = (): JSX.Element => {
 
   return (
     <ThemeProvider theme={formTheme}>
-      <Container component="main" maxWidth="sm" style={{ textAlign: "center" }}>
+      <Container
+        component="main"
+        maxWidth="sm"
+        sx={{ display: "flex", textAlign: "center", marginTop: { md: 10 } }}
+      >
         <Typography variant="h4">Kirjaudu sisään</Typography>
         <VerifyEmailModal
           open={openVerifyEmail}
@@ -149,11 +152,15 @@ const Login: React.FC = (): JSX.Element => {
             </Grid>
           </Grid>
           <Button type="submit" variant="contained" fullWidth>
-            Kirjaudu sisään
+            Kirjaudu
           </Button>
 
-          <Typography variant="subtitle1">{successMessage}</Typography>
-          <Typography variant="subtitle2">{errorMessage}</Typography>
+          <Typography variant="subtitle1" style={{ color: "green" }}>
+            {successMessage}
+          </Typography>
+          <Typography variant="subtitle2" style={{ color: "red" }}>
+            {errorMessage}
+          </Typography>
           <Grid
             container
             direction="row"

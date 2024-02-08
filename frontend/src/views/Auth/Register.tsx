@@ -97,7 +97,7 @@ export default function Register() {
         maxWidth="sm"
       >
         {/*<ReturnBtn />*/}
-        <Typography variant="h4">Rekisteröityminen</Typography>
+        <Typography variant="h4" style={{ textAlign: 'center' }} >Uusi asiakas</Typography>
         <form onSubmit={handleSubmit}>
           <TextField
             name="email"

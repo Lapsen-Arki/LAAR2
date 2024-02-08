@@ -1,4 +1,3 @@
-import { AddDataToDatabase } from "../../types/types";
 import { FrontendDataObject } from "../../types/types";
 import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
