@@ -110,9 +110,10 @@ export default function Profile() {
     );
   }
 
-  console.log("Renderöidään profiilisivu, profiilit:", childProfiles);
+  //console.log("Renderöidään profiilisivu, profiilit:", childProfiles);
+  //console.log("Renderöidään profiilisivu, hoitajaprofiilit:", carerProfiles);
 
-  const handleClickDelete = async (profileId: string) => {
+  const handleClickDeleteProfile = async (profileId: string) => {
     setSelectedProfileId(profileId);
     setConfirmationDialogOpen(true);
   };
@@ -230,7 +231,7 @@ export default function Profile() {
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Poista profiili">
-                          <IconButton color="error" aria-label="Delete" onClick={() => handleClickDelete(profile.id)}>
+                          <IconButton color="error" aria-label="Delete" onClick={() => handleClickDeleteProfile(profile.id)}>
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>
@@ -246,22 +247,7 @@ export default function Profile() {
               <Typography variant="h6" gutterBottom>
                 Hoitajat:
               </Typography>
-              {carerProfiles.length > 0 ? (
-                <div className="Carer">
-                  {carerProfiles.map((carer) => (
-                    <Card className="Carer-cards" key={carer.id}>
-                      <CardContent className="Carer-content">
-                        <Typography variant="h5" component="div">
-                          {carer.name}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {carer.email}
-                        </Typography>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              ) : (
+              {carerProfiles.length === 0 ? (
                 <div className="Carer">
                   <Card className="Carer-cards">
                     <CardContent className="Carer-content">
@@ -276,8 +262,31 @@ export default function Profile() {
                     </CardContent>
                   </Card>
                 </div>
+              ) : (
+                <div className="Carer">
+                  {carerProfiles.map((carer) => (
+                    <Card className="cards-wrap" key={carer.id} style={{ marginBottom: '10px' }}>
+                      <CardContent className="card-content">
+                        <Typography variant="h6" component="div">
+                          {carer.name}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {carer.email}
+                        </Typography>
+                      </CardContent>
+                      <div className="card-icons">
+                        <Tooltip title="Poista hoitaja">
+                          <IconButton color="error" aria-label="Delete"> {/* onClick={() => handleClickDeleteCarer(carer.id)} */}
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
               )}
             </div>
+
 
             <div style={{ flex: 1 }}>
               <Typography variant="h6" gutterBottom>

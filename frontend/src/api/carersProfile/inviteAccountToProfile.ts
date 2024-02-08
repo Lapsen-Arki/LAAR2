@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCarerProfile } from "./getCarerProfile";
 
 const API_BASE_URL = "http://localhost:3000/api";
 
@@ -6,11 +7,25 @@ interface InviteAccountToProfileData {
   accountEmail: string;
 }
 
+interface CarerProfile {
+  id: string;
+  email: string;
+  name: string;
+}
+
+// updateSessionStorage funktion määrittely
+const updateSessionStorage = (profiles: CarerProfile[]) => {
+  sessionStorage.setItem("carerProfiles", JSON.stringify(profiles));
+  console.log("Hoitajaprofiilit tallennettu Session Storageen:", profiles);
+};
+
 export const inviteAccountToProfile = async (
   data: InviteAccountToProfileData,
   idToken: string | null
 ) => {
   try {
+    console.log("Kutsutaan inviteAccountToProfile...");
+    
     const config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
@@ -23,26 +38,41 @@ export const inviteAccountToProfile = async (
       config
     );
 
+    console.log("Kutsu hoitajaksi -vastaus:", response.data);
+
+    // Tarkista, että uusi käyttäjä on lisätty tietokantaan onnistuneesti
+    if (response.status === 200) {
+      console.log("Uusi käyttäjä lisätty tietokantaan onnistuneesti.");
+
+      // Hakee kutsutun käyttäjän tiedot getCarerProfile APIlla.
+      const newCarerProfile = await getCarerProfile(idToken, true);
+
+      console.log("Uusi käyttäjäprofiili haettu:", newCarerProfile);
+
+      // Päivittää Session Storage uusilla tiedoilla (kutsu funktion updateSessionStorage täällä)
+      updateSessionStorage(newCarerProfile);
+      console.log("Session Storage päivitetty uusilla tiedoilla:", newCarerProfile);
+    }
+
     return { data: response.data, status: response.status };
   } catch (error) {
+    console.error("Kutsu hoitajaksi -virhe:", error);
+
     if (axios.isAxiosError(error) && error.response) {
-      // Käsittele virheet, mutta älä tulosta niitä konsoliin tuotantotilassa
       if (process.env.NODE_ENV !== 'production') {
         console.error("Kutsu hoitajaksi virhe:", error);
       }
 
       if (typeof error.response.data === 'string') {
-        // Käsittele virheet ja palauta viesti käyttäjälle
         return { error: error.response.data, status: error.response.status };
       } else if (typeof error.response.data === 'object') {
-        // Käsittele virheet ja palauta viesti käyttäjälle
         return { error: JSON.stringify(error.response.data), status: error.response.status };
       } else {
-        // Käsittele virheet ja palauta viesti käyttäjälle
         return { error: error.response.data, status: error.response.status };
       }
     }
-    // Heitä virhe eteenpäin, jos se ei ole Axios-virhe tai ei sisällä vastausta
     throw error;
   }
 };
+
+export { getCarerProfile, updateSessionStorage };

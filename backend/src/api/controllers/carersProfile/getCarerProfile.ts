@@ -44,13 +44,17 @@ const getCarerProfile = async (req: Request, res: Response): Promise<void> => {
       const userDoc = await usersCollection.doc(invitedUserUid).get();
 
       if (userDoc.exists) {
-        const userData = userDoc.data() as CarerProfile;
-        userData.id = userDoc.id;
-        profiles.push(userData);
+        const userData = userDoc.data() as { name: string; email: string }; // Vain nimi ja sähköposti tallennetaan
+        const userProfile: CarerProfile = {
+          id: userDoc.id,
+          email: userData.email,
+          name: userData.name,
+        };
+        profiles.push(userProfile);
       }
     }
 
-    console.log("Hoitajaprofiilit noudettu onnistuneesti");
+    //console.log("Hoitajaprofiilit noudettu onnistuneesti");
 
     res.status(200).json(profiles);
   } catch (error: any) {

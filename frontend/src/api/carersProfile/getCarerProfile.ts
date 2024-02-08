@@ -8,13 +8,15 @@ interface CarerProfile {
   name: string;
 }
 
-const getCarerProfile = async (idToken: string | null): Promise<CarerProfile[] | never> => {
+const getCarerProfile = async (idToken: string | null, shouldFetchNewData: boolean): Promise<CarerProfile[] | never> => {
   try {
     // Tarkista ensin session storage
-    const storedProfilesJson = sessionStorage.getItem("careProfiles");
-    if (storedProfilesJson) {
-      console.log("Hoitajaprofiilit löytyivät Session Storagessa:", JSON.parse(storedProfilesJson));
-      return JSON.parse(storedProfilesJson) as CarerProfile[];
+    if (!shouldFetchNewData) {
+      const storedProfilesJson = sessionStorage.getItem("carerProfiles");
+      if (storedProfilesJson) {
+        console.log("Hoitajaprofiilit löytyivät Session Storagessa:", JSON.parse(storedProfilesJson));
+        return JSON.parse(storedProfilesJson) as CarerProfile[];
+      }
     }
 
     console.log("Haetaan hoitajaprofiileja palvelimelta...");
@@ -43,8 +45,8 @@ const getCarerProfile = async (idToken: string | null): Promise<CarerProfile[] |
 };
 
 const updateSessionStorage = (profiles: CarerProfile[]) => {
-  sessionStorage.setItem("careProfiles", JSON.stringify(profiles));
+  sessionStorage.setItem("carerProfiles", JSON.stringify(profiles));
   console.log("Hoitajaprofiilit tallennettu Session Storageen:", profiles);
 };
 
-export { getCarerProfile };
+export { getCarerProfile, updateSessionStorage };

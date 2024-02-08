@@ -21,7 +21,7 @@ import {
 
 import PleaseLoginModal from '../components/modals/pleaseLoginModal';
 import { TokenContext } from '../contexts/tokenContext';
-import { inviteAccountToProfile } from '../api/carersProfile/inviteAccountToProfile';
+import { inviteAccountToProfile, getCarerProfile, updateSessionStorage } from '../api/carersProfile/inviteAccountToProfile';
 
 export default function CarersProfile() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
@@ -58,8 +58,9 @@ export default function CarersProfile() {
   };
 
   const handleInviteClick = async () => {
-    if (!acceptTerms) {
-      setShowTermsError(true);
+    if (!acceptTerms || !isEmailValid) {
+      setShowTermsError(!acceptTerms);
+      setShowEmailError(!isEmailValid);
       return;
     }
 
@@ -73,6 +74,9 @@ export default function CarersProfile() {
   
       if (result.status === 200) {
         setInviteResult('200');
+        // Päivitä Session Storage kutsun onnistumisen jälkeen
+        const newCarerProfile = await getCarerProfile(idToken, true);
+        updateSessionStorage(newCarerProfile);
       } else if (result.status === 409) {
         setInviteResult('409');
       } else if (result.status === 404) {
