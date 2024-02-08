@@ -3,14 +3,16 @@ import { TokenContext } from "../contexts/tokenContext";
 import { UserContext } from "../contexts/userContext";
 import { useStripe } from '@stripe/react-stripe-js';
 import saveSubscription from '../api/saveSubscription';
+import ReturnBtn from "../components/returnBtn";
 
 const handleCheckoutSuccess = async (session: any) => {
 	const { idToken } = useContext(TokenContext);
 	const { userId } = useContext(UserContext);
 	try {
+		console.log("handleCheckoutSuccess alkaa")
 	  const subscriptionId = session.subscription;
   
-	  const response = await saveSubscription(idToken, userId);
+	  const response = await saveSubscription(idToken, userId, subscriptionId);
 
   
 	  const result = await response.json();
@@ -40,7 +42,8 @@ const SubscriptionSuccessPage = () => {
 
   return (
     <div>
-      <h1>Processing...</h1>
+		<ReturnBtn />
+		<h1>Tilaus onnistui!</h1>
     </div>
   );
 };

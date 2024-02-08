@@ -33,7 +33,6 @@ const SubscriptionManagement: React.FC = () => {
 	const { userId } = useContext(UserContext);
 	const [subscription, setSubscription] = useState<string | null>(null);
 	const [stripe, setStripe] = useState<Stripe | null>(null);
-	const [testiboolean, setTestiboolean] = useState(true) // väliaikainen muuttuja testausta varte, true = käyttäjällä on tilaus, false = tilausta ei ole
 	const [openLoginModal, setOpenLoginModal] = React.useState(false);
 
   useEffect(() => {
@@ -43,18 +42,13 @@ const SubscriptionManagement: React.FC = () => {
 		if (userId) {
 			console.log("client - fetching response")
        		const response = await getSubscription(idToken, userId);
-
-        	if ('error' in response) {
-				console.log("client - error in response")
-          		console.error('Error', response.error);
-        	} else {
-				console.log("client - ei erroria responsessa")
-				console.log(response)
-          		setSubscription(response);
-        	}
+			if (response.status === 200) {
+				// tilaus löytyi
+				setSubscription(response.body);
+				console.log(subscription);
+			}
 		}
       	} catch (error) {
-			
         	console.error('client - Error statusta haettaessa ');
       	}
 	}
@@ -68,12 +62,15 @@ const SubscriptionManagement: React.FC = () => {
   const handleStartSubscription = async () => {
 
     try {
+	  console.log("client - haetaan session id")
       const data = await startSubscription(idToken, userId);
-
+	  console.log("client - sessio haettu")
       const stripeInstance = await loadStripe('pk_test_51HqdGcK45umi2LZdJtYVobHqBd8GGJjr0ggqdhGTRNisO9fdkOdHIXc1kH96Tpex7dYyj9VlIEGTv90hiMExVn2S00w1xYoflk');
       setStripe(stripeInstance);
+	  console.log("client - stripe instanssi luotu")
 
       if (stripeInstance) {
+		console.log("client - instanssi ok, mennään checkoutiin")
         const { error } = await stripeInstance.redirectToCheckout({
           sessionId: data.sessionId,
         });
@@ -192,10 +189,6 @@ const SubscriptionManagement: React.FC = () => {
 			Aloita tilaus
 		</Button>
 	)}
-	<br></br>
-	<br></br>
-	<br></br>
-	<Switch checked={testiboolean} onChange={() => setTestiboolean(!testiboolean)}/>
 	</div>
 );
 };

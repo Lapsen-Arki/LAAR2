@@ -13,7 +13,8 @@ const startSubscription = async (req: Request, res: Response): Promise<Response<
 	try {
 		console.log("start subscription aloitettu")
 		const db = admin.firestore();
-		const userId = req.params.idToken;
+		const userId = req.params.id;
+		console.log(userId)
 		const userDocRef = db.collection('users').doc(userId);
 	
 		const userDoc = await userDocRef.get();
@@ -29,16 +30,18 @@ const startSubscription = async (req: Request, res: Response): Promise<Response<
 		if (!stripeCustomerId) {
 			try {
 			console.log("stripe id:tä ei löytynyt")
+			/*
 			const stripeCustomer = await stripe.customers.create({
 				name: userDoc.data().name,
 				email: userDoc.data().email,
 			  });
-			
+			*/
 			console.log("stripe id luotu, seuraavaksi tallennetaan")
+			/*
 			await userDoc.set({
 				stripeCustomerId: stripeCustomer.id,
-			  });
-			console.log('Customer created and Stripe ID saved:', stripeCustomer.id);
+			  }); 
+			console.log('Customer created and Stripe ID saved:', stripeCustomer.id);*/
 		} catch (error) {
 			console.error('Error creating customer and saving to Firebase:', error);
 		  }
@@ -51,6 +54,7 @@ const startSubscription = async (req: Request, res: Response): Promise<Response<
 			line_items: [
 				{
 					price: 'price_1ObLeAK45umi2LZd5XwwYvam',
+					quantity: 1,
 				},
 			],
 			success_url: 'http://localhost:5173/subscription-success',
@@ -65,8 +69,8 @@ const startSubscription = async (req: Request, res: Response): Promise<Response<
 
 const saveSubscription = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
 	try {
-
-	  const { subscriptionId, userId } = req.body;
+		console.log("backend - saveSubscription alkaa")
+	  const { userId, subscriptionId } = req.body;
   
 	  if (!subscriptionId || !userId) {
 		return res.status(400).json({ error: 'Missing required parameters' });
@@ -77,10 +81,11 @@ const saveSubscription = async (req: Request, res: Response): Promise<Response<a
 	  const userRef = db.collection('users').doc(userId);
 	  await userRef.set(
 		{
-		  subscriptionId: subscriptionId,
+		  stripeSubscriptionId: subscriptionId,
 		},
 		{ merge: true }
 	  );
+	  console.log("backend - subscriptionid tallennettu")
 	  return res.status(200).json({ success: true });
 	} catch (error) {
 	  console.error('Error saving subscription:', error);
@@ -136,16 +141,16 @@ const getSubscriptionById = async (req: Request, res: Response): Promise<Respons
             return res.status(404).json({ error: 'User not found' });
         }
 
-        const stripeCustomerId = userDoc.data()?.stripeCustomerId;
-		console.log("backend - asetettu stripecustomerid")
+        const stripeSubscriptionId = userDoc.data()?.stripeSubscriptionId;
+		console.log("backend - asetettu stripesubscriotionid")
 
-		if (stripeCustomerId) {
-			console.log("backend - stripecustomerid löytyi")
-			const subscription = await stripe.subscriptions.retrieve(stripeCustomerId);
+		if (stripeSubscriptionId) {
+			console.log("backend - stripesubscriptionid löytyi")
+			const subscription = await stripe.subscriptions.retrieve(stripeSubscriptionId);
 			return res.status(200).json({ subscription });
 		} else {
-		console.log("backend - stripecustomerid:tä ei löytynyt")
-		return res.json({ message: "No subscription found" });
+		console.log("backend - stripesubscriptionid:tä ei löytynyt")
+		return res.status(200).json({ message: "No subscription found" });
 		}
     } catch (error) {
         console.error('backend - backendissä tapahtui error:', error);

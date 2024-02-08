@@ -54,7 +54,7 @@ router.get("/test", testController);
 
 // Stripe routes
 router.post("/start-subscription/:id", startSubscription)
-router.post("/save-subscription/:id", startSubscription)
+router.post("/save-subscription/:userId/:subscriptionId", startSubscription)
 router.post("/cancel-subscription/:id", cancelSubscription);
 router.post("/get-subscription/:id", getSubscriptionById);
 
