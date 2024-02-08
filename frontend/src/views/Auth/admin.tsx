@@ -7,10 +7,8 @@ import {
   Button,
   FormControl,
   InputLabel,
+  TextareaAutosize,
 } from "@mui/material";
-import { ThemeProvider } from "@mui/material/styles";
-import { formTheme } from '../../components/Layout/formThemeMUI';
-import { SelectChangeEvent } from "@mui/material";
 import { AddDataToDatabase } from "../../types/types";
 import { adminAddData } from "../../api/adminAddData";
 import { useContext } from "react";
@@ -24,6 +22,7 @@ const AdminPage = () => {
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
   const [category, setCategory] = React.useState("");
+  const [typeSelect, setTypeSelect] = React.useState("");
   const [openLoginModal, setOpenLoginModal] = React.useState(false);
   const [formData, setFormData] = React.useState<AddDataToDatabase>({
     choice: "",
@@ -40,17 +39,15 @@ const AdminPage = () => {
     );
   }
 
-  const handleCategoryChange = (event: SelectChangeEvent<string>) => {
-    setCategory(event.target.value);
-  };
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [event.target.name]: event.target.value });
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const submitData = { category, ...formData };
+    const submitData = { category, typeSelect, ...formData };
+    console.log(submitData);
+
     const response = await adminAddData(idToken, submitData);
     if (response && response.error) {
       setErrorMessage(response.error);
@@ -61,61 +58,153 @@ const AdminPage = () => {
     }
   };
 
+  let typeMenuItems;
+  if (category) {
+    typeMenuItems =
+      category === "ateria"
+        ? [
+            { value: "small", label: "pieni" },
+            { value: "big", label: "iso" },
+            { value: "both", label: "molemmat" },
+          ]
+        : [
+            { value: "päiväunet", label: "päiväunet" },
+            { value: "iltatoimet", label: "iltatoimet" },
+            { value: "nukkuminen", label: "nukkuminen" },
+          ];
+  }
+
   return (
     <div style={{ maxWidth: 500 }}>
-      <ThemeProvider theme={formTheme}>
-        <Typography variant="h3">Admin Page</Typography>
-        <Typography variant="h6">Lisää tiedot:</Typography>
+      <Typography variant="h3">Admin Page</Typography>
+      <h3>Lisää tiedot:</h3>
 
-        <form onSubmit={handleSubmit}>
+      {/*main category */}
+      <form onSubmit={handleSubmit}>
+        <FormControl fullWidth margin="normal">
+          <InputLabel id="category-label">Kategoria</InputLabel>
+          <Select
+            sx={{
+              marginTop: 0,
+              background: "white",
+            }}
+            name="category"
+            labelId="category-label"
+            id="category-select"
+            value={category}
+            label="Category"
+            onChange={(e) => {
+              if (typeSelect) {
+                // Reset type field if selected to prevent out of range warning
+                setTypeSelect("");
+              }
+              setCategory(e.target.value);
+            }}
+            required
+          >
+            <MenuItem value="ateria">ateria</MenuItem>
+            <MenuItem value="aktiviteetti">aktiviteetti</MenuItem>
+            <MenuItem value="vinkki">vinkki</MenuItem>
+          </Select>
+        </FormControl>
+        {/*type / identifier: */}
+        {category !== "aktiviteetti" && (
           <FormControl fullWidth margin="normal">
-            <InputLabel id="category-label">Kategoria</InputLabel>
+            <InputLabel id="type-select">Tyyppi</InputLabel>
             <Select
-              name="category"
-              labelId="category-label"
-              id="category-select"
-              value={category}
-              label="Category"
-              onChange={handleCategoryChange}
+              sx={{
+                marginTop: 0,
+                background: "white",
+              }}
+              name="type"
+              labelId="type-label"
+              id="type-select"
+              label="type"
+              value={typeSelect}
+              onChange={(e) => setTypeSelect(e.target.value)}
               required
             >
-              {/* Replace these MenuItem values with your actual categories */}
-              <MenuItem value="aktiviteetti">Aktiviteetti</MenuItem>
-              <MenuItem value="pieniAteria">Pieni ateria</MenuItem>
-              <MenuItem value="isoAteria">Iso ateria</MenuItem>
-              <MenuItem value="iltatoimi">Iltatoimi</MenuItem>
-              <MenuItem value="nukkuminen">Nukkuminen</MenuItem>
+              {typeMenuItems &&
+                typeMenuItems.map((item) => (
+                  <MenuItem key={item.value} value={item.value}>
+                    {item.label}
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
+        )}
 
+        <TextField
+          sx={{
+            marginTop: 0,
+            background: "white",
+          }}
+          name="title"
+          fullWidth
+          label="otsikko"
+          margin="normal"
+          onChange={handleChange}
+          required
+        />
+
+        {category !== "vinkki" ? (
+          <div>
+            <TextField
+              sx={{
+                marginTop: 0,
+                background: "white",
+              }}
+              name="name"
+              fullWidth
+              label="Nimi"
+              margin="normal"
+              onChange={handleChange}
+              required
+            />
+            <TextField
+              sx={{
+                marginTop: 0,
+                background: "white",
+              }}
+              name="ageLimit"
+              fullWidth
+              label="Ikäraja/kk"
+              margin="normal"
+              type="number"
+              onChange={handleChange}
+              required
+            />
+          </div>
+        ) : (
+          <div>
+            <Typography>Teksti sisältö:</Typography>
+
+            <TextareaAutosize
+              name="textContents"
+              minRows={8} // Minimum number of rows
+              maxRows={8} // Maximum number of rows
+              style={{ width: 495 }}
+              onChange={() => handleChange}
+              required
+            />
+            <Typography>
+              HUOM: Teksti formatoituu täsmälleen samalla tavalla kuin kirjoitat
+              sen tähän. mm. rivinvaihdot, välimerkit jne.
+            </Typography>
+          </div>
+        )}
+
+        {/* Backend is checking if there is photo, but if category is tip it's optional  */}
+        {/* TODO: add opitional photo for tips and required for meals and activity */}
+
+        <div>
+          <h3>Kuva</h3>
+          <p>Valitse kuvan URL linkki tai valitse tiedosto:</p>
           <TextField
-            name="choice"
-            fullWidth
-            label="Valikko"
-            margin="normal"
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            name="name"
-            fullWidth
-            label="Nimi"
-            margin="normal"
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            name="ageLimit"
-            fullWidth
-            label="Ikäraja/kk"
-            margin="normal"
-            type="number"
-            onChange={handleChange}
-            required
-          />
-          <Typography variant="h6">Kuva</Typography>
-          <Typography variant="body1">Valitse kuvan URL linkki tai valitse tiedosto:</Typography>
-          <TextField
+            sx={{
+              marginTop: 0,
+              background: "white",
+            }}
             name="photoLink"
             fullWidth
             label="Kuvan linkki"
@@ -124,6 +213,10 @@ const AdminPage = () => {
           />
 
           <TextField
+            sx={{
+              marginTop: 0,
+              background: "white",
+            }}
             name="photoFileName"
             fullWidth
             margin="normal"
@@ -133,6 +226,7 @@ const AdminPage = () => {
 
           <Button
             variant="contained"
+            color="primary"
             type="submit"
             style={{ marginTop: "20px" }}
           >
@@ -144,8 +238,8 @@ const AdminPage = () => {
           <Typography sx={{ color: "green", marginBottom: 2, marginTop: 2 }}>
             {successMessage}
           </Typography>
-        </form>
-      </ThemeProvider>
+        </div>
+      </form>
     </div>
   );
 };

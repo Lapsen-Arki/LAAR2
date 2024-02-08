@@ -14,18 +14,24 @@ export default function MealComp({ mealType }: { mealType: string }) {
       mealType: "both",
       title: "Juoma",
       menuItems: { maito: 0, mehu: 14, vesi: 0 },
+      photos: { maito: "", mehu: "", vesi: "" },
     },
     {
       id: 2,
       mealType: "small",
       title: "Aamupala juttu",
       menuItems: { jugurtti: 12, marjoja: 14, kiisseli: 15, puuro: 4 },
+      photos: { jugurtti: "", marjoja: "", kiisseli: "", puuro: "4" },
     },
     {
       id: 3,
       mealType: "big",
       title: "Proteiini",
-      menuItems: { kebab: 1, lihapata: 1 },
+      menuItems: {
+        kebab: 1,
+        lihapata: 1,
+      },
+      photos: { kebab: "", lihapata: "" },
     },
   ];
 

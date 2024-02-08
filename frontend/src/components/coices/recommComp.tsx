@@ -3,7 +3,7 @@ import { RecommendationsType } from "../../types/types";
 import { useState } from "react";
 
 // Getting real child data somewhere:
-const childAge = 12;
+const childAge = 11;
 
 export default function RecommComp({
   recommendations,
@@ -47,6 +47,7 @@ export default function RecommComp({
         }
         return (
           <div style={{ marginTop: 25 }}>
+            {/* TODO: do not render title if not any recommendations */}
             <Typography variant="h5">{recommendation.title}: </Typography>
             <Grid container spacing={2} sx={{ textAlign: "center" }}>
               {/* Iterate trough all the recommendations in the object */}
