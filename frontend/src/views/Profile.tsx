@@ -91,7 +91,7 @@ export default function Profile() {
         setCarerProfiles(JSON.parse(storedCarerProfilesJson));
       } else {
         try {
-          const carerProfiles = await getCarerProfile(idToken);
+          const carerProfiles = await getCarerProfile(idToken, true);
           sessionStorage.setItem('carerProfiles', JSON.stringify(carerProfiles));
           setCarerProfiles(carerProfiles);
         } catch (error) {
