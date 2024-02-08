@@ -9,9 +9,7 @@ const port = process.env.PORT || 3000;
 // Middleware (if needed)
 app.use(
   cors({
-    origin:
-      process.env.FRONTEND_HOSTNAME ||
-      "https://laarnet-frontend.azurewebsites.net", // Replace with your frontend's URL
+    origin: process.env.FRONTEND_HOSTNAME || "http://localhost:5173", // Replace with your frontend's URL
   })
 );
 app.use(express.urlencoded({ extended: true }));

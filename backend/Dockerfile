@@ -21,6 +21,6 @@ COPY --from=builder /app/backend/node_modules /app/backend/node_modules
 COPY --from=builder /app/backend/package*.json /app/backend/
 COPY --from=builder /app/backend/build /app/backend/build
 
-EXPOSE 3000
+EXPOSE 80
 
 CMD ["npm", "start"]
