@@ -6,7 +6,6 @@ import {
   Alert,
   AlertTitle,
   Typography,
-  Box,
   Checkbox,
   FormControlLabel,
   Tooltip,
@@ -14,7 +13,6 @@ import {
 } from '@mui/material';
 
 import {
-  ArrowBackIos as ArrowBackIosIcon,
   EditNote as EditNoteIcon,
   PersonRemove as PersonRemoveIcon,
   PersonAddAlt1 as PersonAddAlt1Icon,
@@ -31,7 +29,6 @@ import ReturnBtn from '../components/returnBtn.tsx';
 export default function CarersProfile() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const { idToken } = useContext(TokenContext);
-  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(true);
