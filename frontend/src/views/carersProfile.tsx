@@ -46,7 +46,6 @@ export default function CarersProfile() {
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
-    setEmailForAlert(newEmail);
 
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     setIsEmailValid(emailPattern.test(newEmail));
@@ -76,6 +75,7 @@ export default function CarersProfile() {
       const result = await inviteAccountToProfile({ accountEmail: email }, idToken);
   
       if (result.status === 200) {
+        setEmailForAlert(email);
         setInviteResult('200');
         // Päivitä Session Storage kutsun onnistumisen jälkeen
         const newCarerProfile = await getCarerProfile(idToken, true);
@@ -93,7 +93,7 @@ export default function CarersProfile() {
       setInviteResult('500');
     }
 
-    setEmailForAlert(email);
+    
     setEmail('');
     setAcceptTerms(false);
   };
