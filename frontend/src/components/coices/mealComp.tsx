@@ -2,7 +2,13 @@ import { Typography } from "@mui/material";
 import RecommComp from "./recommComp";
 import { RecommendationsType } from "../../types/types";
 
-export default function MealComp({ mealType }: { mealType: string }) {
+export default function MealComp({
+  mealType,
+  childAge,
+}: {
+  mealType: string;
+  childAge: number;
+}) {
   // Example data:
 
   // Tämä on oikea datamuoto nyt:
@@ -51,6 +57,7 @@ export default function MealComp({ mealType }: { mealType: string }) {
         recommendations={recommendations}
         multipleSelections={true}
         mealType={mealType}
+        childAge={childAge}
       />
     </>
   );

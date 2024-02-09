@@ -6,7 +6,7 @@ import {
   browserLocalPersistence,
   browserSessionPersistence,
 } from "firebase/auth";
-import { jwtAuth } from "./jwtAuth";
+import { jwtAuth } from "../api/jwtAuth";
 
 export const userLogin = async (
   email: string,

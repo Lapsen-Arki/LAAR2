@@ -10,14 +10,13 @@ import {
   Grid,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-import { formTheme } from '../../components/Layout/formThemeMUI';
-import { userLogin } from "../../api/userLogin";
+import { formTheme } from "../../components/Layout/formThemeMUI";
+import { userLogin } from "../../utils/userLogin";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 import ResetPasswordModal from "../../components/modals/resetPasswordModal";
 import VerifyEmailModal from "../../components/modals/verifyEmailModal";
-
 const Login: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -80,8 +79,7 @@ const Login: React.FC = (): JSX.Element => {
       <Container
         component="main"
         maxWidth="sm"
-        sx={{ display: 'flex', textAlign: 'center', marginTop: { md: 10 } }}
-
+        sx={{ display: "flex", textAlign: "center", marginTop: { md: 10 } }}
       >
         <Typography variant="h4">Kirjaudu sisään</Typography>
         <VerifyEmailModal
@@ -117,12 +115,12 @@ const Login: React.FC = (): JSX.Element => {
             }
           />
 
-          <Grid 
-          container
-          direction="row" 
-          justifyContent="space-between" 
-          alignItems="baseline"
-          style={{ padding: 5, }}
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            alignItems="baseline"
+            style={{ padding: 5 }}
           >
             <Grid item>
               <FormControlLabel
@@ -153,36 +151,28 @@ const Login: React.FC = (): JSX.Element => {
               />
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-          >
+          <Button type="submit" variant="contained" fullWidth>
             Kirjaudu
           </Button>
 
-          <Typography
-            variant="subtitle1" style={{ color: 'green' }}
-          >
+          <Typography variant="subtitle1" style={{ color: "green" }}>
             {successMessage}
           </Typography>
-          <Typography
-            variant="subtitle2" style={{ color: 'red' }}
-          >
+          <Typography variant="subtitle2" style={{ color: "red" }}>
             {errorMessage}
           </Typography>
-          <Grid 
+          <Grid
             container
-            direction="row" 
-            justifyContent="flex-start" 
-            alignItems="baseline">
+            direction="row"
+            justifyContent="flex-start"
+            alignItems="baseline"
+          >
             <Grid item>
               <Link href="/register" variant="body2">
                 Eikö vielä tiliä? Rekisteröidy tästä!
               </Link>
             </Grid>
           </Grid>
-          
         </form>
       </Container>
     </ThemeProvider>

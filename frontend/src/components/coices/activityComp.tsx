@@ -24,7 +24,7 @@ const recommendations: RecommendationsType[] = [
   },
 ];
 
-export default function ActivityComp() {
+export default function ActivityComp({ childAge }: { childAge: number }) {
   return (
     <>
       <Typography variant="h4">Aktiviteetteja:</Typography>
@@ -32,6 +32,7 @@ export default function ActivityComp() {
       <RecommComp
         recommendations={recommendations}
         multipleSelections={false}
+        childAge={childAge}
       />
     </>
   );

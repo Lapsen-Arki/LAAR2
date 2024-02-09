@@ -64,13 +64,13 @@ Pienen lapsen päiväunien suhteen on tärkeää luoda rauhallinen ja säännöl
 export default function TipsComp({ adviseType }: { adviseType: string }) {
   return (
     <div>
-      {recommendations.map((recommendation) => {
+      {recommendations.map((recommendation, index) => {
         // Check advise type here
         if (recommendation.adviseType !== adviseType) {
           return;
         }
         return (
-          <div>
+          <div key={index}>
             <Typography variant="h4">{recommendation.title}</Typography>
 
             <Typography
