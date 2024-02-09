@@ -2,6 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import { RecommendationsType } from "../types/types";
 import axios from "axios";
 import { TokenContext } from "../contexts/tokenContext";
+import {
+  activityRecomm,
+  mealRecomm,
+  tipsRecomm,
+} from "../utils/staticPreviewData";
 
 const API_BASE_URL = "http://localhost:3000/api";
 
@@ -29,6 +34,18 @@ export default function useGetRecommData(
           }
         }
         return data;
+      } else {
+        switch (fetchType) {
+          case "aktiviteetti":
+            setData(activityRecomm);
+            break;
+          case "ateria":
+            setData(mealRecomm);
+            break;
+          case "vinkki":
+            setData(tipsRecomm);
+            break;
+        }
       }
     };
     fetchData();

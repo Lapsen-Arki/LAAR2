@@ -2,19 +2,19 @@ import { RecommendationsType } from "../types/types";
 
 export const activityRecomm: RecommendationsType[] = [
   {
-    category: "activity",
+    category: "aktiviteetti",
     title: "Ulkoilu aktiviteetit",
     content: { pihaleikki: 3, kävely: 12, pulkkailu: 8 },
     photos: { pihaleikki: "", kävely: "", pulkkailu: "" },
   },
   {
-    category: "activity",
+    category: "aktiviteetti",
     title: "Sisä aktiviteetit",
     content: { joku12: 12 },
     photos: { joku12: "" },
   },
   {
-    category: "activity",
+    category: "aktiviteetti",
     title: "Muut aktiviteetit",
     content: { joku1: 1, joku6: 6 },
     photos: { joku1: "", joku6: "" },
@@ -23,21 +23,21 @@ export const activityRecomm: RecommendationsType[] = [
 
 export const mealRecomm: RecommendationsType[] = [
   {
-    category: "meal",
+    category: "ateria",
     type: "both",
     title: "Juoma",
     content: { maito: 0, mehu: 14, vesi: 0 },
     photos: { maito: "", mehu: "", vesi: "" },
   },
   {
-    category: "meal",
+    category: "ateria",
     type: "small",
     title: "Aamupala juttu",
     content: { jugurtti: 12, marjoja: 14, kiisseli: 15, puuro: 4 },
     photos: { jugurtti: "", marjoja: "", kiisseli: "", puuro: "4" },
   },
   {
-    category: "meal",
+    category: "ateria",
     type: "big",
     title: "Proteiini",
     content: {
@@ -50,7 +50,7 @@ export const mealRecomm: RecommendationsType[] = [
 
 export const tipsRecomm: RecommendationsType[] = [
   {
-    category: "tips",
+    category: "vinkki",
     type: "päiväunet",
     title: "Vinkkejä lapsen päiväuniin",
     content: {
@@ -70,7 +70,7 @@ export const tipsRecomm: RecommendationsType[] = [
     },
   },
   {
-    category: "tips",
+    category: "vinkki",
     type: "iltatoimet",
     title: "Vinkkejä iltatoimiin",
     content: {
@@ -88,7 +88,7 @@ export const tipsRecomm: RecommendationsType[] = [
     },
   },
   {
-    category: "tips",
+    category: "vinkki",
     type: "iltatoimet",
     title: "Vinkkejä nukkumiseen",
     content: {

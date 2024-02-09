@@ -44,6 +44,18 @@ export default function ChoicesPage() {
       if (child) {
         setSelectedChildAge(child.age);
       }
+    } else {
+      switch (selectedChild) {
+        case "Kullervo":
+          setSelectedChildAge(3);
+          break;
+        case "Ulpukka":
+          setSelectedChildAge(12);
+          break;
+        case "Liisa":
+          setSelectedChildAge(8);
+          break;
+      }
     }
   }, [selectedChild]);
 

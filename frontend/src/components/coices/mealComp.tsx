@@ -10,14 +10,7 @@ export default function MealComp({
   mealType: string;
   childAge: number;
 }) {
-  // Example data:
-
-  // Tämä on oikea datamuoto nyt:
-  // Fetching here the real data or taking it form sessionStorage/context
-  // Meal types are big, small and both
-
-  const fetchType = "meal";
-
+  const fetchType = "ateria";
   const recommendations: RecommendationsType[] = useGetRecommData(fetchType);
 
   // - Button tulos sivulle ja routtaus
