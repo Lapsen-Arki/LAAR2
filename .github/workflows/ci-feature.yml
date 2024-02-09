@@ -18,9 +18,9 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/*.lock') }}
+          path: backend/node_modules
+          key: ${{ runner.os }}-node-backend-${{ hashFiles('backend/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-backend-
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -68,7 +68,7 @@ jobs:
           bash ./check-healthy-light.sh "Backend" "http://localhost:3000/api/alive" 120
 
   build-frontend-run-tests:
-    runs-on: [self-hosted, feature]
+    runs-on: [self-hosted, deploy]
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -76,9 +76,9 @@ jobs:
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
-          path: |
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/*.lock') }}
+          path: frontend/node_modules
+          key: ${{ runner.os }}-node-frontend-${{ hashFiles('frontend/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-frontend-
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -131,13 +131,6 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
-
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/*.lock') }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4

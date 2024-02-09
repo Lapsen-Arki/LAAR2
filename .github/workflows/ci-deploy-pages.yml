@@ -16,8 +16,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/*.lock') }}
+            backend/node_modules
+            frontend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('backend/package-lock.json') }}-${{ hashFiles('frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
