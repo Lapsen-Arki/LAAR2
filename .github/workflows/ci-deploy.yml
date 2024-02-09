@@ -29,6 +29,9 @@ jobs:
           docker buildx build --platform linux/amd64 -t ${{ secrets.ACR_REGISTRY }}/laar-backend:latest --push ./backend
 
       - name: Build and Push frontend image
+        env:
+          VITE_API_BASE_URL: ${{ secrets.API_BASE_URL }}
         run: |
+          echo "VITE_API_BASE_URL=${VITE_API_BASE_URL}" > frontend/.env
           docker buildx create
           docker buildx build --platform linux/amd64 -t ${{ secrets.ACR_REGISTRY }}/laar-frontend:latest --build-arg PORT=80 --push ./frontend

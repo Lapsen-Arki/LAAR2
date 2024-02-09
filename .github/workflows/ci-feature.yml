@@ -148,7 +148,7 @@ jobs:
         run: |
           npx prettier . --check &> utils/results/prettier-summary.txt || true
           cd utils
-          node parse-prettier-results.js
+          node prettier-parser.js
 
       - name: Comment PR
         if: success() || failure()
