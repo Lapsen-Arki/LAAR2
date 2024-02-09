@@ -15,21 +15,31 @@ interface ChildProfile {
 const getChildProfiles = async (idToken: string | null) => {
   try {
     console.log("Haetaan profiileja...");
-    const config = {
-      headers: {
-        Authorization: `Bearer ${idToken}`,
-      },
-    };
-    const response = await axios.get<ChildProfile[]>(
-      `${API_BASE_URL}/profiles`,
-      config
-    );
-    console.log("Profiilit haettu onnistuneesti:", response.data);
+    let profiles: ChildProfile[] = [];
 
-    // Tallenna profiilit Session Storageen, jos ne ovat muuttuneet
-    updateSessionStorage(response.data);
+    // Tarkista ensin Session Storage
+    const storedProfilesJson = sessionStorage.getItem("childProfiles");
+    if (storedProfilesJson) {
+      profiles = JSON.parse(storedProfilesJson);
+      console.log("Profiilit haettu Session Storagessa:", profiles);
+    } else {
+      // Jos ei ole tallennettu Session Storagessa, haetaan tietokannasta
+      const config = {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      };
+      const response = await axios.get<ChildProfile[]>(
+        `${API_BASE_URL}/profiles`,
+        config
+      );
+      profiles = response.data;
+      console.log("Profiilit haettu onnistuneesti:", profiles);
+      // Tallenna profiilit Session Storageen
+      sessionStorage.setItem("childProfiles", JSON.stringify(profiles));
+    }
 
-    return response.data;
+    return profiles;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response) {
       console.error("Profiilien hakeminen epäonnistui:", error.response.data);
@@ -37,19 +47,6 @@ const getChildProfiles = async (idToken: string | null) => {
     }
     console.error("Virhe profiileja haettaessa:", error);
     throw error;
-  }
-};
-
-const updateSessionStorage = (profiles: ChildProfile[]) => {
-  const storedProfilesJson = sessionStorage.getItem("childProfiles");
-  const storedProfiles = storedProfilesJson
-    ? JSON.parse(storedProfilesJson)
-    : [];
-
-  // Vertaa haettuja profiileja tallennettuihin
-  if (JSON.stringify(profiles) !== JSON.stringify(storedProfiles)) {
-    console.log("Profiilit ovat muuttuneet, päivitetään Session Storage");
-    sessionStorage.setItem("childProfiles", JSON.stringify(profiles));
   }
 };
 

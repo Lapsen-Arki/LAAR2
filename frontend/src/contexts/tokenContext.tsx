@@ -41,7 +41,7 @@ function TokenProvider({ children }: { children: ReactNode }) {
       } else {
         signOutMethod();
       }
-    }, 900000); // 900000 milliseconds = 15 minutes
+    }, 300000); // 300000 milliseconds = 5 minutes
 
     // Cleanup
     return () => {

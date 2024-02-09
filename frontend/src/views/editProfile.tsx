@@ -1,20 +1,24 @@
 import React from "react";
 import { useContext, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import '../styles/editProfile.css';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import AnimalAvatarWidget from '../components/AnimalAvatarWidget.tsx';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ReturnBtn from '../components/returnBtn.tsx';
 import {
   Avatar,
   Switch,
   Button,
   Alert,
-  Box,
   Tooltip,
+  Container,
+  Typography,
+  TextField,
 } from "@mui/material";
+
+import { ThemeProvider } from "@mui/material/styles";
+import { formTheme } from '../components/Layout/formThemeMUI';
 
 import PleaseLoginModal from "../components/modals/pleaseLoginModal.tsx";
 import { TokenContext } from "../contexts/tokenContext";
@@ -147,83 +151,77 @@ const EditProfile = () => {
     }
   };
 
-  const handleNavigateToProfile = () => {
-    navigate('/profile');
-  };
-
   return (
-    <div className="profile-container">
-      {/* Lomakkeen sisältö */}
-      <div className="profile-modification">
-        <form>
-          {/* Lapsen nimi -kenttä */}
-          <div className="input-group editProfile">
-            <h3>Lapsen nimi tai lempinimi</h3>
-            <input type="text" id="childName" value={childName} onChange={(e) => setChildName(e.target.value)} maxLength={14} />
-            {nameError && <Alert severity="error">{nameError}</Alert>}
-          </div>
+    <ThemeProvider theme={formTheme}>
+    <Container
+      component="main"
+      maxWidth="sm"
+      style={{ textAlign: 'center' }}
+    >
+      <ReturnBtn />
+      <form>
+        {/* Lapsen nimi -kenttä */}
+        <Typography variant="h5">Tallenna lapsen tiedot</Typography>
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Lapsen nimi tai lempinimi"
+          autoFocus
+          //maxLength={14}
+          id="childName"
+          value={childName} 
+          onChange={(e) => 
+            setChildName(e.target.value)}
+        />
+          {nameError && <Alert severity="error">{nameError}</Alert>}
 
-          {/* Syntymäaika -kenttä */}
-          <div className="input-group editProfile">
-            <h3>Lapsen syntymäaika</h3>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker value={birthdate} onChange={(newDate) => setBirthdate(newDate ? dayjs(newDate) : null)} />
-            </LocalizationProvider>
-            {birthdateError && <Alert severity="error">{birthdateError}</Alert>}
-          </div>
+        {/* Syntymäaika -kenttä */}
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker value={birthdate} onChange={(newDate) => setBirthdate(newDate ? dayjs(newDate) : null)} />
+        </LocalizationProvider>
+          {birthdateError && <Alert severity="error">{birthdateError}</Alert>}
+    
+        {/* Avatarin valinta */}
+        {showAnimalAvatar ? (
+          <AnimalAvatarWidget onSelect={handleAvatarSelect} />
+        ) : selectedAvatar ? (
+          <Avatar src={selectedAvatar}
+          sx={{
+            borderRadius: '50%',
+            backgroundColor: '#A68477',
+            margin: 'auto',
+            marginTop: '20px',
+          }} />
+        ) : (
+          <Avatar src="/broken-image.jpg"
+          sx={{
+            borderRadius: '50%',
+            backgroundColor: '#A68477',
+            margin: 'auto',
+            marginTop: '20px',
+          }} />
+        )}
+        {showAnimalAvatar ? null : (
+          <Tooltip title="Valitse kuva">
+          <Button variant="text" style={{ marginTop: 5, marginBottom: 20 }} onClick={handleShowAnimalAvatar}>Valitse avatar</Button>
+          </Tooltip>
+        )}
 
-          {/* Avatarin valinta */}
-          <div className="input-group editProfile editProfileAvatar">
-            <h3>Valitse lapselle avatar</h3>
-            {showAnimalAvatar ? (
-              <AnimalAvatarWidget onSelect={handleAvatarSelect} />
-            ) : selectedAvatar ? (
-              <Avatar src={selectedAvatar}
-              sx={{
-                borderRadius: '50%',
-                backgroundColor: '#90c2c5',
-              }} />
-            ) : (
-              <Avatar src="/broken-image.jpg"
-              sx={{
-                borderRadius: '50%',
-                backgroundColor: '#90c2c5',
-              }} />
-            )}
-            {showAnimalAvatar ? null : (
-              <Tooltip title="Valitse kuva">
-              <Button variant="contained" className="custom-button" onClick={handleShowAnimalAvatar}>Valitse kuva</Button>
-              </Tooltip>
-            )}
-          </div>
+        {/* Pääsyoikeudet -kytkin */}
+        <Typography variant="body1">Näytä kortti lapsen hoitajille</Typography>
+        <span>Ei</span>
+          <Switch checked={accessRights} onChange={() => setAccessRights(!accessRights)} />
+        <span>Näytä</span>
 
-          {/* Pääsyoikeudet -kytkin */}
-          <div className="input-group editProfile">
-            <h5>Tarvitsetko pääsyoikeudet myös muille ihmisille?</h5>
-            <div className="switch-group">
-              <span>Ei</span>
-              <Switch checked={accessRights} onChange={() => setAccessRights(!accessRights)} />
-              <span>Kyllä</span>
-            </div>
-          </div>
-
-          {/* Tallennus- ja paluupainikkeet */}
-          <Box sx={{ marginTop: 5 }}>
-            <div className="input-group editProfile">
-            <Tooltip title="Takaisin profiiliin">
-              <Button variant="contained" className="custom-button editProfile" onClick={handleNavigateToProfile}>
-                <ArrowBackIosIcon /> Takaisin
-              </Button>
-              </Tooltip>
-
-            <Tooltip title="Tallenna profiili">
-              <Button variant="contained" className="custom-button" onClick={handleSave}>Tallenna</Button>
-              </Tooltip>
-            </div>
-          </Box>
-        </form>
-      </div>
-    </div>
+        {/* Tallennus- ja paluupainikkeet */}
+        <Tooltip title="Tallenna profiili">
+          <Button variant="contained" onClick={handleSave}>Tallenna</Button>
+        </Tooltip>
+    </form>
+  </Container>
+  </ThemeProvider>
   );
 };
 

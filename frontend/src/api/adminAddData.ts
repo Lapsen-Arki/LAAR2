@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AddDataToDatabase } from "../types/types";
+import { FinalDataToBackend } from "../types/types";
 
 // TODO: Move to env variables etc:
 const API_BASE_URL =
@@ -9,7 +9,7 @@ const API_BASE_URL =
 
 export const adminAddData = async (
   idToken: string,
-  submitData: AddDataToDatabase
+  submitData: FinalDataToBackend
 ) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/admin`, submitData, {

@@ -2,6 +2,9 @@ import { useLocation } from "react-router-dom";
 import NameDropDown from "../components/index/nameDropDown";
 import ReturnBtn from "../components/returnBtn";
 import { useEffect, useState } from "react";
+import { Container, Typography } from "@mui/material";
+import { NamesAndAgesType } from "../types/types";
+import makeChildObject from "../utils/makeChildObject";
 
 // comp imports:
 import ActivityComp from "../components/coices/activityComp";
@@ -9,7 +12,6 @@ import AllergiesComp from "../components/coices/allergiesComp";
 import ChildInfoComp from "../components/coices/childInfoComp";
 import MealComp from "../components/coices/mealComp";
 import TipsComp from "../components/coices/tipsComp";
-import { Container, Typography } from "@mui/material";
 
 export default function ChoicesPage() {
   const location = useLocation();
@@ -19,14 +21,31 @@ export default function ChoicesPage() {
   const [activity, setActivity] = useState(false);
   const [smallMeal, setSmallMeal] = useState(false);
   const [bigMeal, setBigMeal] = useState(false);
-  const [nap, setNap] = useState(false);
-  const [tipsFor, setTipsFor] = useState(false);
+  const [tipsFor, setTipsFor] = useState<null | string>(null);
   const [mealType, setMealType] = useState("");
 
-  //
+  // selected child states:
   const [selectedChild, setSelectedChild] = useState(() => {
     return sessionStorage.getItem("selectedChild");
   });
+  const [selectedChildAge, setSelectedChildAge] = useState<number>();
+
+  useEffect(() => {
+    const childNamesAndAgesJSON = sessionStorage.getItem("childNamesAndAges");
+    makeChildObject();
+    if (childNamesAndAgesJSON) {
+      const childNamesAndAges = JSON.parse(
+        childNamesAndAgesJSON
+      ) as NamesAndAgesType[];
+
+      const child = childNamesAndAges.find(
+        (child) => child.childName === selectedChild
+      );
+      if (child) {
+        setSelectedChildAge(child.age);
+      }
+    }
+  }, [selectedChild]);
 
   // Handling parent component change of selectedChild
   const handleParentChange = (newValue: string) => {
@@ -47,7 +66,7 @@ export default function ChoicesPage() {
         setMealType("big");
         break;
       case "Päiväunet":
-        setNap(true);
+        setTipsFor("päiväunet");
         break;
       case "Välipala":
         setSmallMeal(true);
@@ -59,11 +78,11 @@ export default function ChoicesPage() {
         break;
       case "Iltapala ja iltatoimet":
         setSmallMeal(true);
-        setTipsFor(true);
+        setTipsFor("iltatoimet");
         setMealType("small");
         break;
       case "Hyvää yötä":
-        setTipsFor(true);
+        setTipsFor("nukkuminen");
         break;
     }
   }, [renderIdentifier]);
@@ -76,9 +95,10 @@ export default function ChoicesPage() {
       <Container
         sx={{
           width: {
-            xs: "100%", // 100% width on extra-small and small screens for responsiveness
-            sm: "600px", // You can adjust this value as needed for small screens
-            md: "1000px", // Fixed width starting from medium screens and up
+            xs: "100%",
+            sm: "600px",
+            md: "800px",
+            lg: "1200px",
           },
           maxWidth: "100%",
         }}
@@ -88,24 +108,27 @@ export default function ChoicesPage() {
         <ChildInfoComp selectedChild={selectedChild} />{" "}
         <NameDropDown changerFunc={handleParentChange} />
         <div style={{ marginBottom: 50 }}>
-          {tipsFor && <TipsComp renderIdentifier={renderIdentifier} />}
+          {tipsFor && <TipsComp adviseType={tipsFor} />}
         </div>
         {smallMeal && (
           <div>
             <AllergiesComp />
-            <MealComp mealType={mealType} />{" "}
-            {/* <-- bigMeal identifier prop or correct data */}
+            {selectedChildAge && (
+              <MealComp mealType={mealType} childAge={selectedChildAge} />
+            )}{" "}
           </div>
         )}
         {bigMeal && (
           <div>
             <AllergiesComp />
-            <MealComp mealType={mealType} />{" "}
-            {/* <-- bigMeal identifier prop or correct data */}
+            {selectedChildAge && (
+              <MealComp mealType={mealType} childAge={selectedChildAge} />
+            )}
           </div>
         )}
-        {activity && <ActivityComp />} {/* <- Identifier prop or corr data */}
-        {nap && <TipsComp renderIdentifier={renderIdentifier} />}
+        {activity && selectedChildAge && (
+          <ActivityComp childAge={selectedChildAge} />
+        )}
       </Container>
     </>
   );
