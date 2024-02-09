@@ -189,7 +189,7 @@ const EditProfile = () => {
         ) : selectedAvatar ? (
           <Avatar
             src={selectedAvatar}
-            onClick={handleShowAnimalAvatar} // Lisätään onClick-tapahtumankäsittelijä
+            onClick={handleShowAnimalAvatar}
             sx={{
               borderRadius: '50%',
               backgroundColor: '#A68477',
@@ -200,7 +200,7 @@ const EditProfile = () => {
         ) : (
           <Avatar
             src="/broken-image.jpg"
-            onClick={handleShowAnimalAvatar} // Lisätään onClick-tapahtumankäsittelijä
+            onClick={handleShowAnimalAvatar}
             sx={{
               borderRadius: '50%',
               backgroundColor: '#A68477',
