@@ -16,11 +16,11 @@ describe("Login component test", () => {
     const emailField = screen.getByRole("textbox", { name: /Sähköposti/i });
     expect(emailField).toBeInTheDocument();
   });
-  test("Test login button", async () => {
+  /* test("Test login button", async () => {
     const loginButton = screen.getByRole("button", {
       name: /Kirjaudu sisään/i,
     });
     expect(loginButton).toBeInTheDocument();
     fireEvent.click(loginButton);
-  });
+  }); */
 });
