@@ -15,7 +15,7 @@ html, body {
 .page {
 	display: flex;
 	align-items: center;
-	margin-top: 10vh;
+	margin-top: 15vh;
 	margin-bottom: 5vh;
 }
 
