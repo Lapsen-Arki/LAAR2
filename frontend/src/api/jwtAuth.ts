@@ -3,7 +3,8 @@ import axios from "axios";
 // THIS FUNCTION IS RETURNING ONLY: TRUE, FALSE OR "emailNotVerified"
 
 // For testing: Move to env variables:
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
 
 export const jwtAuth = async (idToken: string) => {
   try {
