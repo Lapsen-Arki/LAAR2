@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import {
-  Container,
-  TextField,
+  Alert,
   Button,
-  Typography,
-  Link,
   Checkbox,
+  Container,
   FormControlLabel,
   Grid,
+  Link,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from "../../components/Layout/formThemeMUI";
@@ -52,7 +53,7 @@ const Login: React.FC = (): JSX.Element => {
       }
 
       setSuccessMessage(
-        "Kirjautuminen onnistui. Tervetuloa! Siirryt etusivulle 3 s kuluttua. | Login successful. Welcome!"
+        "Kirjautuminen onnistui. Siirryt etusivulle 3 s kuluttua."
       );
       setTimeout(() => {
         navigate("/");
@@ -79,7 +80,7 @@ const Login: React.FC = (): JSX.Element => {
       <Container
         component="main"
         maxWidth="sm"
-        sx={{ display: "flex", textAlign: "center", marginTop: { md: 10 } }}
+        sx={{ display: 'flex', textAlign: 'center', marginTop: { md: 0 } }}
       >
         <Typography variant="h4">Kirjaudu sisään</Typography>
         <VerifyEmailModal
@@ -115,12 +116,12 @@ const Login: React.FC = (): JSX.Element => {
             }
           />
 
-          <Grid
-            container
-            direction="row"
-            justifyContent="space-between"
-            alignItems="baseline"
-            style={{ padding: 5 }}
+          <Grid 
+          container
+          direction="row" 
+          justifyContent="space-between" 
+          alignItems="center"
+          style={{ paddingLeft: 7, paddingRight: 7 }}
           >
             <Grid item>
               <FormControlLabel
@@ -130,7 +131,11 @@ const Login: React.FC = (): JSX.Element => {
                     onChange={handleRememberMeChange}
                   />
                 }
-                label="Muista minut"
+                label={
+                  <Typography variant="body2" style={{ color: 'black' }}>
+                    Muista minut
+                  </Typography>
+                }
               />
             </Grid>
             <Grid item>
@@ -139,7 +144,7 @@ const Login: React.FC = (): JSX.Element => {
                 onClick={() => {
                   setOpenResetModal(true);
                 }}
-                variant="body1"
+                variant="body2"
               >
                 Unohtuiko salasana?
               </Link>
@@ -154,19 +159,31 @@ const Login: React.FC = (): JSX.Element => {
           <Button type="submit" variant="contained" fullWidth>
             Kirjaudu
           </Button>
-
-          <Typography variant="subtitle1" style={{ color: "green" }}>
-            {successMessage}
-          </Typography>
-          <Typography variant="subtitle2" style={{ color: "red" }}>
-            {errorMessage}
-          </Typography>
-          <Grid
+          {successMessage != null && (
+          <Alert severity="success" >
+            <Typography
+              variant="subtitle1"
+            >
+              {successMessage}
+            </Typography>
+          </Alert>
+          )}
+          {errorMessage != null && (
+          <Alert severity="error" >
+            <Typography
+              variant="subtitle2"
+            >
+              {errorMessage}
+            </Typography>
+          </Alert>
+          )}
+          <Grid 
             container
-            direction="row"
-            justifyContent="flex-start"
+            direction="row" 
+            justifyContent="flex-start" 
             alignItems="baseline"
-          >
+            style={{ paddingLeft: 7, paddingRight: 7 }}
+            >
             <Grid item>
               <Link href="/register" variant="body2">
                 Eikö vielä tiliä? Rekisteröidy tästä!

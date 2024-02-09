@@ -156,7 +156,7 @@ const EditProfile = () => {
     <Container
       component="main"
       maxWidth="sm"
-      style={{ textAlign: 'center' }}
+      sx={{ display: 'flex', textAlign: 'center', marginTop: { md: 0 } }}
     >
       <ReturnBtn />
       <form>
@@ -210,10 +210,10 @@ const EditProfile = () => {
         )}
 
         {/* Pääsyoikeudet -kytkin */}
-        <Typography variant="body1">Näytä kortti lapsen hoitajille</Typography>
-        <span>Ei</span>
-          <Switch checked={accessRights} onChange={() => setAccessRights(!accessRights)} />
-        <span>Näytä</span>
+        <Typography variant="subtitle1" style={{ marginBottom: 0 }}>Näytä kortti lapsen hoitajille</Typography>
+        <span><Typography variant="subtitle2"sx={{ display: { xs: 'inline-flex' } }} >Piilota</Typography></span>
+          <Switch sx={{ display: { xs: 'inline-flex' } }} checked={accessRights} onChange={() => setAccessRights(!accessRights)} />
+        <span><Typography variant="subtitle2" sx={{ display: { xs: 'inline-flex' } }} >Näytä</Typography></span>
 
         {/* Tallennus- ja paluupainikkeet */}
         <Tooltip title="Tallenna profiili">
