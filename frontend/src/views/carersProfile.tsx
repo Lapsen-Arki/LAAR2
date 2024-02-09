@@ -8,6 +8,7 @@ import {
   Checkbox,
   FormControlLabel,
   Tooltip,
+  Container,
   Grid,
 } from '@mui/material';
 
@@ -98,116 +99,123 @@ export default function CarersProfile() {
 
   return (
     <ThemeProvider theme={formTheme}>
-      <div className="profile-container" style={{ textAlign: 'center' }}>
+      <Container
+        component="main"
+        maxWidth="sm"
+        sx={{ display: 'flex', textAlign: 'center', marginTop: { md: 0 } }}
+      >
       <ReturnBtn />
-        <div className="profile-modification">
-          <form>
-            <div className="input-group shareProfile" style={{ marginBottom: '10px' }}>
-              <Typography variant="h4" gutterBottom>
-                Kutsu hoitaja
-              </Typography>
+      <form>
+        <Typography variant="h4">Kutsu hoitaja</Typography>
+        <TextField
+          style={{ background: 'white' }}
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Sähköposti"
+          autoComplete="email"
+          autoFocus
+          value={email}
+          onChange={handleEmailChange}
+          error={showEmailError}
+          helperText={showEmailError ? 'Anna kelvollinen sähköpostiosoite' : ''}
+        />
+        
+        <Typography variant="body1">
+          Hyväksyessäni otan vastuun toisen henkilön toiminnasta ja <br />
+          <span style={{ fontWeight: 'bold' }}>valtuutan hänet seuraavin oikeuksin:</span>
+        </Typography>
 
-              <TextField
-                style={{ background: 'white' }}
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                label="Sähköposti"
-                autoComplete="email"
-                autoFocus
-                value={email}
-                onChange={handleEmailChange}
-                error={showEmailError}
-                helperText={showEmailError ? 'Anna kelvollinen sähköpostiosoite' : ''}
-              />
-            </div>
+        <Grid style={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'space-between', margin: 20 }}>
+          <Grid item sx={{ display: { xs: 'block' } }}></Grid>
+          <Grid item style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+            <Typography variant="body1" style={{ margin: 3, display: 'flex', alignItems: 'center' }}>
+              <EditNoteIcon style={{ marginRight: 10, color: '#1976d2'}} /> Muokata profiileitani
+            </Typography>
+            <Typography variant="body1" style={{ margin: 3, display: 'flex', alignItems: 'center' }}>
+              <PersonRemoveIcon style={{ marginRight: 10, color: '#d32f2f'}} /> Poistaa profiileitani
+            </Typography>
+            <Typography variant="body1" style={{ margin: 3, display: 'flex', alignItems: 'center' }}>
+              <PersonAddAlt1Icon style={{ marginRight: 10, color: '#39C4A3'}} /> Lisätä profiileita tililleni
+            </Typography>
+          </Grid>
+          <Grid item sx={{ display: { xs: 'block' } }}></Grid>
+        </Grid>
+          
+        <Grid 
+          container
+          direction="row" 
+          justifyContent="space-between" 
+          alignItems="center"
+          style={{ paddingLeft: 10, paddingRight: 7 }}
+        >
+          <Grid item>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={acceptTerms}
+                  onChange={handleAcceptTermsChange}
+                  name="acceptTerms"
+                  style={{display: 'flex', alignItems: "center"}}
+                />
+              }
+              label={
+                <Typography variant="body2" style={{ color: 'black' }}>
+                  Olen tietoinen oikeuksista ja ehdoista sekä hyväksyn ne.
+                </Typography>
+              }
+            />
+          </Grid>
+        </Grid>
 
-            <div className="input-group shareProfile">
-              <Typography variant="body1">
-                Hyväksyessäni otan vastuun toisen henkilön toiminnasta ja <br />
-                <span style={{ fontWeight: 'bold' }}>valtuutan hänet seuraavin oikeuksin:</span>
-              </Typography>
+        {showTermsError && (
+          <Alert severity="error">
+            <Typography variant="inherit" component="span">
+              Sinun on hyväksyttävä ehdot, ennen kuin voit kutsua hoitajan.
+            </Typography>
+          </Alert>
+        )}
 
-              <Grid style={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'space-between', margin: 20 }}>
-                <Grid item sx={{ display: { xs: 'none', sm: 'block' } }}></Grid>
-                <Grid item style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
-                  <Typography variant="body1" style={{ margin: 3, display: 'flex', alignItems: 'center' }}>
-                    <EditNoteIcon style={{ marginRight: 10, color: '#1976d2'}} /> Muokata profiileitani
-                  </Typography>
-                  <Typography variant="body1" style={{ margin: 3, display: 'flex', alignItems: 'center' }}>
-                    <PersonRemoveIcon style={{ marginRight: 10, color: '#d32f2f'}} /> Poistaa profiileitani
-                  </Typography>
-                  <Typography variant="body1" style={{ margin: 3, display: 'flex', alignItems: 'center' }}>
-                    <PersonAddAlt1Icon style={{ marginRight: 10, color: '#39C4A3'}} /> Lisätä profiileita tililleni
-                  </Typography>
-                </Grid>
-                <Grid item sx={{ display: { xs: 'none', sm: 'block' } }}></Grid>
-              </Grid>
+        {!isAlertClosed && inviteResult && inviteResult.includes('200') && (
+          <Alert severity="success" onClose={() => setIsAlertClosed(true)}>
+            <AlertTitle>{`${emailForAlert} kutsuttu hoitajaksi onnistuneesti!`}</AlertTitle>
+              Voit halutessasi kutsua toisen henkilön.
+          </Alert>
+        )}
 
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={acceptTerms}
-                    onChange={handleAcceptTermsChange}
-                    name="acceptTerms"
-                    color="primary"
-                  />
-                }
-                label="Olen tietoinen oikeuksista ja ehdoista sekä hyväksyn ne."
-              />
-              {showTermsError && (
-                <Alert severity="error">
-                  <Typography variant="inherit" component="span">
-                    Sinun on hyväksyttävä ehdot, ennen kuin voit kutsua hoitajan.
-                  </Typography>
-                </Alert>
-              )}
+        {!isAlertClosed && inviteResult && inviteResult.includes('500') && (
+          <Alert severity="error" onClose={() => setIsAlertClosed(true)}>
+            <AlertTitle>No höh, jokin meni pieleen.</AlertTitle>
+              Kutsu hoitajaksi epäonnistui.
+          </Alert>
+        )}
 
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              {!isAlertClosed && inviteResult && inviteResult.includes('200') && (
-                <Alert severity="success" onClose={() => setIsAlertClosed(true)}>
-                  <AlertTitle>{`${emailForAlert} kutsuttu hoitajaksi onnistuneesti!`}</AlertTitle>
-                    Voit halutessasi kutsua toisen henkilön.
-                </Alert>
-              )}
+        {!isAlertClosed && inviteResult && inviteResult.includes('409') && (
+          <Alert severity="info" onClose={() => setIsAlertClosed(true)}>
+            <AlertTitle>Hups!</AlertTitle>
+              Käyttäjä on jo kutsuttu.
+          </Alert>
+        )}
 
-              {!isAlertClosed && inviteResult && inviteResult.includes('500') && (
-                <Alert severity="error" onClose={() => setIsAlertClosed(true)}>
-                  <AlertTitle>No höh, jokin meni pieleen.</AlertTitle>
-                    Kutsu hoitajaksi epäonnistui.
-                </Alert>
-              )}
-
-              {!isAlertClosed && inviteResult && inviteResult.includes('409') && (
-                <Alert severity="info" onClose={() => setIsAlertClosed(true)}>
-                  <AlertTitle>Hups!</AlertTitle>
-                    Käyttäjä on jo kutsuttu.
-                </Alert>
-              )}
-
-              {!isAlertClosed && inviteResult && inviteResult.includes('404') && (
-                <Alert severity="warning" onClose={() => setIsAlertClosed(true)}>
-                  <AlertTitle>No höh, jokin meni pieleen.</AlertTitle>
-                    Kutsuttava käyttäjä ei ole olemassa, tarkista sähköpostiosoite.
-                </Alert>
-              )}
-            </div>
-          </div>
-          <div className="input-group shareProfile">
-            <Tooltip title="Kutsu hoitaja sähköpostilla">
-              <Button
-                variant="contained"
-                className="custom-button"
-                onClick={handleInviteClick}
-              >
-                Kutsu hoitaja
-              </Button>
-            </Tooltip>
-          </div>
-          </form>
-        </div>
-      </div>
+        {!isAlertClosed && inviteResult && inviteResult.includes('404') && (
+          <Alert severity="warning" onClose={() => setIsAlertClosed(true)}>
+            <AlertTitle>No höh, jokin meni pieleen.</AlertTitle>
+              Kutsuttava käyttäjä ei ole olemassa, tarkista sähköpostiosoite.
+          </Alert>
+        )}
+        
+        <Tooltip title="Kutsu hoitaja sähköpostilla">
+          <Button
+            variant="contained"
+            className="custom-button"
+            onClick={handleInviteClick}
+          >
+            Kutsu hoitaja
+          </Button>
+        </Tooltip>
+      </form>
+      </Container>
     </ThemeProvider>
   );
 }
