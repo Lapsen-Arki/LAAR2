@@ -106,7 +106,7 @@ export default function CarersProfile() {
       >
       <ReturnBtn />
       <form>
-        <Typography variant="h4">Kutsu hoitaja</Typography>
+        <Typography variant="h5">Kutsu hoitaja</Typography>
         <TextField
           style={{ background: 'white' }}
           variant="outlined"

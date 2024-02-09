@@ -41,17 +41,17 @@ const inviteAccountToProfile = async (req: Request, res: Response): Promise<void
     }
 
     const invitedUserDoc = invitedUserQuery.docs[0];
-    const invitedUserUid = invitedUserDoc.id;
+    const receiverUid = invitedUserDoc.id;
 
     const existingCarerQuery = await childCarersCollection
-      .where("invitedUserUid", "==", invitedUserUid)
+      .where("receiverUid", "==", receiverUid)
       .get();
 
     // Tarkistetaan, onko käyttäjä jo kutsuttu
     let isAlreadyInvited = false;
     existingCarerQuery.forEach((doc: DocumentSnapshot) => {
       const data = doc.data();
-      if (data?.sharedAccountUid?.includes(inviterId)) {
+      if (data?.senderUid?.includes(inviterId)) {
         isAlreadyInvited = true;
       }
     });
@@ -63,8 +63,8 @@ const inviteAccountToProfile = async (req: Request, res: Response): Promise<void
 
     if (existingCarerQuery.empty) {
       const newCarerRef = await childCarersCollection.add({
-        invitedUserUid: invitedUserUid,
-        sharedAccountUid: [inviterId],
+        receiverUid: receiverUid,
+        senderUid: [inviterId],
       });
 
       res.status(200).json({
@@ -75,11 +75,11 @@ const inviteAccountToProfile = async (req: Request, res: Response): Promise<void
       const existingCarer = existingCarerQuery.docs[0];
       const carerId = existingCarer.id;
       const carerData = existingCarer.data();
-      const sharedAccounts = carerData?.sharedAccountUid || [];
+      const sharedAccounts = carerData?.senderUid || [];
       sharedAccounts.push(inviterId);
 
       await childCarersCollection.doc(carerId).update({
-        sharedAccountUid: sharedAccounts,
+        senderUid: sharedAccounts,
       });
 
       res.status(200).json({ message: "Kutsuttu käyttäjä lisätty hoitajaksi" });

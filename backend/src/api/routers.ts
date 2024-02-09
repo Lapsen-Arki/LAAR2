@@ -13,8 +13,10 @@ import editChildProfile from "./controllers/childProfile/editChildProfile";
 import { getChildProfiles } from "./controllers/childProfile/getChildProfiles";
 import { getChildProfileById } from "./controllers/childProfile/getChildProfileById";
 import { deleteChildProfile } from "./controllers/childProfile/deleteChildProfile";
+
 import inviteAccountToProfile from "./controllers/carersProfile/inviteAccountToProfile";
 import { getCarerProfile } from "./controllers/carersProfile/getCarerProfile";
+import { deleteCarerProfile } from "./controllers/carersProfile/deleteCarerProfile";
 
 import {
   startSubscription,
@@ -41,6 +43,7 @@ router.delete("/profile/:profileId", deleteChildProfile);    // Poista käyttäj
 
 router.post("/inviteAccountToProfile", inviteAccountToProfile); // Kutsu käyttäjä hoitajaksi profiileihin
 router.get("/carers", getCarerProfile);                         // Hae hoitaja profiilit
+router.delete("/carer/:carerId", deleteCarerProfile);           // Poista hoitaja profiili
 
 // Future User routes plan (?):
 // router.get("/settings", editAccount);

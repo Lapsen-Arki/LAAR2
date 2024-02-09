@@ -187,27 +187,36 @@ const EditProfile = () => {
         {showAnimalAvatar ? (
           <AnimalAvatarWidget onSelect={handleAvatarSelect} />
         ) : selectedAvatar ? (
-          <Avatar src={selectedAvatar}
-          sx={{
-            borderRadius: '50%',
-            backgroundColor: '#A68477',
-            margin: 'auto',
-            marginTop: '20px',
-          }} />
+          <Avatar
+            src={selectedAvatar}
+            onClick={handleShowAnimalAvatar}
+            sx={{
+              borderRadius: '50%',
+              backgroundColor: '#A68477',
+              margin: 'auto',
+              marginTop: '20px',
+            }}
+          />
         ) : (
-          <Avatar src="/broken-image.jpg"
-          sx={{
-            borderRadius: '50%',
-            backgroundColor: '#A68477',
-            margin: 'auto',
-            marginTop: '20px',
-          }} />
+          <Avatar
+            src="/broken-image.jpg"
+            onClick={handleShowAnimalAvatar}
+            sx={{
+              borderRadius: '50%',
+              backgroundColor: '#A68477',
+              margin: 'auto',
+              marginTop: '20px',
+            }}
+          />
         )}
         {showAnimalAvatar ? null : (
           <Tooltip title="Valitse kuva">
-          <Button variant="text" style={{ marginTop: 5, marginBottom: 20 }} onClick={handleShowAnimalAvatar}>Valitse avatar</Button>
+            <Button variant="text" style={{ marginTop: 5, marginBottom: 20 }} onClick={handleShowAnimalAvatar}>
+              Valitse avatar
+            </Button>
           </Tooltip>
         )}
+
 
         {/* Pääsyoikeudet -kytkin */}
         <Typography variant="subtitle1" style={{ marginBottom: 0 }}>Näytä kortti lapsen hoitajille</Typography>
