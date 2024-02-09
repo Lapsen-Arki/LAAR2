@@ -1,4 +1,4 @@
-name: CI-FEATURE
+name: Feature pull request actions
 
 on:
   pull_request:

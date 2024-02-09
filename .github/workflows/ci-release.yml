@@ -1,4 +1,4 @@
-name: CI-RELEASE
+name: Release branch testing actions
 
 on:
   push:
