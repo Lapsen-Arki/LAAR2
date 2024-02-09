@@ -59,19 +59,23 @@ export interface DecodedToken {
   };
 }
 
-export type RecomMenuItemType = {
-  [key: string]: number;
-};
-export type RecomPhotosType = {
-  [key: string]: string;
-};
+export interface contents {
+  [key: string]: number; // Name: ageLimit / activity: ageLimit
+}
+export interface TipContents {
+  [key: string]: string; // <-- Key arvo on title tässä!
+}
+
+export interface Photos {
+  [key: string]: string; // Photo link or filename -> title: string
+}
 
 export type RecommendationsType = {
-  id: number;
-  mealType?: string;
+  category: string;
+  type?: string;
   title: string;
-  menuItems: RecomMenuItemType;
-  photos: RecomPhotosType;
+  content: contents | TipContents;
+  photos?: Photos;
 };
 
 export type TipsType = {

@@ -52,7 +52,7 @@ const adminPage = async (req: Request, res: Response) => {
     console.log("printing the addDataObject: ", addDataObject);
 
     // Restructuring the data:
-    const { category, title, content, ageLimit } = addDataObject;
+    const { title, content, ageLimit } = addDataObject;
 
     let contentObj: TipContents | contents;
     if (addDataObject.category !== "vinkki") {

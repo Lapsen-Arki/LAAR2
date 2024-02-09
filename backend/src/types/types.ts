@@ -38,8 +38,8 @@ export interface AddDataToDatabase {
   category: string;
   type?: string;
   title: string;
-  content: contents | TipContents; // Adjusted to match the structure
-  photos?: Photos; // Adjusted to match the structure
+  content: contents | TipContents;
+  photos?: Photos;
 }
 
 export interface UserData {}

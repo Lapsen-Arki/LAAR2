@@ -40,8 +40,8 @@ export default function RecommComp({
       {recommendations.map((recommendation, index) => {
         if (mealType) {
           if (
-            recommendation.mealType !== mealType &&
-            recommendation.mealType !== "both"
+            recommendation.type !== mealType &&
+            recommendation.type !== "both"
           ) {
             return;
           }
@@ -53,7 +53,7 @@ export default function RecommComp({
             <Grid container spacing={2} sx={{ textAlign: "center" }}>
               {/* Iterate trough all the recommendations in the object */}
 
-              {Object.entries(recommendation.menuItems).map(
+              {Object.entries(recommendation.content).map(
                 ([itemName, ageLimit]) => {
                   if (ageLimit <= childAge) {
                     return (

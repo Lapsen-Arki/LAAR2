@@ -44,6 +44,18 @@ export default function ChoicesPage() {
       if (child) {
         setSelectedChildAge(child.age);
       }
+    } else {
+      switch (selectedChild) {
+        case "Kullervo":
+          setSelectedChildAge(3);
+          break;
+        case "Ulpukka":
+          setSelectedChildAge(12);
+          break;
+        case "Liisa":
+          setSelectedChildAge(8);
+          break;
+      }
     }
   }, [selectedChild]);
 
@@ -103,7 +115,7 @@ export default function ChoicesPage() {
           maxWidth: "100%",
         }}
       >
-        <ReturnBtn message="🡨 palaa etusivulle" />
+        <ReturnBtn message="palaa etusivulle" />
         <Typography variant="h2">{renderIdentifier}</Typography>
         <ChildInfoComp selectedChild={selectedChild} />{" "}
         <NameDropDown changerFunc={handleParentChange} />
@@ -129,6 +141,10 @@ export default function ChoicesPage() {
         {activity && selectedChildAge && (
           <ActivityComp childAge={selectedChildAge} />
         )}
+        <br />
+        <br />
+        <br />
+        <ReturnBtn message="palaa etusivulle" />
       </Container>
     </>
   );
