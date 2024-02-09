@@ -62,8 +62,8 @@ function TokenProvider({ children }: { children: ReactNode }) {
             signOutMethod();
           }
         } else {
-          // This is correct: otherwise session would presist if idToken has not been found
-          // and validated only if found.
+          // This is correct: otherwise session would presist if idToken has not
+          // been found and validated.
           signOutMethod();
         }
       }, 300000); // 300000 milliseconds = 5 minutes
@@ -73,7 +73,7 @@ function TokenProvider({ children }: { children: ReactNode }) {
         clearInterval(checkSessionInterval);
       };
     }
-  }, [idToken, isLoggedIn, signOutMethod]); // <- DO NOT ADD idToken HERE, FUCK YOU ESLINT
+  }, [idToken, isLoggedIn, signOutMethod]);
 
   return (
     <TokenContext.Provider
