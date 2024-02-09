@@ -9,14 +9,14 @@ import {
   InputLabel,
   TextareaAutosize,
 } from "@mui/material";
-import { AddDataToDatabase } from "../../types/types";
+import { FormDataToBackend } from "../../types/types";
 import { adminAddData } from "../../api/adminAddData";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 import PleaseLoginModal from "../../components/modals/pleaseLoginModal";
+import { FinalDataToBackend } from "../../types/types";
 
-// TODO: add following features: 1. Remove data from recommendation database collection
-// 2. Adding feature for adding and removing admin users by superuser
+// TODO: 1. More frequent login status checks
 
 const AdminPage = () => {
   const [errorMessage, setErrorMessage] = React.useState("");
@@ -24,9 +24,9 @@ const AdminPage = () => {
   const [category, setCategory] = React.useState("");
   const [typeSelect, setTypeSelect] = React.useState("");
   const [openLoginModal, setOpenLoginModal] = React.useState(false);
-  const [formData, setFormData] = React.useState<AddDataToDatabase>({
-    choice: "",
-    name: "",
+  const [formData, setFormData] = React.useState<FormDataToBackend>({
+    title: "",
+    content: "",
     ageLimit: 0,
     photoLink: "",
     photoFileName: "",
@@ -45,16 +45,25 @@ const AdminPage = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const submitData = { category, typeSelect, ...formData };
-    console.log(submitData);
+    const submitData: FinalDataToBackend = {
+      category,
+      typeSelect,
+      ...formData,
+    };
 
     const response = await adminAddData(idToken, submitData);
     if (response && response.error) {
       setErrorMessage(response.error);
+      setInterval(() => {
+        setErrorMessage("");
+      }, 5000);
     } else {
       setSuccessMessage(
         "Tietokantaan tallentaminen onnistui! Lisää uusi tieto tai voit poistua sivulta."
       );
+      setInterval(() => {
+        setSuccessMessage("");
+      }, 5000);
     }
   };
 
@@ -77,7 +86,13 @@ const AdminPage = () => {
   return (
     <div style={{ maxWidth: 500 }}>
       <Typography variant="h3">Admin Page</Typography>
-      <h3>Lisää tiedot:</h3>
+      <Typography variant="h5">Lisää tieto:</Typography>
+      <Typography variant="body1">
+        HUOM! Täytä lomakkeet hyvin huolellisesti ja tarkista oikeinkirjoitus.
+      </Typography>
+      <Typography variant="body1">
+        Jos teet virheitä, niin ne tulee korjata tietokannan kautta.
+      </Typography>
 
       {/*main category */}
       <form onSubmit={handleSubmit}>
@@ -98,6 +113,13 @@ const AdminPage = () => {
                 // Reset type field if selected to prevent out of range warning
                 setTypeSelect("");
               }
+              setFormData({
+                title: "",
+                content: "",
+                ageLimit: 0,
+                photoLink: "",
+                photoFileName: "",
+              });
               setCategory(e.target.value);
             }}
             required
@@ -154,7 +176,7 @@ const AdminPage = () => {
                 marginTop: 0,
                 background: "white",
               }}
-              name="name"
+              name="content"
               fullWidth
               label="Nimi"
               margin="normal"
@@ -180,11 +202,13 @@ const AdminPage = () => {
             <Typography>Teksti sisältö:</Typography>
 
             <TextareaAutosize
-              name="textContents"
+              name="content"
               minRows={8} // Minimum number of rows
               maxRows={8} // Maximum number of rows
               style={{ width: 495 }}
-              onChange={() => handleChange}
+              onChange={(e) =>
+                setFormData({ ...formData, [e.target.name]: e.target.value })
+              }
               required
             />
             <Typography>

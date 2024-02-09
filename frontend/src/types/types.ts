@@ -14,12 +14,24 @@ export interface RegisterData {
   };
 }
 
-export interface AddDataToDatabase {
-  choice: string;
-  name: string;
-  ageLimit: number;
-  photoLink: string;
-  photoFileName: string;
+// Admin page data adding feature:
+// Category and typeSelect comes from separate useStates:
+export interface FormDataToBackend {
+  title: string;
+  content: string; // <- This will be saved in a list in the backend
+  ageLimit?: number;
+  photoLink?: string;
+  photoFileName?: string;
+}
+// -->
+export interface FinalDataToBackend {
+  category: string;
+  typeSelect?: string;
+  title: string;
+  content: string; // <- This will be saved in a list in the backend
+  ageLimit?: number;
+  photoLink?: string;
+  photoFileName?: string;
 }
 
 export type TokenContextType = {
@@ -83,4 +95,8 @@ export interface CarerProfile {
   id: string;
   email: string;
   name: string;
+}
+export interface NamesAndAgesType {
+  childName: string;
+  age: number;
 }
