@@ -43,13 +43,13 @@ interface CarerProfile {
       }
   
       const carerData = carerDoc.data();
-      const sharedAccountUids: string[] = carerData?.sharedAccountUid || [];
+      const senderUids: string[] = carerData?.senderUid || [];
   
       // Poista hoitajan oikeus
-      const updatedSharedAccountUids = sharedAccountUids.filter(uid => uid !== carerToRemoveId);
+      const updatedSenderUids = senderUids.filter(uid => uid !== carerToRemoveId);
   
       await childCarersCollection.doc(carerId).update({
-        sharedAccountUid: updatedSharedAccountUids,
+        senderUid: updatedSenderUids,
       });
   
       res.status(200).json({ message: "Hoitajan oikeudet poistettu onnistuneesti" });

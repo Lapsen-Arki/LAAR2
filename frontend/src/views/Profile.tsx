@@ -172,7 +172,7 @@ export default function Profile() {
           <Box className="profiles">
             <div style={{ flex: 1 }}>
               <Typography variant="h6" gutterBottom>
-                Lapset:
+                Omat lapset:
               </Typography>
 
                 {/* Ei profiileja */}
@@ -245,7 +245,7 @@ export default function Profile() {
 
             <div style={{ flex: 1 }}>
               <Typography variant="h6" gutterBottom>
-                Hoitajat:
+                Kutsutut hoitajat:
               </Typography>
               {carerProfiles.length === 0 ? (
                 <div className="Carer">
