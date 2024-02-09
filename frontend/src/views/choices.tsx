@@ -115,7 +115,7 @@ export default function ChoicesPage() {
           maxWidth: "100%",
         }}
       >
-        <ReturnBtn message="🡨 palaa etusivulle" />
+        <ReturnBtn message="palaa etusivulle" />
         <Typography variant="h2">{renderIdentifier}</Typography>
         <ChildInfoComp selectedChild={selectedChild} />{" "}
         <NameDropDown changerFunc={handleParentChange} />
@@ -141,6 +141,10 @@ export default function ChoicesPage() {
         {activity && selectedChildAge && (
           <ActivityComp childAge={selectedChildAge} />
         )}
+        <br />
+        <br />
+        <br />
+        <ReturnBtn message="palaa etusivulle" />
       </Container>
     </>
   );
