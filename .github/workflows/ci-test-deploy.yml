@@ -23,15 +23,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Configure Docker CLI
-        run: |
-          uname -a
-          docker info
-
-      - name: Set Docker Compose file
-        run: |
-          export DOCKER_COMPOSE_FILE=docker-compose.prod.yml
-
       - name: Build and Push backend image
         run: |
           docker buildx create
