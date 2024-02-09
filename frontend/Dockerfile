@@ -16,8 +16,8 @@ FROM nginx:alpine
 ARG PORT
 # Copy the built files from the previous stage
 COPY --from=builder /app/frontend/dist /usr/share/nginx/html
-
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY mime.types /etc/nginx/mime.types
+COPY nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE $PORT
 
