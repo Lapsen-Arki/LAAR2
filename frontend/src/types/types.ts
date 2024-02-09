@@ -95,6 +95,11 @@ export interface ChildProfile {
   creatorId: string;
 }
 
+export interface CarerProfile {
+  id: string;
+  email: string;
+  name: string;
+}
 export interface NamesAndAgesType {
   childName: string;
   age: number;

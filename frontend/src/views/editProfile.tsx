@@ -156,7 +156,7 @@ const EditProfile = () => {
     <Container
       component="main"
       maxWidth="sm"
-      style={{ textAlign: 'center' }}
+      sx={{ display: 'flex', textAlign: 'center', marginTop: { md: 0 } }}
     >
       <ReturnBtn />
       <form>
@@ -187,33 +187,42 @@ const EditProfile = () => {
         {showAnimalAvatar ? (
           <AnimalAvatarWidget onSelect={handleAvatarSelect} />
         ) : selectedAvatar ? (
-          <Avatar src={selectedAvatar}
-          sx={{
-            borderRadius: '50%',
-            backgroundColor: '#A68477',
-            margin: 'auto',
-            marginTop: '20px',
-          }} />
+          <Avatar
+            src={selectedAvatar}
+            onClick={handleShowAnimalAvatar}
+            sx={{
+              borderRadius: '50%',
+              backgroundColor: '#A68477',
+              margin: 'auto',
+              marginTop: '20px',
+            }}
+          />
         ) : (
-          <Avatar src="/broken-image.jpg"
-          sx={{
-            borderRadius: '50%',
-            backgroundColor: '#A68477',
-            margin: 'auto',
-            marginTop: '20px',
-          }} />
+          <Avatar
+            src="/broken-image.jpg"
+            onClick={handleShowAnimalAvatar}
+            sx={{
+              borderRadius: '50%',
+              backgroundColor: '#A68477',
+              margin: 'auto',
+              marginTop: '20px',
+            }}
+          />
         )}
         {showAnimalAvatar ? null : (
           <Tooltip title="Valitse kuva">
-          <Button variant="text" style={{ marginTop: 5, marginBottom: 20 }} onClick={handleShowAnimalAvatar}>Valitse avatar</Button>
+            <Button variant="text" style={{ marginTop: 5, marginBottom: 20 }} onClick={handleShowAnimalAvatar}>
+              Valitse avatar
+            </Button>
           </Tooltip>
         )}
 
+
         {/* Pääsyoikeudet -kytkin */}
-        <Typography variant="body1">Näytä kortti lapsen hoitajille</Typography>
-        <span>Ei</span>
-          <Switch checked={accessRights} onChange={() => setAccessRights(!accessRights)} />
-        <span>Näytä</span>
+        <Typography variant="subtitle1" style={{ marginBottom: 0 }}>Näytä kortti lapsen hoitajille</Typography>
+        <span><Typography variant="subtitle2"sx={{ display: { xs: 'inline-flex' } }} >Piilota</Typography></span>
+          <Switch sx={{ display: { xs: 'inline-flex' } }} checked={accessRights} onChange={() => setAccessRights(!accessRights)} />
+        <span><Typography variant="subtitle2" sx={{ display: { xs: 'inline-flex' } }} >Näytä</Typography></span>
 
         {/* Tallennus- ja paluupainikkeet */}
         <Tooltip title="Tallenna profiili">

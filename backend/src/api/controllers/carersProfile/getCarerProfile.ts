@@ -16,8 +16,8 @@ const getCarerProfile = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    const sharedAccountUid = await getUserIdFromToken(idToken);
-    if (!sharedAccountUid) {
+    const senderUid = await getUserIdFromToken(idToken);
+    if (!senderUid) {
       res.status(403).json({ error: "Virheellinen token" });
       return;
     }
@@ -27,7 +27,7 @@ const getCarerProfile = async (req: Request, res: Response): Promise<void> => {
     const usersCollection = db.collection("users");
 
     const profilesSnapshot = await childCarersCollection
-      .where("sharedAccountUid", "array-contains", sharedAccountUid)
+      .where("senderUid", "array-contains", senderUid)
       .get();
 
     if (profilesSnapshot.empty) {
@@ -38,10 +38,10 @@ const getCarerProfile = async (req: Request, res: Response): Promise<void> => {
     const profiles: CarerProfile[] = [];
 
     for (const doc of profilesSnapshot.docs) {
-      const profileData = doc.data() as { invitedUserUid: string };
-      const invitedUserUid = profileData.invitedUserUid;
+      const profileData = doc.data() as { receiverUid: string };
+      const receiverUid = profileData.receiverUid;
 
-      const userDoc = await usersCollection.doc(invitedUserUid).get();
+      const userDoc = await usersCollection.doc(receiverUid).get();
 
       if (userDoc.exists) {
         const userData = userDoc.data() as { name: string; email: string }; // Vain nimi ja sähköposti tallennetaan

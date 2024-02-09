@@ -80,10 +80,9 @@ const formTheme = createTheme({
     MuiCheckbox: {
       styleOverrides: {
         root: {
-          marginLeft: 10,
-          marginRight: 0,
+          margin: 10,
+          marginRight: 5,
           paddingRight: 0,
-          marginTop: 5,
           alignSelf: 'flex-start',
           color: 'black',
           '&.Mui-checked': {
@@ -257,17 +256,14 @@ const formTheme = createTheme({
           letterSpacing: 0.1,
           textAlign: 'center',
           margin: 10,
-          display: 'inline-flex'
         },
         //error
         subtitle2: {
           fontFamily: ["Quicksand", "sans-serif"].join(","),
           fontSize: 14,
-          fontWeight: 'bold',
           letterSpacing: 0.1,
           textAlign: 'center',
           margin: 10,
-          display: 'inline-flex'
         },
         body1: {
           color: '#000000',
