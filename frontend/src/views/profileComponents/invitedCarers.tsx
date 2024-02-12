@@ -1,12 +1,15 @@
 import React from 'react';
 import { Card, CardContent, Typography, IconButton, Tooltip } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { useProfileUtils } from './profileUtils';
+import ConfirmationDialog from './profileConfirmationDialog';
 
-
+import {
+    Delete as DeleteIcon,
+    HelpOutline as HelpOutlineIcon,
+  } from '@mui/icons-material';
+  
 const InvitedCarersComponent: React.FC = () => {
-    const { carerProfiles } = useProfileUtils();
+    const { carerProfiles, handleClickDeleteCarer, confirmationDialogOpen, handleDeleteConfirmed } = useProfileUtils();
 
     return (
         <div>
@@ -43,7 +46,7 @@ const InvitedCarersComponent: React.FC = () => {
                                 </CardContent>
                                 <div className="card-icons">
                                     <Tooltip title="Poista hoitaja">
-                                        <IconButton color="error" aria-label="Delete"> {/* onClick={() => handleClickDeleteCarer(carer.id)} */}
+                                        <IconButton color="error" aria-label="Delete" onClick={() => handleClickDeleteCarer(carer.id)}>
                                             <DeleteIcon />
                                         </IconButton>
                                     </Tooltip>
@@ -53,6 +56,11 @@ const InvitedCarersComponent: React.FC = () => {
                     </div>
                 )}
             </div>
+                <ConfirmationDialog
+                open={confirmationDialogOpen}
+                onClose={handleDeleteConfirmed}
+                onConfirm={handleDeleteConfirmed}
+                />
         </div>
     );
 };

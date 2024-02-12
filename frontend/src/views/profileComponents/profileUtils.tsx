@@ -1,6 +1,5 @@
-// ProfileUtils.tsx
-
-import { useContext, useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TokenContext } from "../../contexts/tokenContext";
 import { getChildProfiles } from '../../api/childProfile/getChildProfiles';
@@ -10,12 +9,14 @@ import { ChildProfile, CarerProfile } from "../../../src/types/types";
 
 export function useProfileUtils() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
+  const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
+  const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
+  const [confirmedDelete, setConfirmedDelete] = useState(false); // Tila vahvistetun poiston seuraamiseksi
+
   const { idToken } = useContext(TokenContext);
   const navigate = useNavigate();
   const [childProfiles, setChildProfiles] = useState<ChildProfile[]>([]);
   const [carerProfiles, setCarerProfiles] = useState<CarerProfile[]>([]);
-  const [confirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
-  const [selectedProfileId, setSelectedProfileId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!idToken) {
@@ -80,13 +81,18 @@ export function useProfileUtils() {
   const handleDeleteConfirmed = async () => {
     if (selectedProfileId) {
       try {
-        await deleteChildProfile(selectedProfileId, idToken, childProfiles, setChildProfiles);
-        setSelectedProfileId(null);
+        if (confirmationDialogOpen) { // Varmista, että vahvistusikkuna on avoinna
+          setConfirmationDialogOpen(false); // Sulje vahvistusikkuna
+          setConfirmedDelete(true); // Aseta vahvistuksen tila todeksi
+          if (confirmedDelete) { // Tarkista, onko poisto vahvistettu
+            setSelectedProfileId(null); // Tyhjennä valittu profiili
+            await deleteChildProfile(selectedProfileId, idToken, childProfiles, setChildProfiles); // Suorita poisto
+          }
+        }
       } catch (error) {
         console.error('Profiilin poisto epäonnistui', error);
       }
     }
-    setConfirmationDialogOpen(false);
   };
 
   const handleEditClick = (profileId: string) => {

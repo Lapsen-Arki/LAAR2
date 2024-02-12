@@ -7,9 +7,12 @@ import {
   IconButton,
   Tooltip,
 } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+
+import {
+    Edit as EditIcon,
+    Delete as DeleteIcon,
+    HelpOutline as HelpOutlineIcon,
+  } from '@mui/icons-material';  
 
 import ConfirmationDialog from './profileConfirmationDialog';
 import { useProfileUtils } from './profileUtils';
