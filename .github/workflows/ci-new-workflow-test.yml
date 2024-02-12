@@ -131,9 +131,4 @@ jobs:
 
       - name: Display results in actions summary
         if: always()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const results = fs.readFileSync('utils/results/prettier-summary.md');
-            console.log(results);
+        run: echo utils/results/prettier-summary.md >> $GITHUB_STEP_SUMMARY
