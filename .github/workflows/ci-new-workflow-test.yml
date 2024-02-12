@@ -131,4 +131,4 @@ jobs:
 
       - name: Display results in actions summary
         if: always()
-        run: echo utils/results/prettier-summary.md >> $GITHUB_STEP_SUMMARY
+        run: echo "::set-output name=GITHUB_STEP_SUMMARY::$(cat utils/results/prettier-summary.md)"
