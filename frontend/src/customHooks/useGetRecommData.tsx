@@ -36,13 +36,13 @@ export default function useGetRecommData(
         return data;
       } else {
         switch (fetchType) {
-          case "aktiviteetti":
+          case "activity":
             setData(activityRecomm);
             break;
-          case "ateria":
+          case "meal":
             setData(mealRecomm);
             break;
-          case "vinkki":
+          case "tip":
             setData(tipsRecomm);
             break;
         }
