@@ -34,4 +34,4 @@ interface CarerProfile {
     }
   };
   
-  export default deleteCarerProfile;  
+  export default deleteCarerProfile;

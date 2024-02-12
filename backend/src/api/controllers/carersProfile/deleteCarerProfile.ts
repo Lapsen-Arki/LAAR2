@@ -59,4 +59,4 @@ interface CarerProfile {
     }
   };
   
-  export { deleteCarerProfile };  
+  export { deleteCarerProfile };

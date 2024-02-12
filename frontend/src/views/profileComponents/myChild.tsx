@@ -19,7 +19,7 @@ import { useProfileUtils } from './profileUtils';
 import { calculateAge, splitNameToFitWidth } from './profileFunctions';
 
 const MyChildComponent: React.FC = () => {
-  const { childProfiles, handleEditClick, handleClickDeleteProfile, confirmationDialogOpen, handleDeleteConfirmed } = useProfileUtils();
+  const { childProfiles, handleEditClick, handleClickDeleteProfile, confirmationDialogOpen, cancelDelete, handleDeleteConfirmed } = useProfileUtils();
 
     return (
         <div style={{ flex: 1 }}>
@@ -90,7 +90,7 @@ const MyChildComponent: React.FC = () => {
             )}
             <ConfirmationDialog
               open={confirmationDialogOpen}
-              onClose={handleDeleteConfirmed}
+              onClose={cancelDelete}
               onConfirm={handleDeleteConfirmed}
             />
         </div>

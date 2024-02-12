@@ -56,11 +56,11 @@ const InvitedCarersComponent: React.FC = () => {
                     </div>
                 )}
             </div>
-                <ConfirmationDialog
-                open={confirmationDialogOpen}
-                onClose={handleDeleteConfirmed}
-                onConfirm={handleDeleteConfirmed}
-                />
+            <ConfirmationDialog
+              open={confirmationDialogOpen}
+              onClose={handleDeleteConfirmed}
+              onConfirm={handleDeleteConfirmed}
+            />
         </div>
     );
 };
