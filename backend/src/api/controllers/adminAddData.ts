@@ -1,13 +1,14 @@
-import { FrontendDataObject } from "../../types/types";
+import { FrontendRecommData } from "../../types/types";
 import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
 import { TipContents, contents } from "../../types/types";
+import { FinalRecommData } from "../../types/types";
 
 const adminPage = async (req: Request, res: Response) => {
   try {
-    const addDataObject = req.body as unknown as FrontendDataObject;
+    const addDataObject = req.body as unknown as FrontendRecommData;
 
-    const validCategories = ["ateria", "aktiviteetti", "vinkki"];
+    const validCategories = ["meal", "activity", "tip"];
     // Validate category:
     if (!validCategories.includes(addDataObject.category)) {
       return res.status(400).send({
@@ -17,7 +18,7 @@ const adminPage = async (req: Request, res: Response) => {
     }
 
     // Validate choice
-    const validateTextLength = (text: string) => text.length > 10;
+    const validateTextLength = (text: string) => text.length > 20;
     if (validateTextLength(addDataObject.title)) {
       return res
         .status(400)
@@ -27,7 +28,7 @@ const adminPage = async (req: Request, res: Response) => {
     }
     // Validate name
     if (
-      addDataObject.category !== "vinkki" &&
+      addDataObject.category !== "tip" &&
       validateTextLength(addDataObject.content)
     ) {
       return res
@@ -38,7 +39,7 @@ const adminPage = async (req: Request, res: Response) => {
     }
     // Validate image
     if (
-      addDataObject.category !== "vinkki" &&
+      addDataObject.category !== "tip" &&
       !addDataObject.photoFileName &&
       !addDataObject.photoLink
     ) {
@@ -55,7 +56,7 @@ const adminPage = async (req: Request, res: Response) => {
     const { title, content, ageLimit } = addDataObject;
 
     let contentObj: TipContents | contents;
-    if (addDataObject.category !== "vinkki") {
+    if (addDataObject.category !== "tip") {
       contentObj = {
         [content]: ageLimit || 0,
       };
@@ -69,7 +70,7 @@ const adminPage = async (req: Request, res: Response) => {
       [title]: "Photo Path or link",
     };
 
-    const newData = {
+    const newData: FinalRecommData = {
       category: addDataObject.category,
       type: addDataObject.typeSelect,
       title: addDataObject.title,

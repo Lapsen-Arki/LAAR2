@@ -78,7 +78,7 @@ export default function ChoicesPage() {
         setMealType("big");
         break;
       case "Päiväunet":
-        setTipsFor("päiväunet");
+        setTipsFor("nap");
         break;
       case "Välipala":
         setSmallMeal(true);
@@ -90,11 +90,11 @@ export default function ChoicesPage() {
         break;
       case "Iltapala ja iltatoimet":
         setSmallMeal(true);
-        setTipsFor("iltatoimet");
+        setTipsFor("bedtime");
         setMealType("small");
         break;
       case "Hyvää yötä":
-        setTipsFor("nukkuminen");
+        setTipsFor("sleep");
         break;
     }
   }, [renderIdentifier]);
