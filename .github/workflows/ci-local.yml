@@ -1,4 +1,4 @@
-name: CI-FEATURE
+name: Local actions testing
 
 on:
   push:

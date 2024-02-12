@@ -1,166 +1,221 @@
-import React from "react";
-import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
 import {
-    TextField,
-    Button,
-    Alert,
-    Typography,
-    Box,
-    Checkbox,
-    FormControlLabel,
-    Tooltip,
-} from "@mui/material";
+  TextField,
+  Button,
+  Alert,
+  AlertTitle,
+  Typography,
+  Checkbox,
+  FormControlLabel,
+  Tooltip,
+  Container,
+  Grid,
+} from '@mui/material';
+
 import {
-    ArrowBackIos as ArrowBackIosIcon,
-    EditNote as EditNoteIcon,
-    PersonRemove as PersonRemoveIcon,
-    PersonAddAlt1 as PersonAddAlt1Icon,
-} from "@mui/icons-material";
+  EditNote as EditNoteIcon,
+  PersonRemove as PersonRemoveIcon,
+  PersonAddAlt1 as PersonAddAlt1Icon,
+} from '@mui/icons-material';
 
-import PleaseLoginModal from "../components/pleaseLoginModal";
-import { TokenContext } from "../contexts/tokenContext";
+import PleaseLoginModal from '../components/modals/pleaseLoginModal';
+import { TokenContext } from '../contexts/tokenContext';
+import { inviteAccountToProfile, getCarerProfile, updateSessionStorage } from '../api/carersProfile/inviteAccountToProfile';
 
-export default function CaresProfile() {
-    const [openLoginModal, setOpenLoginModal] = React.useState(false);
-    const { idToken } = useContext(TokenContext);
-    const navigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [acceptTerms, setAcceptTerms] = useState(false);
-    const [isEmailValid, setIsEmailValid] = useState(true);
-    const [showEmailError, setShowEmailError] = useState(false);
-    const [showTermsError, setShowTermsError] = useState(false);
+import { ThemeProvider } from "@mui/material/styles";
+import { formTheme } from '../components/Layout/formThemeMUI';
+import ReturnBtn from '../components/returnBtn.tsx';
 
-    if (!idToken) {
-        return (
-          <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
-        );
+export default function CarersProfile() {
+  const [openLoginModal, setOpenLoginModal] = useState(false);
+  const { idToken } = useContext(TokenContext);
+  const [email, setEmail] = useState('');
+  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(true);
+  const [showEmailError, setShowEmailError] = useState(false);
+  const [showTermsError, setShowTermsError] = useState(false);
+  const [inviteResult, setInviteResult] = useState<null | string>(null);
+  const [emailForAlert, setEmailForAlert] = useState('');
+  const [isAlertClosed, setIsAlertClosed] = useState(false);
+
+  if (!idToken) {
+    return <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />;
+  }
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    setIsEmailValid(emailPattern.test(newEmail));
+    setShowEmailError(!emailPattern.test(newEmail));
+  };
+
+  const handleAcceptTermsChange = () => {
+    setAcceptTerms(!acceptTerms);
+    if (showTermsError) {
+      setShowTermsError(false);
+    }
+  };
+
+  const handleInviteClick = async () => {
+    if (!acceptTerms || !isEmailValid) {
+      setShowTermsError(!acceptTerms);
+      setShowEmailError(!isEmailValid);
+      return;
+    }
+
+    if (!isEmailValid) {
+      setShowEmailError(true);
+      return;
+    }
+
+    try {
+      const result = await inviteAccountToProfile({ accountEmail: email }, idToken);
+  
+      if (result.status === 200) {
+        setEmailForAlert(email);
+        setInviteResult('200');
+        // Päivitä Session Storage kutsun onnistumisen jälkeen
+        const newCarerProfile = await getCarerProfile(idToken, true);
+        updateSessionStorage(newCarerProfile);
+      } else if (result.status === 409) {
+        setInviteResult('409');
+      } else if (result.status === 404) {
+        setInviteResult('404');
+      } else {
+        setInviteResult('500');
       }
+    } catch (e) {
+      const errorMessage = e instanceof Error ? e.message : 'Jokin meni pieleen, yritä uudelleen.';
+      console.error('Kutsu hoitajaksi virhe:', errorMessage);
+      setInviteResult('500');
+    }
 
-    const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newEmail = e.target.value;
-        setEmail(newEmail);
+    
+    setEmail('');
+    setAcceptTerms(false);
+  };
 
-        // Tarkista sähköpostin kelvollisuus RegExpillä
-        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-        setIsEmailValid(emailPattern.test(newEmail));
+  return (
+    <ThemeProvider theme={formTheme}>
+      <Container
+        component="main"
+        maxWidth="sm"
+        sx={{ display: 'flex', textAlign: 'center', marginTop: { md: 0 } }}
+      >
+      <ReturnBtn />
+      <form>
+        <Typography variant="h5">Kutsu hoitaja</Typography>
+        <TextField
+          style={{ background: 'white' }}
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Sähköposti"
+          autoComplete="email"
+          autoFocus
+          value={email}
+          onChange={handleEmailChange}
+          error={showEmailError}
+          helperText={showEmailError ? 'Anna kelvollinen sähköpostiosoite' : ''}
+        />
+        
+        <Typography variant="body1">
+          Hyväksyessäni otan vastuun toisen henkilön toiminnasta ja <br />
+          <span style={{ fontWeight: 'bold' }}>valtuutan hänet seuraavin oikeuksin:</span>
+        </Typography>
 
-        // Näytä virheilmoitus, jos sähköposti ei ole kelvollinen
-        setShowEmailError(!emailPattern.test(newEmail));
-    };
+        <Grid style={{ display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'space-between', margin: 20 }}>
+          <Grid item sx={{ display: { xs: 'block' } }}></Grid>
+          <Grid item style={{ display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
+            <Typography variant="body1" style={{ margin: 3, display: 'flex', alignItems: 'center' }}>
+              <EditNoteIcon style={{ marginRight: 10, color: '#1976d2'}} /> Muokata profiileitani
+            </Typography>
+            <Typography variant="body1" style={{ margin: 3, display: 'flex', alignItems: 'center' }}>
+              <PersonRemoveIcon style={{ marginRight: 10, color: '#d32f2f'}} /> Poistaa profiileitani
+            </Typography>
+            <Typography variant="body1" style={{ margin: 3, display: 'flex', alignItems: 'center' }}>
+              <PersonAddAlt1Icon style={{ marginRight: 10, color: '#39C4A3'}} /> Lisätä profiileita tililleni
+            </Typography>
+          </Grid>
+          <Grid item sx={{ display: { xs: 'block' } }}></Grid>
+        </Grid>
+          
+        <Grid 
+          container
+          direction="row" 
+          justifyContent="space-between" 
+          alignItems="center"
+          style={{ paddingLeft: 10, paddingRight: 7 }}
+        >
+          <Grid item>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={acceptTerms}
+                  onChange={handleAcceptTermsChange}
+                  name="acceptTerms"
+                  style={{display: 'flex', alignItems: "center"}}
+                />
+              }
+              label={
+                <Typography variant="body2" style={{ color: 'black' }}>
+                  Olen tietoinen oikeuksista ja ehdoista sekä hyväksyn ne.
+                </Typography>
+              }
+            />
+          </Grid>
+        </Grid>
 
-    const handleAcceptTermsChange = () => {
-        setAcceptTerms(!acceptTerms);
+        {showTermsError && (
+          <Alert severity="error">
+            <Typography variant="inherit" component="span">
+              Sinun on hyväksyttävä ehdot, ennen kuin voit kutsua hoitajan.
+            </Typography>
+          </Alert>
+        )}
 
-        // Piilota virheilmoitus, kun käyttäjä hyväksyy ehdot
-        if (showTermsError) {
-            setShowTermsError(false);
-        }
-    };
+        {!isAlertClosed && inviteResult && inviteResult.includes('200') && (
+          <Alert severity="success" onClose={() => setIsAlertClosed(true)}>
+            <AlertTitle>{`${emailForAlert} kutsuttu hoitajaksi onnistuneesti!`}</AlertTitle>
+              Voit halutessasi kutsua toisen henkilön.
+          </Alert>
+        )}
 
-    const handleInviteClick = () => {
-        if (!acceptTerms) {
-            // Näytä virheilmoitus, jos ehdot eivät ole hyväksytty
-            setShowTermsError(true);
-            return;
-        }
+        {!isAlertClosed && inviteResult && inviteResult.includes('500') && (
+          <Alert severity="error" onClose={() => setIsAlertClosed(true)}>
+            <AlertTitle>No höh, jokin meni pieleen.</AlertTitle>
+              Kutsu hoitajaksi epäonnistui.
+          </Alert>
+        )}
 
-        if (!isEmailValid) {
-            setShowEmailError(true);
-            return;
-        }
+        {!isAlertClosed && inviteResult && inviteResult.includes('409') && (
+          <Alert severity="info" onClose={() => setIsAlertClosed(true)}>
+            <AlertTitle>Hups!</AlertTitle>
+              Käyttäjä on jo kutsuttu.
+          </Alert>
+        )}
 
-        // Kutsu hoitajaa toiminnallisuus tässä
-        console.log('Kutsu hoitaja sähköpostilla:', email);
-    };
-
-    return (
-        <div className="profile-container" style={{ textAlign: 'center' }}>
-            <div className="profile-modification">
-                <form>
-                    <div className="input-group shareProfile" style={{ marginBottom: '10px' }}>
-                        <Typography variant="h5" component="h1" gutterBottom>
-                            Kutsu hoitaja
-                        </Typography>
-
-                        <TextField
-                            style={{ background: "white" }}
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            label="Sähköposti"
-                            autoComplete="email"
-                            autoFocus
-                            value={email}
-                            onChange={handleEmailChange}
-                            error={showEmailError}
-                            helperText={showEmailError ? 'Anna kelvollinen sähköpostiosoite' : ''}
-                        />
-                    </div>
-
-                    <div className="input-group shareProfile">
-                        <Typography>
-                            Hyväksyessäni otan vastuun toisen henkilön toiminnasta ja <br />
-                            <span style={{ fontWeight: 'bold' }}>valtuutan hänet seuraavin oikeuksin:</span>
-                        </Typography>
-
-                    <div className="input-group shareProfile" style={{display: 'flex', justifyContent: 'center'}}>
-                        <ul style={{ listStyle: 'none', paddingInlineStart: '0' }}>
-                            <li style={{ display: 'flex', alignItems: 'center', margin: '8px 0px' }}>
-                                <EditNoteIcon style={{ color: '#1976d2',  marginRight: '8px' }} /> Muokata minun profiileitani.
-                            </li>
-                            <li style={{ display: 'flex', alignItems: 'center', margin: '8px 0px' }}>
-                                <PersonRemoveIcon style={{ color: '#d32f2f',  marginRight: '8px' }} /> Poistaa minun profiileitani.
-                            </li>
-                            <li style={{ display: 'flex', alignItems: 'center', margin: '8px 0px' }}>
-                                <PersonAddAlt1Icon style={{ color: '#39C4A3',  marginRight: '8px' }} /> Lisää minulle profiileita.
-                            </li>
-                        </ul>
-                    </div>
-
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={acceptTerms}
-                                    onChange={handleAcceptTermsChange}
-                                    name="acceptTerms"
-                                    color="primary"
-                                />
-                            }
-                            label="Olen tietoinen oikeuksista ja ehdoista sekä hyväksyn ne."
-                        />
-                        {showTermsError && (
-                            <Alert
-                                severity="error">
-                                <Typography variant="inherit" component="span">
-                                    Sinun on hyväksyttävä ehdot, ennen kuin voit kutsua hoitajan.
-                                </Typography>
-                            </Alert>
-                        )}
-                    </div>
-
-                    <Box>
-                        <div className="input-group shareProfile">
-                            <Tooltip title="Takaisin profiiliin">
-                                <Button variant="contained" className="custom-button editProfile" onClick={() => navigate('/profile')}>
-                                    <ArrowBackIosIcon /> Takaisin
-                                </Button>
-                            </Tooltip>
-
-                            <Tooltip title="Kutsu hoitaja sähköpostilla">
-                                <Button
-                                    variant="contained"
-                                    className="custom-button"
-                                    onClick={handleInviteClick}
-                                >
-                                    Kutsu hoitaja
-                                </Button>
-                            </Tooltip>
-                        </div>
-                    </Box>
-                </form>
-            </div>
-        </div>
-    );
+        {!isAlertClosed && inviteResult && inviteResult.includes('404') && (
+          <Alert severity="warning" onClose={() => setIsAlertClosed(true)}>
+            <AlertTitle>No höh, jokin meni pieleen.</AlertTitle>
+              Kutsuttava käyttäjä ei ole olemassa, tarkista sähköpostiosoite.
+          </Alert>
+        )}
+        
+        <Tooltip title="Kutsu hoitaja sähköpostilla">
+          <Button
+            variant="contained"
+            className="custom-button"
+            onClick={handleInviteClick}
+          >
+            Kutsu hoitaja
+          </Button>
+        </Tooltip>
+      </form>
+      </Container>
+    </ThemeProvider>
+  );
 }

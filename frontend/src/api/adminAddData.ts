@@ -1,14 +1,15 @@
 import axios from "axios";
-import { AddDataToDatabase } from "../types/types";
+import { FinalDataToBackend } from "../types/types";
 
 // TODO: Move to env variables etc:
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
 
 // Backend needs: userId, idToken, data
 
 export const adminAddData = async (
   idToken: string,
-  submitData: AddDataToDatabase
+  submitData: FinalDataToBackend
 ) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/admin`, submitData, {

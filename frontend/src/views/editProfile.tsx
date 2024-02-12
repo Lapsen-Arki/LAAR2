@@ -1,25 +1,30 @@
 import React from "react";
 import { useContext, useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import '../styles/editProfile.css';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import AnimalAvatarWidget from '../components/AnimalAvatarWidget.tsx';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ReturnBtn from '../components/returnBtn.tsx';
 import {
   Avatar,
   Switch,
   Button,
   Alert,
-  Box,
   Tooltip,
+  Container,
+  Typography,
+  TextField,
 } from "@mui/material";
 
-import PleaseLoginModal from "../components/pleaseLoginModal";
+import { ThemeProvider } from "@mui/material/styles";
+import { formTheme } from '../components/Layout/formThemeMUI';
+
+import PleaseLoginModal from "../components/modals/pleaseLoginModal.tsx";
 import { TokenContext } from "../contexts/tokenContext";
-import { editProfile } from '../api/editProfilePost.ts';
-import { getProfileById } from '../api/getProfiles';
+import { createChildProfile } from '../api/childProfile/createChildProfile.ts';
+import { editChildProfile } from '../api/childProfile/editChildProfile.ts';
+import { getChildProfileById } from '../api/childProfile/getChildProfileById.ts';
 
 interface ChildProfile {
   id: string;
@@ -47,25 +52,43 @@ const EditProfile = () => {
   console.log(id)
   const profileId = id || '';
 
+  // Etsii ja palauttaa lapsiprofiilin Session Storagesta annetun ID:n perusteella.
+  // Jos profiilia ei löydy, palauttaa null.
+  const findProfileInSessionStorage = (profileId: string): ChildProfile | null => {
+    const storedProfilesJson = sessionStorage.getItem('childProfiles');
+    if (!storedProfilesJson) return null;
+    
+    const storedProfiles: ChildProfile[] = JSON.parse(storedProfilesJson);
+    return storedProfiles.find(p => p.id === profileId) || null;
+  };
+
   useEffect(() => {
-    // Haetaan valitun profiilin tiedot, kun komponentti latautuu
     const fetchProfileData = async () => {
       try {
         if (profileId) {
           console.log('Haetaan profiilin tiedot ID:llä:', profileId);
-          const profileData: ChildProfile | { error: Error } = await getProfileById(profileId, idToken);
-          if ('childName' in profileData) {
-            console.log('Haettu profiilin tiedot:', profileData);
-            setChildName(profileData.childName);
-            
-            // Muunnetaan saatu päivämäärä dayjs-objektiksi
-            const birthdateFromApi = profileData.birthdate ? dayjs(profileData.birthdate, "YYYY-MM-DD") : null;
-            setBirthdate(birthdateFromApi);
 
-            setSelectedAvatar(profileData.avatar);
-            setAccessRights(profileData.accessRights);
+          // Ensin yritetään löytää profiili Session Storagesta
+          const profileDataFromStorage = findProfileInSessionStorage(profileId);
+          
+          if (profileDataFromStorage) {
+            console.log('Käytetään Session Storagessa olevaa profiilia:', profileDataFromStorage);
+            setChildName(profileDataFromStorage.childName);
+            setBirthdate(profileDataFromStorage.birthdate ? dayjs(profileDataFromStorage.birthdate, "YYYY-MM-DD") : null);
+            setSelectedAvatar(profileDataFromStorage.avatar);
+            setAccessRights(profileDataFromStorage.accessRights);
           } else {
-            console.error('Virheellinen profiilidata', profileData.error);
+            // Jos ei löydy Session Storagesta, haetaan palvelimelta
+            const profileData: ChildProfile | { error: Error } = await getChildProfileById(profileId, idToken);
+            if ('childName' in profileData) {
+              console.log('Haettu profiilin tiedot:', profileData);
+              setChildName(profileData.childName);
+              setBirthdate(profileData.birthdate ? dayjs(profileData.birthdate, "YYYY-MM-DD") : null);
+              setSelectedAvatar(profileData.avatar);
+              setAccessRights(profileData.accessRights);
+            } else {
+              console.error('Virheellinen profiilidata', profileData.error);
+            }
           }
         }
       } catch (error) {
@@ -101,18 +124,23 @@ const EditProfile = () => {
     else setBirthdateError('');
 
     if (childName && birthdate) {
-      try {
-        const userData = {
-          id: profileId,
-          childName,
-          birthdate: dayjs(birthdate).format("YYYY-MM-DD"), // Muunna takaisin merkkijonoksi tallennusta varten
-          avatar: selectedAvatar || '/broken-image.jpg',
-          accessRights,
-          creatorId: idToken,
-        };
+      const userData = {
+        id: profileId,
+        childName,
+        birthdate: dayjs(birthdate).format("YYYY-MM-DD"),
+        avatar: selectedAvatar || '/broken-image.jpg',
+        accessRights,
+        creatorId: idToken,
+      };
 
-        // Luo uusi profiili tai päivitä olemassa oleva
-        await editProfile(userData, idToken);
+      try {
+        if (profileId) {
+          // Tarkista, onko ID määritelty
+          await editChildProfile(userData, idToken);
+        } else {
+          // Jos ID:tä ei ole määritelty, luo uusi profiili
+          await createChildProfile(userData, idToken);
+        }
         console.log('Profiili tallennettu onnistuneesti:', userData);
         navigate('/profile');
       } catch (error) {
@@ -123,83 +151,86 @@ const EditProfile = () => {
     }
   };
 
-  const handleNavigateToProfile = () => {
-    navigate('/profile');
-  };
-
   return (
-    <div className="profile-container">
-      {/* Lomakkeen sisältö */}
-      <div className="profile-modification">
-        <form>
-          {/* Lapsen nimi -kenttä */}
-          <div className="input-group editProfile">
-            <h3>Lapsen nimi tai lempinimi</h3>
-            <input type="text" id="childName" value={childName} onChange={(e) => setChildName(e.target.value)} maxLength={14} />
-            {nameError && <Alert severity="error">{nameError}</Alert>}
-          </div>
+    <ThemeProvider theme={formTheme}>
+    <Container
+      component="main"
+      maxWidth="sm"
+      sx={{ display: 'flex', textAlign: 'center', marginTop: { md: 0 } }}
+    >
+      <ReturnBtn />
+      <form>
+        {/* Lapsen nimi -kenttä */}
+        <Typography variant="h5">Tallenna lapsen tiedot</Typography>
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          label="Lapsen nimi tai lempinimi"
+          autoFocus
+          //maxLength={14}
+          id="childName"
+          value={childName} 
+          onChange={(e) => 
+            setChildName(e.target.value)}
+        />
+          {nameError && <Alert severity="error">{nameError}</Alert>}
 
-          {/* Syntymäaika -kenttä */}
-          <div className="input-group editProfile">
-            <h3>Lapsen syntymäaika</h3>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker value={birthdate} onChange={(newDate) => setBirthdate(newDate ? dayjs(newDate) : null)} />
-            </LocalizationProvider>
-            {birthdateError && <Alert severity="error">{birthdateError}</Alert>}
-          </div>
+        {/* Syntymäaika -kenttä */}
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker value={birthdate} onChange={(newDate) => setBirthdate(newDate ? dayjs(newDate) : null)} />
+        </LocalizationProvider>
+          {birthdateError && <Alert severity="error">{birthdateError}</Alert>}
+    
+        {/* Avatarin valinta */}
+        {showAnimalAvatar ? (
+          <AnimalAvatarWidget onSelect={handleAvatarSelect} />
+        ) : selectedAvatar ? (
+          <Avatar
+            src={selectedAvatar}
+            onClick={handleShowAnimalAvatar}
+            sx={{
+              borderRadius: '50%',
+              backgroundColor: '#A68477',
+              margin: 'auto',
+              marginTop: '20px',
+            }}
+          />
+        ) : (
+          <Avatar
+            src="/broken-image.jpg"
+            onClick={handleShowAnimalAvatar}
+            sx={{
+              borderRadius: '50%',
+              backgroundColor: '#A68477',
+              margin: 'auto',
+              marginTop: '20px',
+            }}
+          />
+        )}
+        {showAnimalAvatar ? null : (
+          <Tooltip title="Valitse kuva">
+            <Button variant="text" style={{ marginTop: 5, marginBottom: 20 }} onClick={handleShowAnimalAvatar}>
+              Valitse avatar
+            </Button>
+          </Tooltip>
+        )}
 
-          {/* Avatarin valinta */}
-          <div className="input-group editProfile editProfileAvatar">
-            <h3>Valitse lapselle avatar</h3>
-            {showAnimalAvatar ? (
-              <AnimalAvatarWidget onSelect={handleAvatarSelect} />
-            ) : selectedAvatar ? (
-              <Avatar src={selectedAvatar}
-              sx={{
-                borderRadius: '50%',
-                backgroundColor: '#90c2c5',
-              }} />
-            ) : (
-              <Avatar src="/broken-image.jpg"
-              sx={{
-                borderRadius: '50%',
-                backgroundColor: '#90c2c5',
-              }} />
-            )}
-            {showAnimalAvatar ? null : (
-              <Tooltip title="Valitse kuva">
-              <Button variant="contained" className="custom-button" onClick={handleShowAnimalAvatar}>Valitse kuva</Button>
-              </Tooltip>
-            )}
-          </div>
 
-          {/* Pääsyoikeudet -kytkin */}
-          <div className="input-group editProfile">
-            <h5>Tarvitsetko pääsyoikeudet myös muille ihmisille?</h5>
-            <div className="switch-group">
-              <span>Ei</span>
-              <Switch checked={accessRights} onChange={() => setAccessRights(!accessRights)} />
-              <span>Kyllä</span>
-            </div>
-          </div>
+        {/* Pääsyoikeudet -kytkin */}
+        <Typography variant="subtitle1" style={{ marginBottom: 0 }}>Näytä kortti lapsen hoitajille</Typography>
+        <span><Typography variant="subtitle2"sx={{ display: { xs: 'inline-flex' } }} >Piilota</Typography></span>
+          <Switch sx={{ display: { xs: 'inline-flex' } }} checked={accessRights} onChange={() => setAccessRights(!accessRights)} />
+        <span><Typography variant="subtitle2" sx={{ display: { xs: 'inline-flex' } }} >Näytä</Typography></span>
 
-          {/* Tallennus- ja paluupainikkeet */}
-          <Box sx={{ marginTop: 5 }}>
-            <div className="input-group editProfile">
-            <Tooltip title="Takaisin profiiliin">
-              <Button variant="contained" className="custom-button editProfile" onClick={handleNavigateToProfile}>
-                <ArrowBackIosIcon /> Takaisin
-              </Button>
-              </Tooltip>
-
-            <Tooltip title="Tallenna profiili">
-              <Button variant="contained" className="custom-button" onClick={handleSave}>Tallenna</Button>
-              </Tooltip>
-            </div>
-          </Box>
-        </form>
-      </div>
-    </div>
+        {/* Tallennus- ja paluupainikkeet */}
+        <Tooltip title="Tallenna profiili">
+          <Button variant="contained" onClick={handleSave}>Tallenna</Button>
+        </Tooltip>
+    </form>
+  </Container>
+  </ThemeProvider>
   );
 };
 

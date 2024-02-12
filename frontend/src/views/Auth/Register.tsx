@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Container,
   TextField,
@@ -8,7 +9,8 @@ import {
   FormControlLabel,
   Box,
 } from "@mui/material";
-import React from "react";
+import { ThemeProvider } from "@mui/material/styles";
+import { formTheme } from '../../components/Layout/formThemeMUI';
 import { registerUser } from "../../api/registerPost";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { RegisterData } from "../../types/types";
@@ -89,158 +91,134 @@ export default function Register() {
     }
   };
   return (
-    <Container component="main" maxWidth="xs">
-      <Typography
-        sx={{
-          marginBottom: 3,
-          marginTop: 10,
-        }}
-        component="h1"
-        variant="h5"
+    <ThemeProvider theme={formTheme}>
+      <Container
+        component="main"
+        maxWidth="sm"
       >
-        Rekisteröityminen
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <Typography variant="subtitle1">Sähköpostiosoite:</Typography>
-        <TextField
-          sx={{
-            marginTop: 0,
-            background: "white",
-          }}
-          name="email"
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          label="Sähköposti"
-          autoComplete="email"
-          autoFocus
-          value={formData.email}
-          onChange={handleChange}
-        />
-        <Typography variant="subtitle1">Nimi:</Typography>
-        <TextField
-          sx={{
-            marginTop: 0,
-            background: "white",
-          }}
-          name="name"
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          label="Nimi"
-          autoComplete="name"
-          value={formData.name}
-          onChange={handleChange}
-        />
-        <Typography variant="subtitle1">Salasana:</Typography>
-        <TextField
-          sx={{
-            marginTop: 0,
-            background: "white",
-          }}
-          name="password"
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          label="Salasana"
-          autoComplete="password"
-          type="password"
-          value={formData.password}
-          onChange={handleChange}
-        />
-        <Typography variant="subtitle1">Salasana uudelleen:</Typography>
-        <TextField
-          sx={{
-            marginTop: 0,
-            marginBottom: 2,
-            background: "white",
-          }}
-          name="confirmPassword"
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          label="Vahvista salasana"
-          autoComplete="password"
-          type="password"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-        />
-
-        <Typography>Vahvista maksukorttisi:</Typography>
-        <Box
-          sx={{
-            background: "white",
-            padding: 2,
-            border: isFocused ? 2 : 1,
-            borderRadius: "4px",
-            borderColor: isFocused ? "#1a73e8" : "rgba(0, 0, 0, 0.23)", // Google blue when focused
-          }}
-        >
-          <CardElement
-            options={CARD_ELEMENT_STYLES}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+        {/*<ReturnBtn />*/}
+        <Typography variant="h4" style={{ textAlign: 'center' }} >Uusi asiakas</Typography>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            name="email"
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Sähköposti"
+            autoComplete="email"
+            autoFocus
+            value={formData.email}
+            onChange={handleChange}
           />
-        </Box>
-        <Typography
-          variant="subtitle1"
-          sx={{
-            marginBottom: 2,
-            a: {
-              color: "#298E77",
-            },
-          }}
-        >
-          <b>Emme veloita sinua vielä tässä kohtaa.</b> Turvallisen maksukortin
-          vahvistuksen käsittelee <a href="https://stripe.com/en-fi">Stripe</a>.
-        </Typography>
+          <TextField
+            name="name"
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Nimi"
+            autoComplete="name"
+            value={formData.name}
+            onChange={handleChange}
+          />
+          <TextField
+            name="password"
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Salasana"
+            autoComplete="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+          />
+          <TextField
+            name="confirmPassword"
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Vahvista salasana"
+            autoComplete="password"
+            type="password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+          />
 
-        <Typography
-          sx={{
-            marginBottom: 2,
-            marginTop: 2,
-          }}
-          variant="body1"
-        >
-          Rekisteröitymällä aloitan 14 vrk ilmaisen kokeulujakson ja palvelun
-          hinta on tämän jälkeen 6,99€/kk. Tilauksen voit peruttaa koska tahansa
-          päättymään maksukauden loppuun.
-        </Typography>
-        {/* Repeat for other fields like password, confirm password, etc. */}
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          sx={{ backgroundColor: "#39C4A3", color: "#000000" }}
-        >
-          Rekisteröidy
-        </Button>
-        <Typography sx={{ color: "red", marginBottom: 2, marginTop: 2 }}>
-          {errorMessage}
-        </Typography>
-        <Typography sx={{ color: "green", marginBottom: 2, marginTop: 2 }}>
-          {successMessage}
-        </Typography>
-        <FormControlLabel
-          sx={{ marginTop: 2 }}
-          control={
-            <Checkbox
-              checked={formData.accept}
-              onChange={handleCheckChange}
-              name="accept"
+          <Typography variant="body1">Vahvista maksukorttisi:</Typography>
+          <Box
+            sx={{
+              background: "white",
+              padding: 2,
+              margin: '7px',
+              width: 218, 
+              maxWidth: '90%',
+              border: isFocused ? 1 : 1,
+              borderRadius: "5px",
+              borderColor: isFocused ? "#000000" : "rgba(0, 0, 0, 0.23)",
+              '&:hover': {
+                borderColor: '#000000',
+              },
+              '@media (min-width:400px)': {
+                width: '82%'
+              },
+              '@media (min-width:576px)': {
+                width: 335,
+              },
+            }}
+          >
+            <CardElement
+              options={CARD_ELEMENT_STYLES}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
             />
-          }
-          label="Hyväksyn tietosuojaselosteen ja palvelun käyttöehdot"
-        />
-        <Link href="/login" variant="body2" sx={{ color: "#298E77" }}>
-          <p>Onko sinulla valmiiksi tili? Kirjaudu tästä!</p>
-        </Link>
-      </form>
-    </Container>
+          </Box>
+          <Typography
+            variant="body1"
+          >
+            <b>Emme veloita sinua vielä tässä kohtaa.</b> Turvallisen maksukortin
+            vahvistuksen käsittelee <Link href="https://stripe.com/en-fi" target="_blank">Stripe</Link>.
+          </Typography>
+          
+
+          <Typography variant="body1">
+            Rekisteröitymällä aloitan 14 vrk ilmaisen kokeulujakson ja palvelun
+            hinta on tämän jälkeen 6,99€/kk. Tilauksen voit peruttaa koska tahansa
+            päättymään maksukauden loppuun.
+          </Typography>
+          {/* Repeat for other fields like password, confirm password, etc. */}
+          <FormControlLabel
+            sx={{ marginTop: 2 }}
+            control={
+              <Checkbox
+                checked={formData.accept}
+                onChange={handleCheckChange}
+                name="accept"
+              />
+            }
+            label="Hyväksyn tietosuojaselosteen ja palvelun käyttöehdot"
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+          >
+            Rekisteröidy
+          </Button>
+          <Typography sx={{ color: "red", marginBottom: 2, marginTop: 2 }}>
+            {errorMessage}
+          </Typography>
+          <Typography sx={{ color: "green", marginBottom: 2, marginTop: 2 }}>
+            {successMessage}
+          </Typography>
+          
+          <Link href="/login" variant="body2">
+            Onko sinulla valmiiksi tili? Kirjaudu tästä!
+          </Link>
+        </form>
+      </Container>
+    </ThemeProvider>
   );
 }
