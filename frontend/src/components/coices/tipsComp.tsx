@@ -1,29 +1,39 @@
 import { Typography } from "@mui/material";
+import { RecommendationsType } from "../../types/types";
+import useGetRecommData from "../../customHooks/useGetRecommData";
 
-// Fetching here the real data or taking it form sessionStorage/context
-/* const recommendations: RecommendationsType[] = [
-  {
-    id: 1,
-    title: "Juoma",
-    menuItems: { maito: 0, mehu: 14, kiisseli: 1, juusto: 5 },
-  },
-  { id: 2, title: "Leipä", menuItems: { näkkileipä: 12, hapankorppu: 14 } },
-  { id: 3, title: "Kasvis", menuItems: { kurkku: 1, tomaatti: 1 } },
-]; */
+// Now there is 3 types of tips: "päiväunet", "iltatoimet", "nukkuminen".
+// More tips can be added by changing the choices page and adding more advise types.
+// This component renders all advises with matching adviseType
 
-export default function TipsComp({
-  renderIdentifier,
-}: {
-  renderIdentifier: string;
-}) {
-  renderIdentifier = "tätä tarvitaan oikeiden vinkkien renderöintiin";
-  console.log("renderIdentifier: ", renderIdentifier);
+// EXTRA FEATURE: make feature to hide and show tips.
 
+export default function TipsComp({ adviseType }: { adviseType: string }) {
+  const fetchType = "vinkki";
+
+  const recommendations: RecommendationsType[] = useGetRecommData(fetchType);
   return (
-    <>
-      <h1>Vinkkejä</h1>
-      <Typography>Lapsen ikään ja aktiviteettiin sopivia vinkkejä:</Typography>
+    <div>
+      {recommendations.map((recommendation, index) => {
+        // Check advise type here
+        if (recommendation.type !== adviseType) {
+          return;
+        }
+        return (
+          <div key={index}>
+            <Typography variant="h4">{recommendation.title}</Typography>
+
+            <Typography
+              component="pre"
+              style={{ whiteSpace: "pre-wrap", marginBottom: 20 }}
+            >
+              {recommendation.content[index]}
+            </Typography>
+          </div>
+        );
+      })}
+
       <hr />
-    </>
+    </div>
   );
 }

@@ -1,5 +1,6 @@
 import axios from "axios";
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
 
 const startSubscription = async (idToken : string | null, userId : string | undefined) => {
   try {
@@ -8,7 +9,7 @@ const startSubscription = async (idToken : string | null, userId : string | unde
       {},
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `Bearer ${idToken}`,
         },
       }

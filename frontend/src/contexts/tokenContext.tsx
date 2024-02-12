@@ -1,4 +1,10 @@
-import { createContext, useState, ReactNode, useEffect } from "react";
+import {
+  createContext,
+  useState,
+  ReactNode,
+  useEffect,
+  useCallback,
+} from "react";
 
 import { getAuth, signOut } from "firebase/auth";
 import { jwtAuth } from "../api/jwtAuth";
@@ -28,28 +34,7 @@ function TokenProvider({ children }: { children: ReactNode }) {
     setIsLoggedIn(idToken !== null);
   }, [idToken]);
 
-  // Validatin JWT token automaticly every 15 minutes:
-  useEffect(() => {
-    const checkSessionInterval = setInterval(async () => {
-      console.log("Running Session check");
-
-      if (idToken) {
-        const result = await jwtAuth(idToken);
-        if (result === "error" || result === "emailNotVerified") {
-          signOutMethod();
-        }
-      } else {
-        signOutMethod();
-      }
-    }, 900000); // 900000 milliseconds = 15 minutes
-
-    // Cleanup
-    return () => {
-      clearInterval(checkSessionInterval);
-    };
-  }, []); // <- DO NOT ADD idToken HERE, FUCK YOU ESLINT
-
-  const signOutMethod = () => {
+  const signOutMethod = useCallback(() => {
     const auth = getAuth();
     signOut(auth)
       .then(() => {
@@ -63,7 +48,32 @@ function TokenProvider({ children }: { children: ReactNode }) {
         // An error happened.
         console.error("Signout failed: ", error);
       });
-  };
+  }, [navigate]); // Dependencies of useCallback
+
+  // Validatin JWT token automaticly every 15 minutes:
+  useEffect(() => {
+    if (isLoggedIn) {
+      const checkSessionInterval = setInterval(async () => {
+        console.log("Running Session check");
+
+        if (idToken) {
+          const result = await jwtAuth(idToken);
+          if (result === "error" || result === "emailNotVerified") {
+            signOutMethod();
+          }
+        } else {
+          // This is correct: otherwise session would presist if idToken has not
+          // been found and validated.
+          signOutMethod();
+        }
+      }, 300000); // 300000 milliseconds = 5 minutes
+
+      // Cleanup
+      return () => {
+        clearInterval(checkSessionInterval);
+      };
+    }
+  }, [idToken, isLoggedIn, signOutMethod]);
 
   return (
     <TokenContext.Provider

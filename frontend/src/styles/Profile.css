@@ -1,3 +1,8 @@
+.profiles {
+  display: flex;
+  flex-direction: row;
+}
+
 .profile-container {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin: 0 auto;
@@ -22,57 +27,53 @@
 }
 
 
-/* Lasten profiilit */
+/* Korttien yleiset tyylit */
+.cards-wrap {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+}
 
-.profiles {
-    display: flex;
-    flex-direction: row;
-  }
+.children-card {
+  width: 304px;
+  height: 111px;
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+  
+}
+
+.card-avatar {
+  width: 40;
+  height: 40;
+  margin: 10px;
+  flex-shrink: 0;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+
+.card-icons {
+  flex: 0.2;
+}
+
+/* Lasten profiilit */
   
   .children {
     display: flex;
     flex-direction: column;
   }
 
-  .cards-wrap {
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    margin-right: 15px;
-  }
-
-  .children-card {
-    width: 304px;
-    height: 111px;
-    display: flex;
-    align-items: center;
-    margin-right: 5px;
-    
-  }
-
-  .card-avatar {
-    width: 40;
-    height: 40;
-    margin: 10px;
-    flex-shrink: 0;
-  }
-
-  .card-content {
-    display: flex;
-    flex-direction: column;
-    flex: 1 0 auto;
-  }
-
-  .card-icons {
-    flex: 0.2;
-  }
-
   /* Hoitajien profiilit */
-
+/*
   .Carer {
-    margin-right: 15px;
+    margin-left: 15px;
   }
-
+/*
 
   /* Responsiivisuus mobiilille */
   @media (max-width: 760px) {

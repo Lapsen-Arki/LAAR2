@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { useState, useEffect } from 'react';
-import '../styles/Meals.css';
+import '../styles/oldStyles/Meals.css';
 // import { aamupala, perhe } from '../services/helper';
 
 import {

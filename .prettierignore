@@ -1,0 +1,7 @@
+*.md
+*.json
+*.html
+*.css
+build
+coverage
+dist

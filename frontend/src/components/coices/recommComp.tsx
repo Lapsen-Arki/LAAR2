@@ -3,16 +3,17 @@ import { RecommendationsType } from "../../types/types";
 import { useState } from "react";
 
 // Getting real child data somewhere:
-const childAge = 12;
 
 export default function RecommComp({
   recommendations,
   multipleSelections,
   mealType = null,
+  childAge,
 }: {
   recommendations: RecommendationsType[];
   multipleSelections: boolean;
   mealType?: string | null;
+  childAge: number;
 }) {
   const [selectedBox, setSelectedBox] = useState<string | string[]>("");
 
@@ -36,29 +37,29 @@ export default function RecommComp({
 
   return (
     <div>
-      {recommendations.map((recommendation) => {
+      {recommendations.map((recommendation, index) => {
         if (mealType) {
           if (
-            recommendation.mealType !== mealType &&
-            recommendation.mealType !== "both"
+            recommendation.type !== mealType &&
+            recommendation.type !== "both"
           ) {
             return;
           }
         }
         return (
-          <div style={{ marginTop: 25 }}>
+          <div key={index} style={{ marginTop: 25 }}>
+            {/* TODO: do not render title if not any recommendations */}
             <Typography variant="h5">{recommendation.title}: </Typography>
             <Grid container spacing={2} sx={{ textAlign: "center" }}>
               {/* Iterate trough all the recommendations in the object */}
 
-              {Object.entries(recommendation.menuItems).map(
+              {Object.entries(recommendation.content).map(
                 ([itemName, ageLimit]) => {
                   if (ageLimit <= childAge) {
                     return (
                       <Grid item xs={11} sm={6} md={4} key={itemName}>
                         <Card>
                           <CardActionArea
-                            key={itemName}
                             sx={{
                               padding: 2,
                               minHeight: 80,
