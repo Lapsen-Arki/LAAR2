@@ -18,7 +18,7 @@ const adminPage = async (req: Request, res: Response) => {
     }
 
     // Validate choice
-    const validateTextLength = (text: string) => text.length > 10;
+    const validateTextLength = (text: string) => text.length > 20;
     if (validateTextLength(addDataObject.title)) {
       return res
         .status(400)

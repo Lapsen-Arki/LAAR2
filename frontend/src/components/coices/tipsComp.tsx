@@ -27,7 +27,7 @@ export default function TipsComp({ adviseType }: { adviseType: string }) {
               component="pre"
               style={{ whiteSpace: "pre-wrap", marginBottom: 20 }}
             >
-              {recommendation.content[index]}
+              {recommendation.content[recommendation.title]}
             </Typography>
           </div>
         );
