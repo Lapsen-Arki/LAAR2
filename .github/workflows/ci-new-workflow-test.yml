@@ -1,9 +1,9 @@
-name: Feature pull request actions
+name: Test workflow
 
 on:
-  pull_request:
+  push:
     branches:
-      - dev
+      - feature/KANBAN-165*
 
 jobs:
   build-backend-run-tests:
@@ -51,13 +51,6 @@ jobs:
           node json-to-markdown.js "$title" "$file" "$path"
           echo "::set-output name=file::$file"
         shell: bash
-
-      - name: Comment PR
-        if: success() || failure()
-        uses: thollander/actions-comment-pull-request@v2
-        with:
-          filePath: "utils/results/${{ steps.parse_results.outputs.file }}.md"
-          comment_tag: "backend-test-results"
 
       - name: Run backend
         run: |
@@ -111,13 +104,6 @@ jobs:
           echo "::set-output name=file::$file"
         shell: bash
 
-      - name: Comment PR
-        if: success() || failure()
-        uses: thollander/actions-comment-pull-request@v2
-        with:
-          filePath: "utils/results/${{ steps.parse_results.outputs.file }}.md"
-          comment_tag: "frontend-test-results"
-
       - name: Run frontend
         run: |
           (
@@ -142,13 +128,6 @@ jobs:
           npx prettier . --check &> utils/results/prettier-summary.txt || true
           cd utils
           node prettier-parser.js
-
-      - name: Comment PR
-        if: success() || failure()
-        uses: thollander/actions-comment-pull-request@v2
-        with:
-          filePath: "utils/results/prettier-summary.md"
-          comment_tag: "Prettier check results"
 
       - name: Display results in actions summary
         if: always()
