@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { loadStripe, Stripe } from '@stripe/stripe-js';
+import { Stripe } from '@stripe/stripe-js';
+import { subscriptions } from '@stripe/stripe-api';
 import startSubscription from '../api/startSubscription';
 import cancelSubscription from '../api/cancelSubscription';
 import getSubscription from '../api/getSubscription';
@@ -20,19 +21,22 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Switch from '@mui/material/Switch';
 import '../styles/Subscription.css'
 import { TokenContext } from "../contexts/tokenContext";
 import { UserContext } from "../contexts/userContext";
 import PleaseLoginModal from "../components/modals/pleaseLoginModal";
+import { CardNumberElementComponent } from '@stripe/react-stripe-js';
 
 // Sivu on vielä kesken, keskeneräisiä funktioita kommentoitu pois
+interface SubscriptionData {
+	created : number,
+	current_period_end : number
+}
 
 const SubscriptionManagement: React.FC = () => {
 	const { idToken } = useContext(TokenContext);
 	const { userId } = useContext(UserContext);
-	const [subscription, setSubscription] = useState<string | null>(null);
-	const [stripe, setStripe] = useState<Stripe | null>(null);
+	const [subscription, setSubscription] = useState<SubscriptionData | null>(null);
 	const [openLoginModal, setOpenLoginModal] = React.useState(false);
 
   useEffect(() => {
@@ -42,11 +46,11 @@ const SubscriptionManagement: React.FC = () => {
 		if (userId) {
 			console.log("client - fetching response")
        		const response = await getSubscription(idToken, userId);
-			if (response.status === 200) {
-				// tilaus löytyi
-				setSubscription(response.body);
-				console.log(subscription);
+			setSubscription(response);
+			if (subscription) {
+				console.log("subscription on olemassa")
 			}
+			
 		}
       	} catch (error) {
         	console.error('client - Error statusta haettaessa ');
@@ -63,8 +67,9 @@ const SubscriptionManagement: React.FC = () => {
 
     try {
 	  console.log("client - haetaan session id")
-      const data = await startSubscription(idToken, userId);
-	  console.log("client - sessio haettu")
+      const response = await startSubscription(idToken, userId);
+	  console.log("client - subscription luotu backendissa")
+	  /*
       const stripeInstance = await loadStripe('pk_test_51HqdGcK45umi2LZdJtYVobHqBd8GGJjr0ggqdhGTRNisO9fdkOdHIXc1kH96Tpex7dYyj9VlIEGTv90hiMExVn2S00w1xYoflk');
       setStripe(stripeInstance);
 	  console.log("client - stripe instanssi luotu")
@@ -84,7 +89,23 @@ const SubscriptionManagement: React.FC = () => {
     } catch (error) {
       console.error('Error starting subscription:', error);
     }
+	*/
+	if (response.status === 200) {
+		// tilaus onnistui
+		console.log("tilaus luotu onnistuneesti");
+	}
 
+} catch (error) {
+	console.error('Error starting subscription:', error);
+  }
+}
+
+const formatDate = (timestamp: number) => {
+    return new Date(timestamp * 1000).toLocaleDateString('en-GB', {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    });
   };
 
   const handleCancelSubscription = async () => {
@@ -127,11 +148,11 @@ const SubscriptionManagement: React.FC = () => {
 							<TableBody>
 								<TableRow>
 									<TableCell>Jäsenyys alkanut</TableCell>
-									<TableCell align="right">1.1.2024</TableCell>
+									<TableCell align="right">{formatDate(subscription.created)}</TableCell>
 								</TableRow>
 								<TableRow>
 									<TableCell>Seuraava maksu</TableCell>
-									<TableCell align="right">30.1.2024</TableCell>
+									<TableCell align="right">{formatDate(subscription.current_period_end)}</TableCell>
 								</TableRow>
 								<TableRow sx={{ '&:last-child td': { borderBottom: 'none' } }}>
 									<TableCell>Jäsenyyden hinta</TableCell>

@@ -47,6 +47,81 @@ const startSubscription = async (req: Request, res: Response): Promise<Response<
 		  }
 		}
 
+        const stripeSubscriptionId = userDoc.data()?.stripeSubscriptionId;
+		console.log("backend - asetettu stripesubscriptionid")
+
+		//koodia, mikäli maksukortti tallennetaan stripen sourceen
+		
+		if (!stripeSubscriptionId) {
+/*
+stripe.customers.createSource(
+  userId,
+  { source: userDoc.stripeCardToken },
+  (err: Stripe.Error | null, source: Stripe.cards.ICardSource | Stripe.bankAccounts.IBankAccount | null) => {
+    if (err) {
+      console.error(err);
+      // Handle error
+    } else {
+      console.log('New source added to customer:', source);
+      // Use source.id as needed
+    }
+  }
+);
+*/
+/*
+const tempToken = await stripe.tokens.create({
+	card: {
+	  number: '4242424242424242',
+	  exp_month: '5',
+	  exp_year: '2024',
+	  cvc: '314',
+	},
+  });
+*/
+/*
+const source = await stripe.sources.create({
+  type: 'card',
+  owner: {
+    email: userDoc.data().email,
+  },
+  token: userDoc.data().stripeCardToken,
+});
+*/
+/*
+const customerSource = await stripe.customers.createSource(
+	userDoc.data().stripeCustomerId,
+	{
+	  source: 'tok_fi',
+	}
+  );
+*/
+			console.log("backend - subscriptionia ei ollut olemassa joten luodaan uusi")
+			const subscription = await stripe.subscriptions.create({
+				customer: stripeCustomerId,
+				items: [{ plan: "price_1ObLeAK45umi2LZd5XwwYvam" }],
+		 	 });
+			await userDocRef.update({ stripeSubscriptionId: subscription.id });
+			console.log("subscription id: ", subscription.id)
+			return res.status(200).json({ subscription });
+		} else {
+			console.log("backend - stripesubscriptionid löytyi")
+			const oldSubscription = await stripe.subscriptions.retrieve(stripeSubscriptionId);
+
+
+			if (oldSubscription.status == 'canceled') {
+				console.log("ei ole voimassa kokeilujaksoa")
+				const subscription = await stripe.subscriptions.resume(
+					userDoc.stripeSubscriptionId,
+					{
+					  billing_cycle_anchor: 'now',
+					}
+				  );
+				await userDoc.update({ stripeSubscriptionId });
+				return res.status(200).json({ subscription });
+			}
+		}
+		
+		/*
 		const session = await stripe.checkout.sessions.create({
 			payment_method_types: ['card'],
 			mode: 'subscription',
@@ -60,11 +135,13 @@ const startSubscription = async (req: Request, res: Response): Promise<Response<
 			success_url: 'http://localhost:5173/subscription-success',
 			cancel_url: 'http://localhost:5173/subscription-cancel',
 		});
-		return res.json({ sessionId: session.id });
+		*/
 	} catch (error) {
 		console.error('Error starting subscription:', error);
 		return res.status(500).json({ error: 'Internal Server Error' });
 	  }
+	  console.log("status voi olla joku muu, unpaid tms joten tämä on erikoistapaus?")
+	  return res.status(200).json({ message: "Ota yhteyttä ylläpitoon tilauksen aloittamiseksi." });
 };
 
 const saveSubscription = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
@@ -142,15 +219,16 @@ const getSubscriptionById = async (req: Request, res: Response): Promise<Respons
         }
 
         const stripeSubscriptionId = userDoc.data()?.stripeSubscriptionId;
-		console.log("backend - asetettu stripesubscriotionid")
+		console.log("backend - asetettu stripesubscriptionid")
 
 		if (stripeSubscriptionId) {
 			console.log("backend - stripesubscriptionid löytyi")
 			const subscription = await stripe.subscriptions.retrieve(stripeSubscriptionId);
-			return res.status(200).json({ subscription });
+			const { created, current_period_end } = subscription;
+			return res.status(200).json({ created, current_period_end });
 		} else {
 		console.log("backend - stripesubscriptionid:tä ei löytynyt")
-		return res.status(200).json({ message: "No subscription found" });
+		return res.status(200).json(null);
 		}
     } catch (error) {
         console.error('backend - backendissä tapahtui error:', error);
