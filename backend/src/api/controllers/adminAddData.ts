@@ -1,11 +1,12 @@
-import { FrontendDataObject } from "../../types/types";
+import { FrontendRecommData } from "../../types/types";
 import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
 import { TipContents, contents } from "../../types/types";
+import { FinalRecommData } from "../../types/types";
 
 const adminPage = async (req: Request, res: Response) => {
   try {
-    const addDataObject = req.body as unknown as FrontendDataObject;
+    const addDataObject = req.body as unknown as FrontendRecommData;
 
     const validCategories = ["meal", "activity", "tip"];
     // Validate category:
@@ -69,7 +70,7 @@ const adminPage = async (req: Request, res: Response) => {
       [title]: "Photo Path or link",
     };
 
-    const newData = {
+    const newData: FinalRecommData = {
       category: addDataObject.category,
       type: addDataObject.typeSelect,
       title: addDataObject.title,

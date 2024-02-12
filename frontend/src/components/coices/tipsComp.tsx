@@ -9,7 +9,7 @@ import useGetRecommData from "../../customHooks/useGetRecommData";
 // EXTRA FEATURE: make feature to hide and show tips.
 
 export default function TipsComp({ adviseType }: { adviseType: string }) {
-  const fetchType = "vinkki";
+  const fetchType = "tip";
 
   const recommendations: RecommendationsType[] = useGetRecommData(fetchType);
   return (

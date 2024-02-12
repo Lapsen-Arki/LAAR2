@@ -13,7 +13,7 @@ export interface RegisterData {
 }
 
 // Admin page data adding feature:
-export interface FrontendDataObject {
+export interface FrontendRecommData {
   category: string;
   typeSelect?: string;
   title: string;
@@ -34,7 +34,7 @@ export interface Photos {
   [key: string]: string; // Photo link or filename -> title: string
 }
 
-export interface AddDataToDatabase {
+export interface FinalRecommData {
   category: string;
   type?: string;
   title: string;

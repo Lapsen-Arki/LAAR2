@@ -10,7 +10,7 @@ export default function MealComp({
   mealType: string;
   childAge: number;
 }) {
-  const fetchType = "ateria";
+  const fetchType = "meal";
   const recommendations: RecommendationsType[] = useGetRecommData(fetchType);
 
   // - Button tulos sivulle ja routtaus
