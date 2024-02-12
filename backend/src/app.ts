@@ -9,7 +9,7 @@ const port = process.env.PORT || 3000;
 // Middleware (if needed)
 app.use(
   cors({
-    origin: "http://localhost:5173", // Replace with your frontend's URL
+    origin: process.env.FRONTEND_HOSTNAME || "http://localhost:5173", // Replace with your frontend's URL
   })
 );
 app.use(express.urlencoded({ extended: true }));
@@ -17,6 +17,11 @@ app.use(express.json());
 
 app.use("/api", routers);
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+// Listen only if this file is being run directly (not through tests)
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+}
+
+export default app;

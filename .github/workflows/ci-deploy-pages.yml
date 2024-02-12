@@ -1,0 +1,66 @@
+name: Deploy docs to Github Pages
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  test-coverage-deploy-docs:
+    runs-on: [self-hosted, feature]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            backend/node_modules
+            frontend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('backend/package-lock.json') }}-${{ hashFiles('frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.11.0"
+
+      - name: Set up backend
+        working-directory: backend
+        run: |
+          echo "Installing backend dependencies"
+          npm install
+
+      - name: Run backend tests
+        working-directory: backend
+        run: |
+          echo "Running backend tests"
+          npm run test
+
+      - name: Set up frontend
+        working-directory: frontend
+        run: |
+          echo "Installing frontend dependencies"
+          npm install
+
+      - name: Run frontend tests
+        working-directory: frontend
+        run: |
+          echo "Running frontend tests"
+          npm run test
+
+      - name: Copy backend coverage to docs
+        run: |
+          cd ./backend/coverage/lcov-report && find . -type f | grep -vE "\.(js|ts|tsx)\.html$" | rsync -av --files-from=- . ../../../docs/backendcoverage/
+
+      - name: Copy frontend coverage to docs
+        run: |
+          cd ./frontend/coverage/lcov-report && find . -type f | grep -vE "\.(js|ts|tsx)\.html$" | rsync -av --files-from=- . ../../../docs/frontendcoverage/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs

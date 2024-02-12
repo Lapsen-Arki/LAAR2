@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './Profile.css';
+import '../styles/Profile.css';
 import Switch from '@mui/material/Switch';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';

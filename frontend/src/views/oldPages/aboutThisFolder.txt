@@ -1,0 +1,5 @@
+This folder contains pages:
+
+ - what have been refactored or remade 
+ - pages what are just unused in the current state of the application
+ - testing pages etc
