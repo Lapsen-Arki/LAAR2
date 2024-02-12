@@ -37,7 +37,7 @@ router.post("/auth", checkAuth, (req: Request, res: Response) => {
   res.status(200).json({ message: "Success" });
 });
 router.post("/admin", checkAuth, adminAuth, adminAddData);
-router.get("/getRecommData/:fetch", getRecommData);
+router.get("/getRecommData/:fetchType", getRecommData);
 
 // Profile routes:
 router.post("/createChildProfile", createChildProfile); // Luo uusi profiili käyttäjälle

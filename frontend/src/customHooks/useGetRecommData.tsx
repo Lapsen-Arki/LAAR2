@@ -24,7 +24,7 @@ export default function useGetRecommData(
       if (isLoggedIn) {
         try {
           const response = await axios.get(
-            `${API_BASE_URL}/getRecommData?fetch=${fetchType}`
+            `${API_BASE_URL}/getRecommData/${fetchType}`
           );
           setData(response.data);
         } catch (error) {
