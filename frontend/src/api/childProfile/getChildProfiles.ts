@@ -14,14 +14,12 @@ interface ChildProfile {
 
 const getChildProfiles = async (idToken: string | null) => {
   try {
-    console.log("Haetaan profiileja...");
     let profiles: ChildProfile[] = [];
 
     // Tarkista ensin Session Storage
     const storedProfilesJson = sessionStorage.getItem("childProfiles");
     if (storedProfilesJson) {
       profiles = JSON.parse(storedProfilesJson);
-      console.log("Profiilit haettu Session Storagessa:", profiles);
     } else {
       // Jos ei ole tallennettu Session Storagessa, haetaan tietokannasta
       const config = {
@@ -34,7 +32,6 @@ const getChildProfiles = async (idToken: string | null) => {
         config
       );
       profiles = response.data;
-      console.log("Profiilit haettu onnistuneesti:", profiles);
       // Tallenna profiilit Session Storageen
       sessionStorage.setItem("childProfiles", JSON.stringify(profiles));
     }
