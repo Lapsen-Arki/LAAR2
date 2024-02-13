@@ -14,7 +14,7 @@ import AccountSettings from "./views/AccountSettings";
 import ChoicesPage from "./views/choices";
 import TermsAndPrivacy from "./views/termsAndPrivacy";
 import AboutUs from "./views/aboutUs";
-import Results from "./views/results";
+import MealResults from "./views/mealResults";
 
 // Higher Order Components (HOC):
 import Layout from "./components/Layout/Layout";
@@ -44,7 +44,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<IndexPage />} />
                 <Route path="/choices" element={<ChoicesPage />} />
-                <Route path="/results" element={<Results />} />
+                <Route path="/meal-results" element={<MealResults />} />
                 <Route path="/testing" element={<TestingPage />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />

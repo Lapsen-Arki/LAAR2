@@ -21,7 +21,7 @@ export default function RecommComp({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/results", { state: selectionList });
+    navigate("/meal-results", { state: selectionList });
   };
 
   const selectionHandler = (itemName: string) => {
@@ -102,9 +102,11 @@ export default function RecommComp({
           </div>
         );
       })}
-      <Button onClick={handleClick} sx={{ mt: 5, mb: 5 }} variant="contained">
-        Kokoa Ateria
-      </Button>
+      {mealType && (
+        <Button onClick={handleClick} sx={{ mt: 5, mb: 5 }} variant="contained">
+          Kokoa Ateria
+        </Button>
+      )}
     </div>
   );
 }

@@ -4,13 +4,10 @@ import ReturnBtn from "../components/returnBtn";
 import { useEffect, useState } from "react";
 import { RecommendationsType } from "../types/typesFrontend";
 
-export default function Results() {
+export default function MealResults() {
   const [resultData, setResultData] = useState<RecommendationsType[]>([]);
   const location = useLocation();
   const selectionList = location.state;
-
-  // 2. Filtteröi sieltä jutut selectionListin perusteella ja nappaa oikeat linki sieltä
-  // 3. Rendaa selectioni otsikot ja linkit
 
   useEffect(() => {
     const recommsJSON =
@@ -34,6 +31,8 @@ export default function Results() {
         sx={{ mt: 5, mb: 15, textAlign: "center", justifyContent: "center" }}
       >
         {resultData?.map((result, index) => {
+          console.log(resultData);
+
           return (
             <div key={index}>
               {Object.entries(result.photos || {}).map(([item, link]) => {
