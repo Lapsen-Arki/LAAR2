@@ -1,5 +1,5 @@
 // Makes object including childs name and age
-import { ChildProfile } from "../types/types";
+import { ChildProfile } from "../types/typesFrontend";
 
 // THIS FILE IS:
 // Making object of child name and age in months

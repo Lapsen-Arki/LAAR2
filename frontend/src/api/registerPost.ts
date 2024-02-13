@@ -1,5 +1,5 @@
 import axios from "axios";
-import { RegisterData } from "../types/types";
+import { RegisterData } from "../types/typesFrontend";
 import { Token } from "@stripe/stripe-js";
 
 // TODO: Move to env variables etc:

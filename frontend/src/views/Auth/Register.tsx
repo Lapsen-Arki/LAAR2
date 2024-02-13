@@ -13,7 +13,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from "../../components/Layout/formThemeMUI";
 import { registerUser } from "../../api/registerPost";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
-import { RegisterData } from "../../types/types";
+import { RegisterData } from "../../types/typesFrontend";
 import { useNavigate } from "react-router-dom";
 
 // TODO: 1. Pankkikortin vahvistuksen lisääminen 2. EXTRA: Google ja Facebook kirjautumis vaihtoehdot

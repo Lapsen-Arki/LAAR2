@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
-import { FinalRecommData } from "../../types/types";
+import { FinalRecommData } from "../../types/typesBackend";
 import { QueryDocumentSnapshot } from "firebase-admin/firestore";
 
 export default async function getRecommData(req: Request, res: Response) {

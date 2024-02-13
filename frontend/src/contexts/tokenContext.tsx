@@ -8,7 +8,7 @@ import {
 
 import { getAuth, signOut } from "firebase/auth";
 import { jwtAuth } from "../api/jwtAuth";
-import { TokenContextType } from "../types/types";
+import { TokenContextType } from "../types/typesFrontend";
 import { useNavigate } from "react-router-dom";
 
 // 1. CREATE CONTEXT
