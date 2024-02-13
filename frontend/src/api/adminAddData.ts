@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FinalDataToBackend } from "../types/types";
+import { FinalDataToBackend } from "../types/typesFrontend";
 
 // TODO: Move to env variables etc:
 const API_BASE_URL =

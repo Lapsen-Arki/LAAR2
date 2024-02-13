@@ -1,4 +1,4 @@
-import { RecommendationsType } from "../types/types";
+import { RecommendationsType } from "../types/typesFrontend";
 
 export const activityRecomm: RecommendationsType[] = [
   {

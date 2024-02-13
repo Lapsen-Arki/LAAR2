@@ -21,7 +21,7 @@ export interface FormDataToBackend {
   content: string; // <- This will be saved in a list in the backend
   ageLimit?: number;
   photoLink?: string;
-  photoFileName?: string;
+  photoFile?: File;
 }
 // -->
 export interface FinalDataToBackend {
@@ -31,7 +31,6 @@ export interface FinalDataToBackend {
   content: string; // <- This will be saved in a list in the backend
   ageLimit?: number;
   photoLink?: string;
-  photoFileName?: string;
 }
 
 export type TokenContextType = {

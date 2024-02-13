@@ -7,7 +7,7 @@ import {
 } from "react";
 import { TokenContext } from "./tokenContext";
 import { jwtDecode } from "jwt-decode";
-import { DecodedToken } from "../types/types";
+import { DecodedToken } from "../types/typesFrontend";
 
 type UserContextType = {
   userId: string | undefined;
