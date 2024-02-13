@@ -1,17 +1,11 @@
-import {
-  Card,
-  CardActionArea,
-  CardMedia,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Card, CardMedia, Grid, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import ReturnBtn from "../components/returnBtn";
 import { useEffect, useState } from "react";
 import { RecommendationsType } from "../types/typesFrontend";
 
 export default function Results() {
-  const [resultData, setResultData] = useState<RecommendationsType[]>();
+  const [resultData, setResultData] = useState<RecommendationsType[]>([]);
   const location = useLocation();
   const selectionList = location.state;
 
@@ -42,9 +36,7 @@ export default function Results() {
         {resultData?.map((result, index) => {
           return (
             <div key={index}>
-              {Object.entries(result.photos).map(([item, link]) => {
-                console.log(link);
-
+              {Object.entries(result.photos || {}).map(([item, link]) => {
                 return (
                   <Grid item key={item} sx={{ m: 1 }}>
                     <Typography variant="h5">{item}</Typography>{" "}
