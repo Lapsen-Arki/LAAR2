@@ -56,18 +56,23 @@ const adminPage = async (req: Request, res: Response) => {
     const { title, content, ageLimit } = addDataObject;
 
     let contentObj: TipContents | contents;
+    let contentKey, contentValue;
     if (addDataObject.category !== "tip") {
+      contentKey = content;
+      contentValue = ageLimit;
       contentObj = {
-        [content]: ageLimit || 0,
+        [contentKey]: contentValue || 0,
       };
     } else {
+      contentKey = title;
+      contentValue = content;
       contentObj = {
-        [title]: content,
+        [contentKey]: contentValue,
       };
     }
 
     const photos = {
-      [title]: "Photo Path or link",
+      [title]: [addDataObject.photoFileName, addDataObject.photoLink],
     };
 
     const newData: FinalRecommData = {
@@ -77,8 +82,6 @@ const adminPage = async (req: Request, res: Response) => {
       content: contentObj,
       photos: photos,
     };
-
-    console.log("printing the newData: ", newData);
 
     // Saving data to firebase
     const db = admin.firestore();
@@ -91,23 +94,18 @@ const adminPage = async (req: Request, res: Response) => {
 
     const querySnapshot = await query.get();
 
+    // If doc exsists only content and phots will be updated
     if (!querySnapshot.empty) {
       // Document exists, updating the document
       const docId = querySnapshot.docs[0].id;
 
-      interface Updates {
-        [key: `content.${string}`]: string | number;
-        [key: `photos.${string}`]: string;
-      }
-      const updates: Updates = {};
-
-      const newContentKey = Object.keys(contentObj)[0];
-      const newContentValue: string | number = contentObj[newContentKey];
-      updates[`content.${newContentKey}`] = newContentValue;
-
-      const newPhotoKey = Object.keys(photos)[0];
-      const newPhotoValue = photos[newPhotoKey];
-      updates[`photos.${newPhotoKey}`] = newPhotoValue;
+      const updates = {
+        [`content.${contentKey}`]: contentValue,
+        [`photos.${title}`]: [
+          addDataObject.photoFileName,
+          addDataObject.photoLink,
+        ],
+      };
 
       // Perform the update
       await recommCollection.doc(docId).update(updates);

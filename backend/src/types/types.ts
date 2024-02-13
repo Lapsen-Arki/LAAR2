@@ -31,7 +31,7 @@ export interface TipContents {
 }
 
 export interface Photos {
-  [key: string]: string; // Photo link or filename -> title: string
+  [key: string]: (string | undefined)[]; // Photo link or filename -> title: string
 }
 
 export interface FinalRecommData {
