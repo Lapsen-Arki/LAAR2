@@ -70,16 +70,16 @@ const AdminPage = () => {
   let typeMenuItems;
   if (category) {
     typeMenuItems =
-      category === "ateria"
+      category === "meal"
         ? [
             { value: "small", label: "pieni" },
             { value: "big", label: "iso" },
             { value: "both", label: "molemmat" },
           ]
         : [
-            { value: "päiväunet", label: "päiväunet" },
-            { value: "iltatoimet", label: "iltatoimet" },
-            { value: "nukkuminen", label: "nukkuminen" },
+            { value: "nap", label: "päiväunet" },
+            { value: "bedtime", label: "iltatoimet" },
+            { value: "sleep", label: "nukkuminen" },
           ];
   }
 
@@ -124,13 +124,13 @@ const AdminPage = () => {
             }}
             required
           >
-            <MenuItem value="ateria">ateria</MenuItem>
-            <MenuItem value="aktiviteetti">aktiviteetti</MenuItem>
-            <MenuItem value="vinkki">vinkki</MenuItem>
+            <MenuItem value="meal">ateria</MenuItem>
+            <MenuItem value="activity">aktiviteetti</MenuItem>
+            <MenuItem value="tip">vinkki</MenuItem>
           </Select>
         </FormControl>
         {/*type / identifier: */}
-        {category !== "aktiviteetti" && (
+        {category !== "activity" && (
           <FormControl fullWidth margin="normal">
             <InputLabel id="type-select">Tyyppi</InputLabel>
             <Select
@@ -169,7 +169,7 @@ const AdminPage = () => {
           required
         />
 
-        {category !== "vinkki" ? (
+        {category !== "tip" ? (
           <div>
             <TextField
               sx={{
