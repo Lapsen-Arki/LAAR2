@@ -36,24 +36,8 @@ const deleteCarerProfile = async (req: Request, res: Response): Promise<void> =>
 
     const db = admin.firestore();
     
-    // Käytä collectionGroup-metodia kaikkien childCarers-kokoelman alikokoelmien hakuun
-    const querySnapshot = await db.collectionGroup('childCarers').where('receiverUid', '==', carerId).get();
-
-    // Käy läpi jokainen dokumentti querySnapshotissa
-    querySnapshot.forEach(async (doc: FirebaseFirestore.DocumentSnapshot) => {
-      const carerData = doc.data() as CarerProfile;
-      console.log("Hoitajan data:", carerData);
-
-      const updatedSenderUids: string[] = carerData.receiverUid !== removerId
-        ? carerData.senderUid.filter((uid: string) => uid !== removerId)
-        : [];
-
-      await doc.ref.update({
-        senderUid: updatedSenderUids,
-      });
-
-      console.log("Hoitajan profiili päivitetty:", updatedSenderUids);
-    });
+    // Käytä collection-metodia kaikkien childCarers-kokoelman alikokoelmien hakuun
+    const querySnapshot = await db.collection('childCarers').where('receiverUid', '==', carerId).get();
 
     res.status(200).json({ message: "Hoitajan profiili poistettu onnistuneesti" });
   } catch (error: any) {
@@ -63,3 +47,18 @@ const deleteCarerProfile = async (req: Request, res: Response): Promise<void> =>
 };
 
 export { deleteCarerProfile };
+
+/*
+// Saving data to firebase
+    const db = admin.firestore();
+    const recommCollection = db.collection("recommendations");
+
+    let query = recommCollection
+      .where("category", "==", newData.category)
+      .where("type", "==", newData.type)
+      .where("title", "==", newData.title);
+
+    const querySnapshot = await query.get();
+
+    if (!querySnapshot.empty) {
+*/
