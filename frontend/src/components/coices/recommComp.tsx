@@ -1,5 +1,5 @@
 import { Typography, Grid, Card, CardActionArea } from "@mui/material";
-import { RecommendationsType } from "../../types/types";
+import { RecommendationsType } from "../../types/typesFrontend";
 import { useState } from "react";
 
 // Getting real child data somewhere:

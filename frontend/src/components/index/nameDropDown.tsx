@@ -2,7 +2,7 @@ import { MenuItem, Select, Box, InputLabel } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
-import { NamesAndAgesType } from "../../types/types";
+import { NamesAndAgesType } from "../../types/typesFrontend";
 
 export default function NameDropDown({
   changerFunc,

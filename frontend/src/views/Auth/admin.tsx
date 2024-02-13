@@ -9,12 +9,12 @@ import {
   InputLabel,
   TextareaAutosize,
 } from "@mui/material";
-import { FormDataToBackend } from "../../types/types";
+import { FormDataToBackend } from "../../types/typesFrontend";
 import { adminAddData } from "../../api/adminAddData";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 import PleaseLoginModal from "../../components/modals/pleaseLoginModal";
-import { FinalDataToBackend } from "../../types/types";
+import { FinalDataToBackend } from "../../types/typesFrontend";
 
 // TODO: 1. More frequent login status checks
 
@@ -29,7 +29,7 @@ const AdminPage = () => {
     content: "",
     ageLimit: 0,
     photoLink: "",
-    photoFileName: "",
+    photoFile: undefined,
   });
   const { idToken } = useContext(TokenContext);
 
@@ -45,6 +45,7 @@ const AdminPage = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
     const submitData: FinalDataToBackend = {
       category,
       typeSelect,
@@ -118,7 +119,7 @@ const AdminPage = () => {
                 content: "",
                 ageLimit: 0,
                 photoLink: "",
-                photoFileName: "",
+                photoFile: undefined,
               });
               setCategory(e.target.value);
             }}
@@ -218,9 +219,6 @@ const AdminPage = () => {
           </div>
         )}
 
-        {/* Backend is checking if there is photo, but if category is tip it's optional  */}
-        {/* TODO: add opitional photo for tips and required for meals and activity */}
-
         <div>
           <h3>Kuva</h3>
           <p>Valitse kuvan URL linkki tai valitse tiedosto:</p>
@@ -233,18 +231,6 @@ const AdminPage = () => {
             fullWidth
             label="Kuvan linkki"
             margin="normal"
-            onChange={handleChange}
-          />
-
-          <TextField
-            sx={{
-              marginTop: 0,
-              background: "white",
-            }}
-            name="photoFileName"
-            fullWidth
-            margin="normal"
-            type="file"
             onChange={handleChange}
           />
 

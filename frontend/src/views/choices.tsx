@@ -3,7 +3,7 @@ import NameDropDown from "../components/index/nameDropDown";
 import ReturnBtn from "../components/returnBtn";
 import { useEffect, useState } from "react";
 import { Container, Typography } from "@mui/material";
-import { NamesAndAgesType } from "../types/types";
+import { NamesAndAgesType } from "../types/typesFrontend";
 import makeChildObject from "../utils/makeChildObject";
 
 // comp imports:

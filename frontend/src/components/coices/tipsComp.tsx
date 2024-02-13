@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { RecommendationsType } from "../../types/types";
+import { RecommendationsType } from "../../types/typesFrontend";
 import useGetRecommData from "../../customHooks/useGetRecommData";
 
 // Now there is 3 types of tips: "päiväunet", "iltatoimet", "nukkuminen".

@@ -20,7 +20,6 @@ export interface FrontendRecommData {
   content: string; // <- This will be saved in a list
   ageLimit?: number;
   photoLink?: string;
-  photoFileName?: string;
 }
 
 export interface contents {
@@ -31,7 +30,7 @@ export interface TipContents {
 }
 
 export interface Photos {
-  [key: string]: (string | undefined)[]; // Photo link or filename -> title: string
+  [key: string]: string | undefined; // Photo link or filename -> title: string
 }
 
 export interface FinalRecommData {

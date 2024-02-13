@@ -1,8 +1,8 @@
-import { FrontendRecommData } from "../../types/types";
+import { FrontendRecommData } from "../../types/typesBackend";
 import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
-import { TipContents, contents } from "../../types/types";
-import { FinalRecommData } from "../../types/types";
+import { TipContents, contents } from "../../types/typesBackend";
+import { FinalRecommData } from "../../types/typesBackend";
 
 const adminPage = async (req: Request, res: Response) => {
   try {
@@ -18,12 +18,12 @@ const adminPage = async (req: Request, res: Response) => {
     }
 
     // Validate choice
-    const validateTextLength = (text: string) => text.length > 20;
+    const validateTextLength = (text: string) => text.length > 30;
     if (validateTextLength(addDataObject.title)) {
       return res
         .status(400)
         .send(
-          "Otsikko kenttä ei saa sisältää yli 10 merkkiä. | Title field can not have over 10 letters."
+          "Otsikko kenttä ei saa sisältää yli 30 merkkiä. | Title field can not have over 10 letters."
         );
     }
     // Validate name
@@ -38,19 +38,13 @@ const adminPage = async (req: Request, res: Response) => {
         );
     }
     // Validate image
-    if (
-      addDataObject.category !== "tip" &&
-      !addDataObject.photoFileName &&
-      !addDataObject.photoLink
-    ) {
+    if (addDataObject.category !== "tip" && !addDataObject.photoLink) {
       return res
         .status(400)
         .send(
-          "Sinulla pitää olla kuvaa varten joko linkki tai tiedosto | You must have either a link or a file for the image"
+          "Sinulla pitää olla kuvaa varten linkki | You must have either a link or a file for the image"
         );
     }
-
-    console.log("printing the addDataObject: ", addDataObject);
 
     // Restructuring the data:
     const { title, content, ageLimit } = addDataObject;
@@ -72,7 +66,7 @@ const adminPage = async (req: Request, res: Response) => {
     }
 
     const photos = {
-      [title]: [addDataObject.photoFileName, addDataObject.photoLink],
+      [contentKey]: addDataObject.photoLink,
     };
 
     const newData: FinalRecommData = {
@@ -101,10 +95,7 @@ const adminPage = async (req: Request, res: Response) => {
 
       const updates = {
         [`content.${contentKey}`]: contentValue,
-        [`photos.${title}`]: [
-          addDataObject.photoFileName,
-          addDataObject.photoLink,
-        ],
+        [`photos.${contentKey}`]: addDataObject.photoLink,
       };
 
       // Perform the update
