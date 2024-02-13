@@ -10,23 +10,23 @@ interface CarerProfile {
 }
 
 const deleteCarerProfile = async (req: Request, res: Response): Promise<void> => {
+  const carerId: string | undefined = req.params.carerId;
+  console.log("Saatu carerId:", carerId);
+
   try {
-    const idToken = req.headers.authorization?.split("Bearer ")[1];
+    const idToken: string | undefined = req.headers.authorization?.split("Bearer ")[1];
     if (!idToken) {
       console.log("Token puuttuu");
       res.status(401).json({ error: "Token puuttuu" });
       return;
     }
 
-    const removerId = await getUserIdFromToken(idToken);
+    const removerId: string | null = await getUserIdFromToken(idToken);
     if (!removerId) {
       console.log("Virheellinen token");
       res.status(403).json({ error: "Virheellinen token" });
       return;
     }
-
-    const carerId = req.body.carerId;
-    console.log("Saatu carerId:", carerId);
 
     if (!carerId) {
       console.log("Tarvittavat tiedot puuttuvat: carerId");
@@ -35,27 +35,25 @@ const deleteCarerProfile = async (req: Request, res: Response): Promise<void> =>
     }
 
     const db = admin.firestore();
-    const childCarersCollection = db.collection("childCarers");
+    
+    // Käytä collectionGroup-metodia kaikkien childCarers-kokoelman alikokoelmien hakuun
+    const querySnapshot = await db.collectionGroup('childCarers').where('receiverUid', '==', carerId).get();
 
-    const carerDoc = await childCarersCollection.doc(carerId).get();
-    if (!carerDoc.exists) {
-      console.log("Hoitajaa ei löydy: ", carerId);
-      res.status(404).json({ error: "Hoitajaa ei löydy: " + carerId });
-      return;
-    }
+    // Käy läpi jokainen dokumentti querySnapshotissa
+    querySnapshot.forEach(async (doc: FirebaseFirestore.DocumentSnapshot) => {
+      const carerData = doc.data() as CarerProfile;
+      console.log("Hoitajan data:", carerData);
 
-    const carerData = carerDoc.data() as CarerProfile;
-    console.log("Hoitajan data:", carerData);
+      const updatedSenderUids: string[] = carerData.receiverUid !== removerId
+        ? carerData.senderUid.filter((uid: string) => uid !== removerId)
+        : [];
 
-    const updatedSenderUids = carerData.receiverUid !== removerId
-      ? carerData.senderUid.filter(uid => uid !== removerId)
-      : [];
+      await doc.ref.update({
+        senderUid: updatedSenderUids,
+      });
 
-    await childCarersCollection.doc(carerId).update({
-      senderUid: updatedSenderUids,
+      console.log("Hoitajan profiili päivitetty:", updatedSenderUids);
     });
-
-    console.log("Hoitajan profiili päivitetty:", updatedSenderUids);
 
     res.status(200).json({ message: "Hoitajan profiili poistettu onnistuneesti" });
   } catch (error: any) {
