@@ -3,7 +3,7 @@ import axios from 'axios';
 const API_BASE_URL = "http://localhost:3000/api";
 
 interface CarerProfile {
-    id: string;
+    receiverUid: string;
     email: string;
     name: string;
   } 
@@ -19,14 +19,14 @@ interface CarerProfile {
       await axios.delete(`${API_BASE_URL}/carer/${carerId}`, config);
       
       // Päivitä frontend uusilla profiileilla
-      const updatedProfiles = profiles.filter((profile) => profile.id !== carerId);
+      const updatedProfiles = profiles.filter((profile) => profile.receiverUid !== carerId);
       setProfiles(updatedProfiles);
   
       // Päivitä myös Session Storage poistamalla poistettu profiili
       const storedProfilesJson = sessionStorage.getItem("carerProfiles");
       if (storedProfilesJson) {
         const storedProfiles = JSON.parse(storedProfilesJson) as CarerProfile[];
-        const updatedStoredProfiles = storedProfiles.filter((profile) => profile.id !== carerId);
+        const updatedStoredProfiles = storedProfiles.filter((profile) => profile.receiverUid !== carerId);
         sessionStorage.setItem("carerProfiles", JSON.stringify(updatedStoredProfiles));
       }
     } catch (error) {

@@ -8,7 +8,7 @@ interface InviteAccountToProfileData {
 }
 
 interface CarerProfile {
-  id: string;
+  receiverUid: string;
   email: string;
   name: string;
 }

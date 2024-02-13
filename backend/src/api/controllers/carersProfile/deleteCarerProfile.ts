@@ -3,7 +3,7 @@ import admin from "../../../config/firebseConfig";
 import { getUserIdFromToken } from "../../../utils/getUserIdFromTokenUtil";
 
 interface CarerProfile {
-    id: string;
+    receiverUid: string;
     email: string;
     name: string;
   }  

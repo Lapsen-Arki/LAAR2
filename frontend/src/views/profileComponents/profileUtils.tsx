@@ -76,19 +76,28 @@ export function useProfileUtils() {
   const handleDeleteConfirmed = async () => {
     if (!selectedProfileId && !selectedCarerId) return;
   
+    let deletionSuccess = false; // Lisätään muuttuja onnistumisen seurantaan
+  
     try {
       if (selectedProfileId) {
         await deleteChildProfile(selectedProfileId, idToken, childProfiles, setChildProfiles);
         setSelectedProfileId(null);
+        deletionSuccess = true; // Asetetaan true, jos poisto onnistuu
       } else if (selectedCarerId) {
         await deleteCarerProfile(selectedCarerId, idToken, carerProfiles, setCarerProfiles);
         setSelectedCarerId(null);
+        deletionSuccess = true; // Asetetaan true, jos poisto onnistuu
       }
-      console.log('Profiili poistettu onnistuneesti.');
     } catch (error) {
       console.error('Profiilin poisto epäonnistui', error);
+      deletionSuccess = false; // Asetetaan false, jos poisto epäonnistuu
+      return; // Lopetetaan suoritus, jos poisto epäonnistuu
     } finally {
       setConfirmationDialogOpen(false);
+      // Tarkistetaan, oliko poisto onnistunut, ennen kuin näytetään onnistumisviesti
+      if (deletionSuccess) {
+        console.log(selectedProfileId ? 'childProfiles Profiili poistettu onnistuneesti.' : 'carerProfiles Profiili poistettu onnistuneesti.');
+      }
     }
   };
   

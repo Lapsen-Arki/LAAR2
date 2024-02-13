@@ -35,7 +35,7 @@ const InvitedCarersComponent: React.FC = () => {
                 ) : (
                     <div className="Carer">
                         {carerProfiles.map((carer) => (
-                            <Card className="cards-wrap" key={carer.id} style={{ marginBottom: '10px' }}>
+                            <Card className="cards-wrap" key={carer.receiverUid} style={{ marginBottom: '10px' }}>
                                 <CardContent className="card-content">
                                     <Typography variant="h6" component="div">
                                         {carer.name}
@@ -46,7 +46,7 @@ const InvitedCarersComponent: React.FC = () => {
                                 </CardContent>
                                 <div className="card-icons">
                                     <Tooltip title="Poista hoitaja">
-                                        <IconButton color="error" aria-label="Delete" onClick={() => handleClickDeleteCarer(carer.id)}>
+                                        <IconButton color="error" aria-label="Delete" onClick={() => handleClickDeleteCarer(carer.receiverUid)}>
                                             <DeleteIcon />
                                         </IconButton>
                                     </Tooltip>
