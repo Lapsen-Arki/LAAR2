@@ -221,7 +221,7 @@ const AdminPage = () => {
 
         <div>
           <h3>Kuva</h3>
-          <p>Valitse kuvan URL linkki tai valitse tiedosto:</p>
+          <p>Valitse kuvan URL linkki:</p>
           <TextField
             sx={{
               marginTop: 0,
@@ -233,6 +233,11 @@ const AdminPage = () => {
             margin="normal"
             onChange={handleChange}
           />
+          <p>
+            Tallenna kuvat ensin tietokantaan manuaalisesti ja käytä oikeaa
+            kuvan linkkiä tässä tai käytä vaihtoehtoisesti toisen
+            palveluntarjoajan kuvaa.
+          </p>
 
           <Button
             variant="contained"
