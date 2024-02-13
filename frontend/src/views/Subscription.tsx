@@ -30,7 +30,8 @@ import { CardNumberElementComponent } from '@stripe/react-stripe-js';
 // Sivu on vielä kesken, keskeneräisiä funktioita kommentoitu pois
 interface SubscriptionData {
 	created : number,
-	current_period_end : number
+	current_period_end : number,
+	cancel_at_period_end : boolean
 }
 
 const SubscriptionManagement: React.FC = () => {
@@ -39,24 +40,20 @@ const SubscriptionManagement: React.FC = () => {
 	const [subscription, setSubscription] = useState<SubscriptionData | null>(null);
 	const [openLoginModal, setOpenLoginModal] = React.useState(false);
 
-  useEffect(() => {
-    const fetchSubscription = async () => {
+	const fetchSubscription = async () => {
 	
-      try {
-		if (userId) {
-			console.log("client - fetching response")
-       		const response = await getSubscription(idToken, userId);
-			setSubscription(response);
-			if (subscription) {
-				console.log("subscription on olemassa")
+		try {
+		  if (userId) {
+			  console.log("client - fetching response")
+				 const response = await getSubscription(idToken, userId);
+			  setSubscription(response);
+		  }
+			} catch (error) {
+			  console.error('client - Error statusta haettaessa ');
 			}
-			
-		}
-      	} catch (error) {
-        	console.error('client - Error statusta haettaessa ');
-      	}
-	}
+	  }
 
+  useEffect(() => {
     if (idToken) {
     	fetchSubscription();
     }
@@ -69,6 +66,7 @@ const SubscriptionManagement: React.FC = () => {
 	  console.log("client - haetaan session id")
       const response = await startSubscription(idToken, userId);
 	  console.log("client - subscription luotu backendissa")
+	  fetchSubscription()
 	  /*
       const stripeInstance = await loadStripe('pk_test_51HqdGcK45umi2LZdJtYVobHqBd8GGJjr0ggqdhGTRNisO9fdkOdHIXc1kH96Tpex7dYyj9VlIEGTv90hiMExVn2S00w1xYoflk');
       setStripe(stripeInstance);
@@ -90,10 +88,7 @@ const SubscriptionManagement: React.FC = () => {
       console.error('Error starting subscription:', error);
     }
 	*/
-	if (response.status === 200) {
-		// tilaus onnistui
-		console.log("tilaus luotu onnistuneesti");
-	}
+
 
 } catch (error) {
 	console.error('Error starting subscription:', error);
@@ -110,8 +105,8 @@ const formatDate = (timestamp: number) => {
 
   const handleCancelSubscription = async () => {
     try {
-      const data = await cancelSubscription(idToken);
-      setSubscription(data.status);
+      await cancelSubscription(idToken, userId);
+	  fetchSubscription()
     } catch (error) {
       console.error('Error canceling subscription:', error);
     }
@@ -139,9 +134,12 @@ const formatDate = (timestamp: number) => {
 			{
 				subscription ? (
 				<div>
-					<Typography sx={{ fontSize: 14 }} color="text.secondary">
-						Sinulla on voimassaoleva tilaus!
-					</Typography>
+						{ subscription.cancel_at_period_end? 
+					
+					(	<p>Tämänhetkinen tilauksesi loppuu {formatDate(subscription.current_period_end)}</p>)
+						:
+						(<p>Sinulla on voimassaoleva tilaus!</p>)
+						}
 					<br></br>	
 					<TableContainer component={Paper}>
 						<Table sx={{ minWidth: { xs: '100%', md: 600 } }} aria-label="simple table">
@@ -201,13 +199,13 @@ const formatDate = (timestamp: number) => {
 		</Card>
 	</Box>
 	<br></br>
-	{subscription ? (
-		<Button onClick={handleCancelSubscription} variant="contained" sx={{ backgroundColor: '#63c8cc'}}>
-			Keskeytä tilaus
+	{subscription?.cancel_at_period_end ? (
+		<Button onClick={handleStartSubscription} variant="contained" sx={{ backgroundColor: '#63c8cc'}}>
+			Jatka tilausta
 		</Button>
 		) : (
-		<Button onClick={handleStartSubscription} variant="contained" sx={{ backgroundColor: '#63c8cc'}}>
-			Aloita tilaus
+		<Button onClick={handleCancelSubscription} variant="contained" sx={{ backgroundColor: '#63c8cc'}}>
+			Keskeytä tilaus
 		</Button>
 	)}
 	</div>

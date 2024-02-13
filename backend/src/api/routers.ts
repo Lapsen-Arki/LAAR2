@@ -20,7 +20,6 @@ import { deleteCarerProfile } from "./controllers/carersProfile/deleteCarerProfi
 
 import {
   startSubscription,
-  saveSubscription,
   cancelSubscription,
   getSubscriptionById
 } from './controllers/stripe';
@@ -59,7 +58,6 @@ router.get("/test", testController);
 
 // Stripe routes
 router.post("/start-subscription/:id", startSubscription)
-router.post("/save-subscription/:userId/:subscriptionId", startSubscription)
 router.post("/cancel-subscription/:id", cancelSubscription);
 router.post("/get-subscription/:id", getSubscriptionById);
 

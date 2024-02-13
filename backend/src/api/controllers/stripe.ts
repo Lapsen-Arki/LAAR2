@@ -1,4 +1,3 @@
-import { firestore } from 'firebase-admin';
 import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
 import stripeConf from "../../config/stripeClient"
@@ -95,6 +94,7 @@ const customerSource = await stripe.customers.createSource(
 	}
   );
 */
+/*
 			console.log("backend - subscriptionia ei ollut olemassa joten luodaan uusi")
 			const subscription = await stripe.subscriptions.create({
 				customer: stripeCustomerId,
@@ -102,22 +102,53 @@ const customerSource = await stripe.customers.createSource(
 		 	 });
 			await userDocRef.update({ stripeSubscriptionId: subscription.id });
 			console.log("subscription id: ", subscription.id)
-			return res.status(200).json({ subscription });
+			*/
+			return res.status(200).json({ message : "Ota yhteyttä ylläpitoon" });
 		} else {
 			console.log("backend - stripesubscriptionid löytyi")
 			const oldSubscription = await stripe.subscriptions.retrieve(stripeSubscriptionId);
 
+			console.log("backend - vanha tilaus")
+			console.log(oldSubscription)
 
-			if (oldSubscription.status == 'canceled') {
+
+			if (oldSubscription.status != 'canceled') {
+
+				/*
+				const resumedSubscription = await stripe.subscriptions.create({
+					customer: stripeCustomerId,
+					items: [{
+					  // Reference the original canceled subscription item
+					  id: stripeSubscriptionId,
+					  deleted: false, // Set deleted to false to reactivate the item
+					}],
+				  });
+				*/
+				const resumeSubscription = await stripe.subscriptions.update
+				(
+				  stripeSubscriptionId,
+				  {
+					cancel_at_period_end : false,
+				  }
+				);
+				  /*
 				console.log("ei ole voimassa kokeilujaksoa")
 				const subscription = await stripe.subscriptions.resume(
-					userDoc.stripeSubscriptionId,
+					stripeSubscriptionId,
 					{
 					  billing_cycle_anchor: 'now',
 					}
 				  );
 				await userDoc.update({ stripeSubscriptionId });
-				return res.status(200).json({ subscription });
+				*/
+				return res.status(200).json({ resumeSubscription });
+			} else {
+				const newSubscription = await stripe.subscriptions.create({
+					customer: stripeCustomerId,
+					items: [{ plan: "price_1ObLeAK45umi2LZd5XwwYvam" }],
+				  });
+				await userDocRef.update({ stripeSubscriptionId: newSubscription.id });
+				return res.status(200).json({ newSubscription });
 			}
 		}
 		
@@ -143,7 +174,7 @@ const customerSource = await stripe.customers.createSource(
 	  console.log("status voi olla joku muu, unpaid tms joten tämä on erikoistapaus?")
 	  return res.status(200).json({ message: "Ota yhteyttä ylläpitoon tilauksen aloittamiseksi." });
 };
-
+/*
 const saveSubscription = async (req: Request, res: Response): Promise<Response<any, Record<string, any>>> => {
 	try {
 		console.log("backend - saveSubscription alkaa")
@@ -169,7 +200,7 @@ const saveSubscription = async (req: Request, res: Response): Promise<Response<a
 	  return res.status(500).json({ error: 'Internal Server Error' });
 	}
   };
-
+*/
 const cancelSubscription = async (req: Request, res: Response): Promise<void> => {
 	try {
 		console.log("cancel subscription aloitettu")
@@ -189,14 +220,17 @@ const cancelSubscription = async (req: Request, res: Response): Promise<void> =>
 			res.json({ status: 'already-canceled' });
 		}
 
-		const stripeCustomerId = userDoc.data().stripeCustomerId;
-		const subscriptionId = userDoc.data().stripeSubscriptionId;
+		const stripeSubscriptionId = userDoc.data().stripeSubscriptionId;
 
-		//await stripe.subscriptions.del(subscriptionId);
+		const subscription = await stripe.subscriptions.update(
+  			stripeSubscriptionId,
+  			{
+    			cancel_at_period_end: true,
+  			}
+		);
 
-		await userDocRef.update({ subscriptionStatus: 'canceled' });
-
-		res.json({ status: 'canceled' });
+		console.log("backend - subscription lopetettu onnistuneesti")
+		res.status(200).send();
 	} catch (error) {
 		console.error('Error canceling subscription:', error);
 		res.status(500).json({ error: 'Internal Server Error' });
@@ -224,8 +258,12 @@ const getSubscriptionById = async (req: Request, res: Response): Promise<Respons
 		if (stripeSubscriptionId) {
 			console.log("backend - stripesubscriptionid löytyi")
 			const subscription = await stripe.subscriptions.retrieve(stripeSubscriptionId);
-			const { created, current_period_end } = subscription;
-			return res.status(200).json({ created, current_period_end });
+			if (subscription.status === 'canceled') {
+				return res.status(200).json(null);
+			}
+			console.log(subscription)
+			const { created, current_period_end, cancel_at_period_end } = subscription;
+			return res.status(200).json({ created, current_period_end, cancel_at_period_end });
 		} else {
 		console.log("backend - stripesubscriptionid:tä ei löytynyt")
 		return res.status(200).json(null);
@@ -245,4 +283,4 @@ const getSubscriptionById = async (req: Request, res: Response): Promise<void> =
 	return subscriptions;
   };
 */
-export { startSubscription, saveSubscription, cancelSubscription, getSubscriptionById }
+export { startSubscription, cancelSubscription, getSubscriptionById }
