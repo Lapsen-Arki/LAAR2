@@ -1,12 +1,7 @@
 import axios from "axios";
+import { CarerProfile } from "../../../src/types/types";
 
 const API_BASE_URL = "http://localhost:3000/api";
-
-interface CarerProfile {
-  receiverUid: string;
-  email: string;
-  name: string;
-}
 
 const getCarerProfile = async (idToken: string | null, shouldFetchNewData: boolean): Promise<CarerProfile[] | never> => {
   try {
