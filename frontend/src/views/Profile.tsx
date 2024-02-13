@@ -1,3 +1,4 @@
+import { useState, useContext } from 'react';
 import '../styles/Profile.css';
 import {
   Button,
@@ -5,16 +6,27 @@ import {
   Tooltip,
 } from "@mui/material";
 
+import { TokenContext } from "../contexts/tokenContext";
+import PleaseLoginModal from "../components/modals/pleaseLoginModal.tsx";
+
 import { useProfileUtils } from './profileComponents/profileUtils';
 import InvitedCarersComponent from './profileComponents/invitedCarers';
 import MyChildComponent from './profileComponents/myChild';
 import CarerChildComponent from './profileComponents/carerChild';
 
 export default function Profile() {
+  const [openLoginModal, setOpenLoginModal] = useState(false);
+  const { idToken } = useContext(TokenContext);
   const {
     handleAddProfileClick,
     handleAddCarersClick
   } = useProfileUtils();
+
+  if (!idToken) {
+    return (
+      <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
+    );
+  }
 
   return (
     <div className="profile-container">
