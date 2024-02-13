@@ -31,8 +31,6 @@ export default function MealResults() {
         sx={{ mt: 5, mb: 15, textAlign: "center", justifyContent: "center" }}
       >
         {resultData?.map((result, index) => {
-          console.log(resultData);
-
           return (
             <div key={index}>
               {Object.entries(result.photos || {}).map(([item, link]) => {
