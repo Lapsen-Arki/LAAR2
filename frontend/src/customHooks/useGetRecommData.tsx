@@ -22,13 +22,16 @@ export default function useGetRecommData(
   useEffect(() => {
     const fetchData = async () => {
       // Use session storage OR fetch & set the data:
+
       if (isLoggedIn) {
         // Checking sessionStorage:
         const sessionRecommData = sessionStorage.getItem(fetchType);
         let recommData;
+
         if (sessionRecommData) {
           recommData = JSON.parse(sessionRecommData);
         }
+
         // Using sessionStorage if it's longer than empty array:
         if (recommData && recommData.length > 0) {
           console.log("Using sessionStorage for recommData");
@@ -41,7 +44,7 @@ export default function useGetRecommData(
               `${API_BASE_URL}/getRecommData/${fetchType}`
             );
             setData(response.data);
-            sessionStorage.setItem(fetchType, JSON.stringify(data));
+            sessionStorage.setItem(fetchType, JSON.stringify(response.data));
           } catch (error) {
             if (axios.isAxiosError(error) && error.response) {
               console.error("Error sending the data: ", error.response.data);
