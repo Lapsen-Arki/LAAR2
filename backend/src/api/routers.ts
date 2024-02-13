@@ -24,7 +24,7 @@ import { deleteChildProfile } from "./controllers/childProfile/deleteChildProfil
 import inviteAccountToProfile from "./controllers/carersProfile/inviteAccountToProfile";
 import { getCarerProfile } from "./controllers/carersProfile/getCarerProfile";
 import { deleteCarerProfile } from "./controllers/carersProfile/deleteCarerProfile";
-
+import { editAccount, getUser } from "./controllers/editAccount";
 // test controllers:
 import { emailTest } from "./controllers/testingEmail";
 import testController from "../utils/testController";
@@ -50,7 +50,9 @@ router.get("/carers", getCarerProfile); // Hae hoitaja profiilit
 router.delete("/carer/:carerId", deleteCarerProfile); // Poista hoitaja profiili
 
 // Future User routes plan (?):
-// router.get("/editAccount", editAccount);
+router.get("/getUser", getUser);
+router.post("/editAccount", editAccount);
+
 // router.get("/deleteAccount/:accountId", deleteAccount);
 
 // Email related routes:
@@ -65,16 +67,16 @@ router.post("/start-subscription/:id", startSubscription);
 router.post("/cancel-subscription/:id", cancelSubscription);
 router.post("/get-subscription/:id", getSubscriptionById);
 
-// alive check
+// FOR TESTING
+// -------------------------------------
 router.get("/alive", (req, res) => {
   res.status(200);
   res.send("alive");
 });
-
-// for testing purposes, remove later
 router.get("/secret", (req, res) => {
   res.status(200);
-  res.send(process.env.SECRET_IS_SET + " + " + process.env.NODE_ENV);
+  res.send(process.env.SECRET_IS_SET);
 });
+// -------------------------------------
 
 export default router;

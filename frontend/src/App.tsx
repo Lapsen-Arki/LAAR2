@@ -10,7 +10,7 @@ import EditProfile from "./views/editProfile";
 import CaresProfile from "./views/carersProfile";
 import AdminPage from "./views/Auth/admin";
 import Subscription from "./views/Subscription";
-import AccountSettings from "./views/AccountSettings";
+import AccountSettingsPage from "./views/accountSettingsParent";
 import ChoicesPage from "./views/choices";
 import TermsAndPrivacy from "./views/termsAndPrivacy";
 import AboutUs from "./views/aboutUs";
@@ -51,7 +51,7 @@ function App() {
                 <Route path="/profile-share" element={<CaresProfile />} />
                 <Route path="/admin" element={<AdminPage />} />
                 <Route path="/subscription" element={<Subscription />} />
-                <Route path="/account" element={<AccountSettings />} />
+                <Route path="/account" element={<AccountSettingsPage />} />
                 <Route path="/terms" element={<TermsAndPrivacy />} />
                 <Route path="/about-us" element={<AboutUs />} />
               </Routes>
