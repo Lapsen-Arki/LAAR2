@@ -1,7 +1,7 @@
 import { FrontendRecommData } from "../../types/typesBackend";
 import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
-import { TipContents, contents } from "../../types/typesBackend";
+import { TextContents, recomm } from "../../types/typesBackend";
 import { FinalRecommData } from "../../types/typesBackend";
 
 const adminPage = async (req: Request, res: Response) => {
@@ -29,7 +29,7 @@ const adminPage = async (req: Request, res: Response) => {
     // Validate name
     if (
       addDataObject.category !== "tip" &&
-      validateTextLength(addDataObject.content)
+      validateTextLength(addDataObject.name)
     ) {
       return res
         .status(400)
@@ -45,35 +45,36 @@ const adminPage = async (req: Request, res: Response) => {
           "Sinulla pitää olla kuvaa varten linkki | You must have either a link or a file for the image"
         );
     }
-
-    // Restructuring the data:
-    const { title, content, ageLimit } = addDataObject;
-
-    let contentObj: TipContents | contents;
-    let contentKey, contentValue;
-    if (addDataObject.category !== "tip") {
-      contentKey = content;
-      contentValue = ageLimit;
-      contentObj = {
-        [contentKey]: contentValue || 0,
-      };
-    } else {
-      contentKey = title;
-      contentValue = content;
-      contentObj = {
-        [contentKey]: contentValue,
-      };
+    if (!addDataObject.ageLimit) {
+      return res
+        .status(400)
+        .send("Ikäraja pitää olla määritetty | Agelimit has to be defined");
     }
 
+    // Restructuring the data:
+    const { textContent, name, ageLimit } = addDataObject;
+
+    const nameKey: string = name;
+    const recommValue: number = ageLimit;
+    const recommObj: recomm = {
+      [nameKey]: recommValue,
+    };
+
+    const textContValue: string = textContent;
+    const textContentObj: TextContents = {
+      [nameKey]: textContValue,
+    };
+
     const photos = {
-      [contentKey]: addDataObject.photoLink,
+      [nameKey]: addDataObject.photoLink,
     };
 
     const newData: FinalRecommData = {
       category: addDataObject.category,
       type: addDataObject.typeSelect,
       title: addDataObject.title,
-      content: contentObj,
+      recomm: recommObj,
+      textContent: textContentObj,
       photos: photos,
     };
 
@@ -94,8 +95,9 @@ const adminPage = async (req: Request, res: Response) => {
       const docId = querySnapshot.docs[0].id;
 
       const updates = {
-        [`content.${contentKey}`]: contentValue,
-        [`photos.${contentKey}`]: addDataObject.photoLink,
+        [`recomm.${nameKey}`]: recommValue,
+        [`textContent.${nameKey}`]: textContValue,
+        [`photos.${nameKey}`]: addDataObject.photoLink,
       };
 
       // Perform the update

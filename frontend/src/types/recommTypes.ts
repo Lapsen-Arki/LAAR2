@@ -2,8 +2,8 @@
 export interface FormDataToBackend {
   title: string;
   name: string; // <- This will be saved in a object in the backend
-  textContent: string;
   ageLimit?: number;
+  textContent: string;
   photoLink?: string;
 }
 // --> Category and typeSelect comes from separate useStates: -->
@@ -15,8 +15,8 @@ export interface FinalDataToBackend extends FormDataToBackend {
 export interface recomm {
   [key: string]: number; // Name: ageLimit / activity: ageLimit
 }
-export interface TipContents {
-  [key: string]: string; // <-- Key arvo on title tässä!
+export interface TextContents {
+  [key: string]: string; // <-- Key arvo on name tässä!
 }
 
 export interface Photos {
@@ -29,6 +29,6 @@ export type RecommendationsType = {
   type?: string;
   title: string;
   recomm: recomm;
-  textContent: TipContents;
+  textContent: TextContents;
   photos?: Photos;
 };
