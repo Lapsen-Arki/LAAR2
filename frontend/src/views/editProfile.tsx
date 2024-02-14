@@ -49,8 +49,8 @@ const EditProfile = () => {
   const [openLoginModal, setOpenLoginModal] = React.useState(false);
 
   // Tyhjä merkkijono, jos id ei ole määritetty URL:ssä
-  console.log(id);
-  const profileId = id || "";
+  //console.log(id)
+  const profileId = id || '';
 
   // Etsii ja palauttaa lapsiprofiilin Session Storagesta annetun ID:n perusteella.
   // Jos profiilia ei löydy, palauttaa null.
@@ -68,16 +68,13 @@ const EditProfile = () => {
     const fetchProfileData = async () => {
       try {
         if (profileId) {
-          console.log("Haetaan profiilin tiedot ID:llä:", profileId);
+          //console.log('Haetaan profiilin tiedot ID:llä:', profileId);
 
           // Ensin yritetään löytää profiili Session Storagesta
           const profileDataFromStorage = findProfileInSessionStorage(profileId);
 
           if (profileDataFromStorage) {
-            console.log(
-              "Käytetään Session Storagessa olevaa profiilia:",
-              profileDataFromStorage
-            );
+            //console.log('Käytetään Session Storagessa olevaa profiilia:', profileDataFromStorage);
             setChildName(profileDataFromStorage.childName);
             setBirthdate(
               profileDataFromStorage.birthdate
@@ -88,10 +85,9 @@ const EditProfile = () => {
             setAccessRights(profileDataFromStorage.accessRights);
           } else {
             // Jos ei löydy Session Storagesta, haetaan palvelimelta
-            const profileData: ChildProfile | { error: Error } =
-              await getChildProfileById(profileId, idToken);
-            if ("childName" in profileData) {
-              console.log("Haettu profiilin tiedot:", profileData);
+            const profileData: ChildProfile | { error: Error } = await getChildProfileById(profileId, idToken);
+            if ('childName' in profileData) {
+              //console.log('Haettu profiilin tiedot:', profileData);
               setChildName(profileData.childName);
               setBirthdate(
                 profileData.birthdate
@@ -155,8 +151,8 @@ const EditProfile = () => {
           // Jos ID:tä ei ole määritelty, luo uusi profiili
           await createChildProfile(userData, idToken);
         }
-        console.log("Profiili tallennettu onnistuneesti:", userData);
-        navigate("/profile");
+        //console.log('Profiili tallennettu onnistuneesti:', userData);
+        navigate('/profile');
       } catch (error) {
         console.error("Profiilin tallennus epäonnistui", error);
       }

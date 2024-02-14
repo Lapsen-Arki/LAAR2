@@ -3,7 +3,7 @@ import admin from "../../../config/firebseConfig";
 import { getUserIdFromToken } from "../../../utils/getUserIdFromTokenUtil";
 
 interface CarerProfile {
-  id: string;
+  receiverUid: string;
   email: string;
   name: string;
 }
@@ -46,7 +46,7 @@ const getCarerProfile = async (req: Request, res: Response): Promise<void> => {
       if (userDoc.exists) {
         const userData = userDoc.data() as { name: string; email: string }; // Vain nimi ja sähköposti tallennetaan
         const userProfile: CarerProfile = {
-          id: userDoc.id,
+          receiverUid: userDoc.id,
           email: userData.email,
           name: userData.name,
         };

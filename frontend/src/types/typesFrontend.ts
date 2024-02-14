@@ -95,7 +95,7 @@ export interface ChildProfile {
 }
 
 export interface CarerProfile {
-  id: string;
+  receiverUid: string;
   email: string;
   name: string;
 }
