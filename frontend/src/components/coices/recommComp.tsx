@@ -21,11 +21,9 @@ export default function RecommComp({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (mealType) {
-      navigate("/meal-results", { state: selectionList });
-    } else {
-      navigate("/meal-results", { state: selectionList });
-    }
+    navigate("/results", {
+      state: { selectionList, isMealPage: multipleSelections },
+    });
   };
 
   const selectionHandler = (itemName: string) => {
@@ -53,6 +51,7 @@ export default function RecommComp({
     } else {
       // add one key to the state
       setSelectedBox(itemName);
+      setSelectionList([itemName]);
     }
   };
 
