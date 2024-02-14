@@ -1,6 +1,4 @@
-// carerChild.tsx
-
-import React from "react";
+import React from 'react';
 
 import { Card, CardContent, Typography, Tooltip } from "@mui/material";
 

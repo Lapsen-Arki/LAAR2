@@ -1,16 +1,8 @@
 import axios from "axios";
+import { ChildProfile } from "../../types/typesFrontend";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
-
-interface ChildProfile {
-  id: string;
-  accessRights: boolean;
-  avatar: string;
-  birthdate: string;
-  childName: string;
-  creatorId: string;
-}
 
 const deleteChildProfile = async (
   profileId: string,
@@ -22,7 +14,7 @@ const deleteChildProfile = async (
     // Lähetä DELETE-pyyntö backendiin käyttäen axiosia ja oikeaa idTokenia
     const config = {
       headers: {
-        Authorization: `Bearer ${idToken}`,
+        Authorization: `Bearer ${idToken}`
       },
     };
     await axios.delete(`${API_BASE_URL}/profile/${profileId}`, config);
