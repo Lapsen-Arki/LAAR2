@@ -30,9 +30,8 @@ const startSubscription = async (
     if (!stripeSubscriptionId) {
       res.status(200).json({ message: "Ota yhteyttä ylläpitoon" });
     } else {
-      const oldSubscription = await stripe.subscriptions.retrieve(
-        stripeSubscriptionId
-      );
+      const oldSubscription =
+        await stripe.subscriptions.retrieve(stripeSubscriptionId);
 
       if (oldSubscription.status != "canceled") {
         // jos vanha tilaus on lopetettu, mutta maksettua jäsenyyttä on vielä jäljellä
@@ -106,9 +105,8 @@ const getSubscriptionById = async (
     const stripeSubscriptionId = userDoc.data()?.stripeSubscriptionId;
 
     if (stripeSubscriptionId) {
-      const subscription = await stripe.subscriptions.retrieve(
-        stripeSubscriptionId
-      );
+      const subscription =
+        await stripe.subscriptions.retrieve(stripeSubscriptionId);
       if (subscription.status === "canceled") {
         return res.status(200).json(null);
       }

@@ -80,7 +80,7 @@ const Login: React.FC = (): JSX.Element => {
       <Container
         component="main"
         maxWidth="sm"
-        sx={{ display: 'flex', textAlign: 'center', marginTop: { md: 0 } }}
+        sx={{ display: "flex", textAlign: "center", marginTop: { md: 0 } }}
       >
         <Typography variant="h4">Kirjaudu sisään</Typography>
         <VerifyEmailModal
@@ -116,12 +116,12 @@ const Login: React.FC = (): JSX.Element => {
             }
           />
 
-          <Grid 
-          container
-          direction="row" 
-          justifyContent="space-between" 
-          alignItems="center"
-          style={{ paddingLeft: 7, paddingRight: 7 }}
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            style={{ paddingLeft: 7, paddingRight: 7 }}
           >
             <Grid item>
               <FormControlLabel
@@ -132,7 +132,7 @@ const Login: React.FC = (): JSX.Element => {
                   />
                 }
                 label={
-                  <Typography variant="body2" style={{ color: 'black' }}>
+                  <Typography variant="body2" style={{ color: "black" }}>
                     Muista minut
                   </Typography>
                 }
@@ -160,30 +160,22 @@ const Login: React.FC = (): JSX.Element => {
             Kirjaudu
           </Button>
           {successMessage != null && (
-          <Alert severity="success" >
-            <Typography
-              variant="subtitle1"
-            >
-              {successMessage}
-            </Typography>
-          </Alert>
+            <Alert severity="success">
+              <Typography variant="subtitle1">{successMessage}</Typography>
+            </Alert>
           )}
           {errorMessage != null && (
-          <Alert severity="error" >
-            <Typography
-              variant="subtitle2"
-            >
-              {errorMessage}
-            </Typography>
-          </Alert>
+            <Alert severity="error">
+              <Typography variant="subtitle2">{errorMessage}</Typography>
+            </Alert>
           )}
-          <Grid 
+          <Grid
             container
-            direction="row" 
-            justifyContent="flex-start" 
+            direction="row"
+            justifyContent="flex-start"
             alignItems="baseline"
             style={{ paddingLeft: 7, paddingRight: 7 }}
-            >
+          >
             <Grid item>
               <Link href="/register" variant="body2">
                 Eikö vielä tiliä? Rekisteröidy tästä!

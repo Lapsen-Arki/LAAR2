@@ -12,7 +12,10 @@ interface ChildProfile {
   creatorId: string; // Käyttäjän UID
 }
 
-const getChildProfileById = async (req: Request, res: Response): Promise<void> => {
+const getChildProfileById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const profileId = req.params.id;
 
   try {
@@ -54,4 +57,4 @@ const getChildProfileById = async (req: Request, res: Response): Promise<void> =
   }
 };
 
-  export { getChildProfileById };
+export { getChildProfileById };
