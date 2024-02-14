@@ -9,19 +9,19 @@ const getCarerProfile = async (idToken: string | null, shouldFetchNewData: boole
     if (!shouldFetchNewData) {
       const storedProfilesJson = sessionStorage.getItem("carerProfiles");
       if (storedProfilesJson) {
-        console.log("Hoitajaprofiilit löytyivät Session Storagessa:", JSON.parse(storedProfilesJson));
+        //console.log("Hoitajaprofiilit löytyivät Session Storagessa:", JSON.parse(storedProfilesJson));
         return JSON.parse(storedProfilesJson) as CarerProfile[];
       }
     }
 
-    console.log("Haetaan hoitajaprofiileja palvelimelta...");
+    //console.log("Haetaan hoitajaprofiileja palvelimelta...");
     const config = {
       headers: {
         Authorization: `Bearer ${idToken}`
       }
     };
     const response = await axios.get<CarerProfile[]>(`${API_BASE_URL}/carers`, config);
-    console.log("Hoitajaprofiilit haettu onnistuneesti:", response.data);
+    //console.log("Hoitajaprofiilit haettu onnistuneesti:", response.data);
 
     // Tallenna hoitajaprofiilit Session Storageen, jos ne ovat muuttuneet
     updateSessionStorage(response.data);
@@ -41,7 +41,7 @@ const getCarerProfile = async (idToken: string | null, shouldFetchNewData: boole
 
 const updateSessionStorage = (profiles: CarerProfile[]) => {
   sessionStorage.setItem("carerProfiles", JSON.stringify(profiles));
-  console.log("Hoitajaprofiilit tallennettu Session Storageen:", profiles);
+  //console.log("Hoitajaprofiilit tallennettu Session Storageen:", profiles);
 };
 
 export { getCarerProfile, updateSessionStorage };

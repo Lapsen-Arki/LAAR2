@@ -9,7 +9,7 @@ import {
   } from '@mui/icons-material';
   
 const InvitedCarersComponent: React.FC = () => {
-    const { carerProfiles, handleClickDeleteCarer, confirmationDialogOpen, handleDeleteConfirmed } = useProfileUtils();
+    const { carerProfiles, handleClickDeleteCarer, confirmationDialogOpen, cancelDelete, handleDeleteConfirmed } = useProfileUtils();
 
     return (
         <div>
@@ -58,7 +58,7 @@ const InvitedCarersComponent: React.FC = () => {
             </div>
             <ConfirmationDialog
               open={confirmationDialogOpen}
-              onClose={handleDeleteConfirmed}
+              onClose={cancelDelete}
               onConfirm={handleDeleteConfirmed}
             />
         </div>
