@@ -1,4 +1,4 @@
-export type SubType = {
+export type SettingsType = {
   [key: string]: {
     title: string;
     type: string;
@@ -6,8 +6,13 @@ export type SubType = {
     value: string;
   };
 };
+export type UserType = {
+  userId: string | undefined;
+  email: string | undefined;
+  displayName: string | undefined;
+};
 export interface AccountSettingsProps {
-  sub: SubType;
+  settingsData: SettingsType;
 }
 export interface RenderFieldsProps {
   fields: { [key: string]: string };

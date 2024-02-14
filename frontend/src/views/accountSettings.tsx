@@ -1,24 +1,33 @@
-import { useEffect, useState } from "react";
-import fetchSubData from "../api/getAccount";
+import { useEffect, useState, useContext, useCallback } from "react";
+import buildData from "./accountSettingsComponents/dataHandler";
 import AccountSettings from "./accountSettingsComponents/accountSettings";
-
+import { UserContext } from "../contexts/userContext";
 const AccountSettingsPage = () => {
-  const [sub, setSub] = useState({});
+  const [settingsData, setSettingsData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const user = useContext(UserContext);
+  const fetchData = useCallback(async () => {
+    setIsLoading(true);
+    if (user.userId === undefined) return;
+    try {
+      const data = await buildData(user);
+      if (!data) return;
+      console.log(data);
+      setSettingsData(data);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("Error fetching settings data:", error);
+      // Handle error (display a message?)
+    }
+  }, [user]);
 
-  const fetchData = async () => {
-    const data = await fetchSubData();
-    console.log("data" + data);
-    setSub(data);
-    setIsLoading(false);
-  };
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
   if (isLoading) return <div>Loading...</div>;
   return (
     <>
-      <AccountSettings sub={sub} />
+      <AccountSettings settingsData={settingsData} />
     </>
   );
 };

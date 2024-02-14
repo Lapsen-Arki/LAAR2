@@ -50,6 +50,7 @@ export interface DecodedToken {
   exp: number;
   email: string;
   email_verified: boolean;
+  displayName: string;
   firebase: {
     identities: {
       email: string[];

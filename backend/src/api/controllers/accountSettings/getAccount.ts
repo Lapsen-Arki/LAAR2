@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-const sub: {
+const settingsDataDummy: {
   [key: string]: {
     title: string;
     type: string;
@@ -22,6 +22,6 @@ const sub: {
 };
 export const getAccount = async (req: Request, res: Response) => {
   try {
-    return res.status(200).json(sub);
+    return res.status(200).json(settingsDataDummy);
   } catch (error) {}
 };

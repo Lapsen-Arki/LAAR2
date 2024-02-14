@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from "../../components/Layout/formThemeMUI";
 import {
@@ -18,35 +18,16 @@ import {
   RenderInputProps,
   RenderLabelProps,
 } from "./types";
-/* const sub: {
-  [key: string]: {
-    title: string;
-    type: string;
-    autocomplete: string;
-    value: string;
-  };
-} = {
-  name: {
-    title: "Name",
-    type: "text",
-    autocomplete: "name",
-    value: "John Doe",
-  },
-  email: {
-    title: "Email",
-    type: "email",
-    autocomplete: "email",
-    value: "john.doe@example.com",
-  },
-}; */
+import { TokenContext } from "../../contexts/tokenContext";
 
-const AccountSettings: React.FC<AccountSettingsProps> = ({ sub }) => {
+const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
+  const { token } = useContext(TokenContext);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
   // State variables to hold the current values of the form inputs
   const [fields, setFields] = useState(
     Object.fromEntries(
-      Object.entries(sub)
+      Object.entries(settingsData)
         .map(([key, field]) => [key, field.value])
         .concat([
           ["newPassword", ""],
@@ -60,7 +41,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ sub }) => {
   );
   // State variables for field edit mode
   const [editModes, setEditModes] = useState<RenderFieldsProps["editModes"]>(
-    Object.keys(sub).reduce(
+    Object.keys(settingsData).reduce(
       (acc, key) => {
         acc[key] = false;
         return acc;
@@ -102,7 +83,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ sub }) => {
     if (editModes[fieldName] && fieldName !== "password") {
       setFields({
         ...fields,
-        [fieldName]: sub[fieldName].value,
+        [fieldName]: settingsData[fieldName].value,
       });
       setUpdatedFields((prev) => {
         const updated = { ...prev };
@@ -130,14 +111,15 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ sub }) => {
           Tilin asetukset
         </Typography>
         <form onSubmit={handleSubmit}>
-          {Object.keys(sub).map((field) => (
+          {Object.keys(settingsData).map((field) => (
             <RenderFields
+              key={field}
               fields={fields}
               fieldName={field}
               onChange={handleFieldChange}
               toggleEdit={toggleEditMode}
               editModes={editModes}
-              sub={sub}
+              sub={settingsData}
             />
           ))}
           <Box
@@ -198,6 +180,7 @@ function PasswordFields({
         type="password"
         value={fields.oldPassword}
         onChange={(e) => onChange("oldPassword", e.target.value)}
+        required
         // ... appropriate styles
       />
       {/* Add error messages and submit button  */}
