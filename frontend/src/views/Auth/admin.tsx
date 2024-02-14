@@ -9,12 +9,12 @@ import {
   InputLabel,
   TextareaAutosize,
 } from "@mui/material";
-import { FormDataToBackend } from "../../types/typesFrontend";
+import { FormDataToBackend } from "../../types/recommTypes";
 import { adminAddData } from "../../api/adminAddData";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 import PleaseLoginModal from "../../components/modals/pleaseLoginModal";
-import { FinalDataToBackend } from "../../types/typesFrontend";
+import { FinalDataToBackend } from "../../types/recommTypes";
 
 // TODO: 1. More frequent login status checks
 
@@ -29,7 +29,6 @@ const AdminPage = () => {
     content: "",
     ageLimit: 0,
     photoLink: "",
-    photoFile: undefined,
   });
   const { idToken } = useContext(TokenContext);
 
@@ -119,7 +118,6 @@ const AdminPage = () => {
                 content: "",
                 ageLimit: 0,
                 photoLink: "",
-                photoFile: undefined,
               });
               setCategory(e.target.value);
             }}
@@ -195,6 +193,18 @@ const AdminPage = () => {
               margin="normal"
               type="number"
               onChange={handleChange}
+              required
+            />
+
+            <Typography>Tulossivun teksti sisältö:</Typography>
+            <TextareaAutosize
+              name="content"
+              minRows={8} // Minimum number of rows
+              maxRows={8} // Maximum number of rows
+              style={{ width: 495 }}
+              onChange={(e) =>
+                setFormData({ ...formData, [e.target.name]: e.target.value })
+              }
               required
             />
           </div>
