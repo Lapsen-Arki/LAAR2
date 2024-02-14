@@ -9,10 +9,10 @@ import {
 import { TokenContext } from "../contexts/tokenContext";
 import PleaseLoginModal from "../components/modals/pleaseLoginModal.tsx";
 
-import { useProfileUtils } from './profileComponents/profileUtils';
-import InvitedCarersComponent from './profileComponents/invitedCarers';
-import MyChildComponent from './profileComponents/myChild';
-import CarerChildComponent from './profileComponents/carerChild';
+import { useProfileUtils } from '../customHooks/useProfileUtils.tsx';
+import InvitedCarersComponent from '../components/profileComponents/invitedCarers.tsx';
+import MyChildComponent from '../components/profileComponents/myChild.tsx';
+import CarerChildComponent from '../components/profileComponents/carerChild.tsx';
 
 export default function Profile() {
   const [openLoginModal, setOpenLoginModal] = useState(false);

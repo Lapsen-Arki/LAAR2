@@ -15,7 +15,7 @@ import {
   } from '@mui/icons-material';  
 
 import ConfirmationDialog from './profileConfirmationDialog';
-import { useProfileUtils } from './profileUtils';
+import { useProfileUtils } from '../../customHooks/useProfileUtils';
 import { calculateAge, splitNameToFitWidth } from './profileFunctions';
 
 const MyChildComponent: React.FC = () => {

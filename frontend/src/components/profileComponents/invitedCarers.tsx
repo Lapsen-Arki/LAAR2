@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardContent, Typography, IconButton, Tooltip } from '@mui/material';
-import { useProfileUtils } from './profileUtils';
+import { useProfileUtils } from '../../customHooks/useProfileUtils';
 import ConfirmationDialog from './profileConfirmationDialog';
 
 import {

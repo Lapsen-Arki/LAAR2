@@ -2,12 +2,12 @@
 
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { TokenContext } from "../../contexts/tokenContext";
-import { getChildProfiles } from "../../api/childProfile/getChildProfiles";
-import { getCarerProfile } from "../../api/carersProfile/getCarerProfile";
-import deleteChildProfile from "../../api/childProfile/deleteChildProfile";
-import deleteCarerProfile from '../../api/carersProfile/deleteCarerProfile';
-import { ChildProfile, CarerProfile } from "../../types/typesFrontend";
+import { TokenContext } from "../contexts/tokenContext";
+import { getChildProfiles } from "../api/childProfile/getChildProfiles";
+import { getCarerProfile } from "../api/carersProfile/getCarerProfile";
+import deleteChildProfile from "../api/childProfile/deleteChildProfile";
+import deleteCarerProfile from '../api/carersProfile/deleteCarerProfile';
+import { ChildProfile, CarerProfile } from "../types/typesFrontend";
 
 export function useProfileUtils() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
