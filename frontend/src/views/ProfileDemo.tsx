@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import '../styles/Profile.css';
-import Switch from '@mui/material/Switch';
-import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
-import EditIcon from '@mui/icons-material/Edit';
-import Typography from '@mui/material/Typography';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Tooltip from '@mui/material/Tooltip';
-import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import React, { useState, useEffect } from "react";
+import "../styles/Profile.css";
+import Switch from "@mui/material/Switch";
+import Button from "@mui/material/Button";
+import Avatar from "@mui/material/Avatar";
+import EditIcon from "@mui/icons-material/Edit";
+import Typography from "@mui/material/Typography";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Tooltip from "@mui/material/Tooltip";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
 // Import AnimalAvatarWidget
-import AnimalAvatarWidget from '../components/AnimalAvatarWidget';
+import AnimalAvatarWidget from "../components/AnimalAvatarWidget";
 
 interface ProfileProps {}
 
@@ -34,11 +34,13 @@ const ProfileDemo: React.FC<ProfileProps> = () => {
   const [birthdate, setBirthdate] = useState<Date | null>(null);
   const [profiles, setProfiles] = useState<ProfileData[]>([]);
 
-	const handleAccessChange = () => {
-		setAccess(!Access);
-	};
+  const handleAccessChange = () => {
+    setAccess(!Access);
+  };
 
-  const [editingProfileIndex, setEditingProfileIndex] = useState<number | null>(null);
+  const [editingProfileIndex, setEditingProfileIndex] = useState<number | null>(
+    null
+  );
 
   const handleEditClick = (index: number) => {
     setEditingProfileIndex(index);
@@ -143,7 +145,11 @@ const ProfileDemo: React.FC<ProfileProps> = () => {
 
             <div
               className="input-group"
-              style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
             >
               <h3>Valitse lapselle avatar</h3>
               {showAvatarWidget ? (
@@ -185,7 +191,11 @@ const ProfileDemo: React.FC<ProfileProps> = () => {
       ) : (
         <div className="profile-view">
           <div className="input-group">
-            <Button variant="contained" className="custom-button" onClick={handleAddProfileClick}>
+            <Button
+              variant="contained"
+              className="custom-button"
+              onClick={handleAddProfileClick}
+            >
               Lisää profiili
             </Button>
           </div>
@@ -200,7 +210,9 @@ const ProfileDemo: React.FC<ProfileProps> = () => {
                   </div>
                   <div className="text-section">
                     <Typography variant="h5">{profile.name}</Typography>
-                    <Typography variant="body2">{calculateAge(profile.birthdate)}</Typography>
+                    <Typography variant="body2">
+                      {calculateAge(profile.birthdate)}
+                    </Typography>
                   </div>
                   <div className="edit-icon-section">
                     <Tooltip title="Muokkaa profiilia">
@@ -233,7 +245,7 @@ const ProfileDemo: React.FC<ProfileProps> = () => {
 };
 
 function calculateAge(birthdate: Date): string {
-  if (!birthdate) return '';
+  if (!birthdate) return "";
 
   const today = new Date();
   const birthDate = new Date(birthdate);
@@ -246,14 +258,18 @@ function calculateAge(birthdate: Date): string {
     const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25); // Huomioi karkausvuodet
 
     const years = Math.floor(ageInYears);
-    const monthsInMilliseconds = (ageInYears - years) * (365.25 * 24 * 60 * 60 * 1000);
-    const months = Math.floor(monthsInMilliseconds / (1000 * 60 * 60 * 24 * (365.25 / 12)));
-    const daysInMilliseconds = monthsInMilliseconds % (1000 * 60 * 60 * 24 * (365.25 / 12));
+    const monthsInMilliseconds =
+      (ageInYears - years) * (365.25 * 24 * 60 * 60 * 1000);
+    const months = Math.floor(
+      monthsInMilliseconds / (1000 * 60 * 60 * 24 * (365.25 / 12))
+    );
+    const daysInMilliseconds =
+      monthsInMilliseconds % (1000 * 60 * 60 * 24 * (365.25 / 12));
     const days = Math.floor(daysInMilliseconds / (1000 * 60 * 60 * 24));
 
-    const yearLabel = years === 1 ? 'v' : 'v';
-    const monthLabel = months === 1 ? 'kk' : 'kk';
-    const dayLabel = days === 1 ? 'pv' : 'pv';
+    const yearLabel = years === 1 ? "v" : "v";
+    const monthLabel = months === 1 ? "kk" : "kk";
+    const dayLabel = days === 1 ? "pv" : "pv";
 
     return `${years}${yearLabel} ${months}${monthLabel} ${days}${dayLabel}, Hyvää Syntymäpäivää! 🥳🎈`;
   }
@@ -273,23 +289,24 @@ function calculateAge(birthdate: Date): string {
   const ageInYears = ageInMilliseconds / (1000 * 60 * 60 * 24 * 365.25); // Huomioi karkausvuodet
 
   const years = Math.floor(ageInYears);
-  const monthsInMilliseconds = (ageInYears - years) * (365.25 * 24 * 60 * 60 * 1000);
-  const months = Math.floor(monthsInMilliseconds / (1000 * 60 * 60 * 24 * (365.25 / 12)));
-  const daysInMilliseconds = monthsInMilliseconds % (1000 * 60 * 60 * 24 * (365.25 / 12));
+  const monthsInMilliseconds =
+    (ageInYears - years) * (365.25 * 24 * 60 * 60 * 1000);
+  const months = Math.floor(
+    monthsInMilliseconds / (1000 * 60 * 60 * 24 * (365.25 / 12))
+  );
+  const daysInMilliseconds =
+    monthsInMilliseconds % (1000 * 60 * 60 * 24 * (365.25 / 12));
   const days = Math.floor(daysInMilliseconds / (1000 * 60 * 60 * 24));
 
-  const yearLabel = years === 1 ? 'v' : 'v';
-  const monthLabel = months === 1 ? 'kk' : 'kk';
-  const dayLabel = days === 1 ? 'pv' : 'pv';
+  const yearLabel = years === 1 ? "v" : "v";
+  const monthLabel = months === 1 ? "kk" : "kk";
+  const dayLabel = days === 1 ? "pv" : "pv";
 
   return `${years}${yearLabel} ${months}${monthLabel} ${days}${dayLabel}`;
 }
 
-
-
-
-
-{/*
+{
+  /*
           <div className="children">
             <Card>
               <CardContent className="card-content">
@@ -355,8 +372,10 @@ function calculateAge(birthdate: Date): string {
               </CardContent>
             </Card>
           </div>
-*/}
-{/*
+*/
+}
+{
+  /*
           <label>Hoitajat:</label>
           <div className="caretakers">
             <Card>
@@ -423,6 +442,7 @@ function calculateAge(birthdate: Date): string {
               </CardContent>
             </Card>
           </div>
-        */}
+        */
+}
 
 export default ProfileDemo;
