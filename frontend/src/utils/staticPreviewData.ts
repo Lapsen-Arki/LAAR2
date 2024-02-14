@@ -1,22 +1,25 @@
-import { RecommendationsType } from "../types/typesFrontend";
+import { RecommendationsType } from "../types/recommTypes";
 
 export const activityRecomm: RecommendationsType[] = [
   {
     category: "activity",
     title: "Ulkoilu aktiviteetit",
-    content: { pihaleikki: 3, kävely: 12, pulkkailu: 8 },
+    recomm: { pihaleikki: 3, kävely: 12, pulkkailu: 8 },
+    textContent: { contentName: "content" },
     photos: { pihaleikki: "", kävely: "", pulkkailu: "" },
   },
   {
     category: "activity",
     title: "Sisä aktiviteetit",
-    content: { joku12: 12 },
+    recomm: { joku12: 12 },
+    textContent: { contentName: "content" },
     photos: { joku12: "" },
   },
   {
     category: "activity",
     title: "Muut aktiviteetit",
-    content: { joku1: 1, joku6: 6 },
+    recomm: { joku1: 1, joku6: 6 },
+    textContent: { contentName: "content" },
     photos: { joku1: "", joku6: "" },
   },
 ];
@@ -26,24 +29,27 @@ export const mealRecomm: RecommendationsType[] = [
     category: "meal",
     type: "both",
     title: "Juoma",
-    content: { maito: 0, mehu: 14, vesi: 0 },
+    recomm: { maito: 0, mehu: 14, vesi: 0 },
+    textContent: { contentName: "content" },
     photos: { maito: "", mehu: "", vesi: "" },
   },
   {
     category: "meal",
     type: "small",
     title: "Aamupala juttu",
-    content: { jugurtti: 12, marjoja: 14, kiisseli: 15, puuro: 4 },
+    recomm: { jugurtti: 12, marjoja: 14, kiisseli: 15, puuro: 4 },
+    textContent: { contentName: "content" },
     photos: { jugurtti: "", marjoja: "", kiisseli: "", puuro: "4" },
   },
   {
     category: "meal",
     type: "big",
     title: "Proteiini",
-    content: {
+    recomm: {
       kebab: 1,
       lihapata: 1,
     },
+    textContent: { contentName: "content" },
     photos: { kebab: "", lihapata: "" },
   },
 ];
@@ -53,7 +59,7 @@ export const tipsRecomm: RecommendationsType[] = [
     category: "tip",
     type: "nap",
     title: "Vinkkejä lapsen päiväuniin",
-    content: {
+    textContent: {
       "Vinkkejä lapsen päiväuniin": `
   Pienen lapsen päiväunien suhteen on tärkeää luoda rauhallinen ja säännöllinen rutiini, joka auttaa lasta rentoutumaan ja valmistautumaan nukkumaan. Tässä on joitakin vinkkejä, jotka voivat auttaa:
   
@@ -73,7 +79,7 @@ export const tipsRecomm: RecommendationsType[] = [
     category: "tip",
     type: "bedtime",
     title: "Vinkkejä iltatoimiin",
-    content: {
+    textContent: {
       "Vinkkejä iltatoimiin": `
   1. Rauhallinen leikkihetki: Vältä liian energisiä leikkejä iltaisin. Sen sijaan, suosi rauhallisia aktiviteetteja, kuten palapelien kokoamista tai piirtämistä, jotka eivät kiihdytä lasta ennen nukkumaanmenoa.
   
@@ -91,7 +97,7 @@ export const tipsRecomm: RecommendationsType[] = [
     category: "tip",
     type: "sleep",
     title: "Vinkkejä nukkumiseen",
-    content: {
+    textContent: {
       "Vinkkejä nukkumiseen": `
       
   1. Rauhoittava rutiini: Luo nukkumaanmenorutiini, joka voi sisältää iltasadun lukemista, hiljaista musiikkia tai kevyitä venyttelyharjoituksia. Rutiini auttaa lasta tuntemaan olonsa turvalliseksi ja valmiiksi unta varten.

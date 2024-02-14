@@ -1,7 +1,8 @@
 // Admin page data adding feature:
 export interface FormDataToBackend {
   title: string;
-  content: string; // <- This will be saved in a object in the backend
+  name: string; // <- This will be saved in a object in the backend
+  textContent: string;
   ageLimit?: number;
   photoLink?: string;
 }
@@ -11,7 +12,7 @@ export interface FinalDataToBackend extends FormDataToBackend {
   typeSelect?: string;
 }
 
-export interface contents {
+export interface recomm {
   [key: string]: number; // Name: ageLimit / activity: ageLimit
 }
 export interface TipContents {
@@ -27,7 +28,8 @@ export type RecommendationsType = {
   category: string;
   type?: string;
   title: string;
-  content: contents | TipContents;
+  recomm?: recomm | TipContents;
+  textContent: TipContents;
   photos?: Photos;
 };
 

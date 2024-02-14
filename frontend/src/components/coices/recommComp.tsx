@@ -1,5 +1,5 @@
 import { Typography, Grid, Card, CardActionArea, Button } from "@mui/material";
-import { RecommendationsType } from "../../types/typesFrontend";
+import { RecommendationsType } from "../../types/recommTypes";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -74,7 +74,7 @@ export default function RecommComp({
             <Grid container spacing={2} sx={{ textAlign: "center" }}>
               {/* Iterate trough all the recommendations in the object */}
 
-              {Object.entries(recommendation.content).map(
+              {Object.entries(recommendation.recomm).map(
                 ([itemName, ageLimit]) => {
                   if (ageLimit <= childAge) {
                     return (

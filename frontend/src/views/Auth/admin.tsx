@@ -26,7 +26,8 @@ const AdminPage = () => {
   const [openLoginModal, setOpenLoginModal] = React.useState(false);
   const [formData, setFormData] = React.useState<FormDataToBackend>({
     title: "",
-    content: "",
+    name: "",
+    textContent: "",
     ageLimit: 0,
     photoLink: "",
   });
@@ -115,7 +116,8 @@ const AdminPage = () => {
               }
               setFormData({
                 title: "",
-                content: "",
+                name: "",
+                textContent: "",
                 ageLimit: 0,
                 photoLink: "",
               });
@@ -175,7 +177,7 @@ const AdminPage = () => {
                 marginTop: 0,
                 background: "white",
               }}
-              name="content"
+              name="name"
               fullWidth
               label="Nimi"
               margin="normal"
@@ -198,7 +200,7 @@ const AdminPage = () => {
 
             <Typography>Tulossivun teksti sisältö:</Typography>
             <TextareaAutosize
-              name="content"
+              name="textContent"
               minRows={8} // Minimum number of rows
               maxRows={8} // Maximum number of rows
               style={{ width: 495 }}
@@ -213,7 +215,7 @@ const AdminPage = () => {
             <Typography>Teksti sisältö:</Typography>
 
             <TextareaAutosize
-              name="content"
+              name="textContent"
               minRows={8} // Minimum number of rows
               maxRows={8} // Maximum number of rows
               style={{ width: 495 }}
