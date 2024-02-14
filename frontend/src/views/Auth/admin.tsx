@@ -170,66 +170,43 @@ const AdminPage = () => {
           required
         />
 
-        {category !== "tip" ? (
-          <div>
-            <TextField
-              sx={{
-                marginTop: 0,
-                background: "white",
-              }}
-              name="name"
-              fullWidth
-              label="Nimi"
-              margin="normal"
-              onChange={handleChange}
-              required
-            />
-            <TextField
-              sx={{
-                marginTop: 0,
-                background: "white",
-              }}
-              name="ageLimit"
-              fullWidth
-              label="Ikäraja/kk"
-              margin="normal"
-              type="number"
-              onChange={handleChange}
-              required
-            />
+        <TextField
+          sx={{
+            marginTop: 0,
+            background: "white",
+          }}
+          name="name"
+          fullWidth
+          label="Nimi"
+          margin="normal"
+          onChange={handleChange}
+          required
+        />
+        <TextField
+          sx={{
+            marginTop: 0,
+            background: "white",
+          }}
+          name="ageLimit"
+          fullWidth
+          label="Ikäraja/kk"
+          margin="normal"
+          type="number"
+          onChange={handleChange}
+          required
+        />
 
-            <Typography>Tulossivun teksti sisältö:</Typography>
-            <TextareaAutosize
-              name="textContent"
-              minRows={8} // Minimum number of rows
-              maxRows={8} // Maximum number of rows
-              style={{ width: 495 }}
-              onChange={(e) =>
-                setFormData({ ...formData, [e.target.name]: e.target.value })
-              }
-              required
-            />
-          </div>
-        ) : (
-          <div>
-            <Typography>Teksti sisältö:</Typography>
-
-            <TextareaAutosize
-              name="textContent"
-              minRows={8} // Minimum number of rows
-              maxRows={8} // Maximum number of rows
-              style={{ width: 495 }}
-              onChange={(e) =>
-                setFormData({ ...formData, [e.target.name]: e.target.value })
-              }
-              required
-            />
-            <Typography>
-              HUOM: Teksti formatoituu täsmälleen samalla tavalla kuin kirjoitat
-              sen tähän. mm. rivinvaihdot, välimerkit jne.
-            </Typography>
-          </div>
-        )}
+        <Typography>Vinkin tai tulossivun tekstisisältö:</Typography>
+        <TextareaAutosize
+          name="textContent"
+          minRows={8} // Minimum number of rows
+          maxRows={8} // Maximum number of rows
+          style={{ width: 495 }}
+          onChange={(e) =>
+            setFormData({ ...formData, [e.target.name]: e.target.value })
+          }
+          required
+        />
 
         <div>
           <h3>Kuva</h3>

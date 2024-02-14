@@ -59,6 +59,7 @@ export const tipsRecomm: RecommendationsType[] = [
     category: "tip",
     type: "nap",
     title: "Vinkkejä lapsen päiväuniin",
+    recomm: { joku12: 12 },
     textContent: {
       "Vinkkejä lapsen päiväuniin": `
   Pienen lapsen päiväunien suhteen on tärkeää luoda rauhallinen ja säännöllinen rutiini, joka auttaa lasta rentoutumaan ja valmistautumaan nukkumaan. Tässä on joitakin vinkkejä, jotka voivat auttaa:
@@ -79,6 +80,7 @@ export const tipsRecomm: RecommendationsType[] = [
     category: "tip",
     type: "bedtime",
     title: "Vinkkejä iltatoimiin",
+    recomm: { joku12: 12 },
     textContent: {
       "Vinkkejä iltatoimiin": `
   1. Rauhallinen leikkihetki: Vältä liian energisiä leikkejä iltaisin. Sen sijaan, suosi rauhallisia aktiviteetteja, kuten palapelien kokoamista tai piirtämistä, jotka eivät kiihdytä lasta ennen nukkumaanmenoa.
@@ -97,6 +99,7 @@ export const tipsRecomm: RecommendationsType[] = [
     category: "tip",
     type: "sleep",
     title: "Vinkkejä nukkumiseen",
+    recomm: { joku12: 12 },
     textContent: {
       "Vinkkejä nukkumiseen": `
       

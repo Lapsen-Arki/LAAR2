@@ -28,15 +28,7 @@ export type RecommendationsType = {
   category: string;
   type?: string;
   title: string;
-  recomm?: recomm | TipContents;
+  recomm: recomm;
   textContent: TipContents;
   photos?: Photos;
-};
-
-export type TipsType = {
-  id: number;
-  adviseType: string;
-  title: string;
-  textContents: string;
-  photo?: string;
 };
