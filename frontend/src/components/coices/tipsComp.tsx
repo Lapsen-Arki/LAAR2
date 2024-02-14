@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { RecommendationsType } from "../../types/types";
+import { RecommendationsType } from "../../types/typesFrontend";
 import useGetRecommData from "../../customHooks/useGetRecommData";
 
 // Now there is 3 types of tips: "päiväunet", "iltatoimet", "nukkuminen".
@@ -9,7 +9,7 @@ import useGetRecommData from "../../customHooks/useGetRecommData";
 // EXTRA FEATURE: make feature to hide and show tips.
 
 export default function TipsComp({ adviseType }: { adviseType: string }) {
-  const fetchType = "vinkki";
+  const fetchType = "tip";
 
   const recommendations: RecommendationsType[] = useGetRecommData(fetchType);
   return (
@@ -27,7 +27,7 @@ export default function TipsComp({ adviseType }: { adviseType: string }) {
               component="pre"
               style={{ whiteSpace: "pre-wrap", marginBottom: 20 }}
             >
-              {recommendation.content[index]}
+              {recommendation.content[recommendation.title]}
             </Typography>
           </div>
         );

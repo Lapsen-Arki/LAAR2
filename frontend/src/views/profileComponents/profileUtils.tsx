@@ -1,11 +1,13 @@
-import { useState, useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// ProfileUtils.tsx
+
+import { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { TokenContext } from "../../contexts/tokenContext";
-import { getChildProfiles } from '../../api/childProfile/getChildProfiles';
-import { getCarerProfile } from '../../api/carersProfile/getCarerProfile';
-import deleteChildProfile from '../../api/childProfile/deleteChildProfile';
+import { getChildProfiles } from "../../api/childProfile/getChildProfiles";
+import { getCarerProfile } from "../../api/carersProfile/getCarerProfile";
+import deleteChildProfile from "../../api/childProfile/deleteChildProfile";
 import deleteCarerProfile from '../../api/carersProfile/deleteCarerProfile';
-import { ChildProfile, CarerProfile } from "../../../src/types/types";
+import { ChildProfile, CarerProfile } from "../../types/typesFrontend";
 
 export function useProfileUtils() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
@@ -19,13 +21,13 @@ export function useProfileUtils() {
 
   useEffect(() => {
     if (!idToken) {
-      console.error('JWT token puuttuu');
+      console.error("JWT token puuttuu");
       setOpenLoginModal(true);
       return;
     }
 
     const fetchProfilesFromSessionStorage = () => {
-      const storedProfilesJson = sessionStorage.getItem('childProfiles');
+      const storedProfilesJson = sessionStorage.getItem("childProfiles");
       if (storedProfilesJson) {
         return JSON.parse(storedProfilesJson) as ChildProfile[];
       }
@@ -35,11 +37,11 @@ export function useProfileUtils() {
     const fetchProfilesFromServer = async () => {
       //console.log('Haetaan profiileja palvelimelta...');
       const response = await getChildProfiles(idToken);
-      if (!('error' in response)) {
-        sessionStorage.setItem('childProfiles', JSON.stringify(response));
+      if (!("error" in response)) {
+        sessionStorage.setItem("childProfiles", JSON.stringify(response));
         setChildProfiles(response);
       } else {
-        console.error('Virhe profiilien haussa:', response.error);
+        console.error("Virhe profiilien haussa:", response.error);
       }
     };
 
@@ -54,16 +56,19 @@ export function useProfileUtils() {
     };
 
     const fetchCarerProfiles = async () => {
-      const storedCarerProfilesJson = sessionStorage.getItem('carerProfiles');
+      const storedCarerProfilesJson = sessionStorage.getItem("carerProfiles");
       if (storedCarerProfilesJson) {
         setCarerProfiles(JSON.parse(storedCarerProfilesJson));
       } else {
         try {
           const carerProfiles = await getCarerProfile(idToken, true);
-          sessionStorage.setItem('carerProfiles', JSON.stringify(carerProfiles));
+          sessionStorage.setItem(
+            "carerProfiles",
+            JSON.stringify(carerProfiles)
+          );
           setCarerProfiles(carerProfiles);
         } catch (error) {
-          console.error('Virhe hoitajaprofiilien haussa:', error);
+          console.error("Virhe hoitajaprofiilien haussa:", error);
         }
       }
     };
@@ -120,11 +125,11 @@ export function useProfileUtils() {
   };
 
   const handleAddProfileClick = () => {
-    navigate('/profile-edit');
+    navigate("/profile-edit");
   };
 
   const handleAddCarersClick = () => {
-    navigate('/profile-share');
+    navigate("/profile-share");
   };
 
   return {
@@ -141,6 +146,6 @@ export function useProfileUtils() {
     cancelDelete,
     handleEditClick,
     handleAddProfileClick,
-    handleAddCarersClick
+    handleAddCarersClick,
   };
 }

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import admin from "../../../config/firebseConfig";
 import validateAndSanitizeName from "./validateAndSanitizeName";
 import validatePassword from "./validatePassword";
-import { RegisterData } from "../../../types/types";
+import { RegisterData } from "../../../types/typesBackend";
 import stripeConf from "../../../config/stripeClient";
 import crypto from "crypto";
 import sendVerification from "../../../utils/sendVerification";
@@ -41,7 +41,7 @@ const registerUser = async (req: Request, res: Response) => {
       customer: customer.id,
       items: [{ plan: "price_1ObLeAK45umi2LZd5XwwYvam" }], // THIS IS TEST PLAN -> CHANGE FOR PRODUCTION
       trial_period_days: 14,
-      cancel_at_period_end: true,
+      cancel_at_period_end: true, // this will be updated to true when the user confirms their email address
     });
 
     // Create a new user using Firebase Authentication

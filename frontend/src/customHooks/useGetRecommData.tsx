@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { RecommendationsType } from "../types/types";
+import { RecommendationsType } from "../types/typesFrontend";
 import axios from "axios";
 import { TokenContext } from "../contexts/tokenContext";
 import {
@@ -21,34 +21,55 @@ export default function useGetRecommData(
 
   useEffect(() => {
     const fetchData = async () => {
+      // Use session storage OR fetch & set the data:
+
       if (isLoggedIn) {
-        try {
-          const response = await axios.get(
-            `${API_BASE_URL}/getRecommData?fetch=${fetchType}`
-          );
-          setData(response.data);
-        } catch (error) {
-          if (axios.isAxiosError(error) && error.response) {
-            console.error("Error sending the data: ", error.response.data);
-            return { error: error.response.data };
+        // Checking sessionStorage:
+        const sessionRecommData = sessionStorage.getItem(fetchType);
+        let recommData;
+
+        if (sessionRecommData) {
+          recommData = JSON.parse(sessionRecommData);
+        }
+
+        // Using sessionStorage if it's longer than empty array:
+        if (recommData && recommData.length > 0) {
+          console.log("Using sessionStorage for recommData");
+          setData(recommData);
+        } else {
+          // Fetching the data:
+          console.log("Fetching recommData");
+          try {
+            const response = await axios.get(
+              `${API_BASE_URL}/getRecommData/${fetchType}`
+            );
+            setData(response.data);
+            sessionStorage.setItem(fetchType, JSON.stringify(response.data));
+          } catch (error) {
+            if (axios.isAxiosError(error) && error.response) {
+              console.error("Error sending the data: ", error.response.data);
+              return { error: error.response.data };
+            }
           }
         }
+
         return data;
+        // Use preview data:
       } else {
         switch (fetchType) {
-          case "aktiviteetti":
+          case "activity":
             setData(activityRecomm);
             break;
-          case "ateria":
+          case "meal":
             setData(mealRecomm);
             break;
-          case "vinkki":
+          case "tip":
             setData(tipsRecomm);
             break;
         }
       }
     };
     fetchData();
-  }, [data, fetchType, isLoggedIn]);
+  }, [fetchType, isLoggedIn]); // eslint-disable-line react-hooks/exhaustive-deps
   return data;
 }

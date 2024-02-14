@@ -2,13 +2,13 @@ import { createTheme } from "@mui/material/styles";
 
 const formTheme = createTheme({
   components: {
-    //Alertin tyylimääreet 
+    //Alertin tyylimääreet
     MuiAlert: {
       styleOverrides: {
         root: {
           fontFamily: ["Quicksand", "sans-serif"].join(","),
-          textDecoration: 'none',
-          marginTop: 16, 
+          textDecoration: "none",
+          marginTop: 16,
           marginBottom: 10,
         },
       },
@@ -18,24 +18,24 @@ const formTheme = createTheme({
       styleOverrides: {
         //Primary
         contained: {
-          backgroundColor: '#63c8cc',
+          backgroundColor: "#63c8cc",
           width: 250,
           marginTop: 20,
           marginBottom: 20,
           marginLeft: 10,
           marginRight: 10,
           fontFamily: ["Righteous", "sans-serif"].join(","),
-          color: 'white',
-          fontWeight: 'bold',
+          color: "white",
+          fontWeight: "bold",
           fontSize: 13,
-          '&:hover': {
-            backgroundColor: '#63c8cc',
-            color: 'white',
+          "&:hover": {
+            backgroundColor: "#63c8cc",
+            color: "white",
           },
-          '@media (min-width:400px)': {
-            width: '92%',
+          "@media (min-width:400px)": {
+            width: "92%",
           },
-          '@media (min-width:576px)': {
+          "@media (min-width:576px)": {
             width: 370,
           },
         },
@@ -47,14 +47,14 @@ const formTheme = createTheme({
           marginLeft: 10,
           marginRight: 10,
           fontFamily: ["Righteous", "sans-serif"].join(","),
-          color: '#A68477',
-          fontWeight: 'bold',
-          borderColor: '#A68477',
+          color: "#A68477",
+          fontWeight: "bold",
+          borderColor: "#A68477",
           fontSize: 13,
-          
-          '&:hover': {
-            backgroundColor: '#fff',
-            borderColor: 'transparent',
+
+          "&:hover": {
+            backgroundColor: "#fff",
+            borderColor: "transparent",
           },
         },
         //Tertiary
@@ -65,13 +65,13 @@ const formTheme = createTheme({
           marginLeft: 10,
           marginRight: 10,
           fontFamily: ["Righteous", "sans-serif"].join(","),
-          color: '#A68477',
-          fontWeight: 'bold',
+          color: "#A68477",
+          fontWeight: "bold",
           fontSize: 13,
-          
-          '&:hover': {
-            backgroundColor: 'transparent',
-            textDecoration: 'underline',
+
+          "&:hover": {
+            backgroundColor: "transparent",
+            textDecoration: "underline",
           },
         },
       },
@@ -83,16 +83,16 @@ const formTheme = createTheme({
           margin: 10,
           marginRight: 5,
           paddingRight: 0,
-          alignSelf: 'flex-start',
-          color: 'black',
-          '&.Mui-checked': {
-            color: '#63c8cc',
-            '&:hover': {
-              color: 'white',
+          alignSelf: "flex-start",
+          color: "black",
+          "&.Mui-checked": {
+            color: "#63c8cc",
+            "&:hover": {
+              color: "white",
             },
+          },
         },
       },
-    },
     },
     //Container-elementin tyylimääreet
     MuiContainer: {
@@ -100,15 +100,15 @@ const formTheme = createTheme({
         root: {
           width: 320,
           margin: 0,
-          marginTop: 'auto',
+          marginTop: "auto",
           padding: 20,
-          display: 'flex',
-          flexDirection: 'column',
-          flexWrap: 'wrap',    
-          '@media (min-width:400px)': {
-            width: '95%',
+          display: "flex",
+          flexDirection: "column",
+          flexWrap: "wrap",
+          "@media (min-width:400px)": {
+            width: "95%",
           },
-          '@media (min-width:576px)': {
+          "@media (min-width:576px)": {
             width: 450,
             boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
           },
@@ -121,35 +121,35 @@ const formTheme = createTheme({
         root: {
           margin: 0,
           padding: 0,
-          backgroundColor: 'white',
+          backgroundColor: "white",
           fontFamily: ["Quicksand", "sans-serif"].join(","),
-          color: 'black',
-          textDecoration: 'none',
-          '&:hover fieldset': {
-            borderColor: 'black !important',
+          color: "black",
+          textDecoration: "none",
+          "&:hover fieldset": {
+            borderColor: "black !important",
           },
         },
       },
     },
     //select-elementin focus-tilan reunan väri
     MuiInputLabel: {
-        styleOverrides: {
-          root: {
-            '&.Mui-focused': {
-              color: 'black !important',
-            },
+      styleOverrides: {
+        root: {
+          "&.Mui-focused": {
+            color: "black !important",
           },
         },
       },
+    },
     //select-elementin focus-tilan reunan väri
     MuiOutlinedInput: {
       styleOverrides: {
         notchedOutline: {
-        borderWidth: '1px !important',
-        borderColor: 'white !important',
-        '&:hover fieldset': {
-            borderColor: 'black !important',
-        },
+          borderWidth: "1px !important",
+          borderColor: "white !important",
+          "&:hover fieldset": {
+            borderColor: "black !important",
+          },
         },
       },
     },
@@ -157,9 +157,9 @@ const formTheme = createTheme({
     MuiLink: {
       styleOverrides: {
         root: {
-          color: '#000000',
+          color: "#000000",
           fontFamily: ["Quicksand", "sans-serif"].join(","),
-          textDecoration: 'underline',
+          textDecoration: "underline",
         },
       },
     },
@@ -170,24 +170,24 @@ const formTheme = createTheme({
           width: 250,
           margin: 7,
           padding: 0,
-          '& label.Mui-focused': {
-            color: 'black',
+          "& label.Mui-focused": {
+            color: "black",
           },
-          '& .MuiOutlinedInput-root': {
-            '& fieldset': {
-              borderColor: 'white',
+          "& .MuiOutlinedInput-root": {
+            "& fieldset": {
+              borderColor: "white",
             },
-            '&:hover fieldset': {
-              borderColor: 'black !important',
+            "&:hover fieldset": {
+              borderColor: "black !important",
             },
-            '&.Mui-focused fieldset': {
-              borderColor: 'white',
+            "&.Mui-focused fieldset": {
+              borderColor: "white",
             },
           },
-          '@media (min-width:400px)': {
-            width: '92%',
+          "@media (min-width:400px)": {
+            width: "92%",
           },
-          '@media (min-width:576px)': {
+          "@media (min-width:576px)": {
             width: 370,
           },
         },
@@ -196,12 +196,12 @@ const formTheme = createTheme({
     MuiTypography: {
       styleOverrides: {
         root: {
-          color: '#000000',
+          color: "#000000",
           fontFamily: ["Righteous", "sans-serif"].join(","),
-          textDecoration: 'none',
+          textDecoration: "none",
         },
         h1: {
-          color: '#000000',
+          color: "#000000",
           fontFamily: ["Righteous", "sans-serif"].join(","),
           marginTop: 10,
           marginBottom: 20,
@@ -209,7 +209,7 @@ const formTheme = createTheme({
           marginRight: 10,
         },
         h2: {
-          color: '#000000',
+          color: "#000000",
           fontFamily: ["Righteous", "sans-serif"].join(","),
           marginTop: 10,
           marginBottom: 20,
@@ -217,7 +217,7 @@ const formTheme = createTheme({
           marginRight: 10,
         },
         h3: {
-          color: '#000000',
+          color: "#000000",
           fontFamily: ["Righteous", "sans-serif"].join(","),
           marginTop: 10,
           marginBottom: 20,
@@ -225,7 +225,7 @@ const formTheme = createTheme({
           marginRight: 10,
         },
         h4: {
-          color: '#000000',
+          color: "#000000",
           fontFamily: ["Righteous", "sans-serif"].join(","),
           marginTop: 10,
           marginBottom: 20,
@@ -233,7 +233,7 @@ const formTheme = createTheme({
           marginRight: 10,
         },
         h5: {
-          color: '#000000',
+          color: "#000000",
           fontFamily: ["Righteous", "sans-serif"].join(","),
           marginTop: 10,
           marginBottom: 20,
@@ -241,7 +241,7 @@ const formTheme = createTheme({
           marginRight: 10,
         },
         h6: {
-          color: '#000000',
+          color: "#000000",
           fontFamily: ["Righteous", "sans-serif"].join(","),
           marginTop: 10,
           marginBottom: 20,
@@ -252,9 +252,9 @@ const formTheme = createTheme({
         subtitle1: {
           fontFamily: ["Quicksand", "sans-serif"].join(","),
           fontSize: 14,
-          fontWeight: 'bold',
+          fontWeight: "bold",
           letterSpacing: 0.1,
-          textAlign: 'center',
+          textAlign: "center",
           margin: 10,
         },
         //error
@@ -262,28 +262,27 @@ const formTheme = createTheme({
           fontFamily: ["Quicksand", "sans-serif"].join(","),
           fontSize: 14,
           letterSpacing: 0.1,
-          textAlign: 'center',
+          textAlign: "center",
           margin: 10,
         },
         body1: {
-          color: '#000000',
+          color: "#000000",
           fontFamily: ["Quicksand", "sans-serif"].join(","),
           margin: 10,
         },
         body2: {
-          color: '#000000',
+          color: "#000000",
           fontFamily: ["Quicksand", "sans-serif"].join(","),
           margin: 10,
         },
         caption: {
-          color: '#000000',
+          color: "#000000",
           fontFamily: ["Quicksand", "sans-serif"].join(","),
           margin: 10,
         },
       },
     },
-    },
+  },
 });
-
 
 export { formTheme };

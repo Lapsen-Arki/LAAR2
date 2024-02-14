@@ -9,12 +9,12 @@ import {
   InputLabel,
   TextareaAutosize,
 } from "@mui/material";
-import { FormDataToBackend } from "../../types/types";
+import { FormDataToBackend } from "../../types/typesFrontend";
 import { adminAddData } from "../../api/adminAddData";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 import PleaseLoginModal from "../../components/modals/pleaseLoginModal";
-import { FinalDataToBackend } from "../../types/types";
+import { FinalDataToBackend } from "../../types/typesFrontend";
 
 // TODO: 1. More frequent login status checks
 
@@ -29,7 +29,7 @@ const AdminPage = () => {
     content: "",
     ageLimit: 0,
     photoLink: "",
-    photoFileName: "",
+    photoFile: undefined,
   });
   const { idToken } = useContext(TokenContext);
 
@@ -45,6 +45,7 @@ const AdminPage = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
     const submitData: FinalDataToBackend = {
       category,
       typeSelect,
@@ -70,16 +71,16 @@ const AdminPage = () => {
   let typeMenuItems;
   if (category) {
     typeMenuItems =
-      category === "ateria"
+      category === "meal"
         ? [
             { value: "small", label: "pieni" },
             { value: "big", label: "iso" },
             { value: "both", label: "molemmat" },
           ]
         : [
-            { value: "päiväunet", label: "päiväunet" },
-            { value: "iltatoimet", label: "iltatoimet" },
-            { value: "nukkuminen", label: "nukkuminen" },
+            { value: "nap", label: "päiväunet" },
+            { value: "bedtime", label: "iltatoimet" },
+            { value: "sleep", label: "nukkuminen" },
           ];
   }
 
@@ -118,19 +119,19 @@ const AdminPage = () => {
                 content: "",
                 ageLimit: 0,
                 photoLink: "",
-                photoFileName: "",
+                photoFile: undefined,
               });
               setCategory(e.target.value);
             }}
             required
           >
-            <MenuItem value="ateria">ateria</MenuItem>
-            <MenuItem value="aktiviteetti">aktiviteetti</MenuItem>
-            <MenuItem value="vinkki">vinkki</MenuItem>
+            <MenuItem value="meal">ateria</MenuItem>
+            <MenuItem value="activity">aktiviteetti</MenuItem>
+            <MenuItem value="tip">vinkki</MenuItem>
           </Select>
         </FormControl>
         {/*type / identifier: */}
-        {category !== "aktiviteetti" && (
+        {category !== "activity" && (
           <FormControl fullWidth margin="normal">
             <InputLabel id="type-select">Tyyppi</InputLabel>
             <Select
@@ -169,7 +170,7 @@ const AdminPage = () => {
           required
         />
 
-        {category !== "vinkki" ? (
+        {category !== "tip" ? (
           <div>
             <TextField
               sx={{
@@ -218,12 +219,9 @@ const AdminPage = () => {
           </div>
         )}
 
-        {/* Backend is checking if there is photo, but if category is tip it's optional  */}
-        {/* TODO: add opitional photo for tips and required for meals and activity */}
-
         <div>
           <h3>Kuva</h3>
-          <p>Valitse kuvan URL linkki tai valitse tiedosto:</p>
+          <p>Valitse kuvan URL linkki:</p>
           <TextField
             sx={{
               marginTop: 0,
@@ -235,18 +233,11 @@ const AdminPage = () => {
             margin="normal"
             onChange={handleChange}
           />
-
-          <TextField
-            sx={{
-              marginTop: 0,
-              background: "white",
-            }}
-            name="photoFileName"
-            fullWidth
-            margin="normal"
-            type="file"
-            onChange={handleChange}
-          />
+          <p>
+            Tallenna kuvat ensin tietokantaan manuaalisesti ja käytä oikeaa
+            kuvan linkkiä tässä tai käytä vaihtoehtoisesti toisen
+            palveluntarjoajan kuvaa.
+          </p>
 
           <Button
             variant="contained"

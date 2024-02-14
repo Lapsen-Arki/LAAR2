@@ -3,7 +3,7 @@ import NameDropDown from "../components/index/nameDropDown";
 import ReturnBtn from "../components/returnBtn";
 import { useEffect, useState } from "react";
 import { Container, Typography } from "@mui/material";
-import { NamesAndAgesType } from "../types/types";
+import { NamesAndAgesType } from "../types/typesFrontend";
 import makeChildObject from "../utils/makeChildObject";
 
 // comp imports:
@@ -78,7 +78,7 @@ export default function ChoicesPage() {
         setMealType("big");
         break;
       case "Päiväunet":
-        setTipsFor("päiväunet");
+        setTipsFor("nap");
         break;
       case "Välipala":
         setSmallMeal(true);
@@ -90,11 +90,11 @@ export default function ChoicesPage() {
         break;
       case "Iltapala ja iltatoimet":
         setSmallMeal(true);
-        setTipsFor("iltatoimet");
+        setTipsFor("bedtime");
         setMealType("small");
         break;
       case "Hyvää yötä":
-        setTipsFor("nukkuminen");
+        setTipsFor("sleep");
         break;
     }
   }, [renderIdentifier]);

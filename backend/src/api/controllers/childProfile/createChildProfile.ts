@@ -2,7 +2,10 @@ import { Request, Response } from "express";
 import admin from "../../../config/firebseConfig";
 import { getUserIdFromToken } from "../../../utils/getUserIdFromTokenUtil";
 
-const createChildProfile = async (req: Request, res: Response): Promise<void> => {
+const createChildProfile = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { childName, birthdate, avatar, accessRights } = req.body;
 
@@ -37,7 +40,12 @@ const createChildProfile = async (req: Request, res: Response): Promise<void> =>
       creatorId: creatorId, // Käyttäjän UID
     });
 
-    res.status(200).json({ message: "Uusi profiili luotu onnistuneesti", id: newProfileRef.id });
+    res
+      .status(200)
+      .json({
+        message: "Uusi profiili luotu onnistuneesti",
+        id: newProfileRef.id,
+      });
   } catch (error: any) {
     console.error("Profiilin luonti epäonnistui", error);
     res.status(500).json({ error: "Jotain meni pieleen" });

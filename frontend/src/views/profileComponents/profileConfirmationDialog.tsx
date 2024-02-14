@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Dialog,
   DialogTitle,
@@ -6,7 +6,7 @@ import {
   DialogContentText,
   DialogActions,
   Button,
-} from '@mui/material';
+} from "@mui/material";
 
 interface ConfirmationDialogProps {
   open: boolean;

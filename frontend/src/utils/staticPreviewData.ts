@@ -1,20 +1,20 @@
-import { RecommendationsType } from "../types/types";
+import { RecommendationsType } from "../types/typesFrontend";
 
 export const activityRecomm: RecommendationsType[] = [
   {
-    category: "aktiviteetti",
+    category: "activity",
     title: "Ulkoilu aktiviteetit",
     content: { pihaleikki: 3, kävely: 12, pulkkailu: 8 },
     photos: { pihaleikki: "", kävely: "", pulkkailu: "" },
   },
   {
-    category: "aktiviteetti",
+    category: "activity",
     title: "Sisä aktiviteetit",
     content: { joku12: 12 },
     photos: { joku12: "" },
   },
   {
-    category: "aktiviteetti",
+    category: "activity",
     title: "Muut aktiviteetit",
     content: { joku1: 1, joku6: 6 },
     photos: { joku1: "", joku6: "" },
@@ -23,21 +23,21 @@ export const activityRecomm: RecommendationsType[] = [
 
 export const mealRecomm: RecommendationsType[] = [
   {
-    category: "ateria",
+    category: "meal",
     type: "both",
     title: "Juoma",
     content: { maito: 0, mehu: 14, vesi: 0 },
     photos: { maito: "", mehu: "", vesi: "" },
   },
   {
-    category: "ateria",
+    category: "meal",
     type: "small",
     title: "Aamupala juttu",
     content: { jugurtti: 12, marjoja: 14, kiisseli: 15, puuro: 4 },
     photos: { jugurtti: "", marjoja: "", kiisseli: "", puuro: "4" },
   },
   {
-    category: "ateria",
+    category: "meal",
     type: "big",
     title: "Proteiini",
     content: {
@@ -50,11 +50,11 @@ export const mealRecomm: RecommendationsType[] = [
 
 export const tipsRecomm: RecommendationsType[] = [
   {
-    category: "vinkki",
-    type: "päiväunet",
+    category: "tip",
+    type: "nap",
     title: "Vinkkejä lapsen päiväuniin",
     content: {
-      päiväunet: `
+      "Vinkkejä lapsen päiväuniin": `
   Pienen lapsen päiväunien suhteen on tärkeää luoda rauhallinen ja säännöllinen rutiini, joka auttaa lasta rentoutumaan ja valmistautumaan nukkumaan. Tässä on joitakin vinkkejä, jotka voivat auttaa:
   
   1. Säännöllinen aikataulu: Yritä pitää päiväunet suunnilleen samaan aikaan joka päivä. Säännöllisyys auttaa kehoa tunnistamaan nukkumaanmenoaikoja, mikä voi helpottaa unen saantia.
@@ -70,11 +70,11 @@ export const tipsRecomm: RecommendationsType[] = [
     },
   },
   {
-    category: "vinkki",
-    type: "iltatoimet",
+    category: "tip",
+    type: "bedtime",
     title: "Vinkkejä iltatoimiin",
     content: {
-      iltatoimet: `
+      "Vinkkejä iltatoimiin": `
   1. Rauhallinen leikkihetki: Vältä liian energisiä leikkejä iltaisin. Sen sijaan, suosi rauhallisia aktiviteetteja, kuten palapelien kokoamista tai piirtämistä, jotka eivät kiihdytä lasta ennen nukkumaanmenoa.
   
   2. Iltapalan tarjoaminen: Kevyt ja terveellinen iltapala voi auttaa lasta tuntemaan olonsa mukavaksi ja valmistautumaan yöunille. Vältä sokeripitoisia tai kofeiinia sisältäviä ruokia ja juomia.
@@ -88,11 +88,11 @@ export const tipsRecomm: RecommendationsType[] = [
     },
   },
   {
-    category: "vinkki",
-    type: "iltatoimet",
+    category: "tip",
+    type: "sleep",
     title: "Vinkkejä nukkumiseen",
     content: {
-      iltatoimet: `
+      "Vinkkejä nukkumiseen": `
       
   1. Rauhoittava rutiini: Luo nukkumaanmenorutiini, joka voi sisältää iltasadun lukemista, hiljaista musiikkia tai kevyitä venyttelyharjoituksia. Rutiini auttaa lasta tuntemaan olonsa turvalliseksi ja valmiiksi unta varten.
   

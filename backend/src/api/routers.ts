@@ -1,55 +1,59 @@
 // DEFINING ROUTING LOGIC OF THE APPLICATION
 import express from "express";
 import { Request, Response } from "express";
+import checkAuth from "../middleware/checkAuth";
+import adminAuth from "../middleware/adminAuth";
+
+// Controller Imports:
 import registerUser from "./controllers/register/register";
 import adminAddData from "./controllers/adminAddData";
-import checkAuth from "../middleware/checkAuth";
-import { emailTest } from "./controllers/testingEmail";
-import adminAuth from "../middleware/adminAuth";
-import testController from "../utils/testController";
+import getRecommData from "./controllers/getRecommData";
+import {
+  startSubscription,
+  cancelSubscription,
+  getSubscriptionById,
+} from "./controllers/stripe";
+import emailVerification from "./controllers/emailVerification";
 
+// Profile controllers:
 import createChildProfile from "./controllers/childProfile/createChildProfile";
 import editChildProfile from "./controllers/childProfile/editChildProfile";
 import { getChildProfiles } from "./controllers/childProfile/getChildProfiles";
 import { getChildProfileById } from "./controllers/childProfile/getChildProfileById";
 import { deleteChildProfile } from "./controllers/childProfile/deleteChildProfile";
-
 import inviteAccountToProfile from "./controllers/carersProfile/inviteAccountToProfile";
 import { getCarerProfile } from "./controllers/carersProfile/getCarerProfile";
 import { deleteCarerProfile } from "./controllers/carersProfile/deleteCarerProfile";
 
-import {
-  startSubscription,
-  cancelSubscription,
-  getSubscriptionById
-} from './controllers/stripe';
-import emailVerification from "./controllers/emailVerification";
+// test controllers:
+import { emailTest } from "./controllers/testingEmail";
+import testController from "../utils/testController";
 
 const router = express.Router();
 
+// General routes:
 router.post("/register", registerUser);
 router.post("/auth", checkAuth, (req: Request, res: Response) => {
   res.status(200).json({ message: "Success" });
 });
-
 router.post("/admin", checkAuth, adminAuth, adminAddData);
+router.get("/getRecommData/:fetchType", getRecommData);
 
-// Profile routes:                                           // Selitteet:
-router.post("/createChildProfile", createChildProfile);      // Luo uusi profiili käyttäjälle
-router.post("/editChildProfile/:id", editChildProfile);      // Muokkaa käyttäjän luomaa profiilia, profiilin idn perusteella
-router.get("/profiles", getChildProfiles);                   // Hae kaikki käyttäjän luomat profiilit
-router.get("/profile/:id", getChildProfileById);             // Hae käyttäjän luoma profiili idn perusteella
-router.delete("/profile/:profileId", deleteChildProfile);    // Poista käyttäjän luoma profiili
-
+// Profile routes:
+router.post("/createChildProfile", createChildProfile); // Luo uusi profiili käyttäjälle
+router.post("/editChildProfile/:id", editChildProfile); // Muokkaa käyttäjän luomaa profiilia, profiilin idn perusteella
+router.get("/profiles", getChildProfiles); // Hae kaikki käyttäjän luomat profiilit
+router.get("/profile/:id", getChildProfileById); // Hae käyttäjän luoma profiili idn perusteella
+router.delete("/profile/:profileId", deleteChildProfile); // Poista käyttäjän luoma profiili
 router.post("/inviteAccountToProfile", inviteAccountToProfile); // Kutsu käyttäjä hoitajaksi profiileihin
-router.get("/carers", getCarerProfile);                         // Hae hoitaja profiilit
-router.delete("/carer/:carerId", deleteCarerProfile);           // Poista hoitaja profiili
+router.get("/carers", getCarerProfile); // Hae hoitaja profiilit
+router.delete("/carer/:carerId", deleteCarerProfile); // Poista hoitaja profiili
 
 // Future User routes plan (?):
-// router.get("/settings", editAccount);
-// router.get("/settings/:accountId", deleteAccount);
+// router.get("/editAccount", editAccount);
+// router.get("/deleteAccount/:accountId", deleteAccount);
 
-// Email related routes, forgot pw, new verification etc:
+// Email related routes:
 router.post("/email-test", emailTest);
 router.post("/emailVerification", emailVerification);
 
@@ -57,7 +61,7 @@ router.post("/emailVerification", emailVerification);
 router.get("/test", testController);
 
 // Stripe routes
-router.post("/start-subscription/:id", startSubscription)
+router.post("/start-subscription/:id", startSubscription);
 router.post("/cancel-subscription/:id", cancelSubscription);
 router.post("/get-subscription/:id", getSubscriptionById);
 

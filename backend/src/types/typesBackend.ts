@@ -13,14 +13,13 @@ export interface RegisterData {
 }
 
 // Admin page data adding feature:
-export interface FrontendDataObject {
+export interface FrontendRecommData {
   category: string;
   typeSelect?: string;
   title: string;
   content: string; // <- This will be saved in a list
   ageLimit?: number;
   photoLink?: string;
-  photoFileName?: string;
 }
 
 export interface contents {
@@ -31,10 +30,10 @@ export interface TipContents {
 }
 
 export interface Photos {
-  [key: string]: string; // Photo link or filename -> title: string
+  [key: string]: string | undefined; // Photo link or filename -> title: string
 }
 
-export interface AddDataToDatabase {
+export interface FinalRecommData {
   category: string;
   type?: string;
   title: string;

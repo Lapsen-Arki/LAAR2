@@ -1,5 +1,6 @@
 import axios from "axios";
-import { CarerProfile } from "../../../src/types/types";
+import { CarerProfile } from "../../types/typesFrontend";
+
 
 const API_BASE_URL = "http://localhost:3000/api";
 
@@ -17,8 +18,8 @@ const getCarerProfile = async (idToken: string | null, shouldFetchNewData: boole
     //console.log("Haetaan hoitajaprofiileja palvelimelta...");
     const config = {
       headers: {
-        Authorization: `Bearer ${idToken}`
-      }
+        Authorization: `Bearer ${idToken}`,
+      },
     };
     const response = await axios.get<CarerProfile[]>(`${API_BASE_URL}/carers`, config);
     //console.log("Hoitajaprofiilit haettu onnistuneesti:", response.data);
@@ -31,7 +32,9 @@ const getCarerProfile = async (idToken: string | null, shouldFetchNewData: boole
     console.error("Virhe hoitajaprofiileja hakiessa:", error);
     if (axios.isAxiosError(error)) {
       // Heitä virhe eteenpäin selkeällä virhesanomalla
-      throw new Error(error.response?.data || "Hoitajaprofiilien haku epäonnistui");
+      throw new Error(
+        error.response?.data || "Hoitajaprofiilien haku epäonnistui"
+      );
     } else {
       // Heitä yleinen virhe, jos virhe ei ole Axios-virhe
       throw new Error("Yleinen virhe hoitajaprofiileja hakiessa");

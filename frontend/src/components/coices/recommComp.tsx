@@ -1,6 +1,7 @@
-import { Typography, Grid, Card, CardActionArea } from "@mui/material";
-import { RecommendationsType } from "../../types/types";
+import { Typography, Grid, Card, CardActionArea, Button } from "@mui/material";
+import { RecommendationsType } from "../../types/typesFrontend";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Getting real child data somewhere:
 
@@ -16,10 +17,26 @@ export default function RecommComp({
   childAge: number;
 }) {
   const [selectedBox, setSelectedBox] = useState<string | string[]>("");
+  const [selectionList, setSelectionList] = useState<string[]>([]);
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate("/meal-results", { state: selectionList });
+  };
 
   const selectionHandler = (itemName: string) => {
     if (multipleSelections) {
       // add the key to the list
+      setSelectionList((prev) => {
+        const itemIndex = prev.indexOf(itemName);
+
+        if (itemIndex === -1) {
+          return [...prev, itemName];
+        } else {
+          return prev.filter((item) => item !== itemName);
+        }
+      });
+
       setSelectedBox((prev) => {
         const isAlreadySelected = prev.includes(itemName);
 
@@ -68,8 +85,8 @@ export default function RecommComp({
                                   ? "orange"
                                   : "white"
                                 : selectedBox === itemName
-                                ? "orange"
-                                : "white",
+                                  ? "orange"
+                                  : "white",
                             }}
                             onClick={() => selectionHandler(itemName)}
                           >
@@ -85,6 +102,11 @@ export default function RecommComp({
           </div>
         );
       })}
+      {mealType && (
+        <Button onClick={handleClick} sx={{ mt: 5, mb: 5 }} variant="contained">
+          Kokoa Ateria
+        </Button>
+      )}
     </div>
   );
 }

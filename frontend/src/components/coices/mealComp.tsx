@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import RecommComp from "./recommComp";
-import { RecommendationsType } from "../../types/types";
+import { RecommendationsType } from "../../types/typesFrontend";
 import useGetRecommData from "../../customHooks/useGetRecommData";
 
 export default function MealComp({
@@ -10,7 +10,7 @@ export default function MealComp({
   mealType: string;
   childAge: number;
 }) {
-  const fetchType = "ateria";
+  const fetchType = "meal";
   const recommendations: RecommendationsType[] = useGetRecommData(fetchType);
 
   // - Button tulos sivulle ja routtaus
