@@ -24,7 +24,8 @@ import { deleteChildProfile } from "./controllers/childProfile/deleteChildProfil
 import inviteAccountToProfile from "./controllers/carersProfile/inviteAccountToProfile";
 import { getCarerProfile } from "./controllers/carersProfile/getCarerProfile";
 import { deleteCarerProfile } from "./controllers/carersProfile/deleteCarerProfile";
-import { editAccount, getUser } from "./controllers/editAccount";
+import { editAccount } from "./controllers/accountSettings/editAccount";
+import { getAccount } from "./controllers/accountSettings/getAccount";
 // test controllers:
 import { emailTest } from "./controllers/testingEmail";
 import testController from "../utils/testController";
@@ -50,8 +51,8 @@ router.get("/carers", getCarerProfile); // Hae hoitaja profiilit
 router.delete("/carer/:carerId", deleteCarerProfile); // Poista hoitaja profiili
 
 // Future User routes plan (?):
-router.get("/getUser", getUser);
-router.post("/editAccount", editAccount);
+router.get("/get-account", getAccount);
+router.post("/edit-account", editAccount);
 
 // router.get("/deleteAccount/:accountId", deleteAccount);
 

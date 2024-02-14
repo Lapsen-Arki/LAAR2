@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ThemeProvider } from "@mui/material/styles";
-import { formTheme } from "../components/Layout/formThemeMUI";
+import { formTheme } from "../../components/Layout/formThemeMUI";
 import {
   Container,
   Divider,
@@ -10,7 +10,14 @@ import {
   Box,
   Collapse,
 } from "@mui/material";
-
+import {
+  RenderFieldsProps,
+  AccountSettingsProps,
+  PasswordFieldsProps,
+  PasswordDrawerProps,
+  RenderInputProps,
+  RenderLabelProps,
+} from "./types";
 /* const sub: {
   [key: string]: {
     title: string;
@@ -32,48 +39,6 @@ import {
     value: "john.doe@example.com",
   },
 }; */
-
-type SubType = {
-  [key: string]: {
-    title: string;
-    type: string;
-    autocomplete: string;
-    value: string;
-  };
-};
-interface AccountSettingsProps {
-  sub: SubType;
-}
-interface RenderFieldsProps {
-  fields: { [key: string]: string };
-  fieldName: string;
-  onChange: (fieldName: string, value: string) => void;
-  toggleEdit: (fieldName: string) => void;
-  editModes: { [key: string]: boolean };
-  sub: { [key: string]: { title: string; type: string; autocomplete: string } };
-}
-interface RenderInputProps {
-  fields: { [key: string]: string };
-  fieldName: string;
-  onChange: (fieldName: string, value: string) => void;
-  sub: { [key: string]: { title: string; type: string; autocomplete: string } };
-}
-interface RenderLabelProps {
-  fields: { [key: string]: string };
-  fieldName: string;
-}
-interface PasswordFieldsProps {
-  fields: { [key: string]: string };
-  onChange: (fieldName: string, value: string) => void;
-  editModes: { [key: string]: boolean };
-  toggleEdit: (fieldName: string) => void;
-  drawerOpen: boolean;
-}
-interface PasswordDrawerProps {
-  fields: { [key: string]: string };
-  onChange: (fieldName: string, value: string) => void;
-  drawerOpen: boolean;
-}
 
 const AccountSettings: React.FC<AccountSettingsProps> = ({ sub }) => {
   const [errorMessage, setErrorMessage] = React.useState("");

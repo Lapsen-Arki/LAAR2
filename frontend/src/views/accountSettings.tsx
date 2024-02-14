@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import fetchSubData from "../api/getUserData";
-import AccountSettings from "./AccountSettings";
+import fetchSubData from "../api/getAccount";
+import AccountSettings from "./accountSettingsComponents/accountSettings";
 
 const AccountSettingsPage = () => {
   const [sub, setSub] = useState({});
