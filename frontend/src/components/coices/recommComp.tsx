@@ -85,8 +85,8 @@ export default function RecommComp({
                                   ? "orange"
                                   : "white"
                                 : selectedBox === itemName
-                                ? "orange"
-                                : "white",
+                                  ? "orange"
+                                  : "white",
                             }}
                             onClick={() => selectionHandler(itemName)}
                           >

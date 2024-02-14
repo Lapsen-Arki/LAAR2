@@ -3,7 +3,10 @@ import admin from "../../../config/firebseConfig";
 import { getUserIdFromToken } from "../../../utils/getUserIdFromTokenUtil";
 import { DocumentSnapshot } from "firebase-admin/firestore";
 
-const inviteAccountToProfile = async (req: Request, res: Response): Promise<void> => {
+const inviteAccountToProfile = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const accountEmail = req.body.accountEmail;
 

@@ -25,7 +25,7 @@ export const inviteAccountToProfile = async (
 ) => {
   try {
     console.log("Kutsutaan inviteAccountToProfile...");
-    
+
     const config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
@@ -51,7 +51,10 @@ export const inviteAccountToProfile = async (
 
       // Päivittää Session Storage uusilla tiedoilla (kutsu funktion updateSessionStorage täällä)
       updateSessionStorage(newCarerProfile);
-      console.log("Session Storage päivitetty uusilla tiedoilla:", newCarerProfile);
+      console.log(
+        "Session Storage päivitetty uusilla tiedoilla:",
+        newCarerProfile
+      );
     }
 
     return { data: response.data, status: response.status };
@@ -59,14 +62,17 @@ export const inviteAccountToProfile = async (
     console.error("Kutsu hoitajaksi -virhe:", error);
 
     if (axios.isAxiosError(error) && error.response) {
-      if (process.env.NODE_ENV !== 'production') {
+      if (process.env.NODE_ENV !== "production") {
         console.error("Kutsu hoitajaksi virhe:", error);
       }
 
-      if (typeof error.response.data === 'string') {
+      if (typeof error.response.data === "string") {
         return { error: error.response.data, status: error.response.status };
-      } else if (typeof error.response.data === 'object') {
-        return { error: JSON.stringify(error.response.data), status: error.response.status };
+      } else if (typeof error.response.data === "object") {
+        return {
+          error: JSON.stringify(error.response.data),
+          status: error.response.status,
+        };
       } else {
         return { error: error.response.data, status: error.response.status };
       }
