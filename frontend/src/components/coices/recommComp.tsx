@@ -21,7 +21,11 @@ export default function RecommComp({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/meal-results", { state: selectionList });
+    if (mealType) {
+      navigate("/meal-results", { state: selectionList });
+    } else {
+      navigate("/meal-results", { state: selectionList });
+    }
   };
 
   const selectionHandler = (itemName: string) => {
@@ -85,8 +89,8 @@ export default function RecommComp({
                                   ? "orange"
                                   : "white"
                                 : selectedBox === itemName
-                                  ? "orange"
-                                  : "white",
+                                ? "orange"
+                                : "white",
                             }}
                             onClick={() => selectionHandler(itemName)}
                           >
@@ -102,11 +106,9 @@ export default function RecommComp({
           </div>
         );
       })}
-      {mealType && (
-        <Button onClick={handleClick} sx={{ mt: 5, mb: 5 }} variant="contained">
-          Kokoa Ateria
-        </Button>
-      )}
+      <Button onClick={handleClick} sx={{ mt: 5, mb: 5 }} variant="contained">
+        {mealType ? "Kokoa Ateria" : "Valitse aktiviteetti"}
+      </Button>
     </div>
   );
 }
