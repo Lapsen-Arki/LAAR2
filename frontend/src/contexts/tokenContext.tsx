@@ -74,9 +74,9 @@ function TokenProvider({ children }: { children: ReactNode }) {
 
       // Initial session check:
       if (!initialCheckExecuted.current) {
+        console.log("Running initial Session check");
         checkSession();
         initialCheckExecuted.current = true;
-        setReady(true);
       }
 
       const checkSessionInterval = setInterval(checkSession, 300000);
@@ -86,6 +86,7 @@ function TokenProvider({ children }: { children: ReactNode }) {
         clearInterval(checkSessionInterval);
       };
     }
+    setReady(true);
   }, [idToken, isLoggedIn, signOutMethod]);
 
   return (
