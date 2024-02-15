@@ -22,7 +22,6 @@ export default function Results() {
       const recommItems = recomms.filter((recomm) =>
         Object.keys(recomm.recomm).some((key) => selectionList.includes(key))
       );
-      console.log(selectionList);
 
       setResultData(recommItems);
     }
@@ -31,7 +30,9 @@ export default function Results() {
   return (
     <div>
       <ReturnBtn />
-      <Typography variant="h3">Tulokset</Typography>
+      <Typography variant="h3" sx={{ textAlign: "center" }}>
+        Tulokset
+      </Typography>
       <Grid
         container
         sx={{ mt: 5, mb: 15, textAlign: "center", justifyContent: "center" }}
@@ -66,6 +67,7 @@ export default function Results() {
             );
           })}
       </Grid>
+      <ReturnBtn />
     </div>
   );
 }

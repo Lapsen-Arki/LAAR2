@@ -169,7 +169,10 @@ const AdminPage = () => {
           onChange={handleChange}
           required
         />
-
+        <Typography>
+          Ruuan tai aktiviteetin nimi. HUOM. Älä lisää identtisiä nimiä samalla
+          otsikolla, kategorialla ja tyypillä.
+        </Typography>
         <TextField
           sx={{
             marginTop: 0,
@@ -182,6 +185,7 @@ const AdminPage = () => {
           onChange={handleChange}
           required
         />
+        <Typography>Ikäraja kuukausina:</Typography>
         <TextField
           sx={{
             marginTop: 0,

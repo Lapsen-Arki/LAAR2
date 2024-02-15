@@ -3,7 +3,13 @@ import RecommComp from "./recommComp";
 import { RecommendationsType } from "../../types/recommTypes";
 import useGetRecommData from "../../customHooks/useGetRecommData";
 
-export default function ActivityComp({ childAge }: { childAge: number }) {
+export default function ActivityComp({
+  childAge,
+  selectedChild,
+}: {
+  childAge: number;
+  selectedChild: string;
+}) {
   const fetchType = "activity";
   const recommendations: RecommendationsType[] = useGetRecommData(fetchType);
 
@@ -15,6 +21,7 @@ export default function ActivityComp({ childAge }: { childAge: number }) {
         recommendations={recommendations}
         multipleSelections={false}
         childAge={childAge}
+        selectedChild={selectedChild}
       />
     </>
   );

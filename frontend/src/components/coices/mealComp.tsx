@@ -6,9 +6,11 @@ import useGetRecommData from "../../customHooks/useGetRecommData";
 export default function MealComp({
   mealType,
   childAge,
+  selectedChild,
 }: {
   mealType: string;
   childAge: number;
+  selectedChild: string;
 }) {
   const fetchType = "meal";
   const recommendations: RecommendationsType[] = useGetRecommData(fetchType);
@@ -26,6 +28,7 @@ export default function MealComp({
         multipleSelections={true}
         mealType={mealType}
         childAge={childAge}
+        selectedChild={selectedChild}
       />
     </>
   );
