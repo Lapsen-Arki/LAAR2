@@ -125,16 +125,24 @@ export default function ChoicesPage() {
         {smallMeal && (
           <div>
             <AllergiesComp />
-            {selectedChildAge && (
-              <MealComp mealType={mealType} childAge={selectedChildAge} />
+            {selectedChildAge && selectedChild && (
+              <MealComp
+                mealType={mealType}
+                childAge={selectedChildAge}
+                selectedChild={selectedChild}
+              />
             )}{" "}
           </div>
         )}
         {bigMeal && (
           <div>
             <AllergiesComp />
-            {selectedChildAge && (
-              <MealComp mealType={mealType} childAge={selectedChildAge} />
+            {selectedChildAge && selectedChild && (
+              <MealComp
+                mealType={mealType}
+                childAge={selectedChildAge}
+                selectedChild={selectedChild}
+              />
             )}
           </div>
         )}

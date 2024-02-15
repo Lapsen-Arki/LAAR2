@@ -1,6 +1,6 @@
 import { Typography, Grid, Card, CardActionArea, Button } from "@mui/material";
 import { RecommendationsType } from "../../types/recommTypes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Getting real child data somewhere:
@@ -10,12 +10,15 @@ export default function RecommComp({
   multipleSelections,
   mealType = null,
   childAge,
+  selectedChild,
 }: {
   recommendations: RecommendationsType[];
   multipleSelections: boolean;
   mealType?: string | null;
   childAge: number;
+  selectedChild: string;
 }) {
+  // selectedChild pitää saada tänne -> resetoida selectionList kun se muuttuu.
   const [selectedBox, setSelectedBox] = useState<string | string[]>("");
   const [selectionList, setSelectionList] = useState<string[]>([]);
   const navigate = useNavigate();
@@ -25,6 +28,12 @@ export default function RecommComp({
       state: { selectionList, isMealPage: multipleSelections },
     });
   };
+
+  // Reset selectionList if selected child changes
+  useEffect(() => {
+    setSelectionList([]);
+    setSelectedBox("");
+  }, [selectedChild]);
 
   const selectionHandler = (itemName: string) => {
     if (multipleSelections) {
@@ -105,9 +114,11 @@ export default function RecommComp({
           </div>
         );
       })}
-      <Button onClick={handleClick} sx={{ mt: 5, mb: 5 }} variant="contained">
-        {mealType ? "Kokoa Ateria" : "Valitse aktiviteetti"}
-      </Button>
+      {selectedBox.length > 0 && (
+        <Button onClick={handleClick} sx={{ mt: 5, mb: 5 }} variant="contained">
+          {mealType ? "Kokoa Ateria" : "Valitse aktiviteetti"}
+        </Button>
+      )}
     </div>
   );
 }

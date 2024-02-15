@@ -22,7 +22,6 @@ export default function Results() {
       const recommItems = recomms.filter((recomm) =>
         Object.keys(recomm.recomm).some((key) => selectionList.includes(key))
       );
-      console.log(selectionList);
 
       setResultData(recommItems);
     }
