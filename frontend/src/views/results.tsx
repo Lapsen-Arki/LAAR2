@@ -67,6 +67,7 @@ export default function Results() {
             );
           })}
       </Grid>
+      <ReturnBtn />
     </div>
   );
 }

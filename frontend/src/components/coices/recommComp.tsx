@@ -88,7 +88,7 @@ export default function RecommComp({
                       <Grid item xs={11} sm={6} md={4} key={itemName}>
                         <Grid
                           sx={{
-                            minHeight: { md: "32px" }, // Apply minHeight starting from the 'md' breakpoint
+                            minHeight: { sm: "32px" }, // Apply minHeight starting from the 'md' breakpoint
                           }}
                         >
                           {titleRendered === 1 && (
