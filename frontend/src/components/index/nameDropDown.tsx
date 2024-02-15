@@ -53,7 +53,7 @@ export default function NameDropDown({
 
   return (
     <>
-      {childNames[0].length >= 2 && (
+      {childNames[0]?.length >= 2 && (
         <Box
           sx={{ display: "flex-1", justifyContent: "flex-start", mt: 5, mb: 5 }}
         >

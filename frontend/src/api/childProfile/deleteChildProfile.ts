@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ChildProfile } from "../../types/typesFrontend";
+import makeChildObject from "../../utils/makeChildObject";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
@@ -14,7 +15,7 @@ const deleteChildProfile = async (
     // Lähetä DELETE-pyyntö backendiin käyttäen axiosia ja oikeaa idTokenia
     const config = {
       headers: {
-        Authorization: `Bearer ${idToken}`
+        Authorization: `Bearer ${idToken}`,
       },
     };
     await axios.delete(`${API_BASE_URL}/profile/${profileId}`, config);
@@ -36,6 +37,7 @@ const deleteChildProfile = async (
         "childProfiles",
         JSON.stringify(updatedStoredProfiles)
       );
+      makeChildObject();
     }
   } catch (error) {
     console.error("Profiilin poisto epäonnistui", error);
