@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 const TokenContext = createContext<TokenContextType>({
   isLoggedIn: false,
   idToken: "",
+  ready: false,
   signOutMethod: () => null,
   setIdToken: () => null,
 });
@@ -28,6 +29,7 @@ function TokenProvider({ children }: { children: ReactNode }) {
       : sessionStorage.getItem("idToken");
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [ready, setReady] = useState(false);
   const initialCheckExecuted = useRef(false);
   const navigate = useNavigate();
 
@@ -74,6 +76,7 @@ function TokenProvider({ children }: { children: ReactNode }) {
       if (!initialCheckExecuted.current) {
         checkSession();
         initialCheckExecuted.current = true;
+        setReady(true);
       }
 
       const checkSessionInterval = setInterval(checkSession, 300000);
@@ -87,7 +90,13 @@ function TokenProvider({ children }: { children: ReactNode }) {
 
   return (
     <TokenContext.Provider
-      value={{ isLoggedIn, idToken, signOutMethod, setIdToken }}
+      value={{
+        isLoggedIn,
+        idToken,
+        ready,
+        signOutMethod,
+        setIdToken,
+      }}
     >
       {children}
     </TokenContext.Provider>

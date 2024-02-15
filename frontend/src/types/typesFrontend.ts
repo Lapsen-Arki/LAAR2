@@ -17,6 +17,7 @@ export interface RegisterData {
 export type TokenContextType = {
   isLoggedIn: boolean;
   idToken: string | null;
+  ready: boolean;
   signOutMethod: () => void;
   setIdToken: React.Dispatch<React.SetStateAction<string | null>>;
 };
