@@ -31,7 +31,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
         <Button onClick={onClose} color="primary">
           Ei
         </Button>
-        <Button onClick={onConfirm} color="error">
+        <Button onClick={() => { onConfirm(); onClose(); }} color="error">
           Kyllä
         </Button>
       </DialogActions>
