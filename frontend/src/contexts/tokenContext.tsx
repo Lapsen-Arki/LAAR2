@@ -53,7 +53,7 @@ function TokenProvider({ children }: { children: ReactNode }) {
   // Validatin JWT token automaticly every 15 minutes:
   useEffect(() => {
     if (isLoggedIn) {
-      const checkSessionInterval = setInterval(async () => {
+      const checkSession = async () => {
         console.log("Running Session check");
 
         if (idToken) {
@@ -66,7 +66,12 @@ function TokenProvider({ children }: { children: ReactNode }) {
           // been found and validated.
           signOutMethod();
         }
-      }, 300000); // 300000 milliseconds = 5 minutes
+      }; // 300000 milliseconds = 5 minutes
+
+      // Initial session check:
+      checkSession();
+
+      const checkSessionInterval = setInterval(checkSession, 300000);
 
       // Cleanup
       return () => {
