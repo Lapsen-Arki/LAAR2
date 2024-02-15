@@ -1,5 +1,5 @@
 import { Typography, Grid, Card, CardActionArea, Button } from "@mui/material";
-import { RecommendationsType } from "../../types/typesFrontend";
+import { RecommendationsType } from "../../types/recommTypes";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -21,7 +21,9 @@ export default function RecommComp({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/meal-results", { state: selectionList });
+    navigate("/results", {
+      state: { selectionList, isMealPage: multipleSelections },
+    });
   };
 
   const selectionHandler = (itemName: string) => {
@@ -49,6 +51,7 @@ export default function RecommComp({
     } else {
       // add one key to the state
       setSelectedBox(itemName);
+      setSelectionList([itemName]);
     }
   };
 
@@ -70,7 +73,7 @@ export default function RecommComp({
             <Grid container spacing={2} sx={{ textAlign: "center" }}>
               {/* Iterate trough all the recommendations in the object */}
 
-              {Object.entries(recommendation.content).map(
+              {Object.entries(recommendation.recomm).map(
                 ([itemName, ageLimit]) => {
                   if (ageLimit <= childAge) {
                     return (
@@ -85,8 +88,8 @@ export default function RecommComp({
                                   ? "orange"
                                   : "white"
                                 : selectedBox === itemName
-                                  ? "orange"
-                                  : "white",
+                                ? "orange"
+                                : "white",
                             }}
                             onClick={() => selectionHandler(itemName)}
                           >
@@ -102,11 +105,9 @@ export default function RecommComp({
           </div>
         );
       })}
-      {mealType && (
-        <Button onClick={handleClick} sx={{ mt: 5, mb: 5 }} variant="contained">
-          Kokoa Ateria
-        </Button>
-      )}
+      <Button onClick={handleClick} sx={{ mt: 5, mb: 5 }} variant="contained">
+        {mealType ? "Kokoa Ateria" : "Valitse aktiviteetti"}
+      </Button>
     </div>
   );
 }

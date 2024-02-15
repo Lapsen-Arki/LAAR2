@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import RecommComp from "./recommComp";
-import { RecommendationsType } from "../../types/typesFrontend";
+import { RecommendationsType } from "../../types/recommTypes";
 import useGetRecommData from "../../customHooks/useGetRecommData";
 
 export default function ActivityComp({ childAge }: { childAge: number }) {

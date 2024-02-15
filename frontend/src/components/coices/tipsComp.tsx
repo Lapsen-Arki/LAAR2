@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { RecommendationsType } from "../../types/typesFrontend";
+import { RecommendationsType } from "../../types/recommTypes";
 import useGetRecommData from "../../customHooks/useGetRecommData";
 
 // Now there is 3 types of tips: "päiväunet", "iltatoimet", "nukkuminen".
@@ -27,7 +27,7 @@ export default function TipsComp({ adviseType }: { adviseType: string }) {
               component="pre"
               style={{ whiteSpace: "pre-wrap", marginBottom: 20 }}
             >
-              {recommendation.content[recommendation.title]}
+              {recommendation.textContent[recommendation.title]}
             </Typography>
           </div>
         );

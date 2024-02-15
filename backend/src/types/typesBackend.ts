@@ -17,16 +17,17 @@ export interface FrontendRecommData {
   category: string;
   typeSelect?: string;
   title: string;
-  content: string; // <- This will be saved in a list
+  name: string; // <- This will be saved in a list
   ageLimit?: number;
+  textContent: string;
   photoLink?: string;
 }
 
-export interface contents {
+export interface recomm {
   [key: string]: number; // Name: ageLimit / activity: ageLimit
 }
-export interface TipContents {
-  [key: string]: string; // <-- Key arvo on title tässä!
+export interface TextContents {
+  [key: string]: string; // <-- Key arvo on name tässä!
 }
 
 export interface Photos {
@@ -37,7 +38,8 @@ export interface FinalRecommData {
   category: string;
   type?: string;
   title: string;
-  content: contents | TipContents;
+  recomm: recomm;
+  textContent: TextContents;
   photos?: Photos;
 }
 
