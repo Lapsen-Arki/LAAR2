@@ -1,4 +1,5 @@
 import axios from "axios";
+import makeChildObject from "../../utils/makeChildObject";
 
 // TODO: Move to env variables etc:
 const API_BASE_URL =
@@ -37,6 +38,7 @@ export const createChildProfile = async (
       : [];
     storedProfiles.push(newProfile);
     sessionStorage.setItem("childProfiles", JSON.stringify(storedProfiles));
+    makeChildObject();
 
     return response.data;
   } catch (error) {

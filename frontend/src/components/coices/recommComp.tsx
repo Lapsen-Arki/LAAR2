@@ -1,6 +1,6 @@
 import { Typography, Grid, Card, CardActionArea, Button } from "@mui/material";
 import { RecommendationsType } from "../../types/recommTypes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // Getting real child data somewhere:
@@ -10,12 +10,15 @@ export default function RecommComp({
   multipleSelections,
   mealType = null,
   childAge,
+  selectedChild,
 }: {
   recommendations: RecommendationsType[];
   multipleSelections: boolean;
   mealType?: string | null;
   childAge: number;
+  selectedChild: string;
 }) {
+  // selectedChild pitää saada tänne -> resetoida selectionList kun se muuttuu.
   const [selectedBox, setSelectedBox] = useState<string | string[]>("");
   const [selectionList, setSelectionList] = useState<string[]>([]);
   const navigate = useNavigate();
@@ -25,6 +28,12 @@ export default function RecommComp({
       state: { selectionList, isMealPage: multipleSelections },
     });
   };
+
+  // Reset selectionList if selected child changes
+  useEffect(() => {
+    setSelectionList([]);
+    setSelectedBox("");
+  }, [selectedChild]);
 
   const selectionHandler = (itemName: string) => {
     if (multipleSelections) {
@@ -58,6 +67,7 @@ export default function RecommComp({
   return (
     <div>
       {recommendations.map((recommendation, index) => {
+        let titleRendered = 0; // <- when 2 not rendering more
         if (mealType) {
           if (
             recommendation.type !== mealType &&
@@ -68,16 +78,25 @@ export default function RecommComp({
         }
         return (
           <div key={index} style={{ marginTop: 25 }}>
-            {/* TODO: do not render title if not any recommendations */}
-            <Typography variant="h5">{recommendation.title}: </Typography>
             <Grid container spacing={2} sx={{ textAlign: "center" }}>
               {/* Iterate trough all the recommendations in the object */}
-
               {Object.entries(recommendation.recomm).map(
                 ([itemName, ageLimit]) => {
                   if (ageLimit <= childAge) {
+                    titleRendered++;
                     return (
                       <Grid item xs={11} sm={6} md={4} key={itemName}>
+                        <Grid
+                          sx={{
+                            minHeight: { sm: "32px" }, // Apply minHeight starting from the 'md' breakpoint
+                          }}
+                        >
+                          {titleRendered === 1 && (
+                            <Typography variant="h5">
+                              {recommendation.title}:
+                            </Typography>
+                          )}
+                        </Grid>
                         <Card>
                           <CardActionArea
                             sx={{
@@ -105,9 +124,11 @@ export default function RecommComp({
           </div>
         );
       })}
-      <Button onClick={handleClick} sx={{ mt: 5, mb: 5 }} variant="contained">
-        {mealType ? "Kokoa Ateria" : "Valitse aktiviteetti"}
-      </Button>
+      {selectedBox.length > 0 && (
+        <Button onClick={handleClick} sx={{ mt: 5, mb: 5 }} variant="contained">
+          {mealType ? "Kokoa Ateria" : "Valitse aktiviteetti"}
+        </Button>
+      )}
     </div>
   );
 }
