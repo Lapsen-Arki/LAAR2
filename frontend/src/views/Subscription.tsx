@@ -1,32 +1,32 @@
 import React, { useState, useContext, useEffect } from "react";
-import startSubscription from "../api/startSubscription";
-import cancelSubscription from "../api/cancelSubscription";
-import getSubscription from "../api/getSubscription";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
+import stripeSubscription from "../api/stripeSubscriptions";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import {
+  Paper,
+  TableRow,
+  TableContainer,
+  TableCell,
+  TableBody,
+  Table,
+  ListItemText,
+  ListItemIcon,
+  Typography,
+  Button,
+  Divider,
+  List,
+  ListItem,
+  CardContent,
+  Card,
+  Box,
+  Dialog,
+  DialogTitle,
+} from "@mui/material/";
+import { ThemeProvider } from "@mui/material/styles";
+import { formTheme } from "../components/Layout/formThemeMUI";
 import "../styles/Subscription.css";
 import { TokenContext } from "../contexts/tokenContext";
 import { UserContext } from "../contexts/userContext";
 import PleaseLoginModal from "../components/modals/pleaseLoginModal";
-import DialogTitle from "@mui/material/DialogTitle";
-import Dialog from "@mui/material/Dialog";
-import { ThemeProvider } from "@mui/material/styles";
-import { formTheme } from "../components/Layout/formThemeMUI";
 
 export interface SimpleDialogProps {
   subscriptionCancelled: boolean;
@@ -104,11 +104,10 @@ interface SubscriptionData {
 const SubscriptionManagement: React.FC = () => {
   const { idToken } = useContext(TokenContext);
   const { userId } = useContext(UserContext);
-  const [subscriptionCancelled, setSubscriptionCancelled] = useState(true);
-  const [subscription, setSubscription] = useState<SubscriptionData | null>(
-    null
-  );
+  const [subscription, setSubscription] = useState<SubscriptionData | null>();
+  const [isLoading, setIsLoading] = useState(true);
   const [openLoginModal, setOpenLoginModal] = React.useState(false);
+  const [subscriptionCancelled, setSubscriptionCancelled] = useState(true);
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -119,26 +118,10 @@ const SubscriptionManagement: React.FC = () => {
     setOpen(false);
   };
 
-  const fetchSubscription = async () => {
-    try {
-      if (userId) {
-        const response = await getSubscription(idToken, userId);
-        setSubscription(response);
-        if (response?.cancel_at_period_end) {
-          setSubscriptionCancelled(true);
-        } else {
-          setSubscriptionCancelled(false);
-        }
-      }
-    } catch (error) {
-      console.error("Virhe tilausta haettaessa.");
-    }
-  };
-
   const handleStartSubscription = async () => {
     try {
-      await startSubscription(idToken, userId);
-      fetchSubscription();
+      const response = await stripeSubscription(idToken, userId, "start-subscription");
+      setSubscription(response);
       handleClose();
     } catch (error) {
       console.error("Error starting subscription:", error);
@@ -147,8 +130,8 @@ const SubscriptionManagement: React.FC = () => {
 
   const handleCancelSubscription = async () => {
     try {
-      await cancelSubscription(idToken, userId);
-      fetchSubscription();
+      const response = await stripeSubscription(idToken, userId, "cancel-subscription");
+      setSubscription(response);
       handleClose();
     } catch (error) {
       console.error("Error canceling subscription:", error);
@@ -165,9 +148,29 @@ const SubscriptionManagement: React.FC = () => {
 
   useEffect(() => {
     if (idToken) {
+      const fetchSubscription = async () => {
+        try {
+          if (userId) {
+            const response = await stripeSubscription(
+              idToken,
+              userId,
+              "get-subscription"
+            );
+            setSubscription(response);
+            if (response?.cancel_at_period_end) {
+              setSubscriptionCancelled(true);
+            } else {
+              setSubscriptionCancelled(false);
+            }
+            setIsLoading(false);
+          }
+        } catch (error) {
+          console.error("Virhe tilausta haettaessa.");
+        }
+      };
       fetchSubscription();
     }
-  }, [userId]);
+  }, [idToken, userId]);
 
   if (!idToken) {
     return (
@@ -176,129 +179,139 @@ const SubscriptionManagement: React.FC = () => {
   }
 
   return (
-    <ThemeProvider theme={formTheme}>
-      <div className="subscription-page">
-        <Typography variant="h3" component="div">
-          Tilaustiedot
-        </Typography>
-        <br></br>
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-          }}
-        >
-          <SimpleDialog
-            onCancelSubscription={handleCancelSubscription}
-            onStartSubscription={handleStartSubscription}
-            subscriptionCancelled={subscriptionCancelled}
-            open={open}
-            onClose={handleClose}
-          />
+    <div className="subscription-page">
+      <Typography variant="h3" component="div">
+        Tilaustiedot
+      </Typography>
+      <br></br>
+      <SimpleDialog
+        onCancelSubscription={handleCancelSubscription}
+        onStartSubscription={handleStartSubscription}
+        subscriptionCancelled={subscriptionCancelled}
+        open={open}
+        onClose={handleClose}
+      />
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+        }}
+      >
+        {!isLoading && (
           <Card variant="outlined">
             <CardContent>
-              {subscription ? (
-                <div>
-                  {subscription.cancel_at_period_end ? (
-                    <p>
-                      Tämänhetkinen tilauksesi loppuu{" "}
-                      {formatDate(subscription.current_period_end)}
-                    </p>
-                  ) : (
-                    <p>Sinulla on voimassaoleva tilaus!</p>
-                  )}
-                  <br></br>
-                  <TableContainer component={Paper}>
-                    <Table
-                      sx={{ minWidth: { xs: "100%", md: 600 } }}
-                      aria-label="simple table"
-                    >
-                      <TableBody>
-                        <TableRow>
-                          <TableCell>Jäsenyys alkanut</TableCell>
-                          <TableCell align="right">
-                            {formatDate(subscription.created)}
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Seuraava maksu</TableCell>
-                          <TableCell align="right">
-                            {formatDate(subscription.current_period_end)}
-                          </TableCell>
-                        </TableRow>
-                        <TableRow
-                          sx={{ "&:last-child td": { borderBottom: "none" } }}
-                        >
-                          <TableCell>Jäsenyyden hinta</TableCell>
-                          <TableCell align="right">6,99/kk</TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </div>
-              ) : (
-                <div>
-                  <Typography sx={{ fontSize: 14 }} color="text.secondary">
-                    Sinulla ei ole voimassaolevaa tilausta.
-                  </Typography>
-                  <br></br>
-                  <Typography
-                    sx={{ fontSize: 14, marginBottom: 1 }}
-                    color="text.secondary"
-                  >
-                    Hanki täysjäsenyys hintaan
-                  </Typography>
-                  <Typography variant="h3" component="div">
-                    6,99/kk
-                  </Typography>
-                  <br></br>
-                  <Divider variant="middle" />
-                  <div className="subscription-description">
-                    <Typography variant="body2" color="text.secondary">
-                      Aloittamalla tilauksen saat LAAR:in kaikki ominaisuudet
-                      käyttöösi.
-                    </Typography>
-                  </div>
-                  <List>
-                    <ListItem>
-                      <ListItemIcon>
-                        <AddCircleRoundedIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Ominaisuus1" />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemIcon>
-                        <AddCircleRoundedIcon />
-                      </ListItemIcon>
-                      <ListItemText primary="Ominaisuus2" />
-                    </ListItem>
-                  </List>
-                </div>
+              {!isLoading && subscription && (
+                <IsSubscribed subscription={subscription} />
               )}
+              {!isLoading && !subscription && <NotSubscribed />}
             </CardContent>
           </Card>
-        </Box>
-        <br></br>
-        {subscription?.cancel_at_period_end ? (
-          <Button
-            onClick={handleClickOpen}
-            variant="contained"
-            sx={{ backgroundColor: "#63c8cc" }}
-          >
-            Jatka tilausta
-          </Button>
-        ) : (
-          <Button
-            onClick={handleClickOpen}
-            variant="contained"
-            sx={{ backgroundColor: "#63c8cc" }}
-          >
-            Keskeytä tilaus
-          </Button>
         )}
-      </div>
-    </ThemeProvider>
+      </Box>
+      <br></br>
+      {!isLoading && subscription?.cancel_at_period_end && (
+        <Button
+          onClick={handleClickOpen}
+          variant="contained"
+          sx={{ backgroundColor: "#63c8cc" }}
+        >
+          Jatka tilausta
+        </Button>
+      )}{" "}
+      {isLoading && <Typography>Ladataan sivua...</Typography>}
+      {!isLoading && !subscription?.cancel_at_period_end && (
+        <Button
+          onClick={handleClickOpen}
+          variant="contained"
+          sx={{ backgroundColor: "#63c8cc" }}
+        >
+          Keskeytä tilaus
+        </Button>
+      )}
+    </div>
   );
+
+  function IsSubscribed({
+    subscription,
+  }: {
+    subscription: SubscriptionData;
+  }): React.ReactNode {
+    return (
+      <div>
+        {subscription.cancel_at_period_end ? (
+          <p>
+            Tämänhetkinen tilauksesi loppuu{" "}
+            {formatDate(subscription.current_period_end)}
+          </p>
+        ) : (
+          <p>Sinulla on voimassaoleva tilaus!</p>
+        )}
+        <br></br>
+        <TableContainer component={Paper}>
+          <Table
+            sx={{ minWidth: { xs: "100%", md: 600 } }}
+            aria-label="simple table"
+          >
+            <TableBody>
+              <TableRow>
+                <TableCell>Jäsenyys alkanut</TableCell>
+                <TableCell align="right">
+                  {formatDate(subscription.created)}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Seuraava maksu</TableCell>
+                <TableCell align="right">
+                  {formatDate(subscription.current_period_end)}
+                </TableCell>
+              </TableRow>
+              <TableRow sx={{ "&:last-child td": { borderBottom: "none" } }}>
+                <TableCell>Jäsenyyden hinta</TableCell>
+                <TableCell align="right">6,99/kk</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+    );
+  }
 };
 
 export default SubscriptionManagement;
+function NotSubscribed(): React.ReactNode {
+  return (
+    <div>
+      <Typography sx={{ fontSize: 14 }} color="text.secondary">
+        Sinulla ei ole voimassaolevaa tilausta.
+      </Typography>
+      <br></br>
+      <Typography sx={{ fontSize: 14, marginBottom: 1 }} color="text.secondary">
+        Hanki täysjäsenyys hintaan
+      </Typography>
+      <Typography variant="h3" component="div">
+        6,99/kk
+      </Typography>
+      <br></br>
+      <Divider variant="middle" />
+      <div className="subscription-description">
+        <Typography variant="body2" color="text.secondary">
+          Aloittamalla tilauksen saat LAAR:in kaikki ominaisuudet käyttöösi.
+        </Typography>
+      </div>
+      <List>
+        <ListItem>
+          <ListItemIcon>
+            <AddCircleRoundedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Ominaisuus1" />
+        </ListItem>
+        <ListItem>
+          <ListItemIcon>
+            <AddCircleRoundedIcon />
+          </ListItemIcon>
+          <ListItemText primary="Ominaisuus2" />
+        </ListItem>
+      </List>
+    </div>
+  );
+}
