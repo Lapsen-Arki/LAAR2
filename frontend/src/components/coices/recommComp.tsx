@@ -21,7 +21,6 @@ export default function RecommComp({
   // selectedChild pitää saada tänne -> resetoida selectionList kun se muuttuu.
   const [selectedBox, setSelectedBox] = useState<string | string[]>("");
   const [selectionList, setSelectionList] = useState<string[]>([]);
-  const [renderTitle, setRenderTitle] = useState(true);
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -87,11 +86,17 @@ export default function RecommComp({
                     titleRendered++;
                     return (
                       <Grid item xs={11} sm={6} md={4} key={itemName}>
-                        {titleRendered === 1 && (
-                          <Typography variant="h5">
-                            {recommendation.title}:
-                          </Typography>
-                        )}
+                        <Grid
+                          sx={{
+                            minHeight: { md: "32px" }, // Apply minHeight starting from the 'md' breakpoint
+                          }}
+                        >
+                          {titleRendered === 1 && (
+                            <Typography variant="h5">
+                              {recommendation.title}:
+                            </Typography>
+                          )}
+                        </Grid>
                         <Card>
                           <CardActionArea
                             sx={{
