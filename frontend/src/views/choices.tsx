@@ -146,8 +146,11 @@ export default function ChoicesPage() {
             )}
           </div>
         )}
-        {activity && selectedChildAge && (
-          <ActivityComp childAge={selectedChildAge} />
+        {activity && selectedChildAge && selectedChild && (
+          <ActivityComp
+            childAge={selectedChildAge}
+            selectedChild={selectedChild}
+          />
         )}
         <br />
         <br />
