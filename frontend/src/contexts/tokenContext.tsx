@@ -4,6 +4,7 @@ import {
   ReactNode,
   useEffect,
   useCallback,
+  useRef,
 } from "react";
 
 import { getAuth, signOut } from "firebase/auth";
@@ -27,6 +28,7 @@ function TokenProvider({ children }: { children: ReactNode }) {
       : sessionStorage.getItem("idToken");
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const initialCheckExecuted = useRef(false);
   const navigate = useNavigate();
 
   // Update isLoggedIn if idToken value changes:
@@ -69,7 +71,10 @@ function TokenProvider({ children }: { children: ReactNode }) {
       }; // 300000 milliseconds = 5 minutes
 
       // Initial session check:
-      checkSession();
+      if (!initialCheckExecuted.current) {
+        checkSession();
+        initialCheckExecuted.current = true;
+      }
 
       const checkSessionInterval = setInterval(checkSession, 300000);
 
