@@ -20,6 +20,7 @@ app.use("/api", routers);
 // Listen only if this file is being run directly (not through tests)
 if (require.main === module) {
   app.listen(port, () => {
+    console.log(process.env.FRONTEND_HOSTNAME || "http://localhost:5173");
     console.log(`Server is running on port ${port}`);
   });
 }

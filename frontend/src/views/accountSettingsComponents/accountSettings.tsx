@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext, useState } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from "../../components/Layout/formThemeMUI";
 import {
@@ -18,12 +18,14 @@ import {
   RenderInputProps,
   RenderLabelProps,
 } from "./types";
+import SubmitHandler from "./settingsSubmitHandler";
+import { AuthenticationError } from "./errors";
 import { TokenContext } from "../../contexts/tokenContext";
 
 const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
-  const { token } = useContext(TokenContext);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
+  const { idToken } = useContext(TokenContext);
   // State variables to hold the current values of the form inputs
   const [fields, setFields] = useState(
     Object.fromEntries(
@@ -94,13 +96,25 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
   };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const formData = new FormData();
-    for (const [key, value] of Object.entries(updatedFields)) {
-      formData.append(key, value);
+    setErrorMessage("");
+    setSuccessMessage("");
+    try {
+      const formData = new FormData();
+      for (const [key, value] of Object.entries(updatedFields)) {
+        formData.append(key, value);
+      }
+      if (!idToken) throw new AuthenticationError("idToken puuttuu.");
+      const response = await SubmitHandler(formData, idToken);
+      console.log(response);
+      if (response.status) {
+        setSuccessMessage(response.msg);
+      }
+    } catch (error) {
+      if (error instanceof AuthenticationError) setErrorMessage(error.message);
+      else {
+        setErrorMessage("Tietojen päivitys epäonnistui");
+      }
     }
-    console.log(formData);
-    setErrorMessage("haha");
-    setSuccessMessage("Ahah!");
   };
 
   return (
@@ -139,10 +153,16 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
           <Button type="submit" variant="contained" color="primary">
             Tallenna muutokset
           </Button>
-          <Typography sx={{ color: "red", marginBottom: 2, marginTop: 2 }}>
+          <Typography
+            textAlign="center"
+            sx={{ color: "red", marginBottom: 2, marginTop: 2 }}
+          >
             {errorMessage}
           </Typography>
-          <Typography sx={{ color: "green", marginBottom: 2, marginTop: 2 }}>
+          <Typography
+            textAlign="center"
+            sx={{ color: "green", marginBottom: 2, marginTop: 2 }}
+          >
             {successMessage}
           </Typography>
         </form>

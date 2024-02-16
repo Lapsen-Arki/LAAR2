@@ -2,6 +2,7 @@ import { useEffect, useState, useContext, useCallback } from "react";
 import buildData from "./accountSettingsComponents/dataHandler";
 import AccountSettings from "./accountSettingsComponents/accountSettings";
 import { UserContext } from "../contexts/userContext";
+import "../conf/firebaseSdkConfig";
 const AccountSettingsPage = () => {
   const [settingsData, setSettingsData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -11,7 +12,6 @@ const AccountSettingsPage = () => {
     if (user.userId === undefined) return;
     try {
       const data = await buildData(user);
-      if (!data) return;
       console.log(data);
       setSettingsData(data);
       setIsLoading(false);
