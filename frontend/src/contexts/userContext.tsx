@@ -41,9 +41,11 @@ function UserProvider({ children }: { children: ReactNode }) {
 
       setUserId(decodedToken.user_id);
       setEmail(decodedToken.email);
-      setDisplayName(userToken?.providerData.displayName ?? "No name set");
+      setDisplayName(
+        userToken?.providerData.displayName ?? "Nimeä ei asetettu"
+      );
       setPhoneNumber(
-        userToken?.providerData.phoneNumber ?? "No phone number set"
+        userToken?.providerData.phoneNumber ?? "Ei puhelinnumeroa"
       );
     } else {
       setUserId(undefined);

@@ -53,7 +53,7 @@ export default function SubmitHandler(
             if (error instanceof FirebaseError) {
               switch (error.code) {
                 case "auth/invalid-credential":
-                  reject(new AuthenticationError("Väärä salasana"));
+                  reject(new AuthenticationError("Virhe"));
                   break;
                 case "auth/too-many-requests":
                   reject(

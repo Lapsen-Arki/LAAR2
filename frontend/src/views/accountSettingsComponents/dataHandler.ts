@@ -3,7 +3,7 @@ import { SettingsType, UserType } from "./types";
 async function buildData(user: UserType) {
   const settings: SettingsType = {
     displayName: {
-      title: "Name",
+      title: "Nimi",
       type: "text",
       autocomplete: "name",
       value: user.displayName ?? "",
@@ -13,6 +13,12 @@ async function buildData(user: UserType) {
       type: "email",
       autocomplete: "email",
       value: user.email ?? "",
+    },
+    phoneNumber: {
+      title: "Puhelinnumero",
+      type: "tel",
+      autocomplete: "tel",
+      value: user.phoneNumber ?? "",
     },
   };
   return settings;

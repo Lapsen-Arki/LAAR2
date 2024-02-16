@@ -10,6 +10,7 @@ export type UserType = {
   userId: string | undefined;
   email: string | undefined;
   displayName: string | undefined;
+  phoneNumber: string | undefined;
 };
 export interface AccountSettingsProps {
   settingsData: SettingsType;
