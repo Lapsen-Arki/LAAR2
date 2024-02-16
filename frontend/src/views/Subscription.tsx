@@ -20,16 +20,23 @@ import {
   Box,
   Dialog,
   DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material/";
-import { ThemeProvider } from "@mui/material/styles";
-import { formTheme } from "../components/Layout/formThemeMUI";
 import "../styles/Subscription.css";
 import { TokenContext } from "../contexts/tokenContext";
 import { UserContext } from "../contexts/userContext";
 import PleaseLoginModal from "../components/modals/pleaseLoginModal";
 
+interface SubscriptionData {
+	created: number;
+	current_period_end: number;
+	cancel_at_period_end: boolean;
+  }
+
 export interface SimpleDialogProps {
-  subscriptionCancelled: boolean;
+  subscriptionCancelled: boolean | undefined;
   onCancelSubscription: () => Promise<void>;
   onStartSubscription: () => Promise<void>;
   open: boolean;
@@ -44,71 +51,66 @@ const SimpleDialog = (props: SimpleDialogProps) => {
     onClose,
     open,
   } = props;
-
   const handleClose = () => {
     onClose();
   };
 
   return (
-    <Dialog onClose={handleClose} open={open}>
-      {subscriptionCancelled ? (
-        <DialogTitle>Olet jatkamassa tilausta</DialogTitle>
-      ) : (
-        <DialogTitle>Olet lopettamassa tilausta</DialogTitle>
+    <div>
+      {subscriptionCancelled && (
+        <Dialog onClose={handleClose} open={open}>
+          <DialogTitle>Olet jatkamassa tilausta</DialogTitle>
+          <DialogContent dividers>
+            <DialogContentText>
+              Painamalla 'Jatka tilausta'-painiketta jatkat jäsenyyttäsi
+              LAAR:issa. Sinua tullaan veloittamaan automaattisesti aina
+              seuraavan jäsenyyskuukauden alkaessa.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={onStartSubscription}
+              variant="contained"
+              sx={{ backgroundColor: "#63c8cc" }}
+            >
+              Jatka tilausta
+            </Button>
+          </DialogActions>
+        </Dialog>
       )}
-
-      {subscriptionCancelled ? (
-        <div>
-          <p>
-            Painamalla 'Jatka tilausta'-painiketta jatkat jäsenyyttäsi
-            LAAR:issa. Sinua tullaan veloittamaan automaattisesti aina seuraavan
-            jäsenyyskuukauden alkaessa.
-          </p>
-
-          <Button
-            onClick={onStartSubscription}
-            variant="contained"
-            sx={{ backgroundColor: "#63c8cc" }}
-          >
-            Jatka tilausta
-          </Button>
-        </div>
-      ) : (
-        <div>
-          <p>
-            Painamalla 'Keskeytä tilaus'-painiketta keskeytät jäsenyytesi
-            LAAR:issa. Sinua ei veloiteta enää tulevista kuukausista.
-            Jäsenyytesi jatkuu maksetun kuukauden loppuun saakka. Voit jatkaa
-            jäsenyyttäsi koska tahansa.
-          </p>
-          <Button
-            onClick={onCancelSubscription}
-            variant="contained"
-            sx={{ backgroundColor: "#63c8cc" }}
-          >
-            Keskeytä tilaus
-          </Button>
-        </div>
+      {!subscriptionCancelled && (
+        <Dialog onClose={handleClose} open={open}>
+          <DialogTitle>Olet keskeyttämässä tilausta</DialogTitle>
+          <DialogContent dividers>
+            <DialogContentText>
+              Painamalla 'Keskeytä tilaus'-painiketta keskeytät jäsenyytesi
+              LAAR:issa. Sinua ei veloiteta enää tulevista kuukausista.
+              Jäsenyytesi jatkuu maksetun kuukauden loppuun saakka. Voit jatkaa
+              jäsenyyttäsi koska tahansa.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={onCancelSubscription}
+              variant="contained"
+              sx={{ backgroundColor: "#63c8cc" }}
+            >
+              Keskeytä tilaus
+            </Button>
+          </DialogActions>
+        </Dialog>
       )}
-    </Dialog>
+    </div>
   );
 };
 
-// Sivu on vielä kesken, error-handlingia pitää järkevöidä ja yhdenmukaistaa
-interface SubscriptionData {
-  created: number;
-  current_period_end: number;
-  cancel_at_period_end: boolean;
-}
-
 const SubscriptionManagement: React.FC = () => {
-  const { idToken } = useContext(TokenContext);
   const { userId } = useContext(UserContext);
-  const [subscription, setSubscription] = useState<SubscriptionData | null>();
+  const { idToken } = useContext(TokenContext);
+  const [open, setOpen] = React.useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [openLoginModal, setOpenLoginModal] = React.useState(false);
-  const [subscriptionCancelled, setSubscriptionCancelled] = useState(true);
-  const [open, setOpen] = React.useState(false);
+  const [subscription, setSubscription] = useState<SubscriptionData | null>();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -120,7 +122,11 @@ const SubscriptionManagement: React.FC = () => {
 
   const handleStartSubscription = async () => {
     try {
-      const response = await stripeSubscription(idToken, userId, "start-subscription");
+      const response = await stripeSubscription(
+        idToken,
+        userId,
+        "start-subscription"
+      );
       setSubscription(response);
       handleClose();
     } catch (error) {
@@ -130,7 +136,11 @@ const SubscriptionManagement: React.FC = () => {
 
   const handleCancelSubscription = async () => {
     try {
-      const response = await stripeSubscription(idToken, userId, "cancel-subscription");
+      const response = await stripeSubscription(
+        idToken,
+        userId,
+        "cancel-subscription"
+      );
       setSubscription(response);
       handleClose();
     } catch (error) {
@@ -157,11 +167,6 @@ const SubscriptionManagement: React.FC = () => {
               "get-subscription"
             );
             setSubscription(response);
-            if (response?.cancel_at_period_end) {
-              setSubscriptionCancelled(true);
-            } else {
-              setSubscriptionCancelled(false);
-            }
             setIsLoading(false);
           }
         } catch (error) {
@@ -187,7 +192,7 @@ const SubscriptionManagement: React.FC = () => {
       <SimpleDialog
         onCancelSubscription={handleCancelSubscription}
         onStartSubscription={handleStartSubscription}
-        subscriptionCancelled={subscriptionCancelled}
+        subscriptionCancelled={subscription?.cancel_at_period_end}
         open={open}
         onClose={handleClose}
       />
@@ -239,12 +244,14 @@ const SubscriptionManagement: React.FC = () => {
     return (
       <div>
         {subscription.cancel_at_period_end ? (
-          <p>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary">
             Tämänhetkinen tilauksesi loppuu{" "}
             {formatDate(subscription.current_period_end)}
-          </p>
+          </Typography>
         ) : (
-          <p>Sinulla on voimassaoleva tilaus!</p>
+          <Typography sx={{ fontSize: 14 }} color="text.secondary">
+            Sinulla on voimassaoleva tilaus!
+          </Typography>
         )}
         <br></br>
         <TableContainer component={Paper}>
