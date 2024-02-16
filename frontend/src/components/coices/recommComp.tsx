@@ -85,10 +85,7 @@ export default function RecommComp({
                 ([itemName, ageLimit]) => {
                   const numAgeLimit = Number(ageLimit);
                   const numChildAge = Number(childAge);
-                  console.log(`ageLimit: ${ageLimit}, childAge: ${childAge}`);
                   if (numAgeLimit === 0 || numAgeLimit <= numChildAge) {
-                    console.log("in if statement block");
-
                     titleRendered++;
                     return (
                       <Grid item xs={11} sm={6} md={4} key={itemName}>
