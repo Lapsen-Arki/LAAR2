@@ -7,7 +7,7 @@ const stripe = stripeConf();
 const startSubscription = async (
   req: Request,
   res: Response
-): Promise<void> => {
+  ): Promise<Response<any, Record<string, any>>> => {
   try {
     const db = admin.firestore();
     const userId = req.params.id;
@@ -16,19 +16,19 @@ const startSubscription = async (
     const userDoc = await userDocRef.get();
 
     if (!userDoc.exists) {
-      res.status(404).json({ error: "User not found. Contact admin." });
+      return res.status(404).json({ error: "User not found. Contact admin." });
     }
 
     const stripeCustomerId = userDoc.data()?.stripeCustomerId;
 
     if (!stripeCustomerId) {
-      res.status(404).json({ error: "User not found. Contact admin." });
+      return res.status(404).json({ error: "User not found. Contact admin." });
     }
 
     const stripeSubscriptionId = userDoc.data()?.stripeSubscriptionId;
 
     if (!stripeSubscriptionId) {
-      res.status(200).json({ message: "Ota yhteyttä ylläpitoon" });
+      return res.status(200).json({ message: "Ota yhteyttä ylläpitoon" });
     } else {
       const oldSubscription =
         await stripe.subscriptions.retrieve(stripeSubscriptionId);
@@ -41,7 +41,11 @@ const startSubscription = async (
             cancel_at_period_end: false,
           }
         );
-        res.status(200).send();
+        const { created, current_period_end, cancel_at_period_end } =
+        resumeSubscription;
+      return res
+        .status(200)
+        .json({ created, current_period_end, cancel_at_period_end });
       } else {
         // vanha tilaus on lopetettu, ja jäljellä oleva aika on myös loppunut
         const newSubscription = await stripe.subscriptions.create({
@@ -49,19 +53,23 @@ const startSubscription = async (
           items: [{ plan: "price_1ObLeAK45umi2LZd5XwwYvam" }],
         });
         await userDocRef.update({ stripeSubscriptionId: newSubscription.id });
-        res.status(200).send();
+        const { created, current_period_end, cancel_at_period_end } =
+        newSubscription;
+      return res
+        .status(200)
+        .json({ created, current_period_end, cancel_at_period_end });
       }
     }
   } catch (error) {
     console.error("Error starting subscription:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 const cancelSubscription = async (
   req: Request,
   res: Response
-): Promise<void> => {
+  ): Promise<Response<any, Record<string, any>>> => {
   try {
     const db = admin.firestore();
     const userId = req.params.id;
@@ -70,7 +78,7 @@ const cancelSubscription = async (
     const userDoc = await userDocRef.get();
 
     if (!userDoc.exists) {
-      res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ error: "User not found" });
     }
 
     const stripeSubscriptionId = userDoc.data().stripeSubscriptionId;
@@ -81,10 +89,14 @@ const cancelSubscription = async (
         cancel_at_period_end: true,
       }
     );
-    res.status(200).send();
+    const { created, current_period_end, cancel_at_period_end } =
+        subscription;
+      return res
+        .status(200)
+        .json({ created, current_period_end, cancel_at_period_end });
   } catch (error) {
     console.error("Error canceling subscription:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
