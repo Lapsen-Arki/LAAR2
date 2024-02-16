@@ -34,7 +34,7 @@ export default function HeaderIcons({
                 setOpen(false);
                 signOutMethod();
               }}
-              color="inherit"
+              sx={{ color: '#0d0908'}}
             >
               <LogoutIcon />
             </IconButton>
@@ -51,7 +51,7 @@ export default function HeaderIcons({
               component={Link}
               onClick={() => setOpen(false)}
               to="/profile"
-              color="inherit"
+              sx={{ color: '#0d0908'}}
             >
               <AccountCircle />
             </IconButton>
@@ -61,7 +61,7 @@ export default function HeaderIcons({
             <IconButton
               size="large"
               onClick={(e) => setSettingsAnchor(e.currentTarget)}
-              color="inherit"
+              sx={{ color: '#0d0908'}}
             >
               <SettingsIcon />
             </IconButton>
@@ -113,7 +113,7 @@ export default function HeaderIcons({
               size="large"
               component={Link}
               to="/login"
-              color="inherit"
+              sx={{ color: '#000000' }}
             >
               <LoginIcon />
             </IconButton>

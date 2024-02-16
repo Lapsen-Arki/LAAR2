@@ -20,12 +20,12 @@ import { useNavigate } from "react-router-dom";
 const CARD_ELEMENT_STYLES = {
   style: {
     base: {
-      color: "black",
-      iconColor: "black",
+      color: "#000000",
+      iconColor: "#000000",
       fontSize: "18px",
       fontSmoothing: "antialiased",
       ":-webkit-autofill": {
-        color: "black",
+        color: "#000000",
       },
       "::placeholder": {
         color: "#black",
@@ -94,7 +94,11 @@ export default function Register() {
     <ThemeProvider theme={formTheme}>
       <Container component="main" maxWidth="sm">
         {/*<ReturnBtn />*/}
-        <Typography variant="h4" style={{ textAlign: "center" }}>
+        <Typography
+          variant="h4"
+          color="text.primary"
+          style={{ textAlign: "center" }}
+        >
           Uusi asiakas
         </Typography>
         <form onSubmit={handleSubmit}>
@@ -146,17 +150,19 @@ export default function Register() {
             onChange={handleChange}
           />
 
-          <Typography variant="body1">Vahvista maksukorttisi:</Typography>
+          <Typography variant="body1" color="text.primary">
+            Vahvista maksukorttisi:
+          </Typography>
           <Box
             sx={{
-              background: "white",
+              background: "#fff4eb",
               padding: 2,
               margin: "7px",
               width: 218,
               maxWidth: "90%",
+              borderRadius: "3px",
               border: isFocused ? 1 : 1,
-              borderRadius: "5px",
-              borderColor: isFocused ? "#000000" : "rgba(0, 0, 0, 0.23)",
+              borderColor: isFocused ? "#000000" : "#fff4eb",
               "&:hover": {
                 borderColor: "#000000",
               },
@@ -174,8 +180,8 @@ export default function Register() {
               onBlur={() => setIsFocused(false)}
             />
           </Box>
-          <Typography variant="body1">
-            <b>Emme veloita sinua vielä tässä kohtaa.</b> Turvallisen
+          <Typography variant="body2" color="text.primary">
+            <span>Emme veloita sinua vielä tässä kohtaa.</span> Turvallisen
             maksukortin vahvistuksen käsittelee{" "}
             <Link href="https://stripe.com/en-fi" target="_blank">
               Stripe
@@ -183,7 +189,7 @@ export default function Register() {
             .
           </Typography>
 
-          <Typography variant="body1">
+          <Typography variant="body2" color="text.primary">
             Rekisteröitymällä aloitan 14 vrk ilmaisen kokeulujakson ja palvelun
             hinta on tämän jälkeen 6,99€/kk. Tilauksen voit peruttaa koska
             tahansa päättymään maksukauden loppuun.
@@ -198,15 +204,19 @@ export default function Register() {
                 name="accept"
               />
             }
-            label="Hyväksyn tietosuojaselosteen ja palvelun käyttöehdot"
+            label={
+              <Typography variant="body2" color="text.primary">
+                Hyväksyn tietosuojaselosteen ja palvelun käyttöehdot
+              </Typography>
+            }
           />
-          <Button type="submit" variant="contained" fullWidth>
+          <Button type="submit" variant="contained" color="primary" fullWidth>
             Rekisteröidy
           </Button>
-          <Typography sx={{ color: "red", marginBottom: 2, marginTop: 2 }}>
+          <Typography variant="subtitle1" sx={{ color: "red" }}>
             {errorMessage}
           </Typography>
-          <Typography sx={{ color: "green", marginBottom: 2, marginTop: 2 }}>
+          <Typography variant="subtitle1" sx={{ color: "green" }}>
             {successMessage}
           </Typography>
 

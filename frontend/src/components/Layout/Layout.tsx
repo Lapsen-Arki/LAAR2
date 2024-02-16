@@ -1,20 +1,35 @@
 import Footer from "./Footer";
 import Header from "../header/Header";
 import React from "react";
-import "../../styles/Layout.css";
+import { styled } from "@mui/material/styles";
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
+const LayoutRoot = styled("div", {
+  name: "MuiLayoutRoot",
+  slot: "root",
+})();
+
+const ContentOuter = styled("div", {
+  name: "MuiContentOuter",
+  slot: "outer",
+})();
+
+const MainContent = styled("div", {
+  name: "MuiMainContent",
+  slot: "page",
+})();
+
 export default function Layout(props: LayoutProps) {
   return (
-    <div className="page-container">
+    <LayoutRoot>
       <Header />
-      <div className="content-container">
-        <div className="page">{props.children}</div>
-      </div>
+      <ContentOuter>
+        <MainContent>{props.children}</MainContent>
+      </ContentOuter>
       <Footer />
-    </div>
+    </LayoutRoot>
   );
 }

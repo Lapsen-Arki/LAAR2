@@ -29,6 +29,8 @@ const HeaderLink = ({
         onClick={() => setOpen(false)}
         sx={{
           flexGrow: 1,
+          color: '000000',
+          textDecoration: 'none',
           // Any additional styling
         }}
       >

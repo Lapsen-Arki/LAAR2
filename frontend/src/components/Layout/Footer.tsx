@@ -1,50 +1,101 @@
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import { Typography, Tooltip } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Typography, Tooltip, Grid } from "@mui/material";
+import Link from '@mui/material/Link';
 
 export default function Footer() {
   return (
+    
     <footer>
-      <div className="footer-column-left" style={{ marginTop: 5 }}>
-        <Typography variant="h6">LAAR</Typography>
-        <div className="footer-contact-info">
-          <Link to="/" className="footer-link">
-            lapsen-arki.fi
-          </Link>
-          <div className="footer-icons">
-            <Tooltip title="Facebook">
-              <Link to="#" className="footer-link">
+      <Grid 
+        sx={{
+          display: 'flex',
+          maxWidth: "100vw",
+          flexDirection: {
+            xs: 'column',
+            sm: 'row',
+          },
+          flexWrap: 'nowrap',
+          justifyContent: 'space-between',
+          padding: 2,
+          paddingLeft: 4,
+          paddingRight: 4,
+        }}
+      >
+        <Grid item sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          alignSelf: 'flex-end',
+          width: {
+            xs: '100%',
+            sm: '200px',
+            md: '220px',
+          },
+          textAlign: {
+            xs: 'center',
+            sm: 'left',
+          },
+        }}>
+          <Typography variant="h5">LAAR</Typography>
+          
+          <Grid item sx={{
+            display: 'flex',
+            justifyContent: {
+              xs: 'center',
+              sm: 'left',
+              xl: 'flex-start',
+            },
+            flexDirection: 'row',
+          }}>
+          <Tooltip title="Facebook">
+              <Link to="/" >
                 <FacebookIcon />
               </Link>
             </Tooltip>
             <Tooltip title="Instagram">
-              <Link to="#" className="footer-link">
+              <Link to="/" >
                 <InstagramIcon sx={{ ml: 1 }} />
               </Link>
             </Tooltip>
-          </div>
-        </div>
-      </div>
-      <Typography sx={{ mt: 3 }}>
-        &copy; Copyright {new Date().getFullYear()}{" "}
-        <Link className="footer-li footer-link" to="https://www.lapsen-arki.fi">
-          lapsen-arki.fi
-        </Link>
-      </Typography>
-      <div className="footer-column-right">
-        <div className="footer-list" style={{ marginBottom: 19 }}>
-          <Link className="footer-li footer-link" to="#">
-            Kauppa
-          </Link>
-          <Link className="footer-li footer-link" to="/about-us">
-            Tietoa meistä
-          </Link>
-          <Link className="footer-li footer-link" to="/terms">
-            Käyttöehdot ja Tietosuojaseloste
-          </Link>
-        </div>
-      </div>
+            </Grid>
+        </Grid>
+        
+        <Grid item sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          alignSelf: 'flex-end',
+          width: {
+            xs: '100%',
+            sm: '300px',
+          },
+          textAlign: 'center',
+        }}>
+          <Typography variant="body1">
+          &copy; Copyright {new Date().getFullYear()}{" "}<Link to="https://www.lapsen-arki.fi" style={{ textDecoration: 'none' }}>lapsen-arki.fi</Link></Typography>
+        </Grid>
+        
+        <Grid item sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          alignSelf: 'flex-end',
+          width: {
+            xs: '100%',
+            sm: '200px',
+            md: '220px',
+          },
+          textAlign: {
+            xs: 'center',
+            sm: 'right',
+          },
+        }}>
+          <Typography variant="body2"><Link to="#" style={{ textDecoration: 'none' }}>Kauppa</Link></Typography>
+          <Typography variant="body2"><Link to="/about-us" style={{ textDecoration: 'none' }}>Tietoa meistä</Link></Typography>
+          <Typography variant="body2"><Link to="/terms" style={{ textDecoration: 'none' }}>Käyttöehdot ja Tietosuojaseloste</Link></Typography>
+        </Grid>
+      </Grid>
     </footer>
   );
 }

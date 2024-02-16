@@ -82,7 +82,9 @@ const Login: React.FC = (): JSX.Element => {
         maxWidth="sm"
         sx={{ display: "flex", textAlign: "center", marginTop: { md: 0 } }}
       >
-        <Typography variant="h4">Kirjaudu sisään</Typography>
+        <Typography variant="h4" color="text.primary">
+          Kirjaudu sisään
+        </Typography>
         <VerifyEmailModal
           open={openVerifyEmail}
           email={email}
@@ -132,7 +134,7 @@ const Login: React.FC = (): JSX.Element => {
                   />
                 }
                 label={
-                  <Typography variant="body2" style={{ color: "black" }}>
+                  <Typography variant="body2" color="text.primary">
                     Muista minut
                   </Typography>
                 }
@@ -156,17 +158,21 @@ const Login: React.FC = (): JSX.Element => {
               />
             </Grid>
           </Grid>
-          <Button type="submit" variant="contained" fullWidth>
+          <Button type="submit" variant="contained" fullWidth disableElevation>
             Kirjaudu
           </Button>
           {successMessage != null && (
             <Alert severity="success">
-              <Typography variant="subtitle1">{successMessage}</Typography>
+              <Typography variant="subtitle1" color="text.primary">
+                {successMessage}
+              </Typography>
             </Alert>
           )}
           {errorMessage != null && (
             <Alert severity="error">
-              <Typography variant="subtitle2">{errorMessage}</Typography>
+              <Typography variant="subtitle1" color="text.primary">
+                {errorMessage}
+              </Typography>
             </Alert>
           )}
           <Grid

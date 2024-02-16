@@ -1,10 +1,9 @@
-import { headingTheme } from "../Layout/themeMUI";
+//import { headingTheme } from "../Layout/oldLayout/themeMUI";
 import { Link } from "react-router-dom";
 import { AppBar, Box, Toolbar, Typography, IconButton } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
 
-import { ThemeProvider } from "@mui/material/styles";
 import HeaderLink from "./headerLink";
 import HeaderIcons from "./headerIcons";
 import { useState, useEffect } from "react";
@@ -29,8 +28,7 @@ export default function Header() {
   return (
     <header>
       <Box>
-        <ThemeProvider theme={headingTheme}>
-          <AppBar position="fixed" sx={{ width: "100%" }}>
+          <AppBar position="fixed" sx={{ minHeight: "80px", height: {xs: "auto"}, boxShadow: 'none' }}>
             <Toolbar>
               {/* LAAR text logo: */}
               <Typography
@@ -38,7 +36,12 @@ export default function Header() {
                 component={Link}
                 onClick={() => setOpenBurger(false)}
                 to="/"
-                sx={{ flexGrow: 1, ml: 0.5 }}
+                sx={{
+                  flexGrow: 1, ml: 0.5,
+                  color: '#000000',
+                  textDecoration: 'none',
+                  fontWeight: 'bold',
+                }}
               >
                 LAAR
               </Typography>
@@ -57,7 +60,7 @@ export default function Header() {
                   <IconButton
                     size="large"
                     edge="start"
-                    color="inherit"
+                    //color="inherit"
                     onClick={() => setOpenBurger((openBurger) => !openBurger)}
                     aria-label="menu"
                   >
@@ -96,7 +99,6 @@ export default function Header() {
               </div>
             </Toolbar>
           </AppBar>
-        </ThemeProvider>
       </Box>
     </header>
   );
