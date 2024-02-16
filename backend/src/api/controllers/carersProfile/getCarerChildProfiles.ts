@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import admin from "../../../config/firebseConfig";
-import { getUserIdFromToken } from "../../../utils/getUserIdFromTokenUtil";
 import { QueryDocumentSnapshot } from "firebase-admin/firestore";
+import checkAuth from "../../../middleware/checkAuth";
 
 // Määritellään lapsiprofiilin rakenne
 interface ChildProfile {
@@ -16,23 +16,7 @@ interface ChildProfile {
 // Funktio, joka hakee hoitajien lapsiprofiilit
 const getCarerChildProfiles = async (req: Request, res: Response) => {
   try {
-    // Haetaan käyttäjän token
-    const idToken = req.headers.authorization?.split("Bearer ")[1];
-    console.log("Haettu ID token:", idToken);
-
-    if (!idToken) {
-      console.log("Token puuttuu");
-      return res.status(401).json({ error: "Token puuttuu" });
-    }
-
-    // Tarkistetaan käyttäjän UID tokenista
-    const receiverUid = await getUserIdFromToken(idToken);
-    console.log("Käyttäjän UID:", receiverUid);
-
-    if (!receiverUid) {
-      console.log("Virheellinen token");
-      return res.status(403).json({ error: "Virheellinen token" });
-    }
+    const receiverUid = (res as any).userId; // Käytetään tallennettua UID:ta
 
     const db = admin.firestore();
     let carerChildProfiles: ChildProfile[] = [];
