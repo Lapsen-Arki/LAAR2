@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { RecommendationsType } from "../types/typesFrontend";
+import { RecommendationsType } from "../types/recommTypes";
 import axios from "axios";
 import { TokenContext } from "../contexts/tokenContext";
 import {

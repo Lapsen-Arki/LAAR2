@@ -1,41 +1,28 @@
 import axios from "axios";
+import { CarerProfile } from "../../types/typesFrontend";
+
 
 const API_BASE_URL = "http://localhost:3000/api";
 
-interface CarerProfile {
-  id: string;
-  email: string;
-  name: string;
-}
-
-const getCarerProfile = async (
-  idToken: string | null,
-  shouldFetchNewData: boolean
-): Promise<CarerProfile[] | never> => {
+const getCarerProfile = async (idToken: string | null, shouldFetchNewData: boolean): Promise<CarerProfile[] | never> => {
   try {
     // Tarkista ensin session storage
     if (!shouldFetchNewData) {
       const storedProfilesJson = sessionStorage.getItem("carerProfiles");
       if (storedProfilesJson) {
-        console.log(
-          "Hoitajaprofiilit löytyivät Session Storagessa:",
-          JSON.parse(storedProfilesJson)
-        );
+        //console.log("Hoitajaprofiilit löytyivät Session Storagessa:", JSON.parse(storedProfilesJson));
         return JSON.parse(storedProfilesJson) as CarerProfile[];
       }
     }
 
-    console.log("Haetaan hoitajaprofiileja palvelimelta...");
+    //console.log("Haetaan hoitajaprofiileja palvelimelta...");
     const config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.get<CarerProfile[]>(
-      `${API_BASE_URL}/carers`,
-      config
-    );
-    console.log("Hoitajaprofiilit haettu onnistuneesti:", response.data);
+    const response = await axios.get<CarerProfile[]>(`${API_BASE_URL}/carers`, config);
+    //console.log("Hoitajaprofiilit haettu onnistuneesti:", response.data);
 
     // Tallenna hoitajaprofiilit Session Storageen, jos ne ovat muuttuneet
     updateSessionStorage(response.data);
@@ -57,7 +44,7 @@ const getCarerProfile = async (
 
 const updateSessionStorage = (profiles: CarerProfile[]) => {
   sessionStorage.setItem("carerProfiles", JSON.stringify(profiles));
-  console.log("Hoitajaprofiilit tallennettu Session Storageen:", profiles);
+  //console.log("Hoitajaprofiilit tallennettu Session Storageen:", profiles);
 };
 
 export { getCarerProfile, updateSessionStorage };

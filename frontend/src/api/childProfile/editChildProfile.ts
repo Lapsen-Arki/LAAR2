@@ -1,4 +1,5 @@
 import axios from "axios";
+import makeChildObject from "../../utils/makeChildObject";
 
 // TODO: Move to env variables etc:
 const API_BASE_URL =
@@ -39,12 +40,14 @@ export const editChildProfile = async (
     if (index !== -1) {
       storedProfiles[index] = data;
       sessionStorage.setItem("childProfiles", JSON.stringify(storedProfiles));
+      makeChildObject();
     }
 
-    console.log("Profiili tallennettu onnistuneesti:", data);
+    //console.log("Profiili tallennettu onnistuneesti:", data);
     // Päivitä Session Storage manuaalisesti
     const updatedStoredProfilesJson = JSON.stringify(storedProfiles);
     window.sessionStorage.setItem("childProfiles", updatedStoredProfilesJson);
+    makeChildObject();
 
     return response.data;
   } catch (error) {

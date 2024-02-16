@@ -9,12 +9,12 @@ import {
   InputLabel,
   TextareaAutosize,
 } from "@mui/material";
-import { FormDataToBackend } from "../../types/typesFrontend";
+import { FormDataToBackend } from "../../types/recommTypes";
 import { adminAddData } from "../../api/adminAddData";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 import PleaseLoginModal from "../../components/modals/pleaseLoginModal";
-import { FinalDataToBackend } from "../../types/typesFrontend";
+import { FinalDataToBackend } from "../../types/recommTypes";
 
 // TODO: 1. More frequent login status checks
 
@@ -26,10 +26,10 @@ const AdminPage = () => {
   const [openLoginModal, setOpenLoginModal] = React.useState(false);
   const [formData, setFormData] = React.useState<FormDataToBackend>({
     title: "",
-    content: "",
+    name: "",
+    textContent: "",
     ageLimit: 0,
     photoLink: "",
-    photoFile: undefined,
   });
   const { idToken } = useContext(TokenContext);
 
@@ -116,10 +116,10 @@ const AdminPage = () => {
               }
               setFormData({
                 title: "",
-                content: "",
+                name: "",
+                textContent: "",
                 ageLimit: 0,
                 photoLink: "",
-                photoFile: undefined,
               });
               setCategory(e.target.value);
             }}
@@ -130,6 +130,11 @@ const AdminPage = () => {
             <MenuItem value="tip">vinkki</MenuItem>
           </Select>
         </FormControl>
+
+        <Typography>
+          Tyyppi määrittää missä tai missä time blockissa sisältö näytetään.
+          Tämä ei näy käyttäjälle:
+        </Typography>
         {/*type / identifier: */}
         {category !== "activity" && (
           <FormControl fullWidth margin="normal">
@@ -169,55 +174,48 @@ const AdminPage = () => {
           onChange={handleChange}
           required
         />
+        <Typography>
+          Ruuan tai aktiviteetin nimi. HUOM. Älä lisää identtisiä nimiä samalla
+          otsikolla, kategorialla ja tyypillä.
+        </Typography>
+        <TextField
+          sx={{
+            marginTop: 0,
+            background: "white",
+          }}
+          name="name"
+          fullWidth
+          label="Nimi"
+          margin="normal"
+          onChange={handleChange}
+          required
+        />
+        <Typography>Ikäraja kuukausina:</Typography>
+        <TextField
+          sx={{
+            marginTop: 0,
+            background: "white",
+          }}
+          name="ageLimit"
+          fullWidth
+          label="Ikäraja/kk"
+          margin="normal"
+          type="number"
+          onChange={handleChange}
+          required
+        />
 
-        {category !== "tip" ? (
-          <div>
-            <TextField
-              sx={{
-                marginTop: 0,
-                background: "white",
-              }}
-              name="content"
-              fullWidth
-              label="Nimi"
-              margin="normal"
-              onChange={handleChange}
-              required
-            />
-            <TextField
-              sx={{
-                marginTop: 0,
-                background: "white",
-              }}
-              name="ageLimit"
-              fullWidth
-              label="Ikäraja/kk"
-              margin="normal"
-              type="number"
-              onChange={handleChange}
-              required
-            />
-          </div>
-        ) : (
-          <div>
-            <Typography>Teksti sisältö:</Typography>
-
-            <TextareaAutosize
-              name="content"
-              minRows={8} // Minimum number of rows
-              maxRows={8} // Maximum number of rows
-              style={{ width: 495 }}
-              onChange={(e) =>
-                setFormData({ ...formData, [e.target.name]: e.target.value })
-              }
-              required
-            />
-            <Typography>
-              HUOM: Teksti formatoituu täsmälleen samalla tavalla kuin kirjoitat
-              sen tähän. mm. rivinvaihdot, välimerkit jne.
-            </Typography>
-          </div>
-        )}
+        <Typography>Vinkin tai tulossivun tekstisisältö:</Typography>
+        <TextareaAutosize
+          name="textContent"
+          minRows={8} // Minimum number of rows
+          maxRows={8} // Maximum number of rows
+          style={{ width: 495 }}
+          onChange={(e) =>
+            setFormData({ ...formData, [e.target.name]: e.target.value })
+          }
+          required
+        />
 
         <div>
           <h3>Kuva</h3>
