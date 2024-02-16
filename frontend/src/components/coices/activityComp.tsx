@@ -4,10 +4,10 @@ import { RecommendationsType } from "../../types/recommTypes";
 import useGetRecommData from "../../customHooks/useGetRecommData";
 
 export default function ActivityComp({
-  childAge,
+  childAge = 0,
   selectedChild,
 }: {
-  childAge: number;
+  childAge?: number;
   selectedChild: string;
 }) {
   const fetchType = "activity";
