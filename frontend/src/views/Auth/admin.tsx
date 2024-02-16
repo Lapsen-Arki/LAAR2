@@ -130,6 +130,11 @@ const AdminPage = () => {
             <MenuItem value="tip">vinkki</MenuItem>
           </Select>
         </FormControl>
+
+        <Typography>
+          Tyyppi määrittää missä tai missä time blockissa sisältö näytetään.
+          Tämä ei näy käyttäjälle:
+        </Typography>
         {/*type / identifier: */}
         {category !== "activity" && (
           <FormControl fullWidth margin="normal">
