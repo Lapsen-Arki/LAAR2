@@ -1,7 +1,12 @@
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import { Typography, Tooltip, Grid } from "@mui/material";
-import Link from '@mui/material/Link';
+import { 
+  Grid, 
+  Link,
+  Typography, 
+  Tooltip, 
+  } from "@mui/material";
+import { Link as RouterLink } from 'react-router-dom';
 
 export default function Footer() {
   return (
@@ -49,12 +54,12 @@ export default function Footer() {
             flexDirection: 'row',
           }}>
           <Tooltip title="Facebook">
-              <Link to="/" >
+              <Link component={RouterLink} to="/" >
                 <FacebookIcon />
               </Link>
             </Tooltip>
             <Tooltip title="Instagram">
-              <Link to="/" >
+              <Link component={RouterLink} to="/" >
                 <InstagramIcon sx={{ ml: 1 }} />
               </Link>
             </Tooltip>
@@ -73,7 +78,7 @@ export default function Footer() {
           textAlign: 'center',
         }}>
           <Typography variant="body1">
-          &copy; Copyright {new Date().getFullYear()}{" "}<Link to="https://www.lapsen-arki.fi" style={{ textDecoration: 'none' }}>lapsen-arki.fi</Link></Typography>
+          &copy; Copyright {new Date().getFullYear()}{" "}<Link component={RouterLink} to="https://www.lapsen-arki.fi" style={{ textDecoration: 'none' }}>lapsen-arki.fi</Link></Typography>
         </Grid>
         
         <Grid item sx={{
@@ -91,9 +96,9 @@ export default function Footer() {
             sm: 'right',
           },
         }}>
-          <Typography variant="body2"><Link to="#" style={{ textDecoration: 'none' }}>Kauppa</Link></Typography>
-          <Typography variant="body2"><Link to="/about-us" style={{ textDecoration: 'none' }}>Tietoa meistä</Link></Typography>
-          <Typography variant="body2"><Link to="/terms" style={{ textDecoration: 'none' }}>Käyttöehdot ja Tietosuojaseloste</Link></Typography>
+          <Typography variant="body2"><Link component={RouterLink} to="#" style={{ textDecoration: 'none' }}>Kauppa</Link></Typography>
+          <Typography variant="body2"><Link component={RouterLink} to="/about-us" style={{ textDecoration: 'none' }}>Tietoa meistä</Link></Typography>
+          <Typography variant="body2"><Link component={RouterLink} to="/terms" style={{ textDecoration: 'none' }}>Käyttöehdot ja Tietosuojaseloste</Link></Typography>
         </Grid>
       </Grid>
     </footer>
