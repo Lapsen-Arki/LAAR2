@@ -2,6 +2,7 @@ import Footer from "./Footer";
 import Header from "../header/Header";
 import React from "react";
 import { styled } from "@mui/material/styles";
+import "../../styles/reset.css";
 
 interface LayoutProps {
   children: React.ReactNode;

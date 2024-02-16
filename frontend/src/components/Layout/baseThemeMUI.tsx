@@ -41,24 +41,6 @@ const baseTheme = createTheme({
     },
   },
   components: {
-    MuiCssBaseline: {
-      styleOverrides: {
-        "@global": {
-          html: {
-            //margin: 0,
-            //padding: 0,
-          },
-          body: {
-            //margin: 0,
-            //padding: 0,
-          },
-        },
-        "#root": {
-          //margin: 0,
-          //padding: 0,
-        },
-      },
-    },
     //footerin väri
     MuiLayoutRoot: {
       styleOverrides: {
