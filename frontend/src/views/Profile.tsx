@@ -13,7 +13,7 @@ import PleaseLoginModal from "../components/modals/pleaseLoginModal.tsx";
 import { useProfileUtils } from '../customHooks/useProfileUtils.tsx';
 import InvitedCarersComponent from '../components/profileComponents/invitedCarers.tsx';
 import MyChildComponent from '../components/profileComponents/myChild.tsx';
-//import CarerChildComponent from '../components/profileComponents/carerChild.tsx';
+import CarerChildComponent from '../components/profileComponents/carerChild.tsx';
 
 export default function Profile() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
@@ -85,6 +85,7 @@ export default function Profile() {
               </>
             )
           }
+          <CarerChildComponent />
         </Box>
       </div>
     </div>
