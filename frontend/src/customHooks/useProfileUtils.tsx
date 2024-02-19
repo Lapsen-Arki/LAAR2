@@ -1,5 +1,3 @@
-// ProfileUtils.tsx
-
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { TokenContext } from "../contexts/tokenContext";
@@ -87,7 +85,7 @@ export function useProfileUtils() {
       }
     };
 
-/* Hakee tiedot oikein:
+/* Hakee tiedot oikein, bugi:
     const fetchCarerChildProfiles = async () => {
       try {
         const profiles = await getCarerChildProfiles();
@@ -96,7 +94,8 @@ export function useProfileUtils() {
         console.error("Virhe profiileja haettaessa:", error);
       }
     };
-*/
+
+    ///Rakennettu,tiedot tulee näkyviin jos painaa f5:
 const fetchCarerChildProfiles = async () => {
   try {
     let profiles = [];
@@ -120,6 +119,43 @@ const fetchCarerChildProfiles = async () => {
     return null;
   }
 };
+*/
+//Rakennettu, ei näytä mtn mut session storage ok
+    const fetchCarerProfilesFromSessionStorage = () => {
+      const storedProfilesJson = sessionStorage.getItem("carerChildProfiles");
+      if (storedProfilesJson) {
+        const profiles = JSON.parse(storedProfilesJson) as CarerChildProfile[];
+        // Suodata pois profiilit, joissa ei ole creatorName ja creatorEmail
+        const filteredProfiles = profiles.filter(profile => profile.creatorName && profile.creatorEmail);
+        return filteredProfiles;
+      }
+      return null;
+    };
+
+    const fetchCarerProfilesFromServer = async () => {
+      try {
+        //console.log('Haetaan profiileja palvelimelta...');
+        const response = await getCarerChildProfiles();
+        if (!("error" in response)) {
+          sessionStorage.setItem("carerChildProfiles", JSON.stringify(response));
+          setCarerChildProfiles(response);
+        } else {
+          console.error("Virhe profiilien haussa:", response.error);
+        }
+      } catch (error) {
+        console.error("Virhe profiilien haussa:", error);
+      }
+    };
+
+    const fetchCarerChildProfiles = async () => {
+      const storedProfiles = fetchCarerProfilesFromSessionStorage();
+      if (storedProfiles) {
+        //console.log('Käytetään Session Storagessa olevia profiileja');
+        setCarerChildProfiles(storedProfiles);
+      } else {
+        await fetchCarerProfilesFromServer();
+      }
+    };
 
     fetchProfiles();
     fetchCarerProfiles();
