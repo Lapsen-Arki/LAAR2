@@ -25,8 +25,8 @@ const getCarerProfile = async (idToken: string | null, shouldFetchNewData: boole
 
     return response.data;
   } catch (error) {
-    console.error("Virhe hoitajaprofiileja hakiessa:", error);
-    // Palauta tyhjä taulukko, jos hoitajaprofiileja ei saatu
+    //console.error("Virhe hoitajaprofiileja hakiessa:", error);
+    // Palauta tyhjä taulukko, jos hoitajaprofiileja ei ole
     return [];
   }
 };
