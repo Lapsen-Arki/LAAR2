@@ -48,6 +48,7 @@ const SubscriptionManagement: React.FC = () => {
       setErrorMessage(null);
       setSuccessMessage("Tilausta jatkettu onnistuneesti!");
     } catch (error) {
+		setSubscription(null)
       handleConfirmationDialogClose();
       setSuccessMessage(null);
       setErrorMessage(
@@ -92,7 +93,7 @@ const SubscriptionManagement: React.FC = () => {
             setIsLoading(false);
           }
         } catch (error) {
-          setIsLoading(false);
+          setIsLoading(true);
           setSuccessMessage(null);
           setErrorMessage("Tilausta noudettaessa tapahtui virhe.");
           console.error("Error fetching subscription.");
