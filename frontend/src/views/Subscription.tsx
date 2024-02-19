@@ -1,108 +1,22 @@
-import React, { useState, useContext, useEffect } from "react";
-import stripeSubscription from "../api/stripeSubscriptions";
-import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
-import {
-  Paper,
-  TableRow,
-  TableContainer,
-  TableCell,
-  TableBody,
-  Table,
-  ListItemText,
-  ListItemIcon,
-  Typography,
-  Button,
-  Divider,
-  List,
-  ListItem,
-  CardContent,
-  Card,
-  Box,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-} from "@mui/material/";
-import "../styles/Subscription.css";
-import { TokenContext } from "../contexts/tokenContext";
 import { UserContext } from "../contexts/userContext";
+import { TokenContext } from "../contexts/tokenContext";
+import stripeSubscription from "../api/stripeSubscriptions";
+import { SubscriptionData } from "../types/subscriptionTypes";
+import React, { useState, useContext, useEffect } from "react";
 import PleaseLoginModal from "../components/modals/pleaseLoginModal";
-
-interface SubscriptionData {
-	created: number;
-	current_period_end: number;
-	cancel_at_period_end: boolean;
-  }
-
-export interface SimpleDialogProps {
-  subscriptionCancelled: boolean | undefined;
-  onCancelSubscription: () => Promise<void>;
-  onStartSubscription: () => Promise<void>;
-  open: boolean;
-  onClose: () => void;
-}
-
-const SimpleDialog = (props: SimpleDialogProps) => {
-  const {
-    onCancelSubscription,
-    onStartSubscription,
-    subscriptionCancelled,
-    onClose,
-    open,
-  } = props;
-  const handleClose = () => {
-    onClose();
-  };
-
-  return (
-    <div>
-      {subscriptionCancelled && (
-        <Dialog onClose={handleClose} open={open}>
-          <DialogTitle>Olet jatkamassa tilausta</DialogTitle>
-          <DialogContent dividers>
-            <DialogContentText>
-              Painamalla 'Jatka tilausta'-painiketta jatkat jäsenyyttäsi
-              LAAR:issa. Sinua tullaan veloittamaan automaattisesti aina
-              seuraavan jäsenyyskuukauden alkaessa.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={onStartSubscription}
-              variant="contained"
-              sx={{ backgroundColor: "#63c8cc" }}
-            >
-              Jatka tilausta
-            </Button>
-          </DialogActions>
-        </Dialog>
-      )}
-      {!subscriptionCancelled && (
-        <Dialog onClose={handleClose} open={open}>
-          <DialogTitle>Olet keskeyttämässä tilausta</DialogTitle>
-          <DialogContent dividers>
-            <DialogContentText>
-              Painamalla 'Keskeytä tilaus'-painiketta keskeytät jäsenyytesi
-              LAAR:issa. Sinua ei veloiteta enää tulevista kuukausista.
-              Jäsenyytesi jatkuu maksetun kuukauden loppuun saakka. Voit jatkaa
-              jäsenyyttäsi koska tahansa.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={onCancelSubscription}
-              variant="contained"
-              sx={{ backgroundColor: "#63c8cc" }}
-            >
-              Keskeytä tilaus
-            </Button>
-          </DialogActions>
-        </Dialog>
-      )}
-    </div>
-  );
-};
+import { ConfirmationDialog } from "../components/subscriptionComponents/confirmationDialog";
+import {
+  IsSubscribed,
+  NotSubscribed,
+} from "../components/subscriptionComponents/subscriptionInfo";
+import {
+  Alert,
+  Button,
+  Card,
+  CardContent,
+  Container,
+  Typography,
+} from "@mui/material/";
 
 const SubscriptionManagement: React.FC = () => {
   const { userId } = useContext(UserContext);
@@ -111,12 +25,14 @@ const SubscriptionManagement: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [openLoginModal, setOpenLoginModal] = React.useState(false);
   const [subscription, setSubscription] = useState<SubscriptionData | null>();
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleClickOpen = () => {
+  const handleConfirmationDialogOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleConfirmationDialogClose = () => {
     setOpen(false);
   };
 
@@ -128,8 +44,15 @@ const SubscriptionManagement: React.FC = () => {
         "start-subscription"
       );
       setSubscription(response);
-      handleClose();
+      handleConfirmationDialogClose();
+      setErrorMessage(null);
+      setSuccessMessage("Tilausta jatkettu onnistuneesti!");
     } catch (error) {
+      handleConfirmationDialogClose();
+      setSuccessMessage(null);
+      setErrorMessage(
+        "Tilauksen jatkamisessa tapahtui virhe. Yritä hetken päästä uudelleen."
+      );
       console.error("Error starting subscription:", error);
     }
   };
@@ -142,18 +65,17 @@ const SubscriptionManagement: React.FC = () => {
         "cancel-subscription"
       );
       setSubscription(response);
-      handleClose();
+      handleConfirmationDialogClose();
+      setErrorMessage(null);
+      setSuccessMessage("Tilaus keskeytetty onnistuneesti!");
     } catch (error) {
+      handleConfirmationDialogClose();
+      setSuccessMessage(null);
+      setErrorMessage(
+        "Tilauksen keskeyttämisessä tapahtui virhe. Yritä hetken päästä uudelleen."
+      );
       console.error("Error canceling subscription:", error);
     }
-  };
-
-  const formatDate = (timestamp: number) => {
-    return new Date(timestamp * 1000).toLocaleDateString("en-GB", {
-      year: "numeric",
-      month: "numeric",
-      day: "numeric",
-    });
   };
 
   useEffect(() => {
@@ -170,7 +92,10 @@ const SubscriptionManagement: React.FC = () => {
             setIsLoading(false);
           }
         } catch (error) {
-          console.error("Virhe tilausta haettaessa.");
+          setIsLoading(false);
+          setSuccessMessage(null);
+          setErrorMessage("Tilausta noudettaessa tapahtui virhe.");
+          console.error("Error fetching subscription.");
         }
       };
       fetchSubscription();
@@ -184,41 +109,40 @@ const SubscriptionManagement: React.FC = () => {
   }
 
   return (
-    <div className="subscription-page">
+    <Container
+      sx={{
+        textAlign: "center",
+      }}
+    >
       <Typography variant="h3" component="div">
         Tilaustiedot
       </Typography>
       <br></br>
-      <SimpleDialog
+      <ConfirmationDialog
         onCancelSubscription={handleCancelSubscription}
         onStartSubscription={handleStartSubscription}
         subscriptionCancelled={subscription?.cancel_at_period_end}
         open={open}
-        onClose={handleClose}
+        onClose={handleConfirmationDialogClose}
       />
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-        }}
-      >
-        {!isLoading && (
-          <Card variant="outlined">
-            <CardContent>
-              {!isLoading && subscription && (
-                <IsSubscribed subscription={subscription} />
-              )}
-              {!isLoading && !subscription && <NotSubscribed />}
-            </CardContent>
-          </Card>
-        )}
-      </Box>
+      {!isLoading && (
+        <Card variant="outlined">
+          <CardContent>
+            {!isLoading && subscription && (
+              <IsSubscribed subscription={subscription} />
+            )}
+            {!isLoading && !subscription && <NotSubscribed />}
+          </CardContent>
+        </Card>
+      )}
       <br></br>
       {!isLoading && subscription?.cancel_at_period_end && (
         <Button
-          onClick={handleClickOpen}
+          onClick={handleConfirmationDialogOpen}
           variant="contained"
-          sx={{ backgroundColor: "#63c8cc" }}
+          sx={{
+            backgroundColor: "#63c8cc",
+          }}
         >
           Jatka tilausta
         </Button>
@@ -226,99 +150,27 @@ const SubscriptionManagement: React.FC = () => {
       {isLoading && <Typography>Ladataan sivua...</Typography>}
       {!isLoading && !subscription?.cancel_at_period_end && (
         <Button
-          onClick={handleClickOpen}
+          onClick={handleConfirmationDialogOpen}
           variant="contained"
           sx={{ backgroundColor: "#63c8cc" }}
         >
           Keskeytä tilaus
         </Button>
       )}
-    </div>
+      <br></br>
+      <br></br>
+      {successMessage != null && (
+        <Alert severity="success">
+          <Typography variant="subtitle1">{successMessage}</Typography>
+        </Alert>
+      )}
+      {errorMessage != null && (
+        <Alert severity="error">
+          <Typography variant="subtitle2">{errorMessage}</Typography>
+        </Alert>
+      )}
+    </Container>
   );
-
-  function IsSubscribed({
-    subscription,
-  }: {
-    subscription: SubscriptionData;
-  }): React.ReactNode {
-    return (
-      <div>
-        {subscription.cancel_at_period_end ? (
-          <Typography sx={{ fontSize: 14 }} color="text.secondary">
-            Tämänhetkinen tilauksesi loppuu{" "}
-            {formatDate(subscription.current_period_end)}
-          </Typography>
-        ) : (
-          <Typography sx={{ fontSize: 14 }} color="text.secondary">
-            Sinulla on voimassaoleva tilaus!
-          </Typography>
-        )}
-        <br></br>
-        <TableContainer component={Paper}>
-          <Table
-            sx={{ minWidth: { xs: "100%", md: 600 } }}
-            aria-label="simple table"
-          >
-            <TableBody>
-              <TableRow>
-                <TableCell>Jäsenyys alkanut</TableCell>
-                <TableCell align="right">
-                  {formatDate(subscription.created)}
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Seuraava maksu</TableCell>
-                <TableCell align="right">
-                  {formatDate(subscription.current_period_end)}
-                </TableCell>
-              </TableRow>
-              <TableRow sx={{ "&:last-child td": { borderBottom: "none" } }}>
-                <TableCell>Jäsenyyden hinta</TableCell>
-                <TableCell align="right">6,99/kk</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </div>
-    );
-  }
 };
 
 export default SubscriptionManagement;
-function NotSubscribed(): React.ReactNode {
-  return (
-    <div>
-      <Typography sx={{ fontSize: 14 }} color="text.secondary">
-        Sinulla ei ole voimassaolevaa tilausta.
-      </Typography>
-      <br></br>
-      <Typography sx={{ fontSize: 14, marginBottom: 1 }} color="text.secondary">
-        Hanki täysjäsenyys hintaan
-      </Typography>
-      <Typography variant="h3" component="div">
-        6,99/kk
-      </Typography>
-      <br></br>
-      <Divider variant="middle" />
-      <div className="subscription-description">
-        <Typography variant="body2" color="text.secondary">
-          Aloittamalla tilauksen saat LAAR:in kaikki ominaisuudet käyttöösi.
-        </Typography>
-      </div>
-      <List>
-        <ListItem>
-          <ListItemIcon>
-            <AddCircleRoundedIcon />
-          </ListItemIcon>
-          <ListItemText primary="Ominaisuus1" />
-        </ListItem>
-        <ListItem>
-          <ListItemIcon>
-            <AddCircleRoundedIcon />
-          </ListItemIcon>
-          <ListItemText primary="Ominaisuus2" />
-        </ListItem>
-      </List>
-    </div>
-  );
-}
