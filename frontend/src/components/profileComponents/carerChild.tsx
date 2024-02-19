@@ -60,7 +60,7 @@ const CarerChildComponent: React.FC = () => {
                   <Typography variant="subtitle1" color="text.secondary" component="div">
                     {calculateAge(new Date(profile.birthdate)).birthdayWish}
                   </Typography>
-                  <Tooltip title="Hoitaja">
+                  <Tooltip title="Vanhempi">
                     <Typography
                         variant="subtitle1"
                         color="text.secondary"
@@ -70,7 +70,7 @@ const CarerChildComponent: React.FC = () => {
                         <PersonIcon sx={{ marginRight: '2px' }} /> {profile.creatorName}
                     </Typography>
                   </Tooltip>
-                  <Tooltip title="Sähköpostiosoite">
+                  <Tooltip title="Vanhemman sähköpostiosoite">
                     <Typography
                       variant="subtitle1"
                       color="text.secondary"
