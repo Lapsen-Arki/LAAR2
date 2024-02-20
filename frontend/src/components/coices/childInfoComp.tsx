@@ -46,7 +46,13 @@ export default function ChildInfoComp({
             </Typography>
           </Grid>
           {mealType && childData.allergies && (
-            <Typography variant="h6">Lapsen allergiat: </Typography>
+            <>
+              <Typography variant="h6">Lapsen allergiat: </Typography>
+              <Typography style={{ fontSize: "small" }}>
+                (HUOM. Allergioita ei oiteta huomioon ruokasuosituksissa.
+                Tarkista allergeenit aina pakkauksesta.)
+              </Typography>
+            </>
           )}
           <Grid sx={{ display: "flex" }}>
             {
@@ -59,8 +65,10 @@ export default function ChildInfoComp({
                       key={allergy}
                       variant="body1"
                     >
-                      {allergy}
-                      {index !== childData.allergies.length - 1 && ","}
+                      <strong>{allergy}</strong>
+                      {childData.allergies &&
+                        index !== childData.allergies.length - 1 &&
+                        ","}
                     </Typography>
                   );
                 }) // <-- this feature is coming later
