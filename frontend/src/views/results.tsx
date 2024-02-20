@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import ReturnBtn from "../components/returnBtn";
 import { useEffect, useState } from "react";
 import { RecommendationsType } from "../types/recommTypes";
+import ChildInfoComp from "../components/coices/childInfoComp";
 
 export default function Results() {
   const [resultData, setResultData] = useState<RecommendationsType[]>([]);
@@ -33,6 +34,7 @@ export default function Results() {
       <Typography variant="h3" sx={{ textAlign: "center" }}>
         Tulokset
       </Typography>
+      <ChildInfoComp mealType={isMealPage} />
       <Grid
         container
         sx={{ mt: 5, mb: 15, textAlign: "center", justifyContent: "center" }}

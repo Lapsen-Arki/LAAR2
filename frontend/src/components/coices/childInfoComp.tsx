@@ -5,10 +5,10 @@ import { TokenContext } from "../../contexts/tokenContext";
 import { childPreviewData } from "../../utils/staticPreviewData";
 
 export default function ChildInfoComp({
-  selectedChild,
+  selectedChild = sessionStorage.getItem("selectedChild"),
   mealType = undefined,
 }: {
-  selectedChild: string | null;
+  selectedChild?: string | null;
   mealType?: string;
 }) {
   const [childData, setChildData] = useState<ChildProfile>();
