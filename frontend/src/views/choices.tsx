@@ -8,7 +8,6 @@ import makeChildObject from "../utils/makeChildObject";
 
 // comp imports:
 import ActivityComp from "../components/coices/activityComp";
-import AllergiesComp from "../components/coices/allergiesComp";
 import ChildInfoComp from "../components/coices/childInfoComp";
 import MealComp from "../components/coices/mealComp";
 import TipsComp from "../components/coices/tipsComp";
@@ -117,14 +116,13 @@ export default function ChoicesPage() {
       >
         <ReturnBtn message="palaa etusivulle" />
         <Typography variant="h2">{renderIdentifier}</Typography>
-        <ChildInfoComp selectedChild={selectedChild} />{" "}
+        <ChildInfoComp selectedChild={selectedChild} mealType={mealType} />{" "}
         <NameDropDown changerFunc={handleParentChange} />
         <div style={{ marginBottom: 50 }}>
           {tipsFor && <TipsComp adviseType={tipsFor} />}
         </div>
         {smallMeal && (
           <div>
-            <AllergiesComp />
             {selectedChild && (
               <MealComp
                 mealType={mealType}
@@ -136,7 +134,6 @@ export default function ChoicesPage() {
         )}
         {bigMeal && (
           <div>
-            <AllergiesComp />
             {selectedChild && (
               <MealComp
                 mealType={mealType}
