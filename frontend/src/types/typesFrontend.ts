@@ -51,6 +51,11 @@ export interface ChildProfile {
   allergies?: string[]; // <-- this feature is coming later
 }
 
+export interface CarerChildProfile extends ChildProfile {
+  creatorName: string;
+  creatorEmail: string;
+}
+
 export interface CarerProfile {
   receiverUid: string;
   email: string;

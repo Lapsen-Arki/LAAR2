@@ -13,7 +13,7 @@ import PleaseLoginModal from "../components/modals/pleaseLoginModal.tsx";
 import { useProfileUtils } from '../customHooks/useProfileUtils.tsx';
 import InvitedCarersComponent from '../components/profileComponents/invitedCarers.tsx';
 import MyChildComponent from '../components/profileComponents/myChild.tsx';
-//import CarerChildComponent from '../components/profileComponents/carerChild.tsx';
+import CarerChildComponent from '../components/profileComponents/carerChild.tsx';
 
 export default function Profile() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
@@ -21,6 +21,7 @@ export default function Profile() {
   const {
     childProfiles,
     carerProfiles,
+    carerChildProfiles,
     
     handleAddProfileClick,
     handleAddCarersClick
@@ -60,7 +61,7 @@ export default function Profile() {
         </div>
 
         <Box className="profiles">
-          {!childProfiles.length && !carerProfiles.length ? (
+          {!childProfiles.length && !carerProfiles.length && !carerChildProfiles.length ? (
             <Alert severity="info" sx={{ maxWidth: 430 }}>
               <p>Aloitetaan yhdessä matkasi <strong>Lapsen Arki</strong>-sivustolla. Täällä voit helposti hallinnoida lapsesi profiileja ja kutsua hoitajia jakamaan ainutlaatuisia hetkiä ja tärkeitä tietoja.</p>
               <p><strong>Uuden lapsen profiilin luominen:</strong></p>
@@ -81,7 +82,7 @@ export default function Profile() {
               <>
                 {childProfiles.length > 0 && <MyChildComponent />}
                 {carerProfiles.length > 0 && <InvitedCarersComponent />}
-                {/* {carerChildProfiles.length > 0 && <CarerChildComponent />} */}
+                {carerChildProfiles.length > 0 && <CarerChildComponent />}
               </>
             )
           }
