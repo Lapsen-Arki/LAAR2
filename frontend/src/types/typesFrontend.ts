@@ -50,6 +50,11 @@ export interface ChildProfile {
   creatorId: string;
 }
 
+export interface CarerChildProfile extends ChildProfile {
+  creatorName: string;
+  creatorEmail: string;
+}
+
 export interface CarerProfile {
   receiverUid: string;
   email: string;
