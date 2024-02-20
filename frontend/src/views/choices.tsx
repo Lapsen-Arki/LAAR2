@@ -125,7 +125,7 @@ export default function ChoicesPage() {
         {smallMeal && (
           <div>
             <AllergiesComp />
-            {selectedChildAge && selectedChild && (
+            {selectedChild && (
               <MealComp
                 mealType={mealType}
                 childAge={selectedChildAge}
@@ -137,7 +137,7 @@ export default function ChoicesPage() {
         {bigMeal && (
           <div>
             <AllergiesComp />
-            {selectedChildAge && selectedChild && (
+            {selectedChild && (
               <MealComp
                 mealType={mealType}
                 childAge={selectedChildAge}
@@ -146,7 +146,7 @@ export default function ChoicesPage() {
             )}
           </div>
         )}
-        {activity && selectedChildAge && selectedChild && (
+        {activity && selectedChild && (
           <ActivityComp
             childAge={selectedChildAge}
             selectedChild={selectedChild}

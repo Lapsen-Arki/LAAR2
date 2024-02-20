@@ -76,13 +76,16 @@ export default function RecommComp({
             return;
           }
         }
+
         return (
           <div key={index} style={{ marginTop: 25 }}>
             <Grid container spacing={2} sx={{ textAlign: "center" }}>
               {/* Iterate trough all the recommendations in the object */}
               {Object.entries(recommendation.recomm).map(
                 ([itemName, ageLimit]) => {
-                  if (ageLimit <= childAge) {
+                  const numAgeLimit = Number(ageLimit);
+                  const numChildAge = Number(childAge);
+                  if (numAgeLimit === 0 || numAgeLimit <= numChildAge) {
                     titleRendered++;
                     return (
                       <Grid item xs={11} sm={6} md={4} key={itemName}>
