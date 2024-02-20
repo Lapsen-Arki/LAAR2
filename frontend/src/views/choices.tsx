@@ -46,13 +46,13 @@ export default function ChoicesPage() {
     } else {
       switch (selectedChild) {
         case "Kullervo":
-          setSelectedChildAge(3);
-          break;
-        case "Ulpukka":
           setSelectedChildAge(12);
           break;
+        case "Ulpukka":
+          setSelectedChildAge(1);
+          break;
         case "Liisa":
-          setSelectedChildAge(8);
+          setSelectedChildAge(36);
           break;
       }
     }

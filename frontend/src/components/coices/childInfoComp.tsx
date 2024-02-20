@@ -47,10 +47,12 @@ export default function ChildInfoComp({
           </Grid>
           {mealType && childData.allergies && (
             <>
-              <Typography variant="h6">Lapsen allergiat: </Typography>
+              <Typography variant="h6">
+                Lapsen allergiat: (ominaisuus tulossa){" "}
+              </Typography>
               <Typography style={{ fontSize: "small" }}>
                 (HUOM. Allergioita ei oiteta huomioon ruokasuosituksissa.
-                Tarkista allergeenit aina pakkauksesta.)
+                Tarkista aina allergeenit.)
               </Typography>
             </>
           )}

@@ -79,7 +79,7 @@ export default function RecommComp({
 
         return (
           <div key={index} style={{ marginTop: 25 }}>
-            <Grid container spacing={2} sx={{ textAlign: "center" }}>
+            <Grid container spacing={3} sx={{ textAlign: "center" }}>
               {/* Iterate trough all the recommendations in the object */}
               {Object.entries(recommendation.recomm).map(
                 ([itemName, ageLimit]) => {
@@ -88,37 +88,41 @@ export default function RecommComp({
                   if (numAgeLimit === 0 || numAgeLimit <= numChildAge) {
                     titleRendered++;
                     return (
-                      <Grid item xs={11} sm={6} md={4} key={itemName}>
-                        <Grid
-                          sx={{
-                            minHeight: { sm: "32px" }, // Apply minHeight starting from the 'md' breakpoint
-                          }}
-                        >
-                          {titleRendered === 1 && (
-                            <Typography variant="h5">
-                              {recommendation.title}:
-                            </Typography>
-                          )}
-                        </Grid>
-                        <Card>
-                          <CardActionArea
-                            sx={{
-                              padding: 2,
-                              minHeight: 80,
-                              backgroundColor: Array.isArray(selectedBox)
-                                ? selectedBox.includes(itemName)
+                      <>
+                        {titleRendered === 1 && (
+                          <>
+                            <Grid item xs={12}>
+                              <Typography
+                                variant="h5"
+                                sx={{ marginLeft: 0, textAlign: "center" }}
+                              >
+                                {recommendation.title}:
+                                <br />
+                              </Typography>
+                            </Grid>
+                          </>
+                        )}
+                        <Grid item xs={12} sm={6} md={3} key={itemName}>
+                          <Card>
+                            <CardActionArea
+                              sx={{
+                                padding: 2,
+                                minHeight: 80,
+                                backgroundColor: Array.isArray(selectedBox)
+                                  ? selectedBox.includes(itemName)
+                                    ? "orange"
+                                    : "white"
+                                  : selectedBox === itemName
                                   ? "orange"
-                                  : "white"
-                                : selectedBox === itemName
-                                ? "orange"
-                                : "white",
-                            }}
-                            onClick={() => selectionHandler(itemName)}
-                          >
-                            <Typography variant="h6">{itemName}</Typography>
-                          </CardActionArea>
-                        </Card>
-                      </Grid>
+                                  : "white",
+                              }}
+                              onClick={() => selectionHandler(itemName)}
+                            >
+                              <Typography variant="h6">{itemName}</Typography>
+                            </CardActionArea>
+                          </Card>
+                        </Grid>
+                      </>
                     );
                   }
                 }
