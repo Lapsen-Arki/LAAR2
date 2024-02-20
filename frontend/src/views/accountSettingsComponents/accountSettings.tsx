@@ -100,11 +100,12 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
     setSuccessMessage("");
     try {
       const formData = new FormData();
+      console.log(updateFields);
       for (const [key, value] of Object.entries(updatedFields)) {
         formData.append(key, value);
       }
       if (!idToken) throw new AuthenticationError("idToken puuttuu.");
-      const response = await SubmitHandler(formData, idToken);
+      const response = await SubmitHandler(updateFields, idToken);
       console.log(response);
       if (response.status) {
         setSuccessMessage(response.msg);
