@@ -19,21 +19,14 @@ export function useProfileUtils() {
   const [carerProfiles, setCarerProfiles] = useState<CarerProfile[]>([]);
   const [carerChildProfiles, setCarerChildProfiles] = useState<CarerChildProfile[]>([]);
 
+  const [profilesLoaded, setProfilesLoaded] = useState(false);
+
   useEffect(() => {
     if (!idToken) {
       console.error("JWT token puuttuu");
       setOpenLoginModal(true);
       return;
     }
-/*
-    const fetchProfilesFromSessionStorage = () => {
-      const storedProfilesJson = sessionStorage.getItem("childProfiles");
-      if (storedProfilesJson) {
-        return JSON.parse(storedProfilesJson) as ChildProfile[];
-      }
-      return null;
-    };
-*/
 
     const fetchProfilesFromSessionStorage = () => {
       const storedProfilesJson = sessionStorage.getItem("childProfiles");
@@ -100,6 +93,8 @@ export function useProfileUtils() {
           // Suodata profiilit, jotka sisältävät sekä creatorId että creatorName kentät
           const filteredProfiles = profiles.filter(profile => profile.creatorId && profile.creatorName);
       
+          setProfilesLoaded(true);
+
           // Tallenna suodatetut profiilit
           setCarerChildProfiles(filteredProfiles);
         } else {
@@ -173,6 +168,7 @@ export function useProfileUtils() {
   return {
     openLoginModal,
     setOpenLoginModal,
+    profilesLoaded,
     childProfiles,
     carerProfiles,
     carerChildProfiles,
