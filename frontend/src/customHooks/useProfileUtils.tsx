@@ -86,7 +86,7 @@ export function useProfileUtils() {
     };
 
     /* HOIDETTAVAT LAPSET PROFIILI, Lyhennys sit myöhemmi */
-    
+
     const fetchCarerChildProfiles = async () => {
       try {
         // Tarkista, onko profiileja jo tallennettu Session Storageen "childProfiles" alle
@@ -126,7 +126,7 @@ export function useProfileUtils() {
           // Jos profiileja ei ole tallennettu, haetaan ne palvelimelta
           const response = await getCarerChildProfiles();
           if (!("error" in response)) {
-            profiles = response.data.carerChildProfiles
+            profiles = response || []; // Lisätty tarkistus vastauksen olemassaolosta
     
             // Suodata pois profiilit ilman creatorNamea ja creatorEmailia
             const filteredProfiles = profiles.filter(profile => profile.creatorName && profile.creatorEmail);
@@ -141,8 +141,7 @@ export function useProfileUtils() {
       } catch (error) {
         console.error("Virhe profiileja haettaessa:", error);
       }
-    };
-    
+    };    
 
     fetchProfiles();
     fetchCarerProfiles();
