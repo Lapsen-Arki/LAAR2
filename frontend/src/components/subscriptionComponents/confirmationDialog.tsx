@@ -22,17 +22,21 @@ const ConfirmationDialog = (props: ConfirmationDialogProps) => {
 
   return (
     <div>
-      {subscriptionCancelled && (
-        <Dialog onClose={handleClose} open={open}>
-          <DialogTitle>Olet jatkamassa tilausta</DialogTitle>
-          <DialogContent dividers>
-            <DialogContentText>
-              Painamalla 'Jatka tilausta'-painiketta jatkat jäsenyyttäsi
-              LAAR:issa. Sinua tullaan veloittamaan automaattisesti aina
-              seuraavan jäsenyyskuukauden alkaessa.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
+      <Dialog onClose={handleClose} open={open}>
+        <DialogTitle>
+          {subscriptionCancelled
+            ? "Olet jatkamassa tilausta"
+            : "Olet keskeyttämässä tilausta"}
+        </DialogTitle>
+        <DialogContent dividers>
+          <DialogContentText>
+            {subscriptionCancelled
+              ? "Painamalla 'Jatka tilausta'-painiketta jatkat jäsenyyttäsi LAAR:ssa. Sinua tullaan veloittamaan automaattisesti aina seuraavan jäsenyyskuukauden alkaessa."
+              : "Painamalla 'Keskeytä tilaus'-painiketta keskeytät jäsenyytesi LAAR:ssa. Sinua ei veloiteta enää tulevista kuukausista. Jäsenyytesi jatkuu maksetun kuukauden loppuun saakka. Voit jatkaa jäsenyyttäsi koska tahansa."}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          {subscriptionCancelled ? (
             <Button
               onClick={onStartSubscription}
               variant="contained"
@@ -40,21 +44,7 @@ const ConfirmationDialog = (props: ConfirmationDialogProps) => {
             >
               Jatka tilausta
             </Button>
-          </DialogActions>
-        </Dialog>
-      )}
-      {!subscriptionCancelled && (
-        <Dialog onClose={handleClose} open={open}>
-          <DialogTitle>Olet keskeyttämässä tilausta</DialogTitle>
-          <DialogContent dividers>
-            <DialogContentText>
-              Painamalla 'Keskeytä tilaus'-painiketta keskeytät jäsenyytesi
-              LAAR:issa. Sinua ei veloiteta enää tulevista kuukausista.
-              Jäsenyytesi jatkuu maksetun kuukauden loppuun saakka. Voit jatkaa
-              jäsenyyttäsi koska tahansa.
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
+          ) : (
             <Button
               onClick={onCancelSubscription}
               variant="contained"
@@ -62,9 +52,9 @@ const ConfirmationDialog = (props: ConfirmationDialogProps) => {
             >
               Keskeytä tilaus
             </Button>
-          </DialogActions>
-        </Dialog>
-      )}
+          )}
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
