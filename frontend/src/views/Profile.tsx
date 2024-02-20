@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import '../styles/Profile.css';
 import {
   Button,
@@ -22,10 +22,21 @@ export default function Profile() {
     childProfiles,
     carerProfiles,
     carerChildProfiles,
-    
     handleAddProfileClick,
     handleAddCarersClick
   } = useProfileUtils();
+  
+  // Tilamuuttuja, joka kertoo, ovatko kaikki profiilit latautuneet
+  const [profilesLoaded, setProfilesLoaded] = useState(false);
+
+  useEffect(() => {
+    // Tarkista, ovatko kaikki profiilit latautuneet
+    if (childProfiles.length > 0 || carerProfiles.length > 0 || carerChildProfiles.length > 0) {
+      setProfilesLoaded(true);
+    } else {
+      setProfilesLoaded(false);
+    }
+  }, [childProfiles, carerProfiles, carerChildProfiles]);
 
   if (!idToken) {
     return (
@@ -61,7 +72,7 @@ export default function Profile() {
         </div>
 
         <Box className="profiles">
-          {!childProfiles.length && !carerProfiles.length && !carerChildProfiles.length ? (
+          {profilesLoaded && childProfiles.length === 0 && carerProfiles.length === 0 && carerChildProfiles.length === 0 ? (
             <Alert severity="info" sx={{ maxWidth: 430 }}>
               <p>Aloitetaan yhdessä matkasi <strong>Lapsen Arki</strong>-sivustolla. Täällä voit helposti hallinnoida lapsesi profiileja ja kutsua hoitajia jakamaan ainutlaatuisia hetkiä ja tärkeitä tietoja.</p>
               <p><strong>Uuden lapsen profiilin luominen:</strong></p>
@@ -78,14 +89,13 @@ export default function Profile() {
               <p>Jos tarvitset apua tai sinulla on kysyttävää, älä epäröi ottaa yhteyttä meidän tukitiimiimme.</p>
               <p>Tervetuloa perheeseen!</p>
             </Alert>
-            ) : (
-              <>
-                {childProfiles.length > 0 && <MyChildComponent />}
-                {carerProfiles.length > 0 && <InvitedCarersComponent />}
-                {carerChildProfiles.length > 0 && <CarerChildComponent />}
-              </>
-            )
-          }
+          ) : (
+            <>
+              {childProfiles.length > 0 && <MyChildComponent />}
+              {carerProfiles.length > 0 && <InvitedCarersComponent />}
+              {carerChildProfiles.length > 0 && <CarerChildComponent />}
+            </>
+          )}
         </Box>
       </div>
     </div>
