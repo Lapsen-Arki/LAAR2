@@ -89,59 +89,26 @@ export function useProfileUtils() {
 
     const fetchCarerChildProfiles = async () => {
       try {
-        // Tarkista, onko profiileja jo tallennettu Session Storageen "childProfiles" alle
-        const storedProfilesJson = sessionStorage.getItem("childProfiles");
         let profiles: CarerChildProfile[] = [];
-    
-        if (storedProfilesJson) {
-          // Jos profiileja on olemassa, jäsennä ne Session Storagesta
-          profiles = JSON.parse(storedProfilesJson) as CarerChildProfile[];
-    
-          // Suodata pois profiilit ilman creatorNamea ja creatorEmailia
-          const filteredProfiles = profiles.filter(profile => profile.creatorName && profile.creatorEmail);
-    
-          // Jos suodatettuja profiileja ei löydy, haetaan palvelimelta
-          if (filteredProfiles.length === 0) {
-            const response = await getCarerChildProfiles();
-            if (!("error" in response)) {
-              profiles = response;
-    
-              // Yhdistä olemassa olevat profiilit ja poista duplikaatit
-              const combinedProfiles = [...profiles, ...filteredProfiles].filter((profile, index, array) =>
-                index === array.findIndex(p => (p.id === profile.id))
-              );
-    
-              // Päivitä Session Storage yhdistetyillä profiileilla
-              sessionStorage.setItem("childProfiles", JSON.stringify(combinedProfiles));
-              // Päivitä tila uusilla yhdistetyillä profiileilla
-              setCarerChildProfiles(combinedProfiles);
-            } else {
-              console.error("Virhe profiilien haussa:", response.error);
-            }
-          } else {
-            // Päivitä tila suodatetuilla profiileilla, jos ne jo löytyvät Session Storagesta
-            setCarerChildProfiles(filteredProfiles);
-          }
+      
+        // Hae profiilit APIn kautta
+        const response = await getCarerChildProfiles();
+        
+        if (!("error" in response)) {
+          profiles = response || []; // Tarkistus vastauksen olemassaolosta
+      
+          // Suodata profiilit, jotka sisältävät sekä creatorId että creatorName kentät
+          const filteredProfiles = profiles.filter(profile => profile.creatorId && profile.creatorName);
+      
+          // Tallenna suodatetut profiilit
+          setCarerChildProfiles(filteredProfiles);
         } else {
-          // Jos profiileja ei ole tallennettu, haetaan ne palvelimelta
-          const response = await getCarerChildProfiles();
-          if (!("error" in response)) {
-            profiles = response || []; // Lisätty tarkistus vastauksen olemassaolosta
-    
-            // Suodata pois profiilit ilman creatorNamea ja creatorEmailia
-            const filteredProfiles = profiles.filter(profile => profile.creatorName && profile.creatorEmail);
-    
-            // Tallenna suodatetut profiilit Session Storageen ja päivitä tila
-            sessionStorage.setItem("childProfiles", JSON.stringify(filteredProfiles));
-            setCarerChildProfiles(filteredProfiles);
-          } else {
-            console.error("Virhe profiilien haussa:", response.error);
-          }
+          console.error("Virhe profiilien haussa:", response.error);
         }
       } catch (error) {
         console.error("Virhe profiileja haettaessa:", error);
       }
-    };    
+    };
 
     fetchProfiles();
     fetchCarerProfiles();
