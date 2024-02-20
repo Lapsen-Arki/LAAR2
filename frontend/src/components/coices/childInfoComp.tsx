@@ -1,6 +1,8 @@
 import { Avatar, Grid, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ChildProfile } from "../../types/typesFrontend";
+import { TokenContext } from "../../contexts/tokenContext";
+import { childPreviewData } from "../../utils/staticPreviewData";
 
 export default function ChildInfoComp({
   selectedChild,
@@ -10,17 +12,26 @@ export default function ChildInfoComp({
   mealType?: string;
 }) {
   const [childData, setChildData] = useState<ChildProfile>();
-  useEffect(() => {
-    const childProfilesJSON = sessionStorage.getItem("childProfiles");
-    if (childProfilesJSON) {
-      const childProfiles = JSON.parse(childProfilesJSON) as ChildProfile[];
 
-      const newChildData = childProfiles.find(
+  const { isLoggedIn, ready } = useContext(TokenContext);
+  useEffect(() => {
+    if (isLoggedIn && ready) {
+      const childProfilesJSON = sessionStorage.getItem("childProfiles");
+      if (childProfilesJSON) {
+        const childProfiles = JSON.parse(childProfilesJSON) as ChildProfile[];
+
+        const newChildData = childProfiles.find(
+          (item) => item.childName === selectedChild
+        );
+        setChildData(newChildData);
+      }
+    } else {
+      const previewChildData = childPreviewData.find(
         (item) => item.childName === selectedChild
       );
-      setChildData(newChildData);
+      setChildData(previewChildData);
     }
-  }, [selectedChild]);
+  }, [isLoggedIn, ready, selectedChild]);
 
   return (
     <>
@@ -34,20 +45,23 @@ export default function ChildInfoComp({
               {childData.childName}
             </Typography>
           </Grid>
-
+          {mealType && childData.allergies && (
+            <Typography variant="h6">Lapsen allergiat: </Typography>
+          )}
           <Grid sx={{ display: "flex" }}>
-            {mealType && childData.allergies && (
-              <Typography variant="h6">Lapsen allergiat: </Typography>
-            )}
             {
               mealType &&
                 childData.allergies &&
-                childData.allergies.map((allergy) => {
+                childData.allergies.map((allergy, index) => {
                   return (
                     <Typography
+                      sx={{ marginRight: 1 }}
                       key={allergy}
                       variant="body1"
-                    >{` ${allergy}`}</Typography>
+                    >
+                      {allergy}
+                      {index !== childData.allergies.length - 1 && ","}
+                    </Typography>
                   );
                 }) // <-- this feature is coming later
             }
