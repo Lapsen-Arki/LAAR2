@@ -18,6 +18,8 @@ import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 import ResetPasswordModal from "../../components/modals/resetPasswordModal";
 import VerifyEmailModal from "../../components/modals/verifyEmailModal";
+import ReturnBtn from "../../components/returnBtn";
+
 const Login: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -82,6 +84,7 @@ const Login: React.FC = (): JSX.Element => {
         maxWidth="sm"
         sx={{ display: "flex", textAlign: "center", marginTop: { md: 0 } }}
       >
+        <ReturnBtn />
         <Typography variant="h4">Kirjaudu sisään</Typography>
         <VerifyEmailModal
           open={openVerifyEmail}

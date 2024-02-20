@@ -94,7 +94,7 @@ export default function RecommComp({
                             <Grid item xs={12}>
                               <Typography
                                 variant="h5"
-                                sx={{ marginLeft: 0, textAlign: "center" }}
+                                sx={{ marginLeft: 0, textAlign: "left" }}
                               >
                                 {recommendation.title}:
                                 <br />
