@@ -9,7 +9,7 @@ import Profile from "./views/Profile";
 import EditProfile from "./views/editProfile";
 import CaresProfile from "./views/carersProfile";
 import AdminPage from "./views/Auth/admin";
-import Subscription from "./views/Subscription";
+import SubscriptionManagement from "./views/SubscriptionManagement";
 import AccountSettingsPage from "./views/accountSettings";
 import ChoicesPage from "./views/choices";
 import TermsAndPrivacy from "./views/termsAndPrivacy";
@@ -53,7 +53,7 @@ function App() {
                 <Route path="/profile-edit/:id?" element={<EditProfile />} />
                 <Route path="/profile-share" element={<CaresProfile />} />
                 <Route path="/admin" element={<AdminPage />} />
-                <Route path="/subscription" element={<Subscription />} />
+                <Route path="/subscription" element={<SubscriptionManagement />} />
                 <Route path="/account" element={<AccountSettingsPage />} />
                 <Route path="/terms" element={<TermsAndPrivacy />} />
                 <Route path="/about-us" element={<AboutUs />} />
