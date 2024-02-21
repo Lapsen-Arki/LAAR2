@@ -16,7 +16,7 @@ const ReturnBtn: React.FC<ReturnBtnProps> = ({ message = "Paluu" }) => {
   return (
     <Button
       sx={{
-        mb: 5,
+        mb: 1,
         width: "100px",
         background: "transparent",
         color: "#000000",
