@@ -98,17 +98,19 @@ const formTheme = createTheme({
     MuiContainer: {
       styleOverrides: {
         root: {
-          width: 330,
-          paddingBottom: 20,
+          width: 320,
+          margin: 0,
+          marginTop: "auto",
+          padding: 20,
           display: "flex",
           flexDirection: "column",
           flexWrap: "wrap",
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
           "@media (min-width:400px)": {
-            width: "100%",
+            width: "95%",
           },
           "@media (min-width:576px)": {
             width: 450,
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
           },
         },
       },
