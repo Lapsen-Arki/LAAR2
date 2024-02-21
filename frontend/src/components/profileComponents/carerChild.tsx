@@ -3,6 +3,7 @@ import { Card, CardContent, Typography, Tooltip, Avatar } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { calculateAge, splitNameToFitWidth } from './profileFunctions';
 import { useProfileUtils } from '../../customHooks/useProfileUtils';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import PersonIcon from '@mui/icons-material/Person';
@@ -37,7 +38,7 @@ const CarerChildComponent: React.FC = () => {
             </CardContent>
           </Card>
         </div>
-        ):(<Typography></Typography>)
+        ):('')
       }
       
       {profilesLoaded && carerChildProfiles.length !== 0 ? (
@@ -88,7 +89,7 @@ const CarerChildComponent: React.FC = () => {
             </div>
           ))}
         </div>
-      ):(<Typography>Loading. . .</Typography>)
+      ):(<CircularProgress sx={{ color: '#63c8cc' }} />)
       }
     </div>
   );
