@@ -115,7 +115,9 @@ export default function ChoicesPage() {
         }}
       >
         <ReturnBtn message="palaa etusivulle" />
-        <Typography variant="h2">{renderIdentifier}</Typography>
+        <Typography variant="h2" sx={{ textAlign: "center" }}>
+          {renderIdentifier}
+        </Typography>
         <ChildInfoComp selectedChild={selectedChild} mealType={mealType} />{" "}
         <NameDropDown changerFunc={handleParentChange} />
         <div style={{ marginBottom: 50 }}>

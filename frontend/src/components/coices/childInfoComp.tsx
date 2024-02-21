@@ -2,7 +2,7 @@ import { Avatar, Grid, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { ChildProfile } from "../../types/typesFrontend";
 import { TokenContext } from "../../contexts/tokenContext";
-import { childPreviewData } from "../../utils/staticPreviewData";
+import { childPreviewData } from "../../utils/previewData/childProfiles";
 
 export default function ChildInfoComp({
   selectedChild = sessionStorage.getItem("selectedChild"),
@@ -37,7 +37,13 @@ export default function ChildInfoComp({
     <>
       {childData && (
         <>
-          <Grid sx={{ display: "flex" }}>
+          <Grid
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             {childData.avatar !== "/broken-image.jpg" && (
               <Avatar alt="avatar" src={childData.avatar} />
             )}
@@ -47,16 +53,36 @@ export default function ChildInfoComp({
           </Grid>
           {mealType && childData.allergies && (
             <>
-              <Typography variant="h6">
+              <Typography
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                variant="h6"
+              >
                 Lapsen allergiat: (ominaisuus tulossa){" "}
               </Typography>
-              <Typography style={{ fontSize: "small" }}>
+              <Typography
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                style={{ fontSize: "small" }}
+              >
                 (HUOM. Allergioita ei oiteta huomioon ruokasuosituksissa.
                 Tarkista aina allergeenit.)
               </Typography>
             </>
           )}
-          <Grid sx={{ display: "flex" }}>
+          <Grid
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             {
               mealType &&
                 childData.allergies &&

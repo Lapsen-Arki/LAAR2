@@ -1,35 +1,55 @@
-import { Card, CardMedia, Grid, Typography } from "@mui/material";
+import { Card, CardMedia, Container, Grid, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import ReturnBtn from "../components/returnBtn";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { RecommendationsType } from "../types/recommTypes";
 import ChildInfoComp from "../components/coices/childInfoComp";
+import { TokenContext } from "../contexts/tokenContext";
+import { activityRecomm } from "../utils/previewData/activityRecomm";
+import { mealRecomm } from "../utils/previewData/mealRecomm";
 
 export default function Results() {
   const [resultData, setResultData] = useState<RecommendationsType[]>([]);
   const location = useLocation();
+  const { isLoggedIn } = useContext(TokenContext);
   const { selectionList, isMealPage } = location.state;
 
   useEffect(() => {
     let recommsJSON;
-    if (isMealPage) {
-      recommsJSON = sessionStorage.getItem("meal");
+    if (isLoggedIn) {
+      if (isMealPage) {
+        recommsJSON = sessionStorage.getItem("meal");
+      } else {
+        recommsJSON = sessionStorage.getItem("activity");
+      }
+
+      if (recommsJSON) {
+        const recomms: RecommendationsType[] = JSON.parse(recommsJSON);
+        const recommItems = recomms.filter((recomm) =>
+          Object.keys(recomm.recomm).some((key) => selectionList.includes(key))
+        );
+
+        setResultData(recommItems);
+      }
     } else {
-      recommsJSON = sessionStorage.getItem("activity");
-    }
+      console.log("Not logged in result data");
 
-    if (recommsJSON) {
-      const recomms: RecommendationsType[] = JSON.parse(recommsJSON);
-      const recommItems = recomms.filter((recomm) =>
-        Object.keys(recomm.recomm).some((key) => selectionList.includes(key))
-      );
-
-      setResultData(recommItems);
+      if (isMealPage) {
+        const recommItems = mealRecomm.filter((recomm) =>
+          Object.keys(recomm.recomm).some((key) => selectionList.includes(key))
+        );
+        setResultData(recommItems);
+      } else {
+        const recommItems = activityRecomm.filter((recomm) =>
+          Object.keys(recomm.recomm).some((key) => selectionList.includes(key))
+        );
+        setResultData(recommItems);
+      }
     }
-  }, [isMealPage, selectionList]);
+  }, [isMealPage, selectionList, isLoggedIn]);
 
   return (
-    <div>
+    <Container>
       <ReturnBtn />
       <Typography variant="h3" sx={{ textAlign: "center" }}>
         Tulokset
@@ -70,6 +90,6 @@ export default function Results() {
           })}
       </Grid>
       <ReturnBtn />
-    </div>
+    </Container>
   );
 }
