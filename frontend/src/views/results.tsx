@@ -40,6 +40,8 @@ export default function Results() {
         );
         setResultData(recommItems);
       } else {
+        console.log("activity recomm:");
+
         const recommItems = activityRecomm.filter((recomm) =>
           Object.keys(recomm.recomm).some((key) => selectionList.includes(key))
         );
