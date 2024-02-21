@@ -76,6 +76,8 @@ const baseTheme = createTheme({
     MuiMainContent: {
       styleOverrides: {
         page: {
+          display: "flex",
+          flexDirection: "column",
           margin: 0,
           padding: 0,
           paddingTop: 20,

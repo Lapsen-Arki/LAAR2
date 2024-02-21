@@ -1,11 +1,15 @@
 import { useState, useContext } from 'react';
-import '../styles/Profile.css';
+//import '../styles/Profile.css';
 import {
+  Alert,
   Button,
   Box,
+  Container,
   Tooltip,
-  Alert,
+  Typography,
 } from "@mui/material";
+import { ThemeProvider } from "@mui/material/styles";
+import { pageTheme } from "../styles/pageThemeMUI";
 
 import { TokenContext } from "../contexts/tokenContext";
 import PleaseLoginModal from "../components/modals/pleaseLoginModal.tsx";
@@ -13,7 +17,7 @@ import PleaseLoginModal from "../components/modals/pleaseLoginModal.tsx";
 import { useProfileUtils } from '../customHooks/useProfileUtils.tsx';
 import InvitedCarersComponent from '../components/profileComponents/invitedCarers.tsx';
 import MyChildComponent from '../components/profileComponents/myChild.tsx';
-//import CarerChildComponent from '../components/profileComponents/carerChild.tsx';
+import CarerChildComponent from '../components/profileComponents/carerChild.tsx';
 
 export default function Profile() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
@@ -21,9 +25,10 @@ export default function Profile() {
   const {
     childProfiles,
     carerProfiles,
-    
+    carerChildProfiles,
     handleAddProfileClick,
-    handleAddCarersClick
+    handleAddCarersClick,
+    profilesLoaded
   } = useProfileUtils();
 
   if (!idToken) {
@@ -33,34 +38,38 @@ export default function Profile() {
   }
 
   return (
-    <div className="profile-container">
-      <div className="profile-view">
-        {/* Otsikkorivi painikkeille */}
-        <div className="buttons-header">
-          <Tooltip title="Lisää profiili">
-            <Button
-              variant="contained"
-              className="custom-button"
-              onClick={handleAddProfileClick}
-            >
-              Lisää profiili
-            </Button>
-          </Tooltip>
-          <Tooltip title="Kutsu hoitaja">
-            <Button
-              variant="contained"
-              className="custom-button Carer"
-              onClick={handleAddCarersClick}
-            >
-              Kutsu hoitaja
-            </Button>
-          </Tooltip>
-          {/* Tyhjä tila tai näkymätön painike joka täyttää kolmannen painikkeen paikan */}
-          <div className="custom-button-placeholder"></div>
-        </div>
+    <ThemeProvider theme={pageTheme}>
+      <Container
+        component="main"
+        maxWidth="sm"
+        sx={{ display: "flex", flexDirection: "row", textAlign: "center", marginTop: { md: 0 } }}
+      >
+          {/* Otsikkorivi painikkeille */}
+          <div className="buttons-header">
+            <Tooltip title="Lisää profiili">
+              <Button
+                variant="contained"
+                className="custom-button"
+                onClick={handleAddProfileClick}
+              >
+                Lisää profiili
+              </Button>
+            </Tooltip>
+            <Tooltip title="Kutsu hoitaja">
+              <Button
+                variant="contained"
+                className="custom-button Carer"
+                onClick={handleAddCarersClick}
+              >
+                Kutsu hoitaja
+              </Button>
+            </Tooltip>
+            {/* Tyhjä tila tai näkymätön painike joka täyttää kolmannen painikkeen paikan */}
+            <div className="custom-button-placeholder"></div>
+          </div>
 
-        <Box className="profiles">
-          {!childProfiles.length && !carerProfiles.length ? (
+        <Box className="profiles"> 
+        {profilesLoaded && childProfiles.length === 0 && carerProfiles.length === 0 && carerChildProfiles.length === 0 ? (
             <Alert severity="info" sx={{ maxWidth: 430 }}>
               <p>Aloitetaan yhdessä matkasi <strong>Lapsen Arki</strong>-sivustolla. Täällä voit helposti hallinnoida lapsesi profiileja ja kutsua hoitajia jakamaan ainutlaatuisia hetkiä ja tärkeitä tietoja.</p>
               <p><strong>Uuden lapsen profiilin luominen:</strong></p>
@@ -77,14 +86,13 @@ export default function Profile() {
               <p>Jos tarvitset apua tai sinulla on kysyttävää, älä epäröi ottaa yhteyttä meidän tukitiimiimme.</p>
               <p>Tervetuloa perheeseen!</p>
             </Alert>
-            ) : (
-              <>
-                {childProfiles.length > 0 && <MyChildComponent />}
-                {carerProfiles.length > 0 && <InvitedCarersComponent />}
-                {/* {carerChildProfiles.length > 0 && <CarerChildComponent />} */}
-              </>
-            )
-          }
+          ) : (
+            <>
+              {childProfiles.length > 0 && <MyChildComponent />}
+              {carerProfiles.length > 0 && <InvitedCarersComponent />}
+              {carerChildProfiles.length > 0 && <CarerChildComponent />}
+            </>
+          )}
         </Box>
       </div>
     </div>

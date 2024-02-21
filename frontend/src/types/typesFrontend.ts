@@ -32,6 +32,7 @@ export interface DecodedToken {
   exp: number;
   email: string;
   email_verified: boolean;
+  displayName: string;
   firebase: {
     identities: {
       email: string[];
@@ -47,6 +48,12 @@ export interface ChildProfile {
   birthdate: string;
   childName: string;
   creatorId: string;
+  allergies?: string[];
+}
+
+export interface CarerChildProfile extends ChildProfile {
+  creatorName: string;
+  creatorEmail: string;
 }
 
 export interface CarerProfile {

@@ -74,7 +74,7 @@ function TokenProvider({ children }: { children: ReactNode }) {
 
       // Initial session check:
       if (!initialCheckExecuted.current) {
-        console.log("Running initial Session check");
+        console.log("Starting initial Session check");
         checkSession();
         initialCheckExecuted.current = true;
       }

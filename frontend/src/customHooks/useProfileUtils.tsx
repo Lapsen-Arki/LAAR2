@@ -1,13 +1,12 @@
-// ProfileUtils.tsx
-
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { TokenContext } from "../contexts/tokenContext";
 import { getChildProfiles } from "../api/childProfile/getChildProfiles";
 import { getCarerProfile } from "../api/carersProfile/getCarerProfile";
+import { getCarerChildProfiles } from '../api/carersProfile/getCarerChildProfiles';
 import deleteChildProfile from "../api/childProfile/deleteChildProfile";
 import deleteCarerProfile from '../api/carersProfile/deleteCarerProfile';
-import { ChildProfile, CarerProfile } from "../types/typesFrontend";
+import { ChildProfile, CarerProfile, CarerChildProfile } from "../types/typesFrontend";
 
 export function useProfileUtils() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
@@ -18,6 +17,9 @@ export function useProfileUtils() {
   const navigate = useNavigate();
   const [childProfiles, setChildProfiles] = useState<ChildProfile[]>([]);
   const [carerProfiles, setCarerProfiles] = useState<CarerProfile[]>([]);
+  const [carerChildProfiles, setCarerChildProfiles] = useState<CarerChildProfile[]>([]);
+
+  const [profilesLoaded, setProfilesLoaded] = useState(false);
 
   useEffect(() => {
     if (!idToken) {
@@ -29,7 +31,10 @@ export function useProfileUtils() {
     const fetchProfilesFromSessionStorage = () => {
       const storedProfilesJson = sessionStorage.getItem("childProfiles");
       if (storedProfilesJson) {
-        return JSON.parse(storedProfilesJson) as ChildProfile[];
+        const profiles = JSON.parse(storedProfilesJson) as CarerChildProfile[];
+        // Suodata pois profiilit, joissa on creatorName ja creatorEmail
+        const filteredProfiles = profiles.filter(profile => !profile.creatorName && !profile.creatorEmail);
+        return filteredProfiles;
       }
       return null;
     };
@@ -73,8 +78,36 @@ export function useProfileUtils() {
       }
     };
 
+    /* HOIDETTAVAT LAPSET PROFIILI, Lyhennys sit myöhemmi */
+
+    const fetchCarerChildProfiles = async () => {
+      try {
+        let profiles: CarerChildProfile[] = [];
+      
+        // Hae profiilit APIn kautta
+        const response = await getCarerChildProfiles();
+        
+        if (!("error" in response)) {
+          profiles = response || []; // Tarkistus vastauksen olemassaolosta
+      
+          // Suodata profiilit, jotka sisältävät sekä creatorId että creatorName kentät
+          const filteredProfiles = profiles.filter(profile => profile.creatorId && profile.creatorName);
+      
+          setProfilesLoaded(true);
+
+          // Tallenna suodatetut profiilit
+          setCarerChildProfiles(filteredProfiles);
+        } else {
+          console.error("Virhe profiilien haussa:", response.error);
+        }
+      } catch (error) {
+        console.error("Virhe profiileja haettaessa:", error);
+      }
+    };
+
     fetchProfiles();
     fetchCarerProfiles();
+    fetchCarerChildProfiles();
   }, [idToken]);
 
   
@@ -135,8 +168,10 @@ export function useProfileUtils() {
   return {
     openLoginModal,
     setOpenLoginModal,
+    profilesLoaded,
     childProfiles,
     carerProfiles,
+    carerChildProfiles,
     setConfirmationDialogOpen,
     confirmationDialogOpen,
     selectedProfileId,

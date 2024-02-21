@@ -24,7 +24,10 @@ import { deleteChildProfile } from "./controllers/childProfile/deleteChildProfil
 import inviteAccountToProfile from "./controllers/carersProfile/inviteAccountToProfile";
 import { getCarerProfile } from "./controllers/carersProfile/getCarerProfile";
 import { deleteCarerProfile } from "./controllers/carersProfile/deleteCarerProfile";
+import { getCarerChildProfiles } from "./controllers/carersProfile/getCarerChildProfiles";
 
+import { editAccount } from "./controllers/accountSettings/editAccount";
+import { getAccount } from "./controllers/accountSettings/getAccount";
 // test controllers:
 import { emailTest } from "./controllers/testingEmail";
 import testController from "../utils/testController";
@@ -40,17 +43,20 @@ router.post("/admin", checkAuth, adminAuth, adminAddData);
 router.get("/getRecommData/:fetchType", getRecommData);
 
 // Profile routes:
-router.post("/createChildProfile", createChildProfile); // Luo uusi profiili käyttäjälle
-router.post("/editChildProfile/:id", editChildProfile); // Muokkaa käyttäjän luomaa profiilia, profiilin idn perusteella
-router.get("/profiles", getChildProfiles); // Hae kaikki käyttäjän luomat profiilit
-router.get("/profile/:id", getChildProfileById); // Hae käyttäjän luoma profiili idn perusteella
-router.delete("/profile/:profileId", deleteChildProfile); // Poista käyttäjän luoma profiili
-router.post("/inviteAccountToProfile", inviteAccountToProfile); // Kutsu käyttäjä hoitajaksi profiileihin
-router.get("/carers", getCarerProfile); // Hae hoitaja profiilit
-router.delete("/carer/:carerId", deleteCarerProfile); // Poista hoitaja profiili
+router.post("/createChildProfile", checkAuth, createChildProfile); // Luo uusi profiili käyttäjälle
+router.post("/editChildProfile/:id", checkAuth, editChildProfile); // Muokkaa käyttäjän luomaa profiilia, profiilin idn perusteella
+router.get("/profiles", checkAuth, getChildProfiles); // Hae kaikki käyttäjän luomat profiilit
+router.get("/profile/:id", checkAuth, getChildProfileById); // Hae käyttäjän luoma profiili idn perusteella
+router.delete("/profile/:profileId", checkAuth, deleteChildProfile); // Poista käyttäjän luoma profiili
+router.post("/inviteAccountToProfile", checkAuth, inviteAccountToProfile); // Kutsu käyttäjä hoitajaksi profiileihin
+router.get("/carers", checkAuth, getCarerProfile); // Hae hoitaja profiilit
+router.delete("/carer/:carerId", checkAuth, deleteCarerProfile); // Poista hoitaja profiili
+router.get("/getCarerChildProfiles", checkAuth, getCarerChildProfiles); // Hae hoidettavien lasten profiilit
 
 // Future User routes plan (?):
-// router.get("/editAccount", editAccount);
+router.get("/get-account", getAccount);
+router.post("/edit-account", editAccount);
+
 // router.get("/deleteAccount/:accountId", deleteAccount);
 
 // Email related routes:
@@ -65,16 +71,16 @@ router.post("/start-subscription/:id", startSubscription);
 router.post("/cancel-subscription/:id", cancelSubscription);
 router.post("/get-subscription/:id", getSubscriptionById);
 
-// alive check
+// FOR TESTING
+// -------------------------------------
 router.get("/alive", (req, res) => {
   res.status(200);
   res.send("alive");
 });
-
-// for testing purposes, remove later
 router.get("/secret", (req, res) => {
   res.status(200);
-  res.send(process.env.SECRET_IS_SET + " + " + process.env.NODE_ENV);
+  res.send(process.env.SECRET_IS_SET);
 });
+// -------------------------------------
 
 export default router;

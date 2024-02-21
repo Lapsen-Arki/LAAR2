@@ -14,7 +14,6 @@ import {
 
 import {
   EditNote as EditNoteIcon,
-  PersonRemove as PersonRemoveIcon,
   PersonAddAlt1 as PersonAddAlt1Icon,
 } from "@mui/icons-material";
 
@@ -163,16 +162,7 @@ export default function CarersProfile() {
                 style={{ margin: 3, display: "flex", alignItems: "center" }}
               >
                 <EditNoteIcon style={{ marginRight: 10, color: "#1976d2" }} />{" "}
-                Muokata profiileitani
-              </Typography>
-              <Typography
-                variant="body1"
-                style={{ margin: 3, display: "flex", alignItems: "center" }}
-              >
-                <PersonRemoveIcon
-                  style={{ marginRight: 10, color: "#d32f2f" }}
-                />{" "}
-                Poistaa profiileitani
+                Muokata lasteni allergioita
               </Typography>
               <Typography
                 variant="body1"
@@ -181,7 +171,7 @@ export default function CarersProfile() {
                 <PersonAddAlt1Icon
                   style={{ marginRight: 10, color: "#39C4A3" }}
                 />{" "}
-                Lisätä profiileita tililleni
+                Nähdä minun lasten profiilit
               </Typography>
             </Grid>
             <Grid item sx={{ display: { xs: "block" } }}></Grid>
