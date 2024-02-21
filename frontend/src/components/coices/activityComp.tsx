@@ -19,7 +19,7 @@ export default function ActivityComp({
       <Typography>Lapsen ikään sopivia aktiviteetteja:</Typography>
       <RecommComp
         recommendations={recommendations}
-        multipleSelections={false}
+        multipleSelections={true}
         childAge={childAge}
         selectedChild={selectedChild}
       />

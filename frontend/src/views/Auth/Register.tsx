@@ -4,7 +4,6 @@ import {
   TextField,
   Button,
   Typography,
-  Link,
   Checkbox,
   FormControlLabel,
   Box,
@@ -15,6 +14,8 @@ import { registerUser } from "../../api/registerPost";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { RegisterData } from "../../types/typesFrontend";
 import { useNavigate } from "react-router-dom";
+import ReturnBtn from "../../components/returnBtn";
+import { Link } from "react-router-dom";
 
 // TODO: 1. Pankkikortin vahvistuksen lisääminen 2. EXTRA: Google ja Facebook kirjautumis vaihtoehdot
 const CARD_ELEMENT_STYLES = {
@@ -93,6 +94,7 @@ export default function Register() {
   return (
     <ThemeProvider theme={formTheme}>
       <Container component="main" maxWidth="sm">
+        <ReturnBtn />
         {/*<ReturnBtn />*/}
         <Typography variant="h4" style={{ textAlign: "center" }}>
           Uusi asiakas
@@ -177,7 +179,7 @@ export default function Register() {
           <Typography variant="body1">
             <b>Emme veloita sinua vielä tässä kohtaa.</b> Turvallisen
             maksukortin vahvistuksen käsittelee{" "}
-            <Link href="https://stripe.com/en-fi" target="_blank">
+            <Link to="https://stripe.com/en-fi" target="_blank">
               Stripe
             </Link>
             .
@@ -210,10 +212,13 @@ export default function Register() {
             {successMessage}
           </Typography>
 
-          <Link href="/login" variant="body2">
-            Onko sinulla valmiiksi tili? Kirjaudu tästä!
+          <Link to="/login">
+            <Typography>
+              Onko sinulla valmiiksi tili? Kirjaudu tästä!
+            </Typography>
           </Link>
         </form>
+        <ReturnBtn />
       </Container>
     </ThemeProvider>
   );

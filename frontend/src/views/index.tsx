@@ -15,7 +15,6 @@ export default function IndexPage() {
   // Fetching child profiles and making child object in sessionStorage with name and age:
   useEffect(() => {
     if (isLoggedIn && idToken) {
-      // TODO: Make sure this updates after login redirect
       // Fetching childProfiles
       const retrieveDataAndMakeObject = async () => {
         await getChildProfiles(idToken);
