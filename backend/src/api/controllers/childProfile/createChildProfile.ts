@@ -7,7 +7,7 @@ const createChildProfile = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { childName, birthdate, avatar, accessRights } = req.body;
+    const { childName, birthdate, avatar, accessRights, allergies } = req.body;
 
     if (!childName || !birthdate || !avatar || accessRights === undefined) {
       res
@@ -38,6 +38,7 @@ const createChildProfile = async (
       avatar: avatar,
       accessRights: accessRights,
       creatorId: creatorId, // Käyttäjän UID
+	  allergies: allergies
     });
 
     res

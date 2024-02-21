@@ -48,7 +48,7 @@ export interface ChildProfile {
   birthdate: string;
   childName: string;
   creatorId: string;
-  allergies?: string[];
+  allergies?: string;
 }
 
 export interface CreateChildProfileData {
