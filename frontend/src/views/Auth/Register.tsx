@@ -94,6 +94,7 @@ export default function Register() {
   return (
     <ThemeProvider theme={formTheme}>
       <Container component="main" maxWidth="sm">
+        <ReturnBtn />
         {/*<ReturnBtn />*/}
         <Typography variant="h4" style={{ textAlign: "center" }}>
           Uusi asiakas
