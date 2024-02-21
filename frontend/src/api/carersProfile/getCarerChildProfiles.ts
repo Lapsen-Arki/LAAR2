@@ -41,7 +41,7 @@ const getCarerChildProfiles = async () => {
 
     return combinedProfiles;
   } catch (error) {
-    console.error("Virhe profiileja haettaessa:", error);
+    //console.error("Virhe profiileja haettaessa:", error);
     return [];
   }
 };
