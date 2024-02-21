@@ -8,17 +8,8 @@ import {
 } from "firebase/auth";
 import { FirebaseError } from "@firebase/util";
 import { AuthenticationError, PasswordError } from "./errors";
-import postSettings from "../../api/postSettings";
-import { Password } from "@mui/icons-material";
-
-interface AccountSettingsFormData {
-  displayName?: string;
-  email?: string;
-  phoneNumber?: string;
-  newPassword?: string;
-  confirmPassword?: string;
-  oldPassword?: string;
-}
+/* import postSettings from "../../api/postSettings";*/
+import { AccountSettingsFormData } from "./types";
 
 export default async function SubmitHandler(
   data: AccountSettingsFormData,

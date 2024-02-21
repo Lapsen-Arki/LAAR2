@@ -6,6 +6,9 @@ export type SettingsType = {
     value: string;
   };
 };
+export interface EditModes {
+  [key: string]: boolean;
+}
 export type UserType = {
   userId: string | undefined;
   email: string | undefined;
@@ -14,6 +17,14 @@ export type UserType = {
 };
 export interface AccountSettingsProps {
   settingsData: SettingsType;
+}
+export interface AccountSettingsFormData {
+  displayName?: string;
+  email?: string;
+  phoneNumber?: string;
+  newPassword?: string;
+  confirmPassword?: string;
+  oldPassword?: string;
 }
 export interface RenderFieldsProps {
   fields: { [key: string]: string };
@@ -40,7 +51,7 @@ export interface PasswordFieldsProps {
   toggleEdit: (fieldName: string) => void;
   drawerOpen: boolean;
 }
-export interface PasswordDrawerProps {
+export interface PasswordPopOutProps {
   fields: { [key: string]: string };
   onChange: (fieldName: string, value: string) => void;
   drawerOpen: boolean;
