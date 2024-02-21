@@ -57,7 +57,7 @@ export default function NameDropDown({
         <Box
           sx={{ display: "flex-1", justifyContent: "flex-start", mt: 5, mb: 5 }}
         >
-          <InputLabel id="preview-target-label">Valitse Lapsi</InputLabel>
+          <InputLabel id="preview-target-label" style={{color: '#0D0908'}}>Valitse Lapsi</InputLabel>
           <Select
             labelId="preview-target-label"
             id="preview-target-select"

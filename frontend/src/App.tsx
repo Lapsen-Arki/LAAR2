@@ -14,7 +14,7 @@ import AccountSettingsPage from "./views/accountSettings";
 import ChoicesPage from "./views/choices";
 import TermsAndPrivacy from "./views/termsAndPrivacy";
 import AboutUs from "./views/aboutUs";
-//import Results from "./views/results";
+import Results from "./views/results";
 
 // Higher Order Components (HOC):
 import Layout from "./components/Layout/Layout";
@@ -23,7 +23,7 @@ import { TokenProvider } from "./contexts/tokenContext";
 import { UserProvider } from "./contexts/userContext";
 
 import { ThemeProvider } from "@mui/material/styles";
-import { baseTheme } from "./components/Layout/baseThemeMUI";
+import { baseTheme } from "./styles/baseThemeMUI";
 
 // Configs etc
 import "./conf/firebaseSdkConfig";
@@ -44,24 +44,26 @@ function App() {
       <TokenProvider>
         <UserProvider>
           <Elements stripe={stripePromise}>
-            <Layout>
-              <Routes>
-                <Route path="/" element={<IndexPage />} />
-                <Route path="/choices" element={<ChoicesPage />} />
-                <Route path="/results" element={<Results />} />
-                <Route path="/testing" element={<TestingPage />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/profile-edit/:id?" element={<EditProfile />} />
-                <Route path="/profile-share" element={<CaresProfile />} />
-                <Route path="/admin" element={<AdminPage />} />
-                <Route path="/subscription" element={<Subscription />} />
-                <Route path="/account" element={<AccountSettings />} />
-                <Route path="/terms" element={<TermsAndPrivacy />} />
-                <Route path="/about-us" element={<AboutUs />} />
-              </Routes>
-            </Layout>
+            <ThemeProvider theme={baseTheme}>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<IndexPage />} />
+                  <Route path="/choices" element={<ChoicesPage />} />
+                  <Route path="/results" element={<Results />} />
+                  <Route path="/testing" element={<TestingPage />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/profile-edit/:id?" element={<EditProfile />} />
+                  <Route path="/profile-share" element={<CaresProfile />} />
+                  <Route path="/admin" element={<AdminPage />} />
+                  <Route path="/subscription" element={<SubscriptionManagement />} />
+                  <Route path="/account" element={<AccountSettingsPage />} />
+                  <Route path="/terms" element={<TermsAndPrivacy />} />
+                  <Route path="/about-us" element={<AboutUs />} />
+                </Routes>
+              </Layout>
+            </ThemeProvider>
           </Elements>
         </UserProvider>
       </TokenProvider>

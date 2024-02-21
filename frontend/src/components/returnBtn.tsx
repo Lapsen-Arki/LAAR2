@@ -29,7 +29,7 @@ const ReturnBtn: React.FC<ReturnBtnProps> = ({ message = "Paluu" }) => {
       onClick={() => navigate(-1)}
     >
       <ArrowBackIosIcon fontSize="small" />
-      <Typography variant="body2">{message}</Typography>
+      <Typography variant="body2" style={{margin: 0}}>{message}</Typography>
     </Button>
   );
 };

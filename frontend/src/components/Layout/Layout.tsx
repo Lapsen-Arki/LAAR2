@@ -11,17 +11,17 @@ interface LayoutProps {
 const LayoutRoot = styled("div", {
   name: "MuiLayoutRoot",
   slot: "root",
-})();
+})(() => ({}));
 
 const ContentOuter = styled("div", {
   name: "MuiContentOuter",
   slot: "outer",
-})();
+})(() => ({}));
 
 const MainContent = styled("div", {
   name: "MuiMainContent",
   slot: "page",
-})();
+})(() => ({}));
 
 export default function Layout(props: LayoutProps) {
   return (

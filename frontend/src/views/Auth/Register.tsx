@@ -10,7 +10,7 @@ import {
   Box,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-import { formTheme } from "../../components/Layout/formThemeMUI";
+import { formTheme } from "../../styles/formThemeMUI";
 import { registerUser } from "../../api/registerPost";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { RegisterData } from "../../types/typesFrontend";
@@ -205,7 +205,7 @@ export default function Register() {
               />
             }
             label={
-              <Typography variant="body2" color="text.primary">
+              <Typography variant="body2" color="text.primary" style={{margin: 0}}>
                 Hyväksyn tietosuojaselosteen ja palvelun käyttöehdot
               </Typography>
             }

@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 
 import { ThemeProvider } from "@mui/material/styles";
-import { formTheme } from "../components/Layout/formThemeMUI";
+import { formTheme } from "../styles/formThemeMUI";
 
 import PleaseLoginModal from "../components/modals/pleaseLoginModal.tsx";
 import { TokenContext } from "../contexts/tokenContext";
@@ -50,7 +50,7 @@ const EditProfile = () => {
 
   // Tyhjä merkkijono, jos id ei ole määritetty URL:ssä
   //console.log(id)
-  const profileId = id || '';
+  const profileId = id || "";
 
   // Etsii ja palauttaa lapsiprofiilin Session Storagesta annetun ID:n perusteella.
   // Jos profiilia ei löydy, palauttaa null.
@@ -85,8 +85,9 @@ const EditProfile = () => {
             setAccessRights(profileDataFromStorage.accessRights);
           } else {
             // Jos ei löydy Session Storagesta, haetaan palvelimelta
-            const profileData: ChildProfile | { error: Error } = await getChildProfileById(profileId, idToken);
-            if ('childName' in profileData) {
+            const profileData: ChildProfile | { error: Error } =
+              await getChildProfileById(profileId, idToken);
+            if ("childName" in profileData) {
               //console.log('Haettu profiilin tiedot:', profileData);
               setChildName(profileData.childName);
               setBirthdate(
@@ -152,7 +153,7 @@ const EditProfile = () => {
           await createChildProfile(userData, idToken);
         }
         //console.log('Profiili tallennettu onnistuneesti:', userData);
-        navigate('/profile');
+        navigate("/profile");
       } catch (error) {
         console.error("Profiilin tallennus epäonnistui", error);
       }
