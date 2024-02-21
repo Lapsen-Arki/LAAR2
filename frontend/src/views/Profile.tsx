@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import '../styles/Profile.css';
 import {
   Button,
@@ -23,20 +23,9 @@ export default function Profile() {
     carerProfiles,
     carerChildProfiles,
     handleAddProfileClick,
-    handleAddCarersClick
+    handleAddCarersClick,
+    profilesLoaded
   } = useProfileUtils();
-  
-  // Tilamuuttuja, joka kertoo, ovatko kaikki profiilit latautuneet
-  const [profilesLoaded, setProfilesLoaded] = useState(false);
-
-  useEffect(() => {
-    // Tarkista, ovatko kaikki profiilit latautuneet
-    if (childProfiles.length > 0 || carerProfiles.length > 0 || carerChildProfiles.length > 0) {
-      setProfilesLoaded(true);
-    } else {
-      setProfilesLoaded(false);
-    }
-  }, [childProfiles, carerProfiles, carerChildProfiles]);
 
   if (!idToken) {
     return (
@@ -71,8 +60,8 @@ export default function Profile() {
           <div className="custom-button-placeholder"></div>
         </div>
 
-        <Box className="profiles">
-          {profilesLoaded && childProfiles.length === 0 && carerProfiles.length === 0 && carerChildProfiles.length === 0 ? (
+        <Box className="profiles"> 
+        {profilesLoaded && childProfiles.length === 0 && carerProfiles.length === 0 && carerChildProfiles.length === 0 ? (
             <Alert severity="info" sx={{ maxWidth: 430 }}>
               <p>Aloitetaan yhdessä matkasi <strong>Lapsen Arki</strong>-sivustolla. Täällä voit helposti hallinnoida lapsesi profiileja ja kutsua hoitajia jakamaan ainutlaatuisia hetkiä ja tärkeitä tietoja.</p>
               <p><strong>Uuden lapsen profiilin luominen:</strong></p>
