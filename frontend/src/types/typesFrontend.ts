@@ -48,7 +48,7 @@ export interface ChildProfile {
   birthdate: string;
   childName: string;
   creatorId: string;
-  allergies?: string;
+  allergies: string;
 }
 
 export interface CreateChildProfileData {
@@ -57,6 +57,7 @@ export interface CreateChildProfileData {
   avatar: string;
   accessRights: boolean;
   creatorId: string | null;
+  allergies: string;
 }
 
 export interface EditChildProfileData {
@@ -66,6 +67,7 @@ export interface EditChildProfileData {
   avatar: string;
   accessRights: boolean;
   creatorId: string | null;
+  allergies: string;
 }
 
 export interface CarerChildProfile extends ChildProfile {

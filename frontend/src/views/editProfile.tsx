@@ -185,7 +185,7 @@ const EditProfile = () => {
             fullWidth
             label="Lapsen nimi tai lempinimi"
             autoFocus
-            inputProps={{ maxLength: 14 }}
+            inputProps={{ maxLength: 19 }}
             id="childName"
             value={childName}
             onChange={(e) => setChildName(e.target.value)}
