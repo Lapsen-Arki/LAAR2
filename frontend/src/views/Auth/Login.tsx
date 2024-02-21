@@ -6,6 +6,7 @@ import {
   Container,
   FormControlLabel,
   Grid,
+  Link,
   TextField,
   Typography,
 } from "@mui/material";
@@ -17,8 +18,6 @@ import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 import ResetPasswordModal from "../../components/modals/resetPasswordModal";
 import VerifyEmailModal from "../../components/modals/verifyEmailModal";
-import { Link } from "react-router-dom";
-
 const Login: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -81,12 +80,8 @@ const Login: React.FC = (): JSX.Element => {
       <Container
         component="main"
         maxWidth="sm"
-        sx={{ display: "flex", textAlign: "center", marginTop: { md: 0 } }}
+        sx={{ display: 'flex', textAlign: 'center', marginTop: { md: 0 } }}
       >
-        <Typography variant="h4" color="text.primary">
-          Kirjaudu sisään
-        </Typography>
-        <ReturnBtn />
         <Typography variant="h4">Kirjaudu sisään</Typography>
         <VerifyEmailModal
           open={openVerifyEmail}
@@ -121,12 +116,12 @@ const Login: React.FC = (): JSX.Element => {
             }
           />
 
-          <Grid
-            container
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            style={{ paddingLeft: 7, paddingRight: 7 }}
+          <Grid 
+          container
+          direction="row" 
+          justifyContent="space-between" 
+          alignItems="center"
+          style={{ paddingLeft: 7, paddingRight: 7 }}
           >
             <Grid item>
               <FormControlLabel
@@ -137,7 +132,7 @@ const Login: React.FC = (): JSX.Element => {
                   />
                 }
                 label={
-                  <Typography variant="body2" color="text.primary" style={{margin: 0}}>
+                  <Typography variant="body2" style={{ color: 'black', margin: 0 }}>
                     Muista minut
                   </Typography>
                 }
@@ -145,10 +140,11 @@ const Login: React.FC = (): JSX.Element => {
             </Grid>
             <Grid item>
               <Link
-                to="#"
+                href="#"
                 onClick={() => {
                   setOpenResetModal(true);
                 }}
+                variant="body2"
               >
                 Unohtuiko salasana?
               </Link>
@@ -160,33 +156,37 @@ const Login: React.FC = (): JSX.Element => {
               />
             </Grid>
           </Grid>
-          <Button type="submit" variant="contained" fullWidth disableElevation>
+          <Button type="submit" variant="contained" fullWidth>
             Kirjaudu
           </Button>
           {successMessage != null && (
-            <Alert severity="success">
-              <Typography variant="subtitle1" color="text.primary">
-                {successMessage}
-              </Typography>
-            </Alert>
+          <Alert severity="success" >
+            <Typography
+              variant="subtitle1"
+            >
+              {successMessage}
+            </Typography>
+          </Alert>
           )}
           {errorMessage != null && (
-            <Alert severity="error">
-              <Typography variant="subtitle1" color="text.primary">
-                {errorMessage}
-              </Typography>
-            </Alert>
+          <Alert severity="error" >
+            <Typography
+              variant="subtitle2"
+            >
+              {errorMessage}
+            </Typography>
+          </Alert>
           )}
-          <Grid
+          <Grid 
             container
-            direction="row"
-            justifyContent="flex-start"
+            direction="row" 
+            justifyContent="flex-start" 
             alignItems="baseline"
             style={{ paddingLeft: 7, paddingRight: 7 }}
-          >
+            >
             <Grid item>
-              <Link to="/register">
-                <Typography>Eikö vielä tiliä? Rekisteröidy tästä!</Typography>
+              <Link href="/register" variant="body2">
+                Eikö vielä tiliä? Rekisteröidy tästä!
               </Link>
             </Grid>
           </Grid>
