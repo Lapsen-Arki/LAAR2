@@ -22,9 +22,9 @@ export default function Profile() {
     childProfiles,
     carerProfiles,
     carerChildProfiles,
-    
     handleAddProfileClick,
-    handleAddCarersClick
+    handleAddCarersClick,
+    profilesLoaded
   } = useProfileUtils();
 
   if (!idToken) {
@@ -60,8 +60,8 @@ export default function Profile() {
           <div className="custom-button-placeholder"></div>
         </div>
 
-        <Box className="profiles">
-          {!childProfiles.length && !carerProfiles.length && !carerChildProfiles.length ? (
+        <Box className="profiles"> 
+        {profilesLoaded && childProfiles.length === 0 && carerProfiles.length === 0 && carerChildProfiles.length === 0 ? (
             <Alert severity="info" sx={{ maxWidth: 430 }}>
               <p>Aloitetaan yhdessä matkasi <strong>Lapsen Arki</strong>-sivustolla. Täällä voit helposti hallinnoida lapsesi profiileja ja kutsua hoitajia jakamaan ainutlaatuisia hetkiä ja tärkeitä tietoja.</p>
               <p><strong>Uuden lapsen profiilin luominen:</strong></p>
@@ -78,14 +78,13 @@ export default function Profile() {
               <p>Jos tarvitset apua tai sinulla on kysyttävää, älä epäröi ottaa yhteyttä meidän tukitiimiimme.</p>
               <p>Tervetuloa perheeseen!</p>
             </Alert>
-            ) : (
-              <>
-                {childProfiles.length > 0 && <MyChildComponent />}
-                {carerProfiles.length > 0 && <InvitedCarersComponent />}
-                {carerChildProfiles.length > 0 && <CarerChildComponent />}
-              </>
-            )
-          }
+          ) : (
+            <>
+              {childProfiles.length > 0 && <MyChildComponent />}
+              {carerProfiles.length > 0 && <InvitedCarersComponent />}
+              {carerChildProfiles.length > 0 && <CarerChildComponent />}
+            </>
+          )}
         </Box>
       </div>
     </div>
