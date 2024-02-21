@@ -62,7 +62,6 @@ export default function RecommComp({
 
         return [...prev, itemName];
       });
-      console.log(selectedBox);
     } else {
       // add one key to the state
       setSelectedBox(itemName);
