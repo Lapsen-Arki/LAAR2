@@ -118,15 +118,14 @@ export const mealRecomm: RecommendationsType[] = [
       vesimeloni: 4,
       mango: 4,
     },
-    textContent: { contentName: "content" },
-    photos: {
+    textContent: {
       banaani: `Banaani: Ravitseva ja energisoiva, hyvä välipala
-      - Tärkeimmät vitamiinit ja terveysvaikutukset: Runsas kalium auttaa ylläpitämään sydämen terveyttä
-      - Maku: Makea ja pehmeä`,
+    - Tärkeimmät vitamiinit ja terveysvaikutukset: Runsas kalium auttaa ylläpitämään sydämen terveyttä
+    - Maku: Makea ja pehmeä`,
       appelssiini: "",
       omena: `Omena: Raikas ja terveellinen, runsaasti kuitua ja vitamiineja
-      - Tärkeimmät vitamiinit ja terveysvaikutukset: Antioksidantit tukevat immuunijärjestelmää ja solujen toimintaa
-      - Maku: Kirpeä ja raikas`,
+    - Tärkeimmät vitamiinit ja terveysvaikutukset: Antioksidantit tukevat immuunijärjestelmää ja solujen toimintaa
+    - Maku: Kirpeä ja raikas`,
       luumu: "",
       päärynä: "",
       ananas: "",
@@ -135,9 +134,23 @@ export const mealRecomm: RecommendationsType[] = [
       aprikoosi: "",
       sitruuna: "",
       vesimeloni: `Vesimeloni:Vesimeloni: Virkistävä ja mehukas kesäherkku.
-      - Vitamiinit: A-, C-vitamiinit
-      - Terveysvaikutukset: runsas veden lähde, antioksidantit
-      - Maku: makea ja virkistävä`,
+    - Vitamiinit: A-, C-vitamiinit
+    - Terveysvaikutukset: runsas veden lähde, antioksidantit
+    - Maku: makea ja virkistävä`,
+      mango: "",
+    },
+    photos: {
+      banaani: "",
+      appelssiini: "",
+      omena: "",
+      luumu: "",
+      päärynä: "",
+      ananas: "",
+      kiivi: "",
+      persikka: "",
+      aprikoosi: "",
+      sitruuna: "",
+      vesimeloni: "",
       mango: "",
     },
   },
@@ -346,6 +359,13 @@ export const mealRecomm: RecommendationsType[] = [
       raejuusto: "",
       jugurttikastike: "",
     },
-    photos: { kebab: "", lihapata: "" },
+    photos: {
+      maustekurkku: "",
+      ketsuppi: "",
+      pesto: "",
+      puolukkakastike: "",
+      raejuusto: "",
+      jugurttikastike: "",
+    },
   },
 ];

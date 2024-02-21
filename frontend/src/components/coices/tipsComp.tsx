@@ -1,6 +1,9 @@
-import { Typography } from "@mui/material";
+import { Button, CardMedia, Typography } from "@mui/material";
 import { RecommendationsType } from "../../types/recommTypes";
 import useGetRecommData from "../../customHooks/useGetRecommData";
+import { useContext } from "react";
+import { TokenContext } from "../../contexts/tokenContext";
+import { useNavigate } from "react-router-dom";
 
 // Now there is 3 types of tips: "päiväunet", "iltatoimet", "nukkuminen".
 // More tips can be added by changing the choices page and adding more advise types.
@@ -9,18 +12,44 @@ import useGetRecommData from "../../customHooks/useGetRecommData";
 // EXTRA FEATURE: make feature to hide and show tips.
 
 export default function TipsComp({ adviseType }: { adviseType: string }) {
+  const { isLoggedIn } = useContext(TokenContext);
+  const navigate = useNavigate();
+  const registerNowClick = () => {
+    navigate("/register");
+  };
+
+  const correctPhoto = (recommendation: RecommendationsType) => {
+    let photoLink: string | null;
+    if (recommendation.photos) {
+      const photoValues = Object.values(recommendation.photos);
+
+      photoLink = photoValues[0];
+      return photoLink;
+    }
+  };
+
   const fetchType = "tip";
 
   const recommendations: RecommendationsType[] = useGetRecommData(fetchType);
   return (
     <div>
       {recommendations.map((recommendation, index) => {
+        const correctImage = correctPhoto(recommendation);
+
         // Check advise type here
         if (recommendation.type !== adviseType) {
           return;
         }
         return (
           <div key={index}>
+            {recommendation.photos && (
+              <CardMedia
+                component="img"
+                image={correctImage}
+                alt="Placeholder Image"
+                sx={{ maxWidth: 300, maxHeight: 300 }}
+              />
+            )}
             <Typography variant="h4">{recommendation.title}</Typography>
 
             <Typography
@@ -29,11 +58,24 @@ export default function TipsComp({ adviseType }: { adviseType: string }) {
             >
               {recommendation.textContent[recommendation.title]}
             </Typography>
+            <hr />
+            {!isLoggedIn && (
+              <>
+                <Button
+                  onClick={registerNowClick}
+                  sx={{ mt: 5, mb: 2 }}
+                  variant="contained"
+                >
+                  Rekisteröidy nyt!
+                </Button>
+                <Typography>
+                  Rekisteröidy nyt avataksesi kaikki ominaisuudet!
+                </Typography>
+              </>
+            )}
           </div>
         );
       })}
-
-      <hr />
     </div>
   );
 }

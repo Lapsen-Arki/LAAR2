@@ -5,7 +5,7 @@ export const tipsRecomm: RecommendationsType[] = [
     category: "tip",
     type: "nap",
     title: "Vinkkejä lapsen päiväuniin",
-    recomm: { joku12: 12 },
+    recomm: { päiväunet: 12 },
     textContent: {
       "Vinkkejä lapsen päiväuniin": `
   Pienen lapsen päiväunien suhteen on tärkeää luoda rauhallinen ja säännöllinen rutiini, joka auttaa lasta rentoutumaan ja valmistautumaan nukkumaan. Tässä on joitakin vinkkejä, jotka voivat auttaa:
@@ -21,12 +21,16 @@ export const tipsRecomm: RecommendationsType[] = [
 5. Kuuntele lastasi: Jokainen lapsi on yksilöllinen, ja päiväunien tarve vaihtelee iän, kasvun ja aktiivisuustason mukaan. Jos lapsi ei vaikuta väsyneeltä päiväuniaikaan, voi olla, että hänen päiväunentarpeensa on muuttumassa.
   `,
     },
+    photos: {
+      päiväunet:
+        "https://firebasestorage.googleapis.com/v0/b/laar-production.appspot.com/o/photos%2Ftips%2Fp%C3%A4iv%C3%A4unet%20vauva.png?alt=media&token=924d41ff-25bf-4200-a710-c9578bf5c3c8",
+    },
   },
   {
     category: "tip",
     type: "bedtime",
     title: "Vinkkejä iltatoimiin",
-    recomm: { joku12: 12 },
+    recomm: { iltatoimet: 12 },
     textContent: {
       "Vinkkejä iltatoimiin": `
 1. Rauhallinen leikkihetki: Vältä liian energisiä leikkejä iltaisin. Sen sijaan, suosi rauhallisia aktiviteetteja, kuten palapelien kokoamista tai piirtämistä, jotka eivät kiihdytä lasta ennen nukkumaanmenoa.
@@ -40,12 +44,16 @@ export const tipsRecomm: RecommendationsType[] = [
 5. Valmistelut seuraavalle päivälle: Auta lasta valitsemaan seuraavan päivän vaatteet valmiiksi tai valmistele koulureppu. Tämä voi vähentää aamun stressiä ja luoda rauhallisemman mielen nukkumaanmenoon.
       `,
     },
+    photos: {
+      iltatoimet:
+        "https://firebasestorage.googleapis.com/v0/b/laar-production.appspot.com/o/photos%2Ftips%2Fhampaiden%20pesu%20(2).png?alt=media&token=7701c522-d9e8-44b7-a6e9-a3f7e20a5b2e",
+    },
   },
   {
     category: "tip",
     type: "sleep",
     title: "Vinkkejä nukkumiseen",
-    recomm: { joku12: 12 },
+    recomm: { nukkuminen: 12 },
     textContent: {
       "Vinkkejä nukkumiseen": `
       
@@ -59,6 +67,10 @@ export const tipsRecomm: RecommendationsType[] = [
   
 5. Sängystä nousemisen säännöt: Jos lapsi tottuu nousemaan sängystä usein, aseta selkeät säännöt ja rutiinit nukkumaanmenoon. Käy läpi, mitä tehdä, jos hän ei saa unta, kuten miettiä miellyttäviä asioita tai hengittää syvään.
   `,
+    },
+    photos: {
+      nukkuminen:
+        "https://firebasestorage.googleapis.com/v0/b/laar-production.appspot.com/o/photos%2Ftips%2Fy%C3%B6unet.png?alt=media&token=158cb96a-5e45-41b4-bcf8-8ca1ba32cfff",
     },
   },
 ];

@@ -1,7 +1,8 @@
 import { Typography, Grid, Card, CardActionArea, Button } from "@mui/material";
 import { RecommendationsType } from "../../types/recommTypes";
-import { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { TokenContext } from "../../contexts/tokenContext";
 
 // Getting real child data somewhere:
 
@@ -21,12 +22,16 @@ export default function RecommComp({
   // selectedChild pitää saada tänne -> resetoida selectionList kun se muuttuu.
   const [selectedBox, setSelectedBox] = useState<string | string[]>("");
   const [selectionList, setSelectionList] = useState<string[]>([]);
+  const { isLoggedIn } = useContext(TokenContext);
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate("/results", {
       state: { selectionList, isMealPage: mealType },
     });
+  };
+  const registerNowClick = () => {
+    navigate("/register");
   };
 
   // Reset selectionList if selected child changes
@@ -89,21 +94,18 @@ export default function RecommComp({
                   if (numAgeLimit === 0 || numAgeLimit <= numChildAge) {
                     titleRendered++;
                     return (
-                      <>
+                      <React.Fragment key={itemName}>
                         {titleRendered === 1 && (
-                          <>
-                            <Grid item xs={12}>
-                              <Typography
-                                variant="h5"
-                                sx={{ marginLeft: 0, textAlign: "left" }}
-                              >
-                                {recommendation.title}:
-                                <br />
-                              </Typography>
-                            </Grid>
-                          </>
+                          <Grid item xs={12}>
+                            <Typography
+                              variant="h5"
+                              sx={{ marginLeft: 0, textAlign: "left" }}
+                            >
+                              {recommendation.title}:
+                            </Typography>
+                          </Grid>
                         )}
-                        <Grid item xs={12} sm={6} md={3} lg={2} key={itemName}>
+                        <Grid item xs={12} sm={6} md={3} lg={2}>
                           <Card>
                             <CardActionArea
                               sx={{
@@ -123,7 +125,7 @@ export default function RecommComp({
                             </CardActionArea>
                           </Card>
                         </Grid>
-                      </>
+                      </React.Fragment>
                     );
                   }
                 }
@@ -132,10 +134,24 @@ export default function RecommComp({
           </div>
         );
       })}
-      {selectedBox.length > 0 && (
+      {isLoggedIn && selectedBox.length > 0 && (
         <Button onClick={handleClick} sx={{ mt: 5, mb: 5 }} variant="contained">
           {mealType ? "Kokoa Ateria" : "Valitse aktiviteetti"}
         </Button>
+      )}
+      {!isLoggedIn && selectedBox.length > 0 && (
+        <>
+          <Button
+            onClick={registerNowClick}
+            sx={{ mt: 5, mb: 2 }}
+            variant="contained"
+          >
+            Rekisteröidy nyt!
+          </Button>
+          <Typography>
+            Rekisteröidy nyt avataksesi kaikki ominaisuudet!
+          </Typography>
+        </>
       )}
     </div>
   );
