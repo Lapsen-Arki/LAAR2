@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import AuthContext from "../../contexts/authContext";
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from "../../components/Layout/formThemeMUI";
 import {
@@ -20,12 +21,11 @@ import {
 } from "./types";
 import SubmitHandler from "./settingsSubmitHandler";
 import { AuthenticationError } from "./errors";
-import { TokenContext } from "../../contexts/tokenContext";
 
 const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
+  const { auth } = useContext(AuthContext);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
-  const { idToken } = useContext(TokenContext);
   // State variables to hold the current values of the form inputs
   const [fields, setFields] = useState(
     Object.fromEntries(
@@ -44,9 +44,9 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
   // State variables for field edit mode
   const [editModes, setEditModes] = useState<RenderFieldsProps["editModes"]>(
     Object.keys(settingsData).reduce(
-      (acc, key) => {
-        acc[key] = false;
-        return acc;
+      (accumulator, key) => {
+        accumulator[key] = false;
+        return accumulator;
       },
       { password: false } as RenderFieldsProps["editModes"]
     )
@@ -99,22 +99,15 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
     setErrorMessage("");
     setSuccessMessage("");
     try {
-      const formData = new FormData();
-      console.log(updateFields);
-      for (const [key, value] of Object.entries(updatedFields)) {
-        formData.append(key, value);
-      }
-      if (!idToken) throw new AuthenticationError("idToken puuttuu.");
-      const response = await SubmitHandler(updateFields, idToken);
-      console.log(response);
+      if (auth === null || auth.currentUser === null)
+        throw new AuthenticationError("Käyttäjä ei ole kirjautunut sisään");
+      const response = await SubmitHandler(updatedFields, auth);
+
       if (response.status) {
         setSuccessMessage(response.msg);
       }
     } catch (error) {
-      if (error instanceof AuthenticationError) setErrorMessage(error.message);
-      else {
-        setErrorMessage("Tietojen päivitys epäonnistui");
-      }
+      setErrorMessage("Asetuksia ei voitu päivittää.");
     }
   };
 
