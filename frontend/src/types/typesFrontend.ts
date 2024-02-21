@@ -48,6 +48,7 @@ export interface ChildProfile {
   birthdate: string;
   childName: string;
   creatorId: string;
+  allergies?: string[];
 }
 
 export interface CarerChildProfile extends ChildProfile {

@@ -12,6 +12,13 @@ const getCarerChildProfiles = async () => {
       return [];
     }
 
+    // Haetaan Session Storagesta vanhat tiedot
+    const storedProfilesJson = sessionStorage.getItem("childProfiles");
+    let existingProfiles: CarerChildProfile[] = [];
+    if (storedProfilesJson) {
+      existingProfiles = JSON.parse(storedProfilesJson) as CarerChildProfile[];
+    }
+
     // Suoraan API-kutsu filtteröityjen profiilien hakemiseen
     const response = await axios.get<{ carerChildProfiles: CarerChildProfile[] }>(
       `${API_BASE_URL}/getCarerChildProfiles`, {
@@ -19,13 +26,20 @@ const getCarerChildProfiles = async () => {
       }
     );
 
-    const profiilit = response.data.carerChildProfiles;
+    const newProfiles = response.data.carerChildProfiles;
 
-    // Tallennetaan haetut profiilit Session Storageen
-    sessionStorage.setItem("childProfiles", JSON.stringify(profiilit));
+    // Lisätään vain ne uudet profiilit, joita ei ole jo olemassa
+    const uniqueProfiles = newProfiles.filter(profile => !existingProfiles.some(existingProfile => existingProfile.id === profile.id));
+
+    // Yhdistetään vanhat ja uudet profiilit
+    const combinedProfiles = [...existingProfiles, ...uniqueProfiles];
+
+    // Tallennetaan yhdistetyt profiilit Session Storageen
+    sessionStorage.setItem("childProfiles", JSON.stringify(combinedProfiles));
+
     makeChildObject();
 
-    return profiilit;
+    return combinedProfiles;
   } catch (error) {
     console.error("Virhe profiileja haettaessa:", error);
     return [];

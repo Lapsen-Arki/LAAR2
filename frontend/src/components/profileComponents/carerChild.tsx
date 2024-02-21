@@ -8,14 +8,14 @@ import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import PersonIcon from '@mui/icons-material/Person';
 
 const CarerChildComponent: React.FC = () => {
-  const { carerChildProfiles } = useProfileUtils();
+  const { carerChildProfiles, profilesLoaded } = useProfileUtils();
 
   return (
     <div style={{ flex: 1 }}>
       <Typography variant="h6" gutterBottom>
         Hoidettavat lapset:
       </Typography>
-      {carerChildProfiles.length === 0 ? (
+      {profilesLoaded && carerChildProfiles.length == 0 ? (
         <div className="Carer">
           <Card className="Carer-cards">
             <CardContent className="Carer-content">
@@ -37,7 +37,10 @@ const CarerChildComponent: React.FC = () => {
             </CardContent>
           </Card>
         </div>
-      ) : (
+        ):(<Typography></Typography>)
+      }
+      
+      {profilesLoaded && carerChildProfiles.length !== 0 ? (
         <div className="children">
           {carerChildProfiles.map((profile) => (
             <div className="cards-wrap" key={profile.id}>
@@ -85,7 +88,8 @@ const CarerChildComponent: React.FC = () => {
             </div>
           ))}
         </div>
-      )}
+      ):(<Typography>Loading. . .</Typography>)
+      }
     </div>
   );
 };
