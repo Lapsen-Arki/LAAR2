@@ -9,6 +9,7 @@ import {
 import { FirebaseError } from "@firebase/util";
 import { AuthenticationError, PasswordError } from "./errors";
 import postSettings from "../../api/postSettings";
+import { Password } from "@mui/icons-material";
 
 interface AccountSettingsFormData {
   displayName?: string;
@@ -19,7 +20,7 @@ interface AccountSettingsFormData {
   oldPassword?: string;
 }
 
-export default function SubmitHandler(
+export default async function SubmitHandler(
   data: AccountSettingsFormData,
   auth: Auth
 ) {
@@ -32,12 +33,18 @@ export default function SubmitHandler(
     if (Object.keys(data).length <= 1) {
       return { status: true, msg: "Ei muutettuja asetuksia." };
     } else {
-      updateSettings(password, data, auth);
-      return { status: true, msg: "Asetukset päivitetty." };
+      const result = await updateSettings(password, data, auth);
+      console.log(result);
+      if (result === undefined) throw new Error("Tapahtui virhe");
+      if (result.status === false) {
+        throw new PasswordError("hello");
+      } else {
+        return { status: true, msg: "Asetukset päivitetty." };
+      }
     }
   } catch (error) {
     if (error instanceof AuthenticationError) {
-      return { status: false, msg: "Salasanaa ei annettu." };
+      return { status: false, msg: error.message };
     } else if (error instanceof PasswordError) {
       return { status: false, msg: error.message };
     } else {
@@ -67,7 +74,11 @@ async function updateSettings(
     await reauthenticateWithCredential(user, credential);
 
     if (data.newPassword && data.confirmPassword) {
-      const validate = validatePassword(data.newPassword, data.confirmPassword);
+      const validate = await validatePassword(
+        data.newPassword,
+        data.confirmPassword
+      );
+      console.log(validate);
       if (validate.status) {
         updatePassword(user, data.newPassword)
           .then(() => {
@@ -100,11 +111,20 @@ async function updateSettings(
           throw new Error(error);
         });
     }
+    // Debugging in client
+    return { status: true, msg: JSON.stringify(updatedValues) };
   } catch (error) {
     if (error instanceof PasswordError) {
       throw new PasswordError(error.message);
+    } else if (error instanceof FirebaseError) {
+      if (error.code === "auth/invalid-credential") {
+        throw new PasswordError("Väärä salasana.");
+      } else {
+        throw new AuthenticationError("Tapahtui virhe.");
+      }
+    } else {
+      throw new AuthenticationError("Asetuksia ei voitu päivittää.");
     }
-    return { status: false, msg: "Asetuksia ei voitu päivittää." };
   }
 }
 

@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
 
     return unsubscribe; // Cleanup function
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [auth]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <AuthContext.Provider value={{ currentUser, auth, loading }}>

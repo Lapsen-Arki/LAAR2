@@ -2,6 +2,7 @@ import { useEffect, useState, useContext, useCallback } from "react";
 import buildData from "./accountSettingsComponents/dataHandler";
 import AccountSettings from "./accountSettingsComponents/accountSettings";
 import { UserContext } from "../contexts/userContext";
+import { AuthProvider } from "../contexts/authContext";
 import "../conf/firebaseSdkConfig";
 const AccountSettingsPage = () => {
   const [settingsData, setSettingsData] = useState({});
@@ -27,7 +28,9 @@ const AccountSettingsPage = () => {
   if (isLoading) return <div>Loading...</div>;
   return (
     <>
-      <AccountSettings settingsData={settingsData} />
+      <AuthProvider>
+        <AccountSettings settingsData={settingsData} />
+      </AuthProvider>
     </>
   );
 };

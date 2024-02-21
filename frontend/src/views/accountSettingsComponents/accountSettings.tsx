@@ -99,15 +99,20 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
     setErrorMessage("");
     setSuccessMessage("");
     try {
+      console.log(auth);
       if (auth === null || auth.currentUser === null)
         throw new AuthenticationError("Käyttäjä ei ole kirjautunut sisään");
       const response = await SubmitHandler(updatedFields, auth);
-
+      console.log(response);
       if (response.status) {
         setSuccessMessage(response.msg);
+      } else {
+        setErrorMessage(response.msg);
       }
     } catch (error) {
-      setErrorMessage("Asetuksia ei voitu päivittää.");
+      if (error instanceof AuthenticationError) {
+        setErrorMessage(error.message);
+      }
     }
   };
 
