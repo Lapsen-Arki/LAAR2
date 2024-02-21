@@ -57,7 +57,6 @@ async function updateSettings(
   data: AccountSettingsFormData,
   auth: Auth
 ) {
-  console.log(auth);
   const updatedValues = {
     password: false,
     displayName: false,
@@ -119,6 +118,8 @@ async function updateSettings(
     } else if (error instanceof FirebaseError) {
       if (error.code === "auth/invalid-credential") {
         throw new PasswordError("Väärä salasana.");
+      } else if (error.code === "auth/operation-not-allowed") {
+        throw new AuthenticationError("Varmista sähköposti ennen muuttamista.");
       } else {
         throw new AuthenticationError("Tapahtui virhe.");
       }
