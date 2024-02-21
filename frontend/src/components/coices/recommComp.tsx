@@ -29,9 +29,11 @@ export default function RecommComp({
     navigate("/results", {
       state: { selectionList, isMealPage: mealType },
     });
+    window.scrollTo(0, 0);
   };
   const registerNowClick = () => {
     navigate("/register");
+    window.scrollTo(0, 0);
   };
 
   // Reset selectionList if selected child changes
