@@ -6,7 +6,6 @@ import {
   Container,
   FormControlLabel,
   Grid,
-  Link,
   TextField,
   Typography,
 } from "@mui/material";
@@ -18,6 +17,9 @@ import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 import ResetPasswordModal from "../../components/modals/resetPasswordModal";
 import VerifyEmailModal from "../../components/modals/verifyEmailModal";
+import ReturnBtn from "../../components/returnBtn";
+import { Link } from "react-router-dom";
+
 const Login: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -82,6 +84,7 @@ const Login: React.FC = (): JSX.Element => {
         maxWidth="sm"
         sx={{ display: "flex", textAlign: "center", marginTop: { md: 0 } }}
       >
+        <ReturnBtn />
         <Typography variant="h4">Kirjaudu sisään</Typography>
         <VerifyEmailModal
           open={openVerifyEmail}
@@ -140,11 +143,10 @@ const Login: React.FC = (): JSX.Element => {
             </Grid>
             <Grid item>
               <Link
-                href="#"
+                to="#"
                 onClick={() => {
                   setOpenResetModal(true);
                 }}
-                variant="body2"
               >
                 Unohtuiko salasana?
               </Link>
@@ -177,8 +179,8 @@ const Login: React.FC = (): JSX.Element => {
             style={{ paddingLeft: 7, paddingRight: 7 }}
           >
             <Grid item>
-              <Link href="/register" variant="body2">
-                Eikö vielä tiliä? Rekisteröidy tästä!
+              <Link to="/register">
+                <Typography>Eikö vielä tiliä? Rekisteröidy tästä!</Typography>
               </Link>
             </Grid>
           </Grid>
