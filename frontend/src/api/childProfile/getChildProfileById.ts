@@ -1,16 +1,8 @@
 import axios from "axios";
+import { ChildProfile } from "../../types/typesFrontend";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
-
-interface ChildProfile {
-  id: string;
-  accessRights: boolean;
-  avatar: string;
-  birthdate: string;
-  childName: string;
-  creatorId: string;
-}
 
 const updateSessionStorageWithProfile = (profile: ChildProfile) => {
   const storedProfilesJson = sessionStorage.getItem("childProfiles");

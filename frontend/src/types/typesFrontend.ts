@@ -51,6 +51,23 @@ export interface ChildProfile {
   allergies?: string[];
 }
 
+export interface CreateChildProfileData {
+  childName: string;
+  birthdate: string;
+  avatar: string;
+  accessRights: boolean;
+  creatorId: string | null;
+}
+
+export interface EditChildProfileData {
+  id: string;
+  childName: string;
+  birthdate: string;
+  avatar: string;
+  accessRights: boolean;
+  creatorId: string | null;
+}
+
 export interface CarerChildProfile extends ChildProfile {
   creatorName: string;
   creatorEmail: string;
