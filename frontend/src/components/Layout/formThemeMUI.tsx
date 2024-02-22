@@ -6,7 +6,7 @@ const formTheme = createTheme({
     MuiAlert: {
       styleOverrides: {
         root: {
-          fontFamily: ["Quicksand", "sans-serif"].join(","),
+          marginTop: 2,
           textDecoration: "none",
         },
       },
@@ -17,7 +17,6 @@ const formTheme = createTheme({
         //Primary
         contained: {
           backgroundColor: "#63c8cc",
-          fontFamily: ["Righteous", "sans-serif"].join(","),
           color: "white",
           "&:hover": {
             backgroundColor: "#63c8cc",
@@ -26,7 +25,6 @@ const formTheme = createTheme({
         },
         //Secondary
         outlined: {
-          fontFamily: ["Righteous", "sans-serif"].join(","),
           color: "#A68477",
           fontWeight: "bold",
           borderColor: "#A68477",
@@ -38,7 +36,6 @@ const formTheme = createTheme({
         },
         //Tertiary
         text: {
-          fontFamily: ["Righteous", "sans-serif"].join(","),
           color: "#A68477",
           fontWeight: "bold",
 

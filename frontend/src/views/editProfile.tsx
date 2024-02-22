@@ -174,11 +174,14 @@ const EditProfile = () => {
         maxWidth="sm"
         sx={{ display: "flex", textAlign: "center", marginTop: { md: 0 } }}
       >
-        <ReturnBtn />
         <form>
+          <div style={{ marginTop: 25, textAlign: "left" }}>
+            <ReturnBtn />
+          </div>
           {/* Lapsen nimi -kenttä */}
           <Typography variant="h5">Tallenna lapsen tiedot</Typography>
           <TextField
+            sx={{ width: 260 }}
             variant="outlined"
             margin="normal"
             required
@@ -205,10 +208,12 @@ const EditProfile = () => {
 
           {/* Allergiat */}
           <TextField
+            sx={{ width: 260 }}
             id="childAllergies"
             label="Allergiat"
+            margin="dense"
             variant="outlined"
-			inputProps={{ maxLength: 50 }}
+            inputProps={{ maxLength: 50 }}
             value={childAllergies}
             onChange={(e) => setChildAllergies(e.target.value)}
           />
@@ -264,7 +269,6 @@ const EditProfile = () => {
             </Typography>
           </span>
           <Switch
-            sx={{ display: { xs: "inline-flex" } }}
             checked={accessRights}
             onChange={() => setAccessRights(!accessRights)}
           />
@@ -278,11 +282,23 @@ const EditProfile = () => {
           </span>
 
           {/* Tallennus- ja paluupainikkeet */}
-          <Tooltip title="Tallenna profiili">
-            <Button variant="contained" onClick={handleSave}>
-              Tallenna
-            </Button>
-          </Tooltip>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Tooltip title="Tallenna profiili">
+              <Button
+                sx={{ display: { xs: "flex" }, marginBottom: 3 }}
+                variant="contained"
+                onClick={handleSave}
+              >
+                Tallenna
+              </Button>
+            </Tooltip>
+          </div>
         </form>
       </Container>
     </ThemeProvider>
