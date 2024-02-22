@@ -8,6 +8,7 @@ import NameDropDown from "../components/index/nameDropDown";
 
 import { getChildProfiles } from "../api/childProfile/getChildProfiles";
 import makeChildObject from "../utils/makeChildObject";
+import { getCarerChildProfiles } from "../api/carersProfile/getCarerChildProfiles";
 
 export default function IndexPage() {
   const { isLoggedIn, idToken } = useContext(TokenContext);
@@ -18,6 +19,9 @@ export default function IndexPage() {
       // Fetching childProfiles
       const retrieveDataAndMakeObject = async () => {
         await getChildProfiles(idToken);
+        await getCarerChildProfiles();
+        const testData = sessionStorage.getItem("childProfiles");
+        console.log(testData);
         makeChildObject();
       };
       retrieveDataAndMakeObject();

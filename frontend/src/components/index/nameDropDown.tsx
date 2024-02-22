@@ -5,6 +5,7 @@ import { TokenContext } from "../../contexts/tokenContext";
 import { NamesAndAgesType } from "../../types/typesFrontend";
 import makeChildObject from "../../utils/makeChildObject";
 import { getChildProfiles } from "../../api/childProfile/getChildProfiles";
+import { getCarerChildProfiles } from "../../api/carersProfile/getCarerChildProfiles";
 
 export default function NameDropDown({
   changerFunc,
@@ -27,6 +28,7 @@ export default function NameDropDown({
           if (!sessionStorage.getItem("childNamesAndAges")) {
             // Fetching child profiles and making name&age object:
             await getChildProfiles(idToken);
+            await getCarerChildProfiles();
             makeChildObject();
           }
           const childNamesAndAgesJSON =
