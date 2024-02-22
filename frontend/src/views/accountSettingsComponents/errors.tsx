@@ -14,17 +14,3 @@ export class PasswordError extends AuthenticationError {
     super(message);
   }
 }
-
-export class UserNotFoundError extends AuthenticationError {
-  constructor(message: string) {
-    super(message);
-  }
-}
-
-export class APIError extends AuthenticationError {
-  details?: ErrorDetails;
-  constructor(message: string, details?: ErrorDetails) {
-    super(message);
-    this.details = details;
-  }
-}
