@@ -20,8 +20,6 @@ export default function IndexPage() {
       const retrieveDataAndMakeObject = async () => {
         await getChildProfiles(idToken);
         await getCarerChildProfiles();
-        const testData = sessionStorage.getItem("childProfiles");
-        console.log(testData);
         makeChildObject();
       };
       retrieveDataAndMakeObject();
