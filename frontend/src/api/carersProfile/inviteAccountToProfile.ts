@@ -51,11 +51,11 @@ export const inviteAccountToProfile = async (
 
     return { data: response.data, status: response.status };
   } catch (error) {
-    console.error("Kutsu hoitajaksi -virhe:", error);
+    //console.error("Kutsu hoitajaksi -virhe:", error);
 
     if (axios.isAxiosError(error) && error.response) {
       if (process.env.NODE_ENV !== "production") {
-        console.error("Kutsu hoitajaksi virhe:", error);
+        //console.error("Kutsu hoitajaksi virhe:", error);
       }
 
       if (typeof error.response.data === "string") {
