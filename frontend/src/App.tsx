@@ -15,6 +15,7 @@ import ChoicesPage from "./views/choices";
 import TermsAndPrivacy from "./views/termsAndPrivacy";
 import AboutUs from "./views/aboutUs";
 import Results from "./views/results";
+import "./styles/global.css";
 
 // Higher Order Components (HOC):
 import Layout from "./components/Layout/Layout";
@@ -53,7 +54,10 @@ function App() {
                 <Route path="/profile-edit/:id?" element={<EditProfile />} />
                 <Route path="/profile-share" element={<CaresProfile />} />
                 <Route path="/admin" element={<AdminPage />} />
-                <Route path="/subscription" element={<SubscriptionManagement />} />
+                <Route
+                  path="/subscription"
+                  element={<SubscriptionManagement />}
+                />
                 <Route path="/account" element={<AccountSettingsPage />} />
                 <Route path="/terms" element={<TermsAndPrivacy />} />
                 <Route path="/about-us" element={<AboutUs />} />
