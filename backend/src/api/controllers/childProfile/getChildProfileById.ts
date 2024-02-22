@@ -10,6 +10,7 @@ interface ChildProfile {
   birthdate: string;
   childName: string;
   creatorId: string; // Käyttäjän UID
+  allergies: string;
 }
 
 const getChildProfileById = async (
