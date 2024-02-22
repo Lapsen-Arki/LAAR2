@@ -9,6 +9,16 @@ export type SettingsType = {
 export interface EditModes {
   [key: string]: boolean;
 }
+
+interface UpdateStatusTypes {
+  updated: boolean;
+  status: string;
+  msg: string;
+}
+export interface UpdateStatusDataType {
+  [key: string]: UpdateStatusTypes;
+}
+
 export type UserType = {
   userId: string | undefined;
   email: string | undefined;

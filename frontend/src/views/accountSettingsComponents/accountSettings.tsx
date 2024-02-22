@@ -22,6 +22,7 @@ import {
 } from "./types";
 import SubmitHandler from "./settingsSubmitHandler";
 import { AuthenticationError } from "./errors";
+import { TokenContext } from "../../contexts/tokenContext";
 
 // AccountSettings component
 // Blame Esa for everything that is wrong with this component
@@ -37,6 +38,8 @@ import { AuthenticationError } from "./errors";
 const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
   // getAuth from AuthContext provider.
   const { auth } = useContext(AuthContext);
+  // Get tokencontext for signout
+  const { signOutMethod } = useContext(TokenContext);
 
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
@@ -135,6 +138,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
       console.log(response);
       if (response.status) {
         setSuccessMessage(response.msg);
+        signOutMethod();
       } else {
         setErrorMessage(response.msg);
       }

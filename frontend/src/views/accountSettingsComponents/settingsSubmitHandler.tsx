@@ -9,7 +9,13 @@ import {
 import { FirebaseError } from "@firebase/util";
 import { AuthenticationError, PasswordError } from "./errors";
 /* import postSettings from "../../api/postSettings";*/
-import { AccountSettingsFormData } from "./types";
+import { AccountSettingsFormData, UpdateStatusDataType } from "./types";
+
+const updateStatus: UpdateStatusDataType = {
+  password: { updated: false, status: "waiting", msg: "" },
+  displayName: { updated: false, status: "waiting", msg: "" },
+  email: { updated: false, status: "waiting", msg: "" },
+};
 
 export default async function SubmitHandler(
   data: AccountSettingsFormData,
@@ -30,7 +36,11 @@ export default async function SubmitHandler(
       if (result.status === false) {
         throw new PasswordError("hello");
       } else {
-        return { status: true, msg: "Asetukset päivitetty." };
+        return {
+          status: true,
+          msg: "Asetukset päivitetty.",
+          debug: updateStatus,
+        };
       }
     }
   } catch (error) {
@@ -39,7 +49,11 @@ export default async function SubmitHandler(
     } else if (error instanceof PasswordError) {
       return { status: false, msg: error.message };
     } else {
-      return { status: false, msg: "Asetuksia ei voitu päivittää." };
+      return {
+        status: false,
+        msg: "Asetuksia ei voitu päivittää.",
+        debug: updateStatus,
+      };
     }
   }
 }
@@ -48,11 +62,6 @@ async function updateSettings(
   data: AccountSettingsFormData,
   auth: Auth
 ) {
-  const updatedValues = {
-    password: false,
-    displayName: false,
-    email: false,
-  };
   try {
     if (auth === null || auth.currentUser === null)
       throw new AuthenticationError("Käyttäjä ei ole kirjautunut sisään");
@@ -64,45 +73,91 @@ async function updateSettings(
     await reauthenticateWithCredential(user, credential);
 
     if (data.newPassword && data.confirmPassword) {
+      setUpdatedValues("password", { status: "pending" });
       const validate = await validatePassword(
         data.newPassword,
         data.confirmPassword
       );
       console.log(validate);
       if (validate.status) {
-        updatePassword(user, data.newPassword)
+        const result = await updatePassword(user, data.newPassword)
           .then(() => {
-            updatedValues.password = true;
+            return true;
           })
-          .catch((error) => {
-            throw new Error(error);
+          .catch(() => {
+            return false;
           });
+        if (result)
+          setUpdatedValues("password", {
+            updated: true,
+            status: "success",
+            msg: "Salasana vaihdettu.",
+          });
+        else {
+          setUpdatedValues("password", {
+            status: "error",
+            msg: "Salasanaa ei voitu vaihtaa.",
+          });
+        }
       } else {
         throw new PasswordError(validate.msg);
       }
+    } else {
+      setUpdatedValues("password", {
+        status: "ready",
+        msg: "Salasanaa ei muutettu.",
+      });
     }
     if (data.email) {
-      updateEmail(user, data.email)
+      setUpdatedValues("email", {
+        status: "fail",
+        msg: "Sähköpostia ei voi vielä vaihtaa.",
+      });
+      /* setUpdatedValues("email", { status: "pending" });
+      const result = await updateEmail(user, data.email)
         .then(() => {
-          updatedValues.email = true;
+          return true;
         })
-        .catch((error) => {
-          throw new Error(error);
+        .catch(() => {
+          return false;
         });
+      if (result) {
+        setUpdatedValues("email", {
+          updated: true,
+          status: "success",
+          msg: "Sähköposti vaihdettu.",
+        });
+      } else
+        setUpdatedValues("email", {
+          status: "error",
+          msg: "Sähköpostia ei voitu vaihtaa.",
+        }); */
     }
     if (data.displayName) {
-      updateProfile(user, {
+      setUpdatedValues("displayName", { status: "pending" });
+      const result = await updateProfile(user, {
         displayName: data.displayName,
       })
         .then(() => {
-          updatedValues.displayName = true;
+          return true;
         })
-        .catch((error) => {
-          throw new Error(error);
+        .catch(() => {
+          return false;
+        });
+      if (result)
+        setUpdatedValues("displayName", {
+          updated: true,
+          status: "success",
+          msg: "Nimi vaihdettu.",
+        });
+      else
+        setUpdatedValues("displayName", {
+          status: "error",
+          msg: "Nimeä ei voitu vaihtaa.",
         });
     }
-    // Debugging in client
-    return { status: true, msg: JSON.stringify(updatedValues) };
+
+    return { status: true, msg: "Asetukset päivitetty onnistuneesti." };
   } catch (error) {
     if (error instanceof PasswordError) {
       throw new PasswordError(error.message);
@@ -114,9 +169,34 @@ async function updateSettings(
       } else {
         throw new AuthenticationError("Tapahtui virhe.");
       }
+    } else if (error instanceof AuthenticationError) {
+      throw new AuthenticationError(error.message);
     } else {
       throw new AuthenticationError("Asetuksia ei voitu päivittää.");
     }
+  }
+}
+
+function setUpdatedValues(
+  key: string,
+  inputValues: {
+    updated?: boolean;
+    status?: string;
+    msg?: string;
+  }
+) {
+  const values = {
+    updated: inputValues.updated ?? updateStatus[key].updated,
+    status: inputValues.status ?? updateStatus[key].status,
+    msg: inputValues.msg ?? updateStatus[key].msg,
+  };
+  if (updateStatus[key]) {
+    console.log(values);
+    updateStatus[key] = values;
+    console.log(updateStatus[key]);
+    return updateStatus[key]; // Return the updated object for convenience
+  } else {
+    console.error(`Invalid key: ${key}`);
   }
 }
 
