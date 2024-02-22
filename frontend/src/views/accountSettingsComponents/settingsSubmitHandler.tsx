@@ -4,7 +4,7 @@ import {
   updateProfile,
   updatePassword,
   Auth,
-  updateEmail,
+  /* updateEmail, */
 } from "firebase/auth";
 import { FirebaseError } from "@firebase/util";
 import { AuthenticationError, PasswordError } from "./errors";
