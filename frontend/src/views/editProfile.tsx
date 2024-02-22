@@ -198,6 +198,7 @@ const EditProfile = () => {
           {/* Syntymäaika -kenttä */}
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
+              sx={{ width: 260 }}
               value={birthdate}
               onChange={(newDate) =>
                 setBirthdate(newDate ? dayjs(newDate) : null)
