@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import admin from "../../../config/firebseConfig";
 import { firestore } from "firebase-admin";
 import { getUserIdFromToken } from "../../../utils/getUserIdFromTokenUtil";
+import checkAuth from "../../../middleware/checkAuth";
 
 interface ChildProfile {
   id: string;
@@ -34,6 +35,8 @@ const getChildProfileById = async (
 
     const db = admin.firestore();
     const childProfilesCollection = db.collection("childProfile");
+
+    // Suora haku ID:n perusteella
     const profileDoc = await childProfilesCollection.doc(profileId).get();
 
     if (!profileDoc.exists) {
