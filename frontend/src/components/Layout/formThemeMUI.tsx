@@ -87,9 +87,6 @@ const formTheme = createTheme({
           color: "black",
           "&.Mui-checked": {
             color: "#63c8cc",
-            "&:hover": {
-              color: "white",
-            },
           },
         },
       },
@@ -119,10 +116,9 @@ const formTheme = createTheme({
     MuiInputBase: {
       styleOverrides: {
         root: {
-          margin: 0,
-          padding: 0,
+          border: "solid",
+          borderWidth: 1,
           backgroundColor: "white",
-          fontFamily: ["Quicksand", "sans-serif"].join(","),
           color: "black",
           textDecoration: "none",
           "&:hover fieldset": {

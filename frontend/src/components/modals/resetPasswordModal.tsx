@@ -43,18 +43,25 @@ const ResetPasswordModal: React.FC<VerifyEmailModalProps> = ({
       }}
       disableEscapeKeyDown
     >
-      <DialogTitle>Palauta salasana</DialogTitle>
-      <DialogContent>
+      <DialogTitle style={{ marginTop: "0px", marginBottom: "8px" }}>
+        Palauta salasana
+      </DialogTitle>
+      <DialogContent sx={{ maxWidth: 390 }}>
         <Typography>Lähetä salasanan palautusviesti sähköposiisi:</Typography>
 
         <TextField
+          sx={{
+            marginTop: "0px",
+            marginBottom: "8px",
+            background: "white !important",
+          }}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           fullWidth
         ></TextField>
 
         <Button
-          style={{ marginTop: "16px", marginBottom: "10px" }}
+          style={{ marginTop: "0px", marginBottom: "0px" }}
           onClick={handleReset}
           fullWidth
           variant="contained"
@@ -63,6 +70,7 @@ const ResetPasswordModal: React.FC<VerifyEmailModalProps> = ({
           Lähetä
         </Button>
         <Button
+          style={{ marginTop: "8px", marginBottom: "0px" }}
           onClick={() => setOpen(false)}
           fullWidth
           variant="contained"

@@ -156,9 +156,10 @@ export default function Register() {
               margin: "7px",
               width: 218,
               maxWidth: "90%",
-              border: isFocused ? 1 : 1,
+              border: "solid",
+              borderWidth: isFocused ? 2 : 1,
               borderRadius: "5px",
-              borderColor: isFocused ? "#000000" : "rgba(0, 0, 0, 0.23)",
+              borderColor: isFocused ? "black" : "black",
               "&:hover": {
                 borderColor: "#000000",
               },
