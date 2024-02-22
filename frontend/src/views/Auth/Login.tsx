@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Button,
@@ -32,6 +32,10 @@ const Login: React.FC = (): JSX.Element => {
   const { setIdToken } = useContext(TokenContext);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
