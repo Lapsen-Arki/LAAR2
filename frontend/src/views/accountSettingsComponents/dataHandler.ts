@@ -8,7 +8,7 @@ async function buildData(user: UserType) {
       autocomplete: "name",
       value: user.displayName ?? "",
     },
-    email: {
+    /* email: {
       title: "Email",
       type: "email",
       autocomplete: "email",
@@ -19,7 +19,7 @@ async function buildData(user: UserType) {
       type: "tel",
       autocomplete: "tel",
       value: user.phoneNumber ?? "",
-    },
+    }, */
   };
   return settings;
 }
