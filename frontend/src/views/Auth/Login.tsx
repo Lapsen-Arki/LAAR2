@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Button,
@@ -32,6 +32,10 @@ const Login: React.FC = (): JSX.Element => {
   const { setIdToken } = useContext(TokenContext);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -79,12 +83,10 @@ const Login: React.FC = (): JSX.Element => {
 
   return (
     <ThemeProvider theme={formTheme}>
-      <Container
-        component="main"
-        maxWidth="sm"
-        sx={{ display: "flex", textAlign: "center", marginTop: { md: 0 } }}
-      >
-        <ReturnBtn />
+      <Container component="main" maxWidth="sm" sx={{ textAlign: "center" }}>
+        <div style={{ marginTop: 25, textAlign: "left" }}>
+          <ReturnBtn />
+        </div>
         <Typography variant="h4">Kirjaudu sisään</Typography>
         <VerifyEmailModal
           open={openVerifyEmail}
@@ -124,7 +126,6 @@ const Login: React.FC = (): JSX.Element => {
             direction="row"
             justifyContent="space-between"
             alignItems="center"
-            style={{ paddingLeft: 7, paddingRight: 7 }}
           >
             <Grid item>
               <FormControlLabel
@@ -148,7 +149,9 @@ const Login: React.FC = (): JSX.Element => {
                   setOpenResetModal(true);
                 }}
               >
-                Unohtuiko salasana?
+                <Typography sx={{ color: "black" }}>
+                  Unohtuiko salasana?
+                </Typography>
               </Link>
               <ResetPasswordModal
                 open={openResetModel}
@@ -158,7 +161,12 @@ const Login: React.FC = (): JSX.Element => {
               />
             </Grid>
           </Grid>
-          <Button type="submit" variant="contained" fullWidth>
+          <Button
+            sx={{ marginBottom: 0 }}
+            type="submit"
+            variant="contained"
+            fullWidth
+          >
             Kirjaudu
           </Button>
           {successMessage != null && (
@@ -171,19 +179,18 @@ const Login: React.FC = (): JSX.Element => {
               <Typography variant="subtitle2">{errorMessage}</Typography>
             </Alert>
           )}
-          <Grid
-            container
-            direction="row"
-            justifyContent="flex-start"
-            alignItems="baseline"
-            style={{ paddingLeft: 7, paddingRight: 7 }}
-          >
-            <Grid item>
-              <Link to="/register">
-                <Typography>Eikö vielä tiliä? Rekisteröidy tästä!</Typography>
-              </Link>
-            </Grid>
-          </Grid>
+          <Link to="/register">
+            <Typography
+              sx={{
+                textAlign: "left",
+                color: "black",
+                marginTop: 2,
+                marginBottom: 2,
+              }}
+            >
+              Eikö vielä tiliä? Rekisteröidy tästä!
+            </Typography>
+          </Link>
         </form>
       </Container>
     </ThemeProvider>

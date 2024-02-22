@@ -67,9 +67,9 @@ router.post("/emailVerification", emailVerification);
 router.get("/test", testController);
 
 // Stripe routes
-router.post("/start-subscription/:id", startSubscription);
-router.post("/cancel-subscription/:id", cancelSubscription);
-router.post("/get-subscription/:id", getSubscriptionById);
+router.post("/start-subscription", startSubscription);
+router.post("/cancel-subscription", cancelSubscription);
+router.post("/get-subscription", getSubscriptionById);
 
 // FOR TESTING
 // -------------------------------------
