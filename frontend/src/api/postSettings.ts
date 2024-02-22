@@ -1,6 +1,5 @@
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
-import { APIError } from "../views/accountSettingsComponents/errors";
 const postSettings = async (settings: FormData, idToken: string) => {
   try {
     const response = await fetch(`${API_BASE_URL}/edit-account`, {
@@ -15,7 +14,7 @@ const postSettings = async (settings: FormData, idToken: string) => {
       return await response.json();
     } else {
       const data = await response.json();
-      throw new APIError(data.message, data.code);
+      throw new Error(data.message);
     }
   } catch (error) {
     return error;
