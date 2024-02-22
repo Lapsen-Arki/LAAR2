@@ -14,23 +14,25 @@ const ReturnBtn: React.FC<ReturnBtnProps> = ({ message = "Paluu" }) => {
   const navigate = useNavigate();
 
   return (
-    <Button
-      sx={{
-        mb: 5,
-        width: "100px",
-        background: "transparent",
-        color: "#000000",
-        "&:hover": {
-          backgroundColor: "transparent",
+    <div style={{ textAlign: "left" }}>
+      <Button
+        sx={{
+          mb: 1,
+          width: "100px",
+          background: "transparent",
           color: "#000000",
-        },
-      }}
-      variant="text"
-      onClick={() => navigate(-1)}
-    >
-      <ArrowBackIosIcon fontSize="small" />
-      <Typography variant="body2">{message}</Typography>
-    </Button>
+          "&:hover": {
+            backgroundColor: "transparent",
+            color: "#000000",
+          },
+        }}
+        variant="text"
+        onClick={() => navigate(-1)}
+      >
+        <ArrowBackIosIcon fontSize="small" />
+        <Typography variant="body2">{message}</Typography>
+      </Button>
+    </div>
   );
 };
 

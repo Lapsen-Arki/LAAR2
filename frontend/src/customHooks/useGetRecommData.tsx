@@ -2,11 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import { RecommendationsType } from "../types/recommTypes";
 import axios from "axios";
 import { TokenContext } from "../contexts/tokenContext";
-import {
-  activityRecomm,
-  mealRecomm,
-  tipsRecomm,
-} from "../utils/staticPreviewData";
+import { activityRecomm } from "../utils/previewData/activityRecomm";
+import { mealRecomm } from "../utils/previewData/mealRecomm";
+import { tipsRecomm } from "../utils/previewData/tipsRecomm";
 
 const API_BASE_URL = "http://localhost:3000/api";
 

@@ -58,17 +58,28 @@ const VerifyEmailModal: React.FC<VerifyEmailModalProps> = ({
       }}
       disableEscapeKeyDown
     >
-      <DialogTitle>Vahvista sähköpostisi</DialogTitle>
+      <DialogTitle
+        style={{ marginTop: "0px", marginBottom: "0px", marginLeft: "8px" }}
+      >
+        Vahvista sähköpostisi
+      </DialogTitle>
       <Typography
-        style={{ maxWidth: "300px", marginLeft: "25px", marginRight: "25px" }}
+        style={{
+          scrollMarginLeft: 10,
+          maxWidth: "300px",
+          marginLeft: "32px",
+          marginRight: "25px",
+          marginTop: "0px",
+          marginBottom: "0px",
+        }}
       >
         Mikäli sähköpostiasi ei vahvisteta, tilauksesi mitätöidään
         automaattisesti.
       </Typography>
-      <DialogContent>
+      <DialogContent sx={{ maxWidth: 390 }}>
         <form onSubmit={handleSubmit}>
           <TextField
-            style={{ background: "white" }}
+            style={{ marginTop: "0px", marginBottom: "0px" }}
             variant="outlined"
             margin="normal"
             required
@@ -78,7 +89,13 @@ const VerifyEmailModal: React.FC<VerifyEmailModalProps> = ({
             value={verificationCode}
             onChange={(e) => setVerificationCode(e.target.value)}
           />
-          <Button type="submit" fullWidth variant="contained" color="primary">
+          <Button
+            style={{ marginTop: "10px", marginBottom: "0px" }}
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+          >
             OK
           </Button>
         </form>

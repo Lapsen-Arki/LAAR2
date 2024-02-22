@@ -33,6 +33,7 @@ interface ChildProfile {
   avatar: string;
   accessRights: boolean;
   creatorId: string;
+  allergies: string;
 }
 
 const EditProfile = () => {
@@ -41,6 +42,7 @@ const EditProfile = () => {
   const [selectedAvatar, setSelectedAvatar] = useState<string | null>(null);
   const [childName, setChildName] = useState("");
   const [birthdate, setBirthdate] = useState<Dayjs | null>(null); // Muutettu käyttämään Date-objektia
+  const [childAllergies, setChildAllergies] = useState("");
   const [nameError, setNameError] = useState("");
   const [birthdateError, setBirthdateError] = useState("");
   const [accessRights, setAccessRights] = useState(false);
@@ -50,7 +52,7 @@ const EditProfile = () => {
 
   // Tyhjä merkkijono, jos id ei ole määritetty URL:ssä
   //console.log(id)
-  const profileId = id || '';
+  const profileId = id || "";
 
   // Etsii ja palauttaa lapsiprofiilin Session Storagesta annetun ID:n perusteella.
   // Jos profiilia ei löydy, palauttaa null.
@@ -82,11 +84,13 @@ const EditProfile = () => {
                 : null
             );
             setSelectedAvatar(profileDataFromStorage.avatar);
+            setChildAllergies(profileDataFromStorage.allergies);
             setAccessRights(profileDataFromStorage.accessRights);
           } else {
             // Jos ei löydy Session Storagesta, haetaan palvelimelta
-            const profileData: ChildProfile | { error: Error } = await getChildProfileById(profileId, idToken);
-            if ('childName' in profileData) {
+            const profileData: ChildProfile | { error: Error } =
+              await getChildProfileById(profileId, idToken);
+            if ("childName" in profileData) {
               //console.log('Haettu profiilin tiedot:', profileData);
               setChildName(profileData.childName);
               setBirthdate(
@@ -94,6 +98,7 @@ const EditProfile = () => {
                   ? dayjs(profileData.birthdate, "YYYY-MM-DD")
                   : null
               );
+              setChildAllergies(profileData.allergies);
               setSelectedAvatar(profileData.avatar);
               setAccessRights(profileData.accessRights);
             } else {
@@ -141,6 +146,7 @@ const EditProfile = () => {
         avatar: selectedAvatar || "/broken-image.jpg",
         accessRights,
         creatorId: idToken,
+        allergies: childAllergies,
       };
 
       try {
@@ -152,7 +158,7 @@ const EditProfile = () => {
           await createChildProfile(userData, idToken);
         }
         //console.log('Profiili tallennettu onnistuneesti:', userData);
-        navigate('/profile');
+        navigate("/profile");
       } catch (error) {
         console.error("Profiilin tallennus epäonnistui", error);
       }
@@ -168,18 +174,21 @@ const EditProfile = () => {
         maxWidth="sm"
         sx={{ display: "flex", textAlign: "center", marginTop: { md: 0 } }}
       >
-        <ReturnBtn />
         <form>
+          <div style={{ marginTop: 25, textAlign: "left" }}>
+            <ReturnBtn />
+          </div>
           {/* Lapsen nimi -kenttä */}
           <Typography variant="h5">Tallenna lapsen tiedot</Typography>
           <TextField
+            sx={{ width: 260 }}
             variant="outlined"
             margin="normal"
             required
             fullWidth
             label="Lapsen nimi tai lempinimi"
             autoFocus
-            //maxLength={14}
+            inputProps={{ maxLength: 19 }}
             id="childName"
             value={childName}
             onChange={(e) => setChildName(e.target.value)}
@@ -189,6 +198,7 @@ const EditProfile = () => {
           {/* Syntymäaika -kenttä */}
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
+              sx={{ width: 260 }}
               value={birthdate}
               onChange={(newDate) =>
                 setBirthdate(newDate ? dayjs(newDate) : null)
@@ -196,6 +206,18 @@ const EditProfile = () => {
             />
           </LocalizationProvider>
           {birthdateError && <Alert severity="error">{birthdateError}</Alert>}
+
+          {/* Allergiat */}
+          <TextField
+            sx={{ width: 260 }}
+            id="childAllergies"
+            label="Allergiat"
+            margin="dense"
+            variant="outlined"
+            inputProps={{ maxLength: 50 }}
+            value={childAllergies}
+            onChange={(e) => setChildAllergies(e.target.value)}
+          />
 
           {/* Avatarin valinta */}
           {showAnimalAvatar ? (
@@ -248,7 +270,6 @@ const EditProfile = () => {
             </Typography>
           </span>
           <Switch
-            sx={{ display: { xs: "inline-flex" } }}
             checked={accessRights}
             onChange={() => setAccessRights(!accessRights)}
           />
@@ -262,11 +283,23 @@ const EditProfile = () => {
           </span>
 
           {/* Tallennus- ja paluupainikkeet */}
-          <Tooltip title="Tallenna profiili">
-            <Button variant="contained" onClick={handleSave}>
-              Tallenna
-            </Button>
-          </Tooltip>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Tooltip title="Tallenna profiili">
+              <Button
+                sx={{ display: { xs: "flex" }, marginBottom: 3 }}
+                variant="contained"
+                onClick={handleSave}
+              >
+                Tallenna
+              </Button>
+            </Tooltip>
+          </div>
         </form>
       </Container>
     </ThemeProvider>

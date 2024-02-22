@@ -7,7 +7,9 @@ const createChildProfile = async (
   res: Response
 ): Promise<void> => {
   try {
-    const { childName, birthdate, avatar, accessRights } = req.body;
+    const { childName, birthdate, avatar, accessRights, allergies } = req.body;
+
+	const sanitizedAllergies = allergies || null;
 
     if (!childName || !birthdate || !avatar || accessRights === undefined) {
       res
@@ -38,14 +40,13 @@ const createChildProfile = async (
       avatar: avatar,
       accessRights: accessRights,
       creatorId: creatorId, // Käyttäjän UID
+	  allergies: sanitizedAllergies
     });
 
-    res
-      .status(200)
-      .json({
-        message: "Uusi profiili luotu onnistuneesti",
-        id: newProfileRef.id,
-      });
+    res.status(200).json({
+      message: "Uusi profiili luotu onnistuneesti",
+      id: newProfileRef.id,
+    });
   } catch (error: any) {
     console.error("Profiilin luonti epäonnistui", error);
     res.status(500).json({ error: "Jotain meni pieleen" });

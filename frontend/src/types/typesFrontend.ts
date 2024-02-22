@@ -48,6 +48,26 @@ export interface ChildProfile {
   birthdate: string;
   childName: string;
   creatorId: string;
+  allergies: string;
+}
+
+export interface CreateChildProfileData {
+  childName: string;
+  birthdate: string;
+  avatar: string;
+  accessRights: boolean;
+  creatorId: string | null;
+  allergies: string;
+}
+
+export interface EditChildProfileData {
+  id: string;
+  childName: string;
+  birthdate: string;
+  avatar: string;
+  accessRights: boolean;
+  creatorId: string | null;
+  allergies: string;
 }
 
 export interface CarerChildProfile extends ChildProfile {
