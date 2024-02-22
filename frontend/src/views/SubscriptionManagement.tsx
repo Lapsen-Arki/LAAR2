@@ -1,4 +1,3 @@
-import { UserContext } from "../contexts/userContext";
 import { TokenContext } from "../contexts/tokenContext";
 import stripeSubscription from "../api/stripeSubscriptions";
 import { SubscriptionData } from "../types/subscriptionTypes";
@@ -19,7 +18,6 @@ import {
 } from "@mui/material/";
 
 const SubscriptionManagement: React.FC = () => {
-  const { userId } = useContext(UserContext);
   const { idToken } = useContext(TokenContext);
   const [open, setOpen] = React.useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -38,17 +36,13 @@ const SubscriptionManagement: React.FC = () => {
 
   const handleStartSubscription = async () => {
     try {
-      const response = await stripeSubscription(
-        idToken,
-        userId,
-        "start-subscription"
-      );
+      const response = await stripeSubscription(idToken, "start-subscription");
       setSubscription(response);
       handleConfirmationDialogClose();
       setErrorMessage(null);
       setSuccessMessage("Tilausta jatkettu onnistuneesti!");
     } catch (error) {
-		setSubscription(null)
+      setSubscription(null);
       handleConfirmationDialogClose();
       setSuccessMessage(null);
       setErrorMessage(
@@ -60,11 +54,7 @@ const SubscriptionManagement: React.FC = () => {
 
   const handleCancelSubscription = async () => {
     try {
-      const response = await stripeSubscription(
-        idToken,
-        userId,
-        "cancel-subscription"
-      );
+      const response = await stripeSubscription(idToken, "cancel-subscription");
       setSubscription(response);
       handleConfirmationDialogClose();
       setErrorMessage(null);
@@ -83,10 +73,9 @@ const SubscriptionManagement: React.FC = () => {
     if (idToken) {
       const fetchSubscription = async () => {
         try {
-          if (userId) {
+          if (idToken) {
             const response = await stripeSubscription(
               idToken,
-              userId,
               "get-subscription"
             );
             setSubscription(response);
@@ -101,7 +90,7 @@ const SubscriptionManagement: React.FC = () => {
       };
       fetchSubscription();
     }
-  }, [idToken, userId]);
+  }, [idToken]);
 
   if (!idToken) {
     return (
