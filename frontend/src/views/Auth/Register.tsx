@@ -23,7 +23,7 @@ const CARD_ELEMENT_STYLES = {
     base: {
       color: "black",
       iconColor: "black",
-      fontSize: "18px",
+      fontSize: "12px",
       fontSmoothing: "antialiased",
       ":-webkit-autofill": {
         color: "black",
@@ -93,17 +93,17 @@ export default function Register() {
   };
   return (
     <ThemeProvider theme={formTheme}>
-      <Container component="main" maxWidth="sm">
-        <ReturnBtn />
-        {/*<ReturnBtn />*/}
-        <Typography variant="h4" style={{ textAlign: "center" }}>
-          Uusi asiakas
-        </Typography>
+      <Container component="main" maxWidth="sm" style={{ textAlign: "center" }}>
+        <div style={{ marginTop: 25, textAlign: "left" }}>
+          <ReturnBtn />
+        </div>
+        <Typography variant="h4">Rekisteröidy</Typography>
+        <Typography>Ja aloita 14 päivän ilmainen kokeilu</Typography>
         <form onSubmit={handleSubmit}>
           <TextField
             name="email"
             variant="outlined"
-            margin="normal"
+            margin="dense"
             required
             fullWidth
             label="Sähköposti"
@@ -115,7 +115,7 @@ export default function Register() {
           <TextField
             name="name"
             variant="outlined"
-            margin="normal"
+            margin="dense"
             required
             fullWidth
             label="Nimi"
@@ -126,7 +126,7 @@ export default function Register() {
           <TextField
             name="password"
             variant="outlined"
-            margin="normal"
+            margin="dense"
             required
             fullWidth
             label="Salasana"
@@ -138,7 +138,7 @@ export default function Register() {
           <TextField
             name="confirmPassword"
             variant="outlined"
-            margin="normal"
+            margin="dense"
             required
             fullWidth
             label="Vahvista salasana"
@@ -148,25 +148,22 @@ export default function Register() {
             onChange={handleChange}
           />
 
-          <Typography variant="body1">Vahvista maksukorttisi:</Typography>
+          <Typography style={{ textAlign: "left" }} variant="body1">
+            Vahvista maksukorttisi:
+          </Typography>
           <Box
             sx={{
               background: "white",
               padding: 2,
-              margin: "7px",
-              width: 218,
-              maxWidth: "90%",
-              border: isFocused ? 1 : 1,
-              borderRadius: "5px",
-              borderColor: isFocused ? "#000000" : "rgba(0, 0, 0, 0.23)",
+              border: "solid",
+              borderWidth: isFocused ? 2 : 1,
+              borderRadius: "4px",
+              borderColor: isFocused ? "black" : "black",
               "&:hover": {
                 borderColor: "#000000",
               },
               "@media (min-width:400px)": {
-                width: "82%",
-              },
-              "@media (min-width:576px)": {
-                width: 335,
+                width: "91%",
               },
             }}
           >
@@ -179,22 +176,50 @@ export default function Register() {
           <Typography variant="body1">
             <b>Emme veloita sinua vielä tässä kohtaa.</b> Turvallisen
             maksukortin vahvistuksen käsittelee{" "}
-            <Link to="https://stripe.com/en-fi" target="_blank">
+            <Link
+              style={{ color: "black" }}
+              to="https://stripe.com/en-fi"
+              target="_blank"
+            >
               Stripe
             </Link>
             .
           </Typography>
 
-          <Typography variant="body1">
+          <Typography
+            style={{ marginTop: 15, wordBreak: "break-word", hyphens: "auto" }}
+            variant="body1"
+          >
             Rekisteröitymällä aloitan 14 vrk ilmaisen kokeulujakson ja palvelun
             hinta on tämän jälkeen 6,99€/kk. Tilauksen voit peruttaa koska
             tahansa päättymään maksukauden loppuun.
           </Typography>
           {/* Repeat for other fields like password, confirm password, etc. */}
-          <FormControlLabel
+
+          <Button
             sx={{ marginTop: 2 }}
+            type="submit"
+            variant="contained"
+            fullWidth
+          >
+            Rekisteröidy
+          </Button>
+          <Link to="/login">
+            <Typography
+              sx={{
+                color: "black",
+                fontSize: 13,
+                marginTop: 0.75,
+              }}
+            >
+              Oliko sinulla jo valmiiksi tili? Kirjaudu tästä!
+            </Typography>
+          </Link>
+
+          <FormControlLabel
             control={
               <Checkbox
+                sx={{ marginBottom: 2 }}
                 checked={formData.accept}
                 onChange={handleCheckChange}
                 name="accept"
@@ -202,23 +227,16 @@ export default function Register() {
             }
             label="Hyväksyn tietosuojaselosteen ja palvelun käyttöehdot"
           />
-          <Button type="submit" variant="contained" fullWidth>
-            Rekisteröidy
-          </Button>
           <Typography sx={{ color: "red", marginBottom: 2, marginTop: 2 }}>
             {errorMessage}
           </Typography>
           <Typography sx={{ color: "green", marginBottom: 2, marginTop: 2 }}>
             {successMessage}
           </Typography>
-
-          <Link to="/login">
-            <Typography>
-              Onko sinulla valmiiksi tili? Kirjaudu tästä!
-            </Typography>
-          </Link>
         </form>
-        <ReturnBtn />
+        <div style={{ marginTop: 25, textAlign: "left" }}>
+          <ReturnBtn />
+        </div>
       </Container>
     </ThemeProvider>
   );
