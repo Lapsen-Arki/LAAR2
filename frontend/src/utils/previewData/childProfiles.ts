@@ -8,6 +8,7 @@ export const childPreviewData: ChildProfile[] = [
     birthdate: "preview",
     childName: "Ulpukka",
     creatorId: "preview",
+	allergies: ""
   },
   {
     id: "preview",
@@ -16,7 +17,7 @@ export const childPreviewData: ChildProfile[] = [
     birthdate: "preview",
     childName: "Kullervo",
     creatorId: "preview",
-    allergies: ["maito", "persikka"],
+    allergies: "maito, persikka",
   },
   {
     id: "preview",
@@ -25,6 +26,6 @@ export const childPreviewData: ChildProfile[] = [
     birthdate: "preview",
     childName: "Liisa",
     creatorId: "preview",
-    allergies: ["pähkinät", "kala", "maissi", "mango"],
+    allergies: "pähkinät, kala, maissi, mango",
   },
 ];

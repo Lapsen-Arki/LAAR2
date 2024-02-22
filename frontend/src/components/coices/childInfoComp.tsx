@@ -83,24 +83,11 @@ export default function ChildInfoComp({
               alignItems: "center",
             }}
           >
-            {
-              mealType &&
-                childData.allergies &&
-                childData.allergies.map((allergy, index) => {
-                  return (
-                    <Typography
-                      sx={{ marginRight: 1 }}
-                      key={allergy}
-                      variant="body1"
-                    >
-                      <strong>{allergy}</strong>
-                      {childData.allergies &&
-                        index !== childData.allergies.length - 1 &&
-                        ","}
-                    </Typography>
-                  );
-                }) // <-- this feature is coming later
-            }
+            {mealType && childData.allergies && (
+              <Typography sx={{ marginRight: 1 }} variant="body1">
+                <strong>{childData.allergies}</strong>
+              </Typography>
+            )}
           </Grid>
         </>
       )}
