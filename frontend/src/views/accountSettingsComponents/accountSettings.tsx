@@ -150,9 +150,17 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
               drawerOpen={drawerOpen}
             />
           </Box>
-          <Button type="submit" variant="contained" color="primary">
-            Tallenna muutokset
-          </Button>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Button type="submit" variant="contained" color="primary">
+              Tallenna muutokset
+            </Button>
+          </div>
           <Typography
             textAlign="center"
             sx={{ color: "red", marginBottom: 2, marginTop: 2 }}
@@ -198,6 +206,7 @@ function PasswordFields({
       <TextField
         label="Vanha salasana"
         type="password"
+        margin="normal"
         value={fields.oldPassword}
         onChange={(e) => onChange("oldPassword", e.target.value)}
         required
@@ -226,6 +235,7 @@ function PasswordDrawer({ fields, onChange, drawerOpen }: PasswordDrawerProps) {
         <TextField
           label="Uusi salasana"
           type="password"
+          margin="dense"
           value={fields.newPassword}
           onChange={(e) => onChange("newPassword", e.target.value)}
           // ... appropriate styles
@@ -233,6 +243,7 @@ function PasswordDrawer({ fields, onChange, drawerOpen }: PasswordDrawerProps) {
         <TextField
           label="Vahvista uusi salasana"
           type="password"
+          margin="dense"
           value={fields.confirmPassword}
           onChange={(e) => onChange("confirmPassword", e.target.value)}
           // ... appropriate styles
