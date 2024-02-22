@@ -15,7 +15,6 @@ import ChoicesPage from "./views/choices";
 import TermsAndPrivacy from "./views/termsAndPrivacy";
 import AboutUs from "./views/aboutUs";
 import Results from "./views/results";
-import "./styles/global.css";
 
 // Higher Order Components (HOC):
 import Layout from "./components/Layout/Layout";
