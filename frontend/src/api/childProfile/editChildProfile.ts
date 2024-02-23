@@ -1,17 +1,10 @@
 import axios from "axios";
+import makeChildObject from "../../utils/makeChildObject";
+import { EditChildProfileData } from "../../types/typesFrontend";
 
 // TODO: Move to env variables etc:
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
-
-interface EditChildProfileData {
-  id: string;
-  childName: string;
-  birthdate: string;
-  avatar: string;
-  accessRights: boolean;
-  creatorId: string | null;
-}
 
 export const editChildProfile = async (
   data: EditChildProfileData,
@@ -39,12 +32,13 @@ export const editChildProfile = async (
     if (index !== -1) {
       storedProfiles[index] = data;
       sessionStorage.setItem("childProfiles", JSON.stringify(storedProfiles));
+      makeChildObject();
     }
 
-    console.log("Profiili tallennettu onnistuneesti:", data);
     // Päivitä Session Storage manuaalisesti
     const updatedStoredProfilesJson = JSON.stringify(storedProfiles);
     window.sessionStorage.setItem("childProfiles", updatedStoredProfilesJson);
+    makeChildObject();
 
     return response.data;
   } catch (error) {

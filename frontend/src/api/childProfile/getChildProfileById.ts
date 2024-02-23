@@ -1,16 +1,8 @@
 import axios from "axios";
+import { ChildProfile } from "../../types/typesFrontend";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
-
-interface ChildProfile {
-  id: string;
-  accessRights: boolean;
-  avatar: string;
-  birthdate: string;
-  childName: string;
-  creatorId: string;
-}
 
 const updateSessionStorageWithProfile = (profile: ChildProfile) => {
   const storedProfilesJson = sessionStorage.getItem("childProfiles");
@@ -34,7 +26,6 @@ export const getChildProfileById = async (
   idToken: string | null
 ) => {
   try {
-    console.log(`Haetaan profiilia ID:llä ${id}...`);
     const config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
@@ -44,7 +35,6 @@ export const getChildProfileById = async (
       `${API_BASE_URL}/profile/${id}`,
       config
     );
-    console.log("Profiili haettu onnistuneesti:", response.data);
 
     // Tallenna tai päivitä profiili Session Storageen
     updateSessionStorageWithProfile(response.data);

@@ -36,8 +36,8 @@
 }
 
 .children-card {
-  width: 304px;
-  height: 111px;
+  width: 355px;
+  height: auto;
   display: flex;
   align-items: center;
   margin-right: 5px;

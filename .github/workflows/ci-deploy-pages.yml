@@ -35,6 +35,8 @@ jobs:
 
       - name: Run backend tests
         working-directory: backend
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
         run: |
           echo "Running backend tests"
           npm run test

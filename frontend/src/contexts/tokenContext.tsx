@@ -4,17 +4,19 @@ import {
   ReactNode,
   useEffect,
   useCallback,
+  useRef,
 } from "react";
 
 import { getAuth, signOut } from "firebase/auth";
 import { jwtAuth } from "../api/jwtAuth";
-import { TokenContextType } from "../types/types";
+import { TokenContextType } from "../types/typesFrontend";
 import { useNavigate } from "react-router-dom";
 
 // 1. CREATE CONTEXT
 const TokenContext = createContext<TokenContextType>({
   isLoggedIn: false,
   idToken: "",
+  ready: false,
   signOutMethod: () => null,
   setIdToken: () => null,
 });
@@ -27,6 +29,8 @@ function TokenProvider({ children }: { children: ReactNode }) {
       : sessionStorage.getItem("idToken");
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [ready, setReady] = useState(false);
+  const initialCheckExecuted = useRef(false);
   const navigate = useNavigate();
 
   // Update isLoggedIn if idToken value changes:
@@ -53,9 +57,7 @@ function TokenProvider({ children }: { children: ReactNode }) {
   // Validatin JWT token automaticly every 15 minutes:
   useEffect(() => {
     if (isLoggedIn) {
-      const checkSessionInterval = setInterval(async () => {
-        console.log("Running Session check");
-
+      const checkSession = async () => {
         if (idToken) {
           const result = await jwtAuth(idToken);
           if (result === "error" || result === "emailNotVerified") {
@@ -66,18 +68,33 @@ function TokenProvider({ children }: { children: ReactNode }) {
           // been found and validated.
           signOutMethod();
         }
-      }, 300000); // 300000 milliseconds = 5 minutes
+      }; // 300000 milliseconds = 5 minutes
+
+      // Initial session check:
+      if (!initialCheckExecuted.current) {
+        checkSession();
+        initialCheckExecuted.current = true;
+      }
+
+      const checkSessionInterval = setInterval(checkSession, 300000);
 
       // Cleanup
       return () => {
         clearInterval(checkSessionInterval);
       };
     }
+    setReady(true);
   }, [idToken, isLoggedIn, signOutMethod]);
 
   return (
     <TokenContext.Provider
-      value={{ isLoggedIn, idToken, signOutMethod, setIdToken }}
+      value={{
+        isLoggedIn,
+        idToken,
+        ready,
+        signOutMethod,
+        setIdToken,
+      }}
     >
       {children}
     </TokenContext.Provider>

@@ -1,16 +1,10 @@
 import axios from "axios";
+import makeChildObject from "../../utils/makeChildObject";
+import { CreateChildProfileData } from "../../types/typesFrontend";
 
 // TODO: Move to env variables etc:
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
-
-interface CreateChildProfileData {
-  childName: string;
-  birthdate: string;
-  avatar: string;
-  accessRights: boolean;
-  creatorId: string | null;
-}
 
 export const createChildProfile = async (
   data: CreateChildProfileData,
@@ -37,6 +31,7 @@ export const createChildProfile = async (
       : [];
     storedProfiles.push(newProfile);
     sessionStorage.setItem("childProfiles", JSON.stringify(storedProfiles));
+    makeChildObject();
 
     return response.data;
   } catch (error) {

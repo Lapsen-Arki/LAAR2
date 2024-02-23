@@ -3,11 +3,9 @@ const summary = fs.readFileSync("results/prettier-summary.txt", "utf-8");
 const summaryLines = summary.split("\n");
 
 if (summaryLines.length <= 3) {
-  console.log("Prettier summary is either ok or unexpected format.");
   summaryLines.shift();
   saveMd(summaryLines.join("\n"));
 } else {
-  console.log("Found prettier summary. Parsing...");
   const parsed = summaryLines.slice(1, -1);
   const resultMessage = parsed.pop();
   const [statusRaw, text] = resultMessage.split("] ");

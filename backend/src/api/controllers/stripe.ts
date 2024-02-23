@@ -1,114 +1,167 @@
-import { firestore } from 'firebase-admin';
 import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
-import Stripe from 'stripe';
+import stripeConf from "../../config/stripeClient";
+import { getUserIdFromToken } from "../../utils/getUserIdFromTokenUtil";
 
-const stripe = require('stripe')('pk_test_51HqdGcK45umi2LZdJtYVobHqBd8GGJjr0ggqdhGTRNisO9fdkOdHIXc1kH96Tpex7dYyj9VlIEGTv90hiMExVn2S00w1xYoflk');
+const stripe = stripeConf();
 
-const startSubscription = async (req: Request, res: Response): Promise<void> => {
-	try {
-		console.log("start subscription aloitettu")
-		const db = admin.firestore();
-		const userId = req.params.idToken; // tässä antaa vielä arvoksi undefined?
-		console.log(userId)
-		// tähän väliin logiikka, jolla saa userId:n käyttäjän hakua varten
-		const userDocRef = db.collection('users').doc(userId);
-	
-		const userDoc = await userDocRef.get();
-	
-		if (!userDoc.exists) {
-			console.log("käyttäjää ei löytynyt")
-			res.status(404).json({ error: 'User not found' });
-		}
-		console.log("käyttäjä löydetty")
-		
-		const stripeCustomerId = userDoc.data().stripeCustomerId;
-	
-		const session = await stripe.checkout.sessions.create({
-			payment_method_types: ['card'],
-			mode: 'subscription',
-			customer: stripeCustomerId,
-			line_items: [
-				{
-					price: 'your-stripe-price-id',
-				},
-			],
-			success_url: 'http://localhost:5173/success',
-			cancel_url: 'http://localhost:5173/cancel',
-		});
-	
-		res.json({ sessionId: session.id });
-	} catch (error) {
-		console.error('Error starting subscription:', error);
-		res.status(500).json({ error: 'Internal Server Error' });
-	  }
+const startSubscription = async (
+  req: Request,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
+  try {
+    const db = admin.firestore();
+
+    const idToken = req.headers.authorization?.split("Bearer ")[1];
+    if (!idToken) {
+      return res.status(401).json({ error: "Token missing" });
+    }
+
+    const userId = await getUserIdFromToken(idToken);
+    if (!userId) {
+      return res.status(403).json({ error: "Invalid token" });
+    }
+
+    const userDocRef = db.collection("users").doc(userId);
+    const userDoc = await userDocRef.get();
+
+    if (!userDoc.exists) {
+      return res.status(404).json({ error: "User not found. Contact admin." });
+    }
+
+    const stripeCustomerId = userDoc.data()?.stripeCustomerId;
+
+    if (!stripeCustomerId) {
+      return res.status(404).json({ error: "User not found. Contact admin." });
+    }
+
+    const stripeSubscriptionId = userDoc.data()?.stripeSubscriptionId;
+
+    if (!stripeSubscriptionId) {
+      return res.status(200).json({ message: "Something went wrong. Please contact admin." });
+    } else {
+      const oldSubscription = await stripe.subscriptions.retrieve(
+        stripeSubscriptionId
+      );
+
+      if (oldSubscription.status != "canceled") {
+        // jos vanha tilaus on lopetettu, mutta maksettua jäsenyyttä on vielä jäljellä
+        const resumeSubscription = await stripe.subscriptions.update(
+          stripeSubscriptionId,
+          {
+            cancel_at_period_end: false,
+          }
+        );
+        const { created, current_period_end, cancel_at_period_end } =
+          resumeSubscription;
+        return res
+          .status(200)
+          .json({ created, current_period_end, cancel_at_period_end });
+      } else {
+        // vanha tilaus on lopetettu, ja jäljellä oleva aika on myös loppunut
+        const newSubscription = await stripe.subscriptions.create({
+          customer: stripeCustomerId,
+          items: [{ plan: "price_1ObLeAK45umi2LZd5XwwYvam" }],
+        });
+        await userDocRef.update({ stripeSubscriptionId: newSubscription.id });
+        const { created, current_period_end, cancel_at_period_end } =
+          newSubscription;
+        return res
+          .status(200)
+          .json({ created, current_period_end, cancel_at_period_end });
+      }
+    }
+  } catch (error) {
+    console.error("Error starting subscription:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-const cancelSubscription = async (req: Request, res: Response): Promise<void> => {
-	try {
-		console.log("cancel subscription aloitettu")
-		const db = admin.firestore();
-		const userId = req.params.id;
-		const userDocRef = db.collection('users').doc(userId);
+const cancelSubscription = async (
+  req: Request,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
+  try {
+    const db = admin.firestore();
 
-		const userDoc = await userDocRef.get();
+    const idToken = req.headers.authorization?.split("Bearer ")[1];
+    if (!idToken) {
+      return res.status(401).json({ error: "Missing token" });
+    }
 
-		if (!userDoc.exists) {
-			res.status(404).json({ error: 'User not found' });
-		}
+    const userId = await getUserIdFromToken(idToken);
+    if (!userId) {
+      return res.status(403).json({ error: "Invalid token" });
+    }
 
-		const currentStatus = userDoc.data().subscriptionStatus;
+    const userDocRef = db.collection("users").doc(userId);
+    const userDoc = await userDocRef.get();
 
-		if (currentStatus === 'canceled') {
-			res.json({ status: 'already-canceled' });
-		}
+    if (!userDoc.exists) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
-		const stripeCustomerId = userDoc.data().stripeCustomerId;
-		const subscriptionId = userDoc.data().stripeSubscriptionId;
+    const stripeSubscriptionId = userDoc.data().stripeSubscriptionId;
 
-		await stripe.subscriptions.del(subscriptionId);
-
-		await userDocRef.update({ subscriptionStatus: 'canceled' });
-
-		res.json({ status: 'canceled' });
-	} catch (error) {
-		console.error('Error canceling subscription:', error);
-		res.status(500).json({ error: 'Internal Server Error' });
-	}
+    const subscription = await stripe.subscriptions.update(
+      stripeSubscriptionId,
+      {
+        cancel_at_period_end: true,
+      }
+    );
+    const { created, current_period_end, cancel_at_period_end } = subscription;
+    return res
+      .status(200)
+      .json({ created, current_period_end, cancel_at_period_end });
+  } catch (error) {
+    console.error("Error canceling subscription:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-const getSubscriptionById = async (req: Request, res: Response): Promise<void> => {
-	try {
-		const db = admin.firestore();
-		const userId = req.params.id;
-		const userDocRef = db.collection('users').doc(userId);
-  
-		const userDoc = await userDocRef.get();
-  
-		if (!userDoc.exists) {
-			res.status(404).json({ error: 'User not found' });
-		}
+const getSubscriptionById = async (
+  req: Request,
+  res: Response
+): Promise<Response<any, Record<string, any>>> => {
+  try {
+    const db = admin.firestore();
 
-		const stripeCustomerId = userDoc.data().stripeCustomerId;
+    const idToken = req.headers.authorization?.split("Bearer ")[1];
+    if (!idToken) {
+      return res.status(401).json({ error: "Missing token" });
+    }
 
-		const subscriptions = await stripe.subscriptions.list({
-			customer: stripeCustomerId,
-		});
+    const userId = await getUserIdFromToken(idToken);
+    if (!userId) {
+      return res.status(403).json({ error: "Invalid token" });
+    }
+    const userDocRef = db.collection("users").doc(userId);
 
-		res.json({ subscriptions });
-	} catch (error) {
-		console.error('Error fetching subscription information:', error);
-		res.status(500).json({ error: 'Internal Server Error' });
-	}
+    const userDoc = await userDocRef.get();
+    if (!userDoc.exists) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const stripeSubscriptionId = userDoc.data()?.stripeSubscriptionId;
+
+    if (stripeSubscriptionId) {
+      const subscription = await stripe.subscriptions.retrieve(
+        stripeSubscriptionId
+      );
+      if (subscription.status === "canceled") {
+        return res.status(200).json(null);
+      }
+      const { created, current_period_end, cancel_at_period_end } =
+        subscription;
+      return res
+        .status(200)
+        .json({ created, current_period_end, cancel_at_period_end });
+    } else {
+      return res.status(200).json(null);
+    }
+  } catch (error) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-/*
-const getSubscriptionById = async (req: Request, res: Response): Promise<void> => {
-	const customerId = req.params.id;
-	const subscriptions = await stripe.subscriptions.search({
-		query: 'status:\'active\' AND metadata[\'customer\']:\'${customerId}\'',
-	});
-	return subscriptions;
-  };
-*/
-export { startSubscription, cancelSubscription, getSubscriptionById }
+export { startSubscription, cancelSubscription, getSubscriptionById };

@@ -1,13 +1,14 @@
-import { FrontendDataObject } from "../../types/types";
+import { FrontendRecommData } from "../../types/typesBackend";
 import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
-import { TipContents, contents } from "../../types/types";
+import { TextContents, recomm } from "../../types/typesBackend";
+import { FinalRecommData } from "../../types/typesBackend";
 
 const adminPage = async (req: Request, res: Response) => {
   try {
-    const addDataObject = req.body as unknown as FrontendDataObject;
+    const addDataObject = req.body as unknown as FrontendRecommData;
 
-    const validCategories = ["ateria", "aktiviteetti", "vinkki"];
+    const validCategories = ["meal", "activity", "tip"];
     // Validate category:
     if (!validCategories.includes(addDataObject.category)) {
       return res.status(400).send({
@@ -17,18 +18,18 @@ const adminPage = async (req: Request, res: Response) => {
     }
 
     // Validate choice
-    const validateTextLength = (text: string) => text.length > 10;
+    const validateTextLength = (text: string) => text.length > 30;
     if (validateTextLength(addDataObject.title)) {
       return res
         .status(400)
         .send(
-          "Otsikko kenttä ei saa sisältää yli 10 merkkiä. | Title field can not have over 10 letters."
+          "Otsikko kenttä ei saa sisältää yli 30 merkkiä. | Title field can not have over 10 letters."
         );
     }
     // Validate name
     if (
-      addDataObject.category !== "vinkki" &&
-      validateTextLength(addDataObject.content)
+      addDataObject.category !== "tip" &&
+      validateTextLength(addDataObject.name)
     ) {
       return res
         .status(400)
@@ -37,47 +38,45 @@ const adminPage = async (req: Request, res: Response) => {
         );
     }
     // Validate image
-    if (
-      addDataObject.category !== "vinkki" &&
-      !addDataObject.photoFileName &&
-      !addDataObject.photoLink
-    ) {
+    if (addDataObject.category !== "tip" && !addDataObject.photoLink) {
       return res
         .status(400)
         .send(
-          "Sinulla pitää olla kuvaa varten joko linkki tai tiedosto | You must have either a link or a file for the image"
+          "Sinulla pitää olla kuvaa varten linkki | You must have either a link or a file for the image"
         );
     }
-
-    console.log("printing the addDataObject: ", addDataObject);
-
-    // Restructuring the data:
-    const { title, content, ageLimit } = addDataObject;
-
-    let contentObj: TipContents | contents;
-    if (addDataObject.category !== "vinkki") {
-      contentObj = {
-        [content]: ageLimit || 0,
-      };
-    } else {
-      contentObj = {
-        [title]: content,
-      };
+    if (!addDataObject.ageLimit) {
+      return res
+        .status(400)
+        .send("Ikäraja pitää olla määritetty | Agelimit has to be defined");
     }
 
-    const photos = {
-      [title]: "Photo Path or link",
+    // Restructuring the data:
+    const { textContent, name, ageLimit } = addDataObject;
+
+    const nameKey: string = name;
+    const recommValue: number = ageLimit;
+    const recommObj: recomm = {
+      [nameKey]: recommValue,
     };
 
-    const newData = {
+    const textContValue: string = textContent;
+    const textContentObj: TextContents = {
+      [nameKey]: textContValue,
+    };
+
+    const photos = {
+      [nameKey]: addDataObject.photoLink,
+    };
+
+    const newData: FinalRecommData = {
       category: addDataObject.category,
       type: addDataObject.typeSelect,
       title: addDataObject.title,
-      content: contentObj,
+      recomm: recommObj,
+      textContent: textContentObj,
       photos: photos,
     };
-
-    console.log("printing the newData: ", newData);
 
     // Saving data to firebase
     const db = admin.firestore();
@@ -90,23 +89,16 @@ const adminPage = async (req: Request, res: Response) => {
 
     const querySnapshot = await query.get();
 
+    // If doc exsists only content and phots will be updated
     if (!querySnapshot.empty) {
       // Document exists, updating the document
       const docId = querySnapshot.docs[0].id;
 
-      interface Updates {
-        [key: `content.${string}`]: string | number;
-        [key: `photos.${string}`]: string;
-      }
-      const updates: Updates = {};
-
-      const newContentKey = Object.keys(contentObj)[0];
-      const newContentValue: string | number = contentObj[newContentKey];
-      updates[`content.${newContentKey}`] = newContentValue;
-
-      const newPhotoKey = Object.keys(photos)[0];
-      const newPhotoValue = photos[newPhotoKey];
-      updates[`photos.${newPhotoKey}`] = newPhotoValue;
+      const updates = {
+        [`recomm.${nameKey}`]: recommValue,
+        [`textContent.${nameKey}`]: textContValue,
+        [`photos.${nameKey}`]: addDataObject.photoLink,
+      };
 
       // Perform the update
       await recommCollection.doc(docId).update(updates);
