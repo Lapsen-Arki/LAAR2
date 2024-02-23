@@ -21,7 +21,9 @@ export default function sendVerification(
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
+        console.error("Error sending email: ", error);
       } else {
+        console.log("Email sent: " + info.response);
       }
     });
   } catch (error) {
