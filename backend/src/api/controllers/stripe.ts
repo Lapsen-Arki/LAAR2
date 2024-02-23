@@ -38,7 +38,9 @@ const startSubscription = async (
     const stripeSubscriptionId = userDoc.data()?.stripeSubscriptionId;
 
     if (!stripeSubscriptionId) {
-      return res.status(200).json({ message: "Something went wrong. Please contact admin." });
+      return res
+        .status(200)
+        .json({ message: "Something went wrong. Please contact admin." });
     } else {
       const oldSubscription = await stripe.subscriptions.retrieve(
         stripeSubscriptionId
@@ -61,7 +63,13 @@ const startSubscription = async (
         // vanha tilaus on lopetettu, ja jäljellä oleva aika on myös loppunut
         const newSubscription = await stripe.subscriptions.create({
           customer: stripeCustomerId,
-          items: [{ plan: "price_1ObLeAK45umi2LZd5XwwYvam" }],
+          items: [
+            {
+              plan:
+                process.env.STRIPE_PRICE_KEY ||
+                "price_1ObLeAK45umi2LZd5XwwYvam",
+            },
+          ],
         });
         await userDocRef.update({ stripeSubscriptionId: newSubscription.id });
         const { created, current_period_end, cancel_at_period_end } =
