@@ -20,14 +20,16 @@ const startSubscription = async (
 
       if (!userDoc.exists) {
         res.status(404).json({ error: "User not found. Contact admin." });
-		return;
+        return;
       }
 
       const stripeCustomerId = userDoc.data()?.stripeCustomerId;
 
       if (!stripeCustomerId) {
-        res.status(404).json({ error: "User not found. Please contact admin." });
-		return;
+        res
+          .status(404)
+          .json({ error: "User not found. Please contact admin." });
+        return;
       }
 
       const stripeSubscriptionId = userDoc.data()?.stripeSubscriptionId;
@@ -89,7 +91,7 @@ const cancelSubscription = async (
 
       if (!userDoc.exists) {
         res.status(404).json({ error: "User not found" });
-		return;
+        return;
       }
 
       const stripeSubscriptionId = userDoc.data().stripeSubscriptionId;
@@ -126,7 +128,7 @@ const getSubscriptionById = async (
       const userDoc = await userDocRef.get();
       if (!userDoc.exists) {
         res.status(404).json({ error: "User not found" });
-		return;
+        return;
       }
 
       const stripeSubscriptionId = userDoc.data()?.stripeSubscriptionId;
