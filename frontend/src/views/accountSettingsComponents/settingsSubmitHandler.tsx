@@ -113,7 +113,7 @@ async function updateSettings(
         status: "fail",
         msg: "Sähköpostia ei voi vielä vaihtaa.",
       });
-      setUpdatedValues("email", { status: "pending" });
+      /* setUpdatedValues("email", { status: "pending" });
       const result = await updateEmail(user, data.email)
         .then(() => {
           return true;
@@ -131,7 +131,7 @@ async function updateSettings(
         setUpdatedValues("email", {
           status: "error",
           msg: "Sähköpostia ei voitu vaihtaa.",
-        });
+        }); */
     }
     if (data.displayName) {
       setUpdatedValues("displayName", { status: "pending" });
