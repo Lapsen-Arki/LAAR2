@@ -13,7 +13,6 @@ const AccountSettingsPage = () => {
     if (user.userId === undefined) return;
     try {
       const data = await buildData(user);
-      console.log(data);
       setSettingsData(data);
       setIsLoading(false);
     } catch (error) {

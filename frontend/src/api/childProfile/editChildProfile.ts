@@ -35,7 +35,6 @@ export const editChildProfile = async (
       makeChildObject();
     }
 
-    //console.log("Profiili tallennettu onnistuneesti:", data);
     // Päivitä Session Storage manuaalisesti
     const updatedStoredProfilesJson = JSON.stringify(storedProfiles);
     window.sessionStorage.setItem("childProfiles", updatedStoredProfilesJson);

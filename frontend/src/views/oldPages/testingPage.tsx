@@ -5,13 +5,9 @@ export default function Example() {
   const { idToken, signOutMethod } = useContext(TokenContext);
 
   function signOuttt() {
-    console.log("logging out");
-
     signOutMethod();
   }
-  function printToken() {
-    console.log(idToken);
-  }
+  function printToken() {}
 
   return (
     <>

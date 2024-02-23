@@ -115,7 +115,6 @@ const TimeBlock = () => {
 
   const handleChangeChild = (event: SelectChangeEvent) => {
     const selectedValue = event.target.value as string;
-    console.log("Valittu lapsi on:", selectedValue);
     setSelectedChild(selectedValue);
   };
 

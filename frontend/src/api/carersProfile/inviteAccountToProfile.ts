@@ -11,7 +11,6 @@ interface InviteAccountToProfileData {
 // updateSessionStorage funktion määrittely
 const updateSessionStorage = (profiles: CarerProfile[]) => {
   sessionStorage.setItem("carerProfiles", JSON.stringify(profiles));
-  //console.log("Hoitajaprofiilit tallennettu Session Storageen:", profiles);
 };
 
 export const inviteAccountToProfile = async (
@@ -19,8 +18,6 @@ export const inviteAccountToProfile = async (
   idToken: string | null
 ) => {
   try {
-    //console.log("Kutsutaan inviteAccountToProfile...");
-    
     const config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
@@ -33,20 +30,13 @@ export const inviteAccountToProfile = async (
       config
     );
 
-    //console.log("Kutsu hoitajaksi -vastaus:", response.data);
-
     // Tarkista, että uusi käyttäjä on lisätty tietokantaan onnistuneesti
     if (response.status === 200) {
-      //console.log("Uusi käyttäjä lisätty tietokantaan onnistuneesti.");
-
       // Hakee kutsutun käyttäjän tiedot getCarerProfile APIlla.
       const newCarerProfile = await getCarerProfile(idToken, true);
 
-      //console.log("Uusi käyttäjäprofiili haettu:", newCarerProfile);
-
       // Päivittää Session Storage uusilla tiedoilla (kutsu funktion updateSessionStorage täällä)
       updateSessionStorage(newCarerProfile);
-      //console.log("Session Storage päivitetty uusilla tiedoilla:", newCarerProfile);
     }
 
     return { data: response.data, status: response.status };

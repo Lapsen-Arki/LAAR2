@@ -28,8 +28,6 @@ const VerifyEmailModal: React.FC<VerifyEmailModalProps> = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log(verificationCode);
-
     const data = { email, verificationCode };
 
     try {
@@ -40,7 +38,6 @@ const VerifyEmailModal: React.FC<VerifyEmailModalProps> = ({
       );
 
       // Handle the response here if needed
-      console.log("Verification data sent successfully:", response.data);
       if (response.status === 200) {
         setOpen(false);
       }

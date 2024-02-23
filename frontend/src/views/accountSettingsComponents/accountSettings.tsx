@@ -134,9 +134,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
     try {
       if (auth === null || auth.currentUser === null)
         throw new AuthenticationError("Käyttäjä ei ole kirjautunut sisään");
-      console.log(auth.currentUser);
       const response = await SubmitHandler(updatedFormFields, auth);
-      console.log(response);
       if (response.status) {
         setSuccessMessage(response.msg);
         signOutMethod();

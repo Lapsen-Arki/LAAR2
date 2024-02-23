@@ -43,11 +43,9 @@ export default async function emailVerification(req: Request, res: Response) {
       }
     } else {
       // User not found in Firestore
-      console.log(`User not found in Firestore with email: ${email}`);
       return res.status(404).json({ message: `User not found with ${email}` });
     }
   } catch (error) {
-    console.error("Error verifying email:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 }
