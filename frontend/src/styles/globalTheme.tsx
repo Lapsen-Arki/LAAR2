@@ -1,15 +1,18 @@
 import { createTheme } from "@mui/material";
 
+const highlightColor = "#57bfb1";
+const hoverHighlight = "#51b0a3";
+
 export const globalTheme = createTheme({
   components: {
     MuiButton: {
       styleOverrides: {
         //Primary
         contained: {
-          backgroundColor: "#63c8cc",
+          backgroundColor: highlightColor,
           color: "white",
           "&:hover": {
-            backgroundColor: "#5bbec2",
+            backgroundColor: hoverHighlight,
             color: "white",
           },
         },
@@ -40,7 +43,7 @@ export const globalTheme = createTheme({
         root: {
           color: "black",
           "&.Mui-checked": {
-            color: "#63c8cc",
+            color: highlightColor,
           },
         },
       },
@@ -68,7 +71,7 @@ export const globalTheme = createTheme({
       styleOverrides: {
         root: {
           "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#63c8cc", // Color on focus
+            borderColor: highlightColor, // Color on focus
             borderWidth: "2px",
           },
         },
