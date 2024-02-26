@@ -1,6 +1,8 @@
 import { createTheme } from "@mui/material/styles";
+import { globalTheme } from "./globalTheme";
+import deepmerge from "deepmerge";
 
-const formTheme = createTheme({
+const formThemeStyles = createTheme({
   components: {
     //Alertin tyylimääreet
     MuiAlert: {
@@ -11,52 +13,8 @@ const formTheme = createTheme({
         },
       },
     },
-    //Buttonin tyylimääreet
-    MuiButton: {
-      styleOverrides: {
-        //Primary
-        contained: {
-          backgroundColor: "#63c8cc",
-          color: "white",
-          "&:hover": {
-            backgroundColor: "#63c8cc",
-            color: "white",
-          },
-        },
-        //Secondary
-        outlined: {
-          color: "#A68477",
-          fontWeight: "bold",
-          borderColor: "#A68477",
-
-          "&:hover": {
-            backgroundColor: "#fff",
-            borderColor: "transparent",
-          },
-        },
-        //Tertiary
-        text: {
-          color: "#A68477",
-          fontWeight: "bold",
-
-          "&:hover": {
-            backgroundColor: "transparent",
-            textDecoration: "underline",
-          },
-        },
-      },
-    },
     //Checkboxin tyylimääreet
-    MuiCheckbox: {
-      styleOverrides: {
-        root: {
-          color: "black",
-          "&.Mui-checked": {
-            color: "#63c8cc",
-          },
-        },
-      },
-    },
+
     //Container-elementin tyylimääreet
     MuiContainer: {
       styleOverrides: {
@@ -110,4 +68,4 @@ const formTheme = createTheme({
   },
 });
 
-export { formTheme };
+export const formTheme = createTheme(deepmerge(formThemeStyles, globalTheme));

@@ -1,4 +1,4 @@
-import { headingTheme } from "../Layout/themeMUI";
+import { headingTheme } from "../../styles/themeMUI";
 import { Link } from "react-router-dom";
 import { AppBar, Box, Toolbar, IconButton, Typography } from "@mui/material";
 

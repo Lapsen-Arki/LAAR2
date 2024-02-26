@@ -20,6 +20,8 @@ import Layout from "./components/Layout/Layout";
 import { Elements } from "@stripe/react-stripe-js";
 import { TokenProvider } from "./contexts/tokenContext";
 import { UserProvider } from "./contexts/userContext";
+import { ThemeProvider } from "@emotion/react";
+import { globalTheme } from "./styles/globalTheme";
 
 // Configs etc
 import "./conf/firebaseSdkConfig";
@@ -39,28 +41,30 @@ function App() {
     <Router>
       <TokenProvider>
         <UserProvider>
-          <Elements stripe={stripePromise}>
-            <Layout>
-              <Routes>
-                <Route path="/" element={<IndexPage />} />
-                <Route path="/choices" element={<ChoicesPage />} />
-                <Route path="/results" element={<Results />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/profile-edit/:id?" element={<EditProfile />} />
-                <Route path="/profile-share" element={<CaresProfile />} />
-                <Route path="/admin" element={<AdminPage />} />
-                <Route
-                  path="/subscription"
-                  element={<SubscriptionManagement />}
-                />
-                <Route path="/account" element={<AccountSettingsPage />} />
-                <Route path="/terms" element={<TermsAndPrivacy />} />
-                <Route path="/about-us" element={<AboutUs />} />
-              </Routes>
-            </Layout>
-          </Elements>
+          <ThemeProvider theme={globalTheme}>
+            <Elements stripe={stripePromise}>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<IndexPage />} />
+                  <Route path="/choices" element={<ChoicesPage />} />
+                  <Route path="/results" element={<Results />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/profile-edit/:id?" element={<EditProfile />} />
+                  <Route path="/profile-share" element={<CaresProfile />} />
+                  <Route path="/admin" element={<AdminPage />} />
+                  <Route
+                    path="/subscription"
+                    element={<SubscriptionManagement />}
+                  />
+                  <Route path="/account" element={<AccountSettingsPage />} />
+                  <Route path="/terms" element={<TermsAndPrivacy />} />
+                  <Route path="/about-us" element={<AboutUs />} />
+                </Routes>
+              </Layout>
+            </Elements>
+          </ThemeProvider>
         </UserProvider>
       </TokenProvider>
     </Router>
