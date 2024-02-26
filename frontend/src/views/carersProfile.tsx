@@ -161,7 +161,7 @@ export default function CarersProfile() {
                 style={{ margin: 3, display: "flex", alignItems: "center" }}
               >
                 <EditNoteIcon style={{ marginRight: 10, color: "#1976d2" }} />{" "}
-                Muokata lasteni allergioita <i>(ominaisuus tulossa)</i>
+                Muokata lasteni allergioita
               </Typography>
               <Typography
                 variant="body1"
