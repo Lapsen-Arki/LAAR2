@@ -4,18 +4,17 @@
 }
 
 .profile-container {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin: 0 auto;
-    padding: 20px;
-    border-radius: 10px;
-  }
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
+}
 
 /* Otsikkorivin painikkeet */
 .custom-button {
   margin: 0 auto;
   display: block;
-  margin-bottom: 10px; 
-  background-color: #63c8cc !important;
+  margin-bottom: 10px;
 }
 
 .buttons-header {
@@ -25,7 +24,6 @@
 .custom-button.Carer {
   margin-left: 180px;
 }
-
 
 /* Korttien yleiset tyylit */
 .cards-wrap {
@@ -41,7 +39,6 @@
   display: flex;
   align-items: center;
   margin-right: 5px;
-  
 }
 
 .card-avatar {
@@ -62,13 +59,13 @@
 }
 
 /* Lasten profiilit */
-  
-  .children {
-    display: flex;
-    flex-direction: column;
-  }
 
-  /* Hoitajien profiilit */
+.children {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hoitajien profiilit */
 /*
   .Carer {
     margin-left: 15px;
@@ -76,8 +73,7 @@
 /*
 
   /* Responsiivisuus mobiilille */
-  @media (max-width: 760px) {
-
+@media (max-width: 760px) {
   /* Otsikkorivin painikkeet */
   .buttons-header {
     text-align: center;
@@ -100,17 +96,14 @@
     height: auto;
     flex-direction: column;
   }
-  
-  
-  /* Hoitajien profiilit */
 
+  /* Hoitajien profiilit */
 }
 
-  /* Responsiivisuus mobiilille */
-  @media (max-width: 280px) {
-
-    /* Otsikkorivin painikkeet */  
-    .custom-button.Carer {
-      margin: 5px 0px 0px 0px;
-    }
+/* Responsiivisuus mobiilille */
+@media (max-width: 280px) {
+  /* Otsikkorivin painikkeet */
+  .custom-button.Carer {
+    margin: 5px 0px 0px 0px;
   }
+}

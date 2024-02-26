@@ -1,4 +1,4 @@
-import { headingTheme } from "../Layout/themeMUI";
+import { headingTheme } from "../../styles/themeMUI";
 import { Link } from "react-router-dom";
 import { AppBar, Box, Toolbar, IconButton, Typography } from "@mui/material";
 
@@ -32,9 +32,8 @@ export default function Header() {
         <ThemeProvider theme={headingTheme}>
           <AppBar position="fixed">
             <Toolbar>
-              {/* LAAR text logo: */}
-
               <div style={{ flexGrow: 1, marginTop: 5, marginBottom: 5 }}>
+                {/* Logo: */}
                 <Link to="/" onClick={() => setOpenBurger(false)}>
                   <img
                     src="https://firebasestorage.googleapis.com/v0/b/laar-production.appspot.com/o/photos%2Flogos%2FVAUVA%20TURKOOSI%20VALKOINEN%20REUNA.png?alt=media&token=3c6c2e81-d4ac-42d4-b037-b31047cad413"
@@ -96,17 +95,12 @@ export default function Header() {
                 >
                   <HeaderLink
                     setOpen={setOpenBurger}
-                    navLinkTo="#"
-                    navLinkName="Päiväkirja"
-                  />
-                  <HeaderLink
-                    setOpen={setOpenBurger}
-                    navLinkTo="#"
+                    navLinkTo="https://www.kauppa.lapsen-arki.fi/blogi-artikkelit/"
                     navLinkName="Blogi"
                   />
                   <HeaderLink
                     setOpen={setOpenBurger}
-                    navLinkTo="#"
+                    navLinkTo="https://www.kauppa.lapsen-arki.fi/kauppa/"
                     navLinkName="Kauppa"
                   />
                   <HeaderIcons setOpen={setOpenBurger} />

@@ -26,7 +26,7 @@ import {
 } from "../api/carersProfile/inviteAccountToProfile";
 
 import { ThemeProvider } from "@mui/material/styles";
-import { formTheme } from "../components/Layout/formThemeMUI";
+import { formTheme } from "../styles/formThemeMUI.tsx";
 import ReturnBtn from "../components/returnBtn.tsx";
 
 export default function CarersProfile() {
