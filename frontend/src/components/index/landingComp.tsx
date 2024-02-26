@@ -35,14 +35,12 @@ export default function LandingComp() {
             </Button>
           </Link>
           <Link to="https://www.kauppa.lapsen-arki.fi/">
-            <Button sx={{ color: "#63c8cc" }}>Tai lue lisää</Button>
+            <Button>Tai lue lisää</Button>
           </Link>
 
           <br />
           <Typography sx={{ marginTop: 3 }}>
-            <strong>
-              Alta voit tutustua myös sovelluksen esittelyversioon:
-            </strong>
+            <strong>Alta voit tutustua sovelluksen esittelyversioon:</strong>
           </Typography>
         </Grid>
       </Grid>

@@ -28,43 +28,6 @@ const formThemeStyles = createTheme({
         },
       },
     },
-    //select-elementin focus-tilan reunan väri + ym.
-    MuiInputBase: {
-      styleOverrides: {
-        root: {
-          border: "solid",
-          borderWidth: 1,
-          backgroundColor: "white",
-          color: "black",
-          textDecoration: "none",
-          "&:hover fieldset": {
-            borderColor: "black !important",
-          },
-        },
-      },
-    },
-    //select-elementin focus-tilan reunan väri
-    MuiInputLabel: {
-      styleOverrides: {
-        root: {
-          "&.Mui-focused": {
-            color: "black !important",
-          },
-        },
-      },
-    },
-    //select-elementin focus-tilan reunan väri
-    MuiOutlinedInput: {
-      styleOverrides: {
-        notchedOutline: {
-          borderWidth: "1px !important",
-          borderColor: "white !important",
-          "&:hover fieldset": {
-            borderColor: "black !important",
-          },
-        },
-      },
-    },
   },
 });
 

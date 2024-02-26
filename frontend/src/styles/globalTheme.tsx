@@ -9,7 +9,7 @@ export const globalTheme = createTheme({
           backgroundColor: "#63c8cc",
           color: "white",
           "&:hover": {
-            backgroundColor: "#63c8cc",
+            backgroundColor: "#5bbec2",
             color: "white",
           },
         },
@@ -26,11 +26,10 @@ export const globalTheme = createTheme({
         },
         //Tertiary
         text: {
-          color: "#A68477",
+          color: "black",
           fontWeight: "bold",
 
           "&:hover": {
-            backgroundColor: "transparent",
             textDecoration: "underline",
           },
         },
@@ -43,6 +42,38 @@ export const globalTheme = createTheme({
           "&.Mui-checked": {
             color: "#63c8cc",
           },
+        },
+      },
+    },
+    //select-elementin focus-tilan reunan väri + ym.
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "white",
+        },
+      },
+    },
+    //select-elementin focus-tilan reunan väri
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          "&.Mui-focused": {
+            color: "black",
+          },
+        },
+      },
+    },
+    //select-elementin focus-tilan reunan väri
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#63c8cc", // Color on focus
+            borderWidth: "2px",
+          },
+        },
+        notchedOutline: {
+          borderColor: "gray", // Default border color
         },
       },
     },
