@@ -5,6 +5,7 @@ import {
   setPersistence,
   browserLocalPersistence,
   browserSessionPersistence,
+  sendEmailVerification,
 } from "firebase/auth";
 import { jwtAuth } from "../api/jwtAuth";
 
@@ -27,6 +28,12 @@ export const userLogin = async (
       email,
       password
     );
+    const user = userCredential.user;
+    if (!user.emailVerified) {
+      await sendEmailVerification(user);
+      await signOut(auth);
+      return "emailNotVerified";
+    }
 
     const newIdToken = await userCredential.user.getIdToken();
 
@@ -34,10 +41,6 @@ export const userLogin = async (
     let authResponse;
     if (newIdToken) {
       authResponse = await jwtAuth(newIdToken);
-      if (authResponse === "emailNotVerified") {
-        await signOut(auth);
-        return "emailNotVerified";
-      }
       if (authResponse === "success") {
         if (rememberMe) {
           localStorage.setItem("idToken", newIdToken);

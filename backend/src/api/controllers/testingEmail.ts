@@ -13,11 +13,9 @@ export const emailTest = (req: Request, res: Response) => {
 
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
-        console.log(error);
         res.status(500).send(`Error: ${error}`);
       } else {
         res.status(201).send(`Success`);
-        console.log("Message sent");
       }
     });
   } catch (error: any) {

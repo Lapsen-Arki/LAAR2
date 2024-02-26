@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Page component imports:
 import IndexPage from "./views";
-import TestingPage from "./views/oldPages/testingPage";
 import Register from "./views/Auth/Register";
 import Login from "./views/Auth/Login";
 import Profile from "./views/Profile";
@@ -46,7 +45,6 @@ function App() {
                 <Route path="/" element={<IndexPage />} />
                 <Route path="/choices" element={<ChoicesPage />} />
                 <Route path="/results" element={<Results />} />
-                <Route path="/testing" element={<TestingPage />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/profile" element={<Profile />} />
