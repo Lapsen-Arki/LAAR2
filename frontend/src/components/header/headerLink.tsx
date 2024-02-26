@@ -16,7 +16,7 @@ const HeaderLink = ({
       sx={{
         margin: 1.5,
         mt: 3,
-        mr: 5,
+        mr: 2,
         "&:hover": {
           transform: "scale(1.05)",
           transition: "transform 0.1s ease-in-out",
@@ -28,13 +28,14 @@ const HeaderLink = ({
         to={navLinkTo}
         onClick={() => setOpen(false)}
         sx={{
+          p: 2,
           flexGrow: 1,
           // Any additional styling
         }}
       >
         {navLinkName}
       </Typography>
-      <hr />
+      <hr style={{ marginTop: 5, maxWidth: "75%" }} />
     </Box>
   );
 };

@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-import { formTheme } from "../../components/Layout/formThemeMUI";
+import { formTheme } from "../../styles/formThemeMUI";
 import { userLogin } from "../../utils/userLogin";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
@@ -70,7 +70,7 @@ const Login: React.FC = (): JSX.Element => {
           "Vahvista sähköpostiositeessi ja kirjaudu sisään uudelleen"
         );
       } else {
-        setErrorMessage(`Kirjautuminen epäonnistui`);
+        setErrorMessage(`Väärä käyttäjätunnus tai salasana.`);
       }
     }
   };

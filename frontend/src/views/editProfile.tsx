@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 
 import { ThemeProvider } from "@mui/material/styles";
-import { formTheme } from "../components/Layout/formThemeMUI";
+import { formTheme } from "../styles/formThemeMUI.tsx";
 
 import PleaseLoginModal from "../components/modals/pleaseLoginModal.tsx";
 import { TokenContext } from "../contexts/tokenContext";
