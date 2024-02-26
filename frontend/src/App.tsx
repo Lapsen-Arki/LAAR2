@@ -11,8 +11,6 @@ import AdminPage from "./views/Auth/admin";
 import SubscriptionManagement from "./views/SubscriptionManagement";
 import AccountSettingsPage from "./views/accountSettings";
 import ChoicesPage from "./views/choices";
-import TermsAndPrivacy from "./views/termsAndPrivacy";
-import AboutUs from "./views/aboutUs";
 import Results from "./views/results";
 
 // Higher Order Components (HOC):
@@ -60,8 +58,6 @@ function App() {
                     element={<SubscriptionManagement />}
                   />
                   <Route path="/account" element={<AccountSettingsPage />} />
-                  <Route path="/terms" element={<TermsAndPrivacy />} />
-                  <Route path="/about-us" element={<AboutUs />} />
                 </Routes>
               </Layout>
             </Elements>
