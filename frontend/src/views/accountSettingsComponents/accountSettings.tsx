@@ -23,6 +23,7 @@ import {
 import SubmitHandler from "./settingsSubmitHandler";
 import { AuthenticationError } from "./errors";
 import { TokenContext } from "../../contexts/tokenContext";
+import "./styles.css";
 
 // AccountSettings component
 // Blame Esa for everything that is wrong with this component
@@ -189,7 +190,12 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
               alignItems: "center",
             }}
           >
-            <Button type="submit" variant="contained" color="primary">
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              style={{ width: "90%" }}
+            >
               Tallenna muutokset
             </Button>
           </div>
@@ -236,6 +242,7 @@ function PasswordFields({
         Syötä salasana vahvistaaksesi muutokset
       </Typography>
       <TextField
+        style={{ width: "90%" }}
         label="Vanha salasana"
         type="password"
         margin="normal"
@@ -270,6 +277,7 @@ function PasswordPopOut({ fields, onChange, drawerOpen }: PasswordPopOutProps) {
           margin="dense"
           value={fields.newPassword}
           onChange={(e) => onChange("newPassword", e.target.value)}
+          style={{ width: "90%" }}
           // ... appropriate styles
         />
         <TextField
@@ -277,6 +285,7 @@ function PasswordPopOut({ fields, onChange, drawerOpen }: PasswordPopOutProps) {
           type="password"
           margin="dense"
           value={fields.confirmPassword}
+          style={{ width: "90%" }}
           onChange={(e) => onChange("confirmPassword", e.target.value)}
           // ... appropriate styles
         />{" "}
@@ -335,14 +344,16 @@ function RenderInput({ fields, fieldName, onChange, sub }: RenderInputProps) {
       autoComplete={sub[fieldName].autocomplete}
       autoFocus
       onChange={(e) => onChange(fieldName, e.target.value)}
-      style={{ width: "90%" }}
     />
   );
 }
 
 function RenderLabel({ fields, fieldName }: RenderLabelProps) {
   return (
-    <Typography variant="body1" style={{ marginRight: "10px", width: "90%" }}>
+    <Typography
+      variant="body1"
+      style={{ marginLeft: "8px", marginRight: "10px", width: "90%" }}
+    >
       {fields[fieldName]}
     </Typography>
   );
