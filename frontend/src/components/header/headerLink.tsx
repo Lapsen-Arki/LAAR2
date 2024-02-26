@@ -16,7 +16,7 @@ const HeaderLink = ({
       sx={{
         margin: 1.5,
         mt: 3,
-        mr: 4,
+        mr: 2,
         "&:hover": {
           transform: "scale(1.05)",
           transition: "transform 0.1s ease-in-out",
