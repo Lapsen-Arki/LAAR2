@@ -32,11 +32,9 @@ export default function useGetRecommData(
 
         // Using sessionStorage if it's longer than empty array:
         if (recommData && recommData.length > 0) {
-          console.log("Using sessionStorage for recommData");
           setData(recommData);
         } else {
           // Fetching the data:
-          console.log("Fetching recommData");
           try {
             const response = await axios.get(
               `${API_BASE_URL}/getRecommData/${fetchType}`

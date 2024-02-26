@@ -32,16 +32,12 @@ export default function Results() {
         setResultData(recommItems);
       }
     } else {
-      console.log("Not logged in result data");
-
       if (isMealPage) {
         const recommItems = mealRecomm.filter((recomm) =>
           Object.keys(recomm.recomm).some((key) => selectionList.includes(key))
         );
         setResultData(recommItems);
       } else {
-        console.log("activity recomm:");
-
         const recommItems = activityRecomm.filter((recomm) =>
           Object.keys(recomm.recomm).some((key) => selectionList.includes(key))
         );

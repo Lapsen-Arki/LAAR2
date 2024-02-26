@@ -58,8 +58,6 @@ function TokenProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (isLoggedIn) {
       const checkSession = async () => {
-        console.log("Running Session check");
-
         if (idToken) {
           const result = await jwtAuth(idToken);
           if (result === "error" || result === "emailNotVerified") {
@@ -74,7 +72,6 @@ function TokenProvider({ children }: { children: ReactNode }) {
 
       // Initial session check:
       if (!initialCheckExecuted.current) {
-        console.log("Starting initial Session check");
         checkSession();
         initialCheckExecuted.current = true;
       }

@@ -1,9 +1,13 @@
 import axios from "axios";
 import { CarerProfile } from "../../types/typesFrontend";
 
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL =
+  import.meta.env.API_BASE_URL || "http://localhost:3000/api";
 
-const getCarerProfile = async (idToken: string | null, shouldFetchNewData: boolean): Promise<CarerProfile[]> => {
+const getCarerProfile = async (
+  idToken: string | null,
+  shouldFetchNewData: boolean
+): Promise<CarerProfile[]> => {
   try {
     // Tarkista ensin session storage
     if (!shouldFetchNewData) {
@@ -18,7 +22,10 @@ const getCarerProfile = async (idToken: string | null, shouldFetchNewData: boole
         Authorization: `Bearer ${idToken}`,
       },
     };
-    const response = await axios.get<CarerProfile[]>(`${API_BASE_URL}/carers`, config);
+    const response = await axios.get<CarerProfile[]>(
+      `${API_BASE_URL}/carers`,
+      config
+    );
 
     // Tallenna hoitajaprofiilit Session Storageen, jos ne ovat muuttuneet
     updateSessionStorage(response.data);

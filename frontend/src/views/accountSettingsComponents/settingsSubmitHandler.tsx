@@ -31,7 +31,6 @@ export default async function SubmitHandler(
       return { status: true, msg: "Ei muutettuja asetuksia." };
     } else {
       const result = await updateSettings(password, data, auth);
-      console.log(result);
       if (result === undefined) throw new Error("Tapahtui virhe");
       if (result.status === false) {
         throw new PasswordError("hello");
@@ -78,7 +77,6 @@ async function updateSettings(
         data.newPassword,
         data.confirmPassword
       );
-      console.log(validate);
       if (validate.status) {
         const result = await updatePassword(user, data.newPassword)
           .then(() => {
@@ -191,9 +189,7 @@ function setUpdatedValues(
     msg: inputValues.msg ?? updateStatus[key].msg,
   };
   if (updateStatus[key]) {
-    console.log(values);
     updateStatus[key] = values;
-    console.log(updateStatus[key]);
     return updateStatus[key]; // Return the updated object for convenience
   } else {
     console.error(`Invalid key: ${key}`);
