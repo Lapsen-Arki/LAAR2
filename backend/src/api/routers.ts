@@ -57,9 +57,9 @@ router.post("/edit-account", editAccount);
 // router.get("/deleteAccount/:accountId", deleteAccount);
 
 // Stripe routes
-router.post("/start-subscription", startSubscription);
-router.post("/cancel-subscription", cancelSubscription);
-router.post("/get-subscription", getSubscriptionById);
+router.post("/start-subscription", checkAuth, startSubscription);
+router.post("/cancel-subscription", checkAuth, cancelSubscription);
+router.post("/get-subscription", checkAuth, getSubscriptionById);
 
 // FOR TESTING
 // -------------------------------------
