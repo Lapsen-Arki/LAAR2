@@ -39,7 +39,6 @@ export default function CarersProfile() {
   const [showTermsError, setShowTermsError] = useState(false);
   const [inviteResult, setInviteResult] = useState<null | string>(null);
   const [emailForAlert, setEmailForAlert] = useState("");
-  const [isAlertClosed, setIsAlertClosed] = useState(false);
 
   if (!idToken) {
     return (
@@ -171,7 +170,7 @@ export default function CarersProfile() {
                 <PersonAddAlt1Icon
                   style={{ marginRight: 10, color: "#39C4A3" }}
                 />{" "}
-                Nähdä minun lasten profiilit
+                Nähdä lasteni profiilit
               </Typography>
             </Grid>
             <Grid item sx={{ display: { xs: "block" } }}></Grid>
@@ -211,29 +210,22 @@ export default function CarersProfile() {
             </Alert>
           )}
 
-          {!isAlertClosed && inviteResult && inviteResult.includes("200") && (
-            <Alert severity="success" onClose={() => setIsAlertClosed(true)}>
+          {inviteResult && inviteResult.includes("200") && (
+            <Alert severity="success">
               <AlertTitle>{`${emailForAlert} kutsuttu hoitajaksi onnistuneesti!`}</AlertTitle>
               Voit halutessasi kutsua toisen henkilön.
             </Alert>
           )}
 
-          {!isAlertClosed && inviteResult && inviteResult.includes("500") && (
-            <Alert severity="error" onClose={() => setIsAlertClosed(true)}>
-              <AlertTitle>No höh, jokin meni pieleen.</AlertTitle>
-              Kutsu hoitajaksi epäonnistui.
-            </Alert>
-          )}
-
-          {!isAlertClosed && inviteResult && inviteResult.includes("409") && (
-            <Alert severity="info" onClose={() => setIsAlertClosed(true)}>
+          {inviteResult && inviteResult.includes("409") && (
+            <Alert severity="info" sx={{display: '-webkit-inline-box'}}>
               <AlertTitle>Hups!</AlertTitle>
               Käyttäjä on jo kutsuttu.
             </Alert>
           )}
 
-          {!isAlertClosed && inviteResult && inviteResult.includes("404") && (
-            <Alert severity="warning" onClose={() => setIsAlertClosed(true)}>
+          {inviteResult && inviteResult.includes("404") && (
+            <Alert severity="warning">
               <AlertTitle>No höh, jokin meni pieleen.</AlertTitle>
               Kutsuttava käyttäjä ei ole olemassa, tarkista sähköpostiosoite.
             </Alert>
