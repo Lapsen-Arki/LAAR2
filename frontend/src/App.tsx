@@ -22,6 +22,7 @@ import { TokenProvider } from "./contexts/tokenContext";
 import { UserProvider } from "./contexts/userContext";
 import { ThemeProvider } from "@emotion/react";
 import { globalTheme } from "./styles/globalTheme";
+import "./styles/globals.css";
 
 // Configs etc
 import "./conf/firebaseSdkConfig";
