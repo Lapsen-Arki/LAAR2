@@ -70,7 +70,7 @@ const Login: React.FC = (): JSX.Element => {
           "Vahvista sähköpostiositeessi ja kirjaudu sisään uudelleen"
         );
       } else {
-        setErrorMessage(`Kirjautuminen epäonnistui`);
+        setErrorMessage(`Väärä käyttäjätunnus tai salasana.`);
       }
     }
   };
