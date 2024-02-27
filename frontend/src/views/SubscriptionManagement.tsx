@@ -1,6 +1,6 @@
 import { TokenContext } from "../contexts/tokenContext";
 import { stripeSubscription } from "../api/stripeSubscriptions";
-import { SubscriptionData } from "../types/subscriptionTypes";
+import { SubscriptionData } from "../types/typesFrontend";
 import React, { useState, useContext, useEffect } from "react";
 import PleaseLoginModal from "../components/modals/pleaseLoginModal";
 import { ConfirmationDialog } from "../components/subscriptionComponents/confirmationDialog";

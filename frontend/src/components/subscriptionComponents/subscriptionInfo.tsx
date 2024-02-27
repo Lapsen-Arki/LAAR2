@@ -1,4 +1,4 @@
-import { SubscriptionData } from "../../types/subscriptionTypes";
+import { SubscriptionData } from "../../types/typesFrontend";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import {
   Alert,
