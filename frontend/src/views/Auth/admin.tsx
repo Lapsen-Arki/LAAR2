@@ -130,18 +130,19 @@ const AdminPage = () => {
             <MenuItem value="tip">vinkki</MenuItem>
           </Select>
         </FormControl>
+        {category !== "activity" && (
+          <Typography>
+            Tyyppi määrittää missä tai missä time blockissa sisältö näytetään.
+            Tämä ei näy käyttäjälle:
+          </Typography>
+        )}
 
-        <Typography>
-          Tyyppi määrittää missä tai missä time blockissa sisältö näytetään.
-          Tämä ei näy käyttäjälle:
-        </Typography>
         {/*type / identifier: */}
         {category !== "activity" && (
-          <FormControl fullWidth margin="normal">
+          <FormControl fullWidth margin="dense">
             <InputLabel id="type-select">Tyyppi</InputLabel>
             <Select
               sx={{
-                marginTop: 0,
                 background: "white",
               }}
               name="type"
@@ -170,7 +171,7 @@ const AdminPage = () => {
           name="title"
           fullWidth
           label="otsikko"
-          margin="normal"
+          margin="dense"
           onChange={handleChange}
           required
         />
@@ -186,7 +187,7 @@ const AdminPage = () => {
           name="name"
           fullWidth
           label="Nimi"
-          margin="normal"
+          margin="dense"
           onChange={handleChange}
           required
         />
@@ -199,7 +200,7 @@ const AdminPage = () => {
           name="ageLimit"
           fullWidth
           label="Ikäraja/kk"
-          margin="normal"
+          margin="dense"
           type="number"
           onChange={handleChange}
           required
@@ -218,8 +219,8 @@ const AdminPage = () => {
         />
 
         <div>
-          <h3>Kuva</h3>
-          <p>Valitse kuvan URL linkki:</p>
+          <Typography variant="h5">Kuva</Typography>
+          <Typography>Valitse kuvan URL linkki:</Typography>
           <TextField
             sx={{
               marginTop: 0,
@@ -231,11 +232,11 @@ const AdminPage = () => {
             margin="normal"
             onChange={handleChange}
           />
-          <p>
+          <Typography>
             Tallenna kuvat ensin tietokantaan manuaalisesti ja käytä oikeaa
             kuvan linkkiä tässä tai käytä vaihtoehtoisesti toisen
             palveluntarjoajan kuvaa.
-          </p>
+          </Typography>
 
           <Button
             variant="contained"

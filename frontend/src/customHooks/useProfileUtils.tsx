@@ -50,7 +50,6 @@ export function useProfileUtils() {
     };
 
     const fetchProfilesFromServer = async () => {
-      //console.log('Haetaan profiileja palvelimelta...');
       const response = await getChildProfiles(idToken);
       if (!("error" in response)) {
         sessionStorage.setItem("childProfiles", JSON.stringify(response));
@@ -63,7 +62,6 @@ export function useProfileUtils() {
     const fetchProfiles = async () => {
       const storedProfiles = fetchProfilesFromSessionStorage();
       if (storedProfiles) {
-        //console.log('Käytetään Session Storagessa olevia profiileja');
         setChildProfiles(storedProfiles);
       } else {
         await fetchProfilesFromServer();
@@ -155,7 +153,7 @@ export function useProfileUtils() {
       setConfirmationDialogOpen(false);
       // Tarkistetaan, oliko poisto onnistunut, ennen kuin näytetään onnistumisviesti
       if (deletionSuccess) {
-        //console.log(selectedProfileId ? 'childProfiles Profiili poistettu onnistuneesti.' : 'carerProfiles Profiili poistettu onnistuneesti.');
+        console.log("?");
       }
     }
   };

@@ -6,7 +6,8 @@ import { activityRecomm } from "../utils/previewData/activityRecomm";
 import { mealRecomm } from "../utils/previewData/mealRecomm";
 import { tipsRecomm } from "../utils/previewData/tipsRecomm";
 
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
 
 // All possible fetchTypes are: 1. meal, 2. activity and 3. tips
 
@@ -32,11 +33,9 @@ export default function useGetRecommData(
 
         // Using sessionStorage if it's longer than empty array:
         if (recommData && recommData.length > 0) {
-          console.log("Using sessionStorage for recommData");
           setData(recommData);
         } else {
           // Fetching the data:
-          console.log("Fetching recommData");
           try {
             const response = await axios.get(
               `${API_BASE_URL}/getRecommData/${fetchType}`

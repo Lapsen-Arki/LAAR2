@@ -25,5 +25,3 @@ const jsonData = values.map((value) => {
 
 // Convert the list of objects into a JSON string
 const jsonStr = JSON.stringify(jsonData, null, 2);
-
-console.log(jsonStr);

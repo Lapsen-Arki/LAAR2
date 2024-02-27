@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import AuthContext from "../../contexts/authContext";
 import { ThemeProvider } from "@mui/material/styles";
-import { formTheme } from "../../components/Layout/formThemeMUI";
+import { formTheme } from "../../styles/formThemeMUI";
 import {
   Container,
   Divider,
@@ -134,9 +134,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
     try {
       if (auth === null || auth.currentUser === null)
         throw new AuthenticationError("Käyttäjä ei ole kirjautunut sisään");
-      console.log(auth.currentUser);
       const response = await SubmitHandler(updatedFormFields, auth);
-      console.log(response);
       if (response.status) {
         setSuccessMessage(response.msg);
         signOutMethod();

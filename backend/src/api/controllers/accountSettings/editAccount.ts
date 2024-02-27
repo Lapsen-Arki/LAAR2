@@ -13,7 +13,7 @@ export const editAccount = async (req: Request, res: Response) => {
     const idToken = req.headers.authorization?.split("Bearer ")[1];
     if (!idToken) throw new APIError("Token missing", "token-missing");
     const auth = admin.auth().verifyIdToken(idToken);
-    console.log(auth);
+
     throw new APIError(idToken, "not-implemented");
     return res.status(200).json({ message: "Ok!" });
   } catch (error) {

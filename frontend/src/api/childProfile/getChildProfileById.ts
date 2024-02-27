@@ -26,7 +26,6 @@ export const getChildProfileById = async (
   idToken: string | null
 ) => {
   try {
-    console.log(`Haetaan profiilia ID:llä ${id}...`);
     const config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
@@ -36,7 +35,6 @@ export const getChildProfileById = async (
       `${API_BASE_URL}/profile/${id}`,
       config
     );
-    console.log("Profiili haettu onnistuneesti:", response.data);
 
     // Tallenna tai päivitä profiili Session Storageen
     updateSessionStorageWithProfile(response.data);

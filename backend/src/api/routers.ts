@@ -13,7 +13,6 @@ import {
   cancelSubscription,
   getSubscriptionById,
 } from "./controllers/stripe";
-import emailVerification from "./controllers/emailVerification";
 
 // Profile controllers:
 import createChildProfile from "./controllers/childProfile/createChildProfile";
@@ -29,8 +28,6 @@ import { getCarerChildProfiles } from "./controllers/carersProfile/getCarerChild
 import { editAccount } from "./controllers/accountSettings/editAccount";
 import { getAccount } from "./controllers/accountSettings/getAccount";
 // test controllers:
-import { emailTest } from "./controllers/testingEmail";
-import testController from "../utils/testController";
 
 const router = express.Router();
 
@@ -58,13 +55,6 @@ router.get("/get-account", getAccount);
 router.post("/edit-account", editAccount);
 
 // router.get("/deleteAccount/:accountId", deleteAccount);
-
-// Email related routes:
-router.post("/email-test", emailTest);
-router.post("/emailVerification", emailVerification);
-
-// General test route:
-router.get("/test", testController);
 
 // Stripe routes
 router.post("/start-subscription", checkAuth, startSubscription);

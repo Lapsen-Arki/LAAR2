@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Page component imports:
 import IndexPage from "./views";
-import TestingPage from "./views/oldPages/testingPage";
 import Register from "./views/Auth/Register";
 import Login from "./views/Auth/Login";
 import Profile from "./views/Profile";
@@ -12,8 +11,6 @@ import AdminPage from "./views/Auth/admin";
 import SubscriptionManagement from "./views/SubscriptionManagement";
 import AccountSettingsPage from "./views/accountSettings";
 import ChoicesPage from "./views/choices";
-import TermsAndPrivacy from "./views/termsAndPrivacy";
-import AboutUs from "./views/aboutUs";
 import Results from "./views/results";
 
 // Higher Order Components (HOC):
@@ -21,6 +18,9 @@ import Layout from "./components/Layout/Layout";
 import { Elements } from "@stripe/react-stripe-js";
 import { TokenProvider } from "./contexts/tokenContext";
 import { UserProvider } from "./contexts/userContext";
+import { ThemeProvider } from "@emotion/react";
+import { globalTheme } from "./styles/globalTheme";
+import "./styles/globals.css";
 
 // Configs etc
 import "./conf/firebaseSdkConfig";
@@ -40,29 +40,28 @@ function App() {
     <Router>
       <TokenProvider>
         <UserProvider>
-          <Elements stripe={stripePromise}>
-            <Layout>
-              <Routes>
-                <Route path="/" element={<IndexPage />} />
-                <Route path="/choices" element={<ChoicesPage />} />
-                <Route path="/results" element={<Results />} />
-                <Route path="/testing" element={<TestingPage />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/profile-edit/:id?" element={<EditProfile />} />
-                <Route path="/profile-share" element={<CaresProfile />} />
-                <Route path="/admin" element={<AdminPage />} />
-                <Route
-                  path="/subscription"
-                  element={<SubscriptionManagement />}
-                />
-                <Route path="/account" element={<AccountSettingsPage />} />
-                <Route path="/terms" element={<TermsAndPrivacy />} />
-                <Route path="/about-us" element={<AboutUs />} />
-              </Routes>
-            </Layout>
-          </Elements>
+          <ThemeProvider theme={globalTheme}>
+            <Elements stripe={stripePromise}>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<IndexPage />} />
+                  <Route path="/choices" element={<ChoicesPage />} />
+                  <Route path="/results" element={<Results />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/profile-edit/:id?" element={<EditProfile />} />
+                  <Route path="/profile-share" element={<CaresProfile />} />
+                  <Route path="/admin" element={<AdminPage />} />
+                  <Route
+                    path="/subscription"
+                    element={<SubscriptionManagement />}
+                  />
+                  <Route path="/account" element={<AccountSettingsPage />} />
+                </Routes>
+              </Layout>
+            </Elements>
+          </ThemeProvider>
         </UserProvider>
       </TokenProvider>
     </Router>

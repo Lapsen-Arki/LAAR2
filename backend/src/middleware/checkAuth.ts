@@ -43,12 +43,6 @@ const checkAuth = async (
       return;
     }
 
-    const emailVerified = userDoc.data().emailVerified;
-    if (!emailVerified) {
-      res.status(401).json({ error: "emailNotVerified" });
-      return;
-    }
-
     // Käyttäjä on kirjautunut sisään, voit siirtyä seuraavaan middlewareen tai käyttäjän reittiin:
     next();
   } catch (error: any) {
