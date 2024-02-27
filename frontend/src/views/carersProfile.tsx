@@ -161,7 +161,7 @@ export default function CarersProfile() {
                 style={{ margin: 3, display: "flex", alignItems: "center" }}
               >
                 <EditNoteIcon style={{ marginRight: 10, color: "#1976d2" }} />{" "}
-                Muokata lasteni allergioita
+                Muokata lasteni allergioita <i>(ominaisuus tulossa)</i>
               </Typography>
               <Typography
                 variant="body1"
@@ -218,7 +218,7 @@ export default function CarersProfile() {
           )}
 
           {inviteResult && inviteResult.includes("409") && (
-            <Alert severity="info" sx={{display: '-webkit-inline-box'}}>
+            <Alert severity="info" sx={{ display: "-webkit-inline-box" }}>
               <AlertTitle>Hups!</AlertTitle>
               Käyttäjä on jo kutsuttu.
             </Alert>

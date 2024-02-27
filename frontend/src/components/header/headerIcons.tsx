@@ -1,4 +1,5 @@
 import LoginIcon from "@mui/icons-material/Login";
+import HomeIcon from '@mui/icons-material/Home';
 import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -42,9 +43,21 @@ export default function HeaderIcons({
         </div>
       )}
 
-      {/* Profile and login icons: */}
+      {/* Home, Profile and login icons: */}
       {isLoggedIn ? (
         <div>
+          <Tooltip title="Etusivu">
+            <IconButton
+              size="large"
+              component={Link}
+              onClick={() => setOpen(false)}
+              to="/"
+              color="inherit"
+            >
+              <HomeIcon />
+            </IconButton>
+          </Tooltip>
+
           <Tooltip title="Profiilisivu">
             <IconButton
               size="large"
@@ -72,13 +85,6 @@ export default function HeaderIcons({
             open={Boolean(settingsAnchor)}
             onClose={() => setSettingsAnchor(null)}
           >
-            <MenuItem
-              component={Link}
-              to="/profile"
-              onClick={handleAnchorClose}
-            >
-              Profiilisivu
-            </MenuItem>
             <MenuItem
               component={Link}
               to="/account"
@@ -116,6 +122,18 @@ export default function HeaderIcons({
               color="inherit"
             >
               <LoginIcon />
+            </IconButton>
+          </Tooltip>
+
+          <Tooltip title="Etusivu">
+            <IconButton
+              onClick={() => setOpen(false)}
+              size="large"
+              component={Link}
+              to="/"
+              color="inherit"
+            >
+              <HomeIcon />
             </IconButton>
           </Tooltip>
         </div>
