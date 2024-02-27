@@ -87,20 +87,6 @@ export default function HeaderIcons({
           >
             <MenuItem
               component={Link}
-              to="/"
-              onClick={handleAnchorClose}
-            >
-              Etusivu
-            </MenuItem>
-            <MenuItem
-              component={Link}
-              to="/profile"
-              onClick={handleAnchorClose}
-            >
-              Profiilisivu
-            </MenuItem>
-            <MenuItem
-              component={Link}
               to="/account"
               onClick={handleAnchorClose}
             >
