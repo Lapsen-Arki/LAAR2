@@ -1,4 +1,4 @@
-import { Card, CardMedia, Container, Grid, Typography } from "@mui/material";
+import { Box, CardMedia, Container, Grid, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import ReturnBtn from "../components/returnBtn";
 import { useContext, useEffect, useState } from "react";
@@ -70,15 +70,28 @@ export default function Results() {
                     <Grid item key={item} sx={{ m: 1 }}>
                       <Typography variant="h6">{item}</Typography>{" "}
                       {link && (
-                        <Card>
+                        <Box
+                          sx={{
+                            width: 350, // Set width
+                            height: 350, // Set height to maintain 1:1 aspect ratio
+                            display: "flex", // Use flex to center the image
+                            justifyContent: "center",
+                            alignItems: "center",
+                            overflow: "hidden", // Ensure the image is cropped to fit the box
+                            backgroundColor: "none", // Example background color
+                          }}
+                        >
                           <CardMedia
                             component="img"
-                            height="350"
-                            width="350"
                             image={link}
                             alt={item}
+                            sx={{
+                              maxWidth: "100%",
+                              maxHeight: "100%",
+                              objectFit: "cover", // Ensure the image covers the area, maintaining aspect ratio
+                            }}
                           />
-                        </Card>
+                        </Box>
                       )}
                       <Typography>{result.textContent[item]}</Typography>
                     </Grid>
