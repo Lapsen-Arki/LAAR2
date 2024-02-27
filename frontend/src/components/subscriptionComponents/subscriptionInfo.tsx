@@ -2,10 +2,6 @@ import { SubscriptionData } from "../../types/subscriptionTypes";
 import {
   Alert,
   Divider,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Paper,
   TableCell,
   Table,
