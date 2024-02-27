@@ -1,5 +1,4 @@
 import { SubscriptionData } from "../../types/subscriptionTypes";
-import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import {
   Alert,
   Divider,
@@ -114,24 +113,11 @@ const NotSubscribed = (): React.ReactNode => {
       <br></br>
       <Divider variant="middle" />
       <div className="subscription-description">
+        <br></br>
         <Typography variant="body2" color="text.secondary">
           Aloittamalla tilauksen saat LAAR:in kaikki ominaisuudet käyttöösi.
         </Typography>
       </div>
-      <List>
-        <ListItem>
-          <ListItemIcon>
-            <AddCircleRoundedIcon />
-          </ListItemIcon>
-          <ListItemText primary="Ominaisuus1" />
-        </ListItem>
-        <ListItem>
-          <ListItemIcon>
-            <AddCircleRoundedIcon />
-          </ListItemIcon>
-          <ListItemText primary="Ominaisuus2" />
-        </ListItem>
-      </List>
     </div>
   );
 };
