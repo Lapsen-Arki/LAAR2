@@ -55,7 +55,16 @@ export default function Results() {
       <ChildInfoComp mealType={isMealPage} />
       <Grid
         container
-        sx={{ mt: 5, mb: 15, textAlign: "center", justifyContent: "center" }}
+        sx={{
+          mt: 5,
+          mb: 15,
+
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          textAlign: "center",
+        }}
       >
         {resultData &&
           resultData?.map((result, index) => {
@@ -67,18 +76,26 @@ export default function Results() {
                     return null;
                   }
                   return (
-                    <Grid item key={item} sx={{ m: 1 }}>
+                    <Grid
+                      item
+                      key={item}
+                      sx={{
+                        m: 1,
+
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flexDirection: "column",
+                      }}
+                    >
                       <Typography variant="h6">{item}</Typography>{" "}
                       {link && (
                         <Box
                           sx={{
-                            width: 350, // Set width
-                            height: 350, // Set height to maintain 1:1 aspect ratio
-                            display: "flex", // Use flex to center the image
-                            justifyContent: "center",
-                            alignItems: "center",
-                            overflow: "hidden", // Ensure the image is cropped to fit the box
-                            backgroundColor: "none", // Example background color
+                            width: 350,
+                            height: 350,
+                            overflow: "hidden",
+                            backgroundColor: "none",
                           }}
                         >
                           <CardMedia
