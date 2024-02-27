@@ -73,7 +73,8 @@ export default function Results() {
                         <Card>
                           <CardMedia
                             component="img"
-                            height="220"
+                            height="350"
+                            width="350"
                             image={link}
                             alt={item}
                           />
