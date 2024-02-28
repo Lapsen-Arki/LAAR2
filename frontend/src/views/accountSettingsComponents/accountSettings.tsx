@@ -214,7 +214,6 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       if (auth === null || auth.currentUser === null)
         throw new AuthenticationError("Käyttäjä ei ole kirjautunut sisään");
       deleteNonEditedFields();
-      console.log(result);
       const response = await SubmitHandler(
         updatedFormFields,
         auth,
