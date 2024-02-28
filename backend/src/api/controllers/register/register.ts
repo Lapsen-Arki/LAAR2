@@ -37,7 +37,12 @@ const registerUser = async (req: Request, res: Response) => {
     // Starting new subscription and 14 day trial:
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
-      items: [{ plan: "price_1ObLeAK45umi2LZd5XwwYvam" }], // THIS IS TEST PLAN -> CHANGE FOR PRODUCTION
+      items: [
+        {
+          plan:
+            process.env.STRIPE_PRICE_PLAN || "price_1ObLeAK45umi2LZd5XwwYvam",
+        },
+      ], // THIS IS TEST PLAN -> CHANGE FOR PRODUCTION
       trial_period_days: 14,
       cancel_at_period_end: true, // this will be updated to false when the user confirms their email address
     });

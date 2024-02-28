@@ -61,7 +61,7 @@ export default function ChildInfoComp({
                 }}
                 variant="h6"
               >
-                Lapsen allergiat: (ominaisuus tulossa){" "}
+                Lapsen allergiat:
               </Typography>
               <Typography
                 sx={{

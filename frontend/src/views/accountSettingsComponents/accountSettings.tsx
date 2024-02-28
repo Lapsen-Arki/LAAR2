@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import AuthContext from "../../contexts/authContext";
 import { ThemeProvider } from "@mui/material/styles";
-import { formTheme } from "../../components/Layout/formThemeMUI";
+import { formTheme } from "../../styles/formThemeMUI";
 import {
   Container,
   Divider,

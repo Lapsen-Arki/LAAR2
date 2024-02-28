@@ -150,7 +150,7 @@ export default function RecommComp({
             Rekisteröidy nyt!
           </Button>
           <Typography>
-            Rekisteröidy nyt avataksesi kaikki ominaisuudet!
+            Avaa kaikki ominaisuudet ja aloita 14 päivän ilmainen kokeilu!
           </Typography>
         </>
       )}

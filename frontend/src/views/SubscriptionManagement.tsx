@@ -1,6 +1,6 @@
 import { TokenContext } from "../contexts/tokenContext";
-import stripeSubscription from "../api/stripeSubscriptions";
-import { SubscriptionData } from "../types/subscriptionTypes";
+import { stripeSubscription } from "../api/stripeSubscriptions";
+import { SubscriptionData } from "../types/typesFrontend";
 import React, { useState, useContext, useEffect } from "react";
 import PleaseLoginModal from "../components/modals/pleaseLoginModal";
 import { ConfirmationDialog } from "../components/subscriptionComponents/confirmationDialog";
@@ -139,11 +139,7 @@ const SubscriptionManagement: React.FC = () => {
       )}{" "}
       {isLoading && <Typography>Ladataan sivua...</Typography>}
       {!isLoading && !subscription?.cancel_at_period_end && (
-        <Button
-          onClick={handleConfirmationDialogOpen}
-          variant="contained"
-          sx={{ backgroundColor: "#63c8cc" }}
-        >
+        <Button onClick={handleConfirmationDialogOpen} variant="contained">
           Keskeytä tilaus
         </Button>
       )}

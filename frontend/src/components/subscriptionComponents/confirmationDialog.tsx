@@ -1,4 +1,4 @@
-import { ConfirmationDialogProps } from "../../types/subscriptionTypes";
+import { ConfirmationDialogProps } from "../../types/typesFrontend";
 import {
   Button,
   Dialog,

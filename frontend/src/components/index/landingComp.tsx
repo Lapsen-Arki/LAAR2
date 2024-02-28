@@ -1,4 +1,5 @@
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function LandingComp() {
   return (
@@ -27,10 +28,21 @@ export default function LandingComp() {
           perheenjäsentenne päivittäistä elämää, liittykää rohkeasti mukaan
           yhteisöömme. Toivotamme sinut lämpimästi tervetulleeksi!
         </Typography>
-        <br />
-        <Typography>
-          <strong>Tutustu alta sovelluksen esittelyversioon:</strong>
-        </Typography>
+        <Grid sx={{ textAlign: "center", marginTop: 2 }}>
+          <Link to="/register">
+            <Button variant="contained">
+              aloita 14 päivän ilmainen kokeilu
+            </Button>
+          </Link>
+          <Link to="https://www.kauppa.lapsen-arki.fi/">
+            <Button>Tai lue lisää</Button>
+          </Link>
+
+          <br />
+          <Typography sx={{ marginTop: 3 }}>
+            <strong>Alta voit tutustua sovelluksen esittelyversioon:</strong>
+          </Typography>
+        </Grid>
       </Grid>
     </Grid>
   );

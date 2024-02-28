@@ -1,6 +1,6 @@
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
-const postSettings = async (settings: object, idToken: string) => {
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+const postSettings = async (settings: FormData, idToken: string) => {
   try {
     const response = await fetch(`${API_BASE_URL}/post-account-settings`, {
       method: "POST",

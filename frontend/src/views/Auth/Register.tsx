@@ -9,7 +9,7 @@ import {
   Box,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-import { formTheme } from "../../components/Layout/formThemeMUI";
+import { formTheme } from "../../styles/formThemeMUI";
 import { registerUser } from "../../api/registerPost";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import { RegisterData } from "../../types/typesFrontend";
@@ -217,16 +217,29 @@ export default function Register() {
           </Link>
 
           <FormControlLabel
+            sx={{ marginTop: 3 }}
             control={
               <Checkbox
-                sx={{ marginBottom: 2 }}
+                sx={{ "& .MuiSvgIcon-root": { marginBottom: "8px" } }} // Adjusts the checkbox icon alignment if needed
                 checked={formData.accept}
                 onChange={handleCheckChange}
                 name="accept"
               />
             }
-            label="Hyväksyn tietosuojaselosteen ja palvelun käyttöehdot"
+            label={
+              <Typography>
+                Hyväksyn palvelun{" "}
+                <Link
+                  to="https://www.kauppa.lapsen-arki.fi/kayttoehdot-ja-itetosuoja/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  tietosuojaselosteen ja palvelun käyttöehdot
+                </Link>
+              </Typography>
+            }
           />
+
           <Typography sx={{ color: "red", marginBottom: 2, marginTop: 2 }}>
             {errorMessage}
           </Typography>
