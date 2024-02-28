@@ -27,7 +27,7 @@ export default async function SubmitHandler(
   data: AccountSettingsFormData,
   auth: Auth,
   idToken: string | null,
-  result: string
+  token: string
 ) {
   try {
     if (idToken === null)
@@ -36,8 +36,11 @@ export default async function SubmitHandler(
     if (!password || typeof password !== "string") {
       throw new AuthenticationError("Salasanaa ei annettu.");
     }
-    console.log(data);
-    if (Object.keys(data).length <= 1 && result === "unchanged") {
+    if (token !== "unchanged") {
+      postData.paymentMethod.set = true;
+      postData.paymentMethod.value = token;
+    }
+    if (Object.keys(data).length <= 1 && token === "unchanged") {
       return { status: true, msg: "Ei muutettuja asetuksia." };
     } else {
       const result = await updateSettings(password, data, auth, idToken);

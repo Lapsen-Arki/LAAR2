@@ -204,11 +204,11 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
 
     try {
       // Stripe card verification, if the user is changing the payment method.
-      let result: string;
+      let token: string;
       if (isChangingPaymentMethod) {
-        result = await verifyCard(stripe, elements);
+        token = await verifyCard(stripe, elements);
       } else {
-        result = "unchanged";
+        token = "unchanged";
       }
 
       if (auth === null || auth.currentUser === null)
@@ -218,7 +218,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
         updatedFormFields,
         auth,
         idToken,
-        result
+        token
       );
       if (response.status) {
         setSuccessMessage(response.msg);
