@@ -16,6 +16,7 @@ import {
   Container,
   Typography,
 } from "@mui/material/";
+import LoadingComponent from "../components/LoadingComponent";
 
 const SubscriptionManagement: React.FC = () => {
   const { idToken } = useContext(TokenContext);
@@ -137,7 +138,7 @@ const SubscriptionManagement: React.FC = () => {
           Jatka tilausta
         </Button>
       )}{" "}
-      {isLoading && <Typography>Ladataan sivua...</Typography>}
+      {isLoading && <LoadingComponent />}
       {!isLoading && !subscription?.cancel_at_period_end && (
         <Button onClick={handleConfirmationDialogOpen} variant="contained">
           Keskeytä tilaus
