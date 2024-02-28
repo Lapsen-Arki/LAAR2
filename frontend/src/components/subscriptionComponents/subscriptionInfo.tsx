@@ -1,4 +1,4 @@
-import { SubscriptionData } from "../../types/subscriptionTypes";
+import { SubscriptionData } from "../../types/typesFrontend";
 import {
   Alert,
   Divider,
