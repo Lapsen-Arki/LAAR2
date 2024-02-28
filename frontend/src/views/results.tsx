@@ -1,4 +1,4 @@
-import { Card, CardMedia, Container, Grid, Typography } from "@mui/material";
+import { Box, CardMedia, Container, Grid, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import ReturnBtn from "../components/returnBtn";
 import { useContext, useEffect, useState } from "react";
@@ -55,7 +55,16 @@ export default function Results() {
       <ChildInfoComp mealType={isMealPage} />
       <Grid
         container
-        sx={{ mt: 5, mb: 15, textAlign: "center", justifyContent: "center" }}
+        sx={{
+          mt: 5,
+          mb: 15,
+
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          textAlign: "center",
+        }}
       >
         {resultData &&
           resultData?.map((result, index) => {
@@ -67,17 +76,39 @@ export default function Results() {
                     return null;
                   }
                   return (
-                    <Grid item key={item} sx={{ m: 1 }}>
+                    <Grid
+                      item
+                      key={item}
+                      sx={{
+                        m: 1,
+
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flexDirection: "column",
+                      }}
+                    >
                       <Typography variant="h6">{item}</Typography>{" "}
                       {link && (
-                        <Card>
+                        <Box
+                          sx={{
+                            width: 350,
+                            height: 350,
+                            overflow: "hidden",
+                            backgroundColor: "none",
+                          }}
+                        >
                           <CardMedia
                             component="img"
-                            height="220"
                             image={link}
                             alt={item}
+                            sx={{
+                              maxWidth: "100%",
+                              maxHeight: "100%",
+                              objectFit: "cover", // Ensure the image covers the area, maintaining aspect ratio
+                            }}
                           />
-                        </Card>
+                        </Box>
                       )}
                       <Typography>{result.textContent[item]}</Typography>
                     </Grid>
