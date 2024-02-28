@@ -1,7 +1,6 @@
 import axios from "axios";
 import { SubscriptionData } from "../types/typesFrontend";
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const stripeSubscription = async (
   idToken: string | null,
@@ -71,9 +70,7 @@ const getSubscriptionStatus = async (
       return true; // Tilaus on käynnissä tai lopetettu, mutta maksettua aikaa on vielä jäljellä
     }
   } catch (error) {
-    console.error(
-      "Tilausta noudettaessa tapahtui virhe."
-    );
+    console.error("Tilausta noudettaessa tapahtui virhe.");
     return false;
   }
 };
