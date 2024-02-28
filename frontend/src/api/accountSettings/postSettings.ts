@@ -14,10 +14,10 @@ const postSettings = async (settings: object, idToken: string) => {
       return await response.json();
     } else {
       const data = await response.json();
-      throw new Error(data.message);
+      return { status: false, message: data.message };
     }
   } catch (error) {
-    return error;
+    console.error(error);
   }
 };
 

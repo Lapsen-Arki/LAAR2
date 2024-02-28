@@ -20,7 +20,7 @@ const updateStatus: UpdateStatusDataType = {
 const postData = {
   email: { set: false, value: "" },
   displayName: { set: false, value: "" },
-  paymentMethod: { set: false, value: {} },
+  paymentMethod: { set: false, value: "" },
 };
 
 export default async function SubmitHandler(
@@ -46,7 +46,7 @@ export default async function SubmitHandler(
       const result = await updateSettings(password, data, auth, idToken);
       if (result === undefined) throw new Error("Tapahtui virhe");
       if (result.status === false) {
-        throw new PasswordError("hello");
+        throw new AuthenticationError(result.msg);
       } else {
         return {
           status: true,
@@ -171,7 +171,7 @@ async function updateSettings(
         });
     }
     const result = await postSettings(postData, idToken);
-    console.log(result);
+    if (!result.status) return { status: false, msg: result.message };
     return { status: true, msg: "Asetukset päivitetty onnistuneesti." };
   } catch (error) {
     if (error instanceof PasswordError) {
