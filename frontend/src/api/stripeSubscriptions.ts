@@ -70,9 +70,7 @@ const getSubscriptionStatus = async (
       return true; // Tilaus on käynnissä tai lopetettu, mutta maksettua aikaa on vielä jäljellä
     }
   } catch (error) {
-    console.error(
-      "Tilausta noudettaessa tapahtui virhe."
-    );
+    console.error("Tilausta noudettaessa tapahtui virhe.");
     return false;
   }
 };

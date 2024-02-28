@@ -139,18 +139,21 @@ const getSubscriptionById = async (
         );
         if (subscription.status === "canceled") {
           res.status(200).json(null);
+          return;
         }
         const { created, current_period_end, cancel_at_period_end } =
           subscription;
         res
           .status(200)
           .json({ created, current_period_end, cancel_at_period_end });
+        return;
       } else {
-        res.status(200).json(null);
+        return res.status(200).json(null);
       }
     });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
+    return;
   }
 };
 

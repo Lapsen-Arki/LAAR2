@@ -5,6 +5,7 @@ import { TokenContext } from "../contexts/tokenContext";
 import { activityRecomm } from "../utils/previewData/activityRecomm";
 import { mealRecomm } from "../utils/previewData/mealRecomm";
 import { tipsRecomm } from "../utils/previewData/tipsRecomm";
+import { getSubscriptionStatus } from "../api/stripeSubscriptions";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
@@ -16,13 +17,15 @@ export default function useGetRecommData(
   //   type?: string // <-- This could be added to request for optimization
 ): RecommendationsType[] {
   const [data, setData] = useState<RecommendationsType[]>([]);
-  const { isLoggedIn } = useContext(TokenContext);
+  const { idToken } = useContext(TokenContext);
 
   useEffect(() => {
     const fetchData = async () => {
       // Use session storage OR fetch & set the data:
 
-      if (isLoggedIn) {
+      const subscribed = await getSubscriptionStatus(idToken);
+
+      if (idToken && subscribed) {
         // Checking sessionStorage:
         const sessionRecommData = sessionStorage.getItem(fetchType);
         let recommData;
@@ -67,6 +70,6 @@ export default function useGetRecommData(
       }
     };
     fetchData();
-  }, [fetchType, isLoggedIn]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [fetchType, idToken]); // eslint-disable-line react-hooks/exhaustive-deps
   return data;
 }
