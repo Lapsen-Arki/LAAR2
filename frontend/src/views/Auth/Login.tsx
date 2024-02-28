@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Button,
@@ -6,18 +6,20 @@ import {
   Container,
   FormControlLabel,
   Grid,
-  Link,
   TextField,
   Typography,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-import { formTheme } from "../../components/Layout/formThemeMUI";
+import { formTheme } from "../../styles/formThemeMUI";
 import { userLogin } from "../../utils/userLogin";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 import ResetPasswordModal from "../../components/modals/resetPasswordModal";
 import VerifyEmailModal from "../../components/modals/verifyEmailModal";
+import ReturnBtn from "../../components/returnBtn";
+import { Link } from "react-router-dom";
+
 const Login: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,6 +32,10 @@ const Login: React.FC = (): JSX.Element => {
   const { setIdToken } = useContext(TokenContext);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -64,7 +70,7 @@ const Login: React.FC = (): JSX.Element => {
           "Vahvista sähköpostiositeessi ja kirjaudu sisään uudelleen"
         );
       } else {
-        setErrorMessage(`Kirjautuminen epäonnistui`);
+        setErrorMessage(`Väärä käyttäjätunnus tai salasana.`);
       }
     }
   };
@@ -77,11 +83,10 @@ const Login: React.FC = (): JSX.Element => {
 
   return (
     <ThemeProvider theme={formTheme}>
-      <Container
-        component="main"
-        maxWidth="sm"
-        sx={{ display: 'flex', textAlign: 'center', marginTop: { md: 0 } }}
-      >
+      <Container component="main" maxWidth="sm" sx={{ textAlign: "center" }}>
+        <div style={{ marginTop: 25, textAlign: "left" }}>
+          <ReturnBtn />
+        </div>
         <Typography variant="h4">Kirjaudu sisään</Typography>
         <VerifyEmailModal
           open={openVerifyEmail}
@@ -116,12 +121,11 @@ const Login: React.FC = (): JSX.Element => {
             }
           />
 
-          <Grid 
-          container
-          direction="row" 
-          justifyContent="space-between" 
-          alignItems="center"
-          style={{ paddingLeft: 7, paddingRight: 7 }}
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
           >
             <Grid item>
               <FormControlLabel
@@ -132,7 +136,7 @@ const Login: React.FC = (): JSX.Element => {
                   />
                 }
                 label={
-                  <Typography variant="body2" style={{ color: 'black' }}>
+                  <Typography variant="body2" style={{ color: "black" }}>
                     Muista minut
                   </Typography>
                 }
@@ -140,13 +144,14 @@ const Login: React.FC = (): JSX.Element => {
             </Grid>
             <Grid item>
               <Link
-                href="#"
+                to="#"
                 onClick={() => {
                   setOpenResetModal(true);
                 }}
-                variant="body2"
               >
-                Unohtuiko salasana?
+                <Typography sx={{ color: "black" }}>
+                  Unohtuiko salasana?
+                </Typography>
               </Link>
               <ResetPasswordModal
                 open={openResetModel}
@@ -156,40 +161,36 @@ const Login: React.FC = (): JSX.Element => {
               />
             </Grid>
           </Grid>
-          <Button type="submit" variant="contained" fullWidth>
+          <Button
+            sx={{ marginBottom: 0 }}
+            type="submit"
+            variant="contained"
+            fullWidth
+          >
             Kirjaudu
           </Button>
           {successMessage != null && (
-          <Alert severity="success" >
-            <Typography
-              variant="subtitle1"
-            >
-              {successMessage}
-            </Typography>
-          </Alert>
+            <Alert severity="success">
+              <Typography variant="subtitle1">{successMessage}</Typography>
+            </Alert>
           )}
           {errorMessage != null && (
-          <Alert severity="error" >
-            <Typography
-              variant="subtitle2"
-            >
-              {errorMessage}
-            </Typography>
-          </Alert>
+            <Alert severity="error">
+              <Typography variant="subtitle2">{errorMessage}</Typography>
+            </Alert>
           )}
-          <Grid 
-            container
-            direction="row" 
-            justifyContent="flex-start" 
-            alignItems="baseline"
-            style={{ paddingLeft: 7, paddingRight: 7 }}
+          <Link to="/register">
+            <Typography
+              sx={{
+                textAlign: "left",
+                color: "black",
+                marginTop: 2,
+                marginBottom: 2,
+              }}
             >
-            <Grid item>
-              <Link href="/register" variant="body2">
-                Eikö vielä tiliä? Rekisteröidy tästä!
-              </Link>
-            </Grid>
-          </Grid>
+              Eikö vielä tiliä? Rekisteröidy tästä!
+            </Typography>
+          </Link>
         </form>
       </Container>
     </ThemeProvider>

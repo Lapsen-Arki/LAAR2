@@ -2,10 +2,8 @@ import { Request, Response } from "express";
 import admin from "../../../config/firebseConfig";
 import validateAndSanitizeName from "./validateAndSanitizeName";
 import validatePassword from "./validatePassword";
-import { RegisterData } from "../../../types/types";
+import { RegisterData } from "../../../types/typesBackend";
 import stripeConf from "../../../config/stripeClient";
-import crypto from "crypto";
-import sendVerification from "../../../utils/sendVerification";
 
 // Registration function
 const registerUser = async (req: Request, res: Response) => {
@@ -14,7 +12,7 @@ const registerUser = async (req: Request, res: Response) => {
       req.body as RegisterData;
 
     // Stripe token
-    const tokenId = token.id;
+    const stripeCardTokenId = token.id;
 
     // Validating password and name. Firebase should validate email already.
     const isPasswordValid = validatePassword(password, confirmPassword, res);
@@ -33,15 +31,20 @@ const registerUser = async (req: Request, res: Response) => {
 
     const customer = await stripe.customers.create({
       email: email,
-      source: tokenId,
+      source: stripeCardTokenId,
     });
 
     // Starting new subscription and 14 day trial:
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
-      items: [{ plan: "price_1ObLeAK45umi2LZd5XwwYvam" }], // THIS IS TEST PLAN -> CHANGE FOR PRODUCTION
+      items: [
+        {
+          plan:
+            process.env.STRIPE_PRICE_PLAN || "price_1ObLeAK45umi2LZd5XwwYvam",
+        },
+      ], // THIS IS TEST PLAN -> CHANGE FOR PRODUCTION
       trial_period_days: 14,
-      cancel_at_period_end: true,
+      cancel_at_period_end: true, // this will be updated to false when the user confirms their email address
     });
 
     // Create a new user using Firebase Authentication
@@ -49,11 +52,6 @@ const registerUser = async (req: Request, res: Response) => {
       email: email,
       password: password,
     });
-
-    const verificationCode = crypto.randomBytes(16).toString("hex");
-
-    const expirationDate = new Date();
-    expirationDate.setHours(expirationDate.getHours() + 24);
 
     // Save user to firebase users collection
     const registrationDate = new Date();
@@ -64,14 +62,9 @@ const registerUser = async (req: Request, res: Response) => {
       email: email,
       registrationDate: registrationDate,
       stripeCustomerId: customer.id,
-      stripeCardTokenId: tokenId,
+      stripeCardTokenId: stripeCardTokenId,
       stripeSubscriptionId: subscription.id,
-      emailVerified: false,
-      verificationCode: verificationCode,
-      codeExpires: expirationDate,
     });
-
-    sendVerification(email, verificationCode, expirationDate);
 
     res
       .status(201)

@@ -4,7 +4,10 @@ import { getUserIdFromToken } from "../../../utils/getUserIdFromTokenUtil";
 
 const editChildProfile = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id, childName, birthdate, avatar, accessRights } = req.body;
+    const { id, childName, birthdate, avatar, accessRights, allergies } =
+      req.body;
+
+    const sanitizedAllergies = allergies || null;
 
     if (!childName || !birthdate || !avatar || accessRights === undefined) {
       res
@@ -45,6 +48,7 @@ const editChildProfile = async (req: Request, res: Response): Promise<void> => {
         avatar: avatar,
         accessRights: accessRights,
         creatorId: creatorId, // Käyttäjän UID
+        allergies: sanitizedAllergies,
       });
 
       res.status(200).json({ message: "Profiili päivitetty onnistuneesti" });

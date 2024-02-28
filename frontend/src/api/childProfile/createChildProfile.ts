@@ -1,32 +1,37 @@
 import axios from "axios";
+import makeChildObject from "../../utils/makeChildObject";
+import { CreateChildProfileData } from "../../types/typesFrontend";
 
 // TODO: Move to env variables etc:
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
 
-interface CreateChildProfileData {
-  childName: string;
-  birthdate: string;
-  avatar: string;
-  accessRights: boolean;
-  creatorId: string | null;
-}
-
-export const createChildProfile = async (data: CreateChildProfileData, idToken: string | null) => {
+export const createChildProfile = async (
+  data: CreateChildProfileData,
+  idToken: string | null
+) => {
   try {
     const config = {
       headers: {
-        Authorization: `Bearer ${idToken}`
-      }
+        Authorization: `Bearer ${idToken}`,
+      },
     };
 
-    const response = await axios.post(`${API_BASE_URL}/createChildProfile`, data, config);
+    const response = await axios.post(
+      `${API_BASE_URL}/createChildProfile`,
+      data,
+      config
+    );
 
     // Lisää uusi profiili Session Storageen
     const newProfile = { ...data, id: response.data.id }; // Oletetaan, että palvelin palauttaa uuden profiilin ID:n
-    const storedProfilesJson = sessionStorage.getItem('childProfiles');
-    const storedProfiles = storedProfilesJson ? JSON.parse(storedProfilesJson) as CreateChildProfileData[] : [];
+    const storedProfilesJson = sessionStorage.getItem("childProfiles");
+    const storedProfiles = storedProfilesJson
+      ? (JSON.parse(storedProfilesJson) as CreateChildProfileData[])
+      : [];
     storedProfiles.push(newProfile);
-    sessionStorage.setItem('childProfiles', JSON.stringify(storedProfiles));
+    sessionStorage.setItem("childProfiles", JSON.stringify(storedProfiles));
+    makeChildObject();
 
     return response.data;
   } catch (error) {

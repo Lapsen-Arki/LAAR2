@@ -9,12 +9,12 @@ import {
   InputLabel,
   TextareaAutosize,
 } from "@mui/material";
-import { FormDataToBackend } from "../../types/types";
+import { FormDataToBackend } from "../../types/recommTypes";
 import { adminAddData } from "../../api/adminAddData";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 import PleaseLoginModal from "../../components/modals/pleaseLoginModal";
-import { FinalDataToBackend } from "../../types/types";
+import { FinalDataToBackend } from "../../types/recommTypes";
 
 // TODO: 1. More frequent login status checks
 
@@ -26,10 +26,10 @@ const AdminPage = () => {
   const [openLoginModal, setOpenLoginModal] = React.useState(false);
   const [formData, setFormData] = React.useState<FormDataToBackend>({
     title: "",
-    content: "",
+    name: "",
+    textContent: "",
     ageLimit: 0,
     photoLink: "",
-    photoFileName: "",
   });
   const { idToken } = useContext(TokenContext);
 
@@ -45,6 +45,7 @@ const AdminPage = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
     const submitData: FinalDataToBackend = {
       category,
       typeSelect,
@@ -70,16 +71,16 @@ const AdminPage = () => {
   let typeMenuItems;
   if (category) {
     typeMenuItems =
-      category === "ateria"
+      category === "meal"
         ? [
             { value: "small", label: "pieni" },
             { value: "big", label: "iso" },
             { value: "both", label: "molemmat" },
           ]
         : [
-            { value: "päiväunet", label: "päiväunet" },
-            { value: "iltatoimet", label: "iltatoimet" },
-            { value: "nukkuminen", label: "nukkuminen" },
+            { value: "nap", label: "päiväunet" },
+            { value: "bedtime", label: "iltatoimet" },
+            { value: "sleep", label: "nukkuminen" },
           ];
   }
 
@@ -115,27 +116,33 @@ const AdminPage = () => {
               }
               setFormData({
                 title: "",
-                content: "",
+                name: "",
+                textContent: "",
                 ageLimit: 0,
                 photoLink: "",
-                photoFileName: "",
               });
               setCategory(e.target.value);
             }}
             required
           >
-            <MenuItem value="ateria">ateria</MenuItem>
-            <MenuItem value="aktiviteetti">aktiviteetti</MenuItem>
-            <MenuItem value="vinkki">vinkki</MenuItem>
+            <MenuItem value="meal">ateria</MenuItem>
+            <MenuItem value="activity">aktiviteetti</MenuItem>
+            <MenuItem value="tip">vinkki</MenuItem>
           </Select>
         </FormControl>
+        {category !== "activity" && (
+          <Typography>
+            Tyyppi määrittää missä tai missä time blockissa sisältö näytetään.
+            Tämä ei näy käyttäjälle:
+          </Typography>
+        )}
+
         {/*type / identifier: */}
-        {category !== "aktiviteetti" && (
-          <FormControl fullWidth margin="normal">
+        {category !== "activity" && (
+          <FormControl fullWidth margin="dense">
             <InputLabel id="type-select">Tyyppi</InputLabel>
             <Select
               sx={{
-                marginTop: 0,
                 background: "white",
               }}
               name="type"
@@ -164,66 +171,56 @@ const AdminPage = () => {
           name="title"
           fullWidth
           label="otsikko"
-          margin="normal"
+          margin="dense"
+          onChange={handleChange}
+          required
+        />
+        <Typography>
+          Ruuan tai aktiviteetin nimi. HUOM. Älä lisää identtisiä nimiä samalla
+          otsikolla, kategorialla ja tyypillä.
+        </Typography>
+        <TextField
+          sx={{
+            marginTop: 0,
+            background: "white",
+          }}
+          name="name"
+          fullWidth
+          label="Nimi"
+          margin="dense"
+          onChange={handleChange}
+          required
+        />
+        <Typography>Ikäraja kuukausina:</Typography>
+        <TextField
+          sx={{
+            marginTop: 0,
+            background: "white",
+          }}
+          name="ageLimit"
+          fullWidth
+          label="Ikäraja/kk"
+          margin="dense"
+          type="number"
           onChange={handleChange}
           required
         />
 
-        {category !== "vinkki" ? (
-          <div>
-            <TextField
-              sx={{
-                marginTop: 0,
-                background: "white",
-              }}
-              name="content"
-              fullWidth
-              label="Nimi"
-              margin="normal"
-              onChange={handleChange}
-              required
-            />
-            <TextField
-              sx={{
-                marginTop: 0,
-                background: "white",
-              }}
-              name="ageLimit"
-              fullWidth
-              label="Ikäraja/kk"
-              margin="normal"
-              type="number"
-              onChange={handleChange}
-              required
-            />
-          </div>
-        ) : (
-          <div>
-            <Typography>Teksti sisältö:</Typography>
-
-            <TextareaAutosize
-              name="content"
-              minRows={8} // Minimum number of rows
-              maxRows={8} // Maximum number of rows
-              style={{ width: 495 }}
-              onChange={(e) =>
-                setFormData({ ...formData, [e.target.name]: e.target.value })
-              }
-              required
-            />
-            <Typography>
-              HUOM: Teksti formatoituu täsmälleen samalla tavalla kuin kirjoitat
-              sen tähän. mm. rivinvaihdot, välimerkit jne.
-            </Typography>
-          </div>
-        )}
-
-        {/* Backend is checking if there is photo, but if category is tip it's optional  */}
-        {/* TODO: add opitional photo for tips and required for meals and activity */}
+        <Typography>Vinkin tai tulossivun tekstisisältö:</Typography>
+        <TextareaAutosize
+          name="textContent"
+          minRows={8} // Minimum number of rows
+          maxRows={8} // Maximum number of rows
+          style={{ width: 495 }}
+          onChange={(e) =>
+            setFormData({ ...formData, [e.target.name]: e.target.value })
+          }
+          required
+        />
 
         <div>
-          <h3>Kuva</h3>
-          <p>Valitse kuvan URL linkki tai valitse tiedosto:</p>
+          <Typography variant="h5">Kuva</Typography>
+          <Typography>Valitse kuvan URL linkki:</Typography>
           <TextField
             sx={{
               marginTop: 0,
@@ -235,18 +232,11 @@ const AdminPage = () => {
             margin="normal"
             onChange={handleChange}
           />
-
-          <TextField
-            sx={{
-              marginTop: 0,
-              background: "white",
-            }}
-            name="photoFileName"
-            fullWidth
-            margin="normal"
-            type="file"
-            onChange={handleChange}
-          />
+          <Typography>
+            Tallenna kuvat ensin tietokantaan manuaalisesti ja käytä oikeaa
+            kuvan linkkiä tässä tai käytä vaihtoehtoisesti toisen
+            palveluntarjoajan kuvaa.
+          </Typography>
 
           <Button
             variant="contained"

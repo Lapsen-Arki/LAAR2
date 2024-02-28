@@ -7,7 +7,7 @@ export default function Footer() {
   return (
     <footer>
       <div className="footer-column-left" style={{ marginTop: 5 }}>
-      <Typography variant="h6">LAAR</Typography>
+        <Typography variant="h6">LAAR</Typography>
         <div className="footer-contact-info">
           <Link to="/" className="footer-link">
             lapsen-arki.fi
@@ -34,13 +34,22 @@ export default function Footer() {
       </Typography>
       <div className="footer-column-right">
         <div className="footer-list" style={{ marginBottom: 19 }}>
-          <Link className="footer-li footer-link" to="#">
+          <Link
+            className="footer-li footer-link"
+            to="https://www.kauppa.lapsen-arki.fi/kauppa/"
+          >
             Kauppa
           </Link>
-          <Link className="footer-li footer-link" to="/about-us">
+          <Link
+            className="footer-li footer-link"
+            to="https://www.kauppa.lapsen-arki.fi/tietoa-meista-2/"
+          >
             Tietoa meistä
           </Link>
-          <Link className="footer-li footer-link" to="/terms">
+          <Link
+            className="footer-li footer-link"
+            to="https://www.kauppa.lapsen-arki.fi/kayttoehdot-ja-itetosuoja/"
+          >
             Käyttöehdot ja Tietosuojaseloste
           </Link>
         </div>

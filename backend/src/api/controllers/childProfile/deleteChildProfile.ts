@@ -12,7 +12,10 @@ interface ChildProfile {
   creatorId: string; // Käyttäjän UID
 }
 
-const deleteChildProfile = async (req: Request, res: Response): Promise<void> => {
+const deleteChildProfile = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const profileId = req.params.profileId;
 
   try {

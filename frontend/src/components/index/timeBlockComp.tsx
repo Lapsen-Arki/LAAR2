@@ -8,6 +8,7 @@ export default function TimeBlockComp() {
   //   Routing to next page with renderIdentifier:
   const handleBlockClick = (blockTitle: string) => {
     navigate("/choices", { state: { renderIdentifier: blockTitle } });
+    window.scrollTo(0, 0);
   };
 
   return (

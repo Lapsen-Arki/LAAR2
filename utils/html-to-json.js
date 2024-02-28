@@ -5,6 +5,8 @@ const path = require("path");
 
 const args = process.argv.slice(2);
 
+const filePath = args[0];
+
 const inputFilePath = path.join(
   "../",
   args[0],
@@ -46,7 +48,5 @@ fs.readFile(inputFilePath, "utf8", function (err, _data) {
   let json = JSON.stringify(data);
   fs.writeFile(outputFilePath, json, "utf8", function (err) {
     if (err) throw err;
-    console.log("Saved JSON data to: " + outputFilePath);
-    console.log(json);
   });
 });
