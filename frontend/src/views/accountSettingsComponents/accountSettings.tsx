@@ -19,6 +19,7 @@ import {
   RenderInputProps,
   RenderLabelProps,
   EditModes,
+  PaymentMethod,
 } from "./types";
 import SubmitHandler from "./settingsSubmitHandler";
 import { AuthenticationError } from "./errors";
@@ -46,6 +47,17 @@ const CARD_ELEMENT_STYLES = {
     },
   },
 };
+type PaymentMethodFieldsTypes = {
+  dbData: PaymentMethod[];
+  isFocused: boolean;
+  setIsFocused: React.Dispatch<React.SetStateAction<boolean>>;
+  drawerOpen?: boolean;
+};
+
+interface RenderPaymentMethodFieldsTypes extends PaymentMethodFieldsTypes {
+  editModes: EditModes;
+  toggleEdit: (fieldName: string) => void;
+}
 
 // AccountSettings component
 // Blame Esa for everything that is wrong with this component
@@ -104,6 +116,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
     defaultEditModes[key] = false;
   }
   defaultEditModes["password"] = false;
+  defaultEditModes["paymentMethod"] = false;
 
   // Setting the default edit modes to the editModes state.
   const [editModes, setEditModes] =
@@ -130,6 +143,9 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       ...editModes,
       [fieldName]: !editModes[fieldName],
     });
+    if (fieldName === "paymentMethod") {
+      return;
+    }
     if (fieldName === "password") {
       setPopoutPassword(!popOutPassword);
       setFormValues({
@@ -165,6 +181,17 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       }
     }
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const verifyCard = async (stripe: any, elements: any) => {
+    const card = elements.getElement(CardElement);
+    if (card === null) throw new Error("Kortti ei ole määritetty.");
+    const result = await stripe.createToken(card);
+    if (result.error) {
+      console.error(result.error.message);
+      throw new AuthenticationError("Virheellinen maksukortti.");
+    }
+    return result.token;
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
@@ -173,17 +200,27 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       console.error("Stripe or elements not defined");
       return;
     }
-    const card = elements.getElement(CardElement);
+    const isChangingPaymentMethod = editModes.paymentMethod;
+
     try {
-      console.log(card);
-      if (card === null) throw new Error("Kortti ei ole valittu");
-      const res = await stripe.createToken(card);
+      // Stripe card verification, if the user is changing the payment method.
+      let result: string;
+      if (isChangingPaymentMethod) {
+        result = await verifyCard(stripe, elements);
+      } else {
+        result = "unchanged";
+      }
+
       if (auth === null || auth.currentUser === null)
         throw new AuthenticationError("Käyttäjä ei ole kirjautunut sisään");
-      console.log(updatedFormFields);
       deleteNonEditedFields();
-      console.log(updatedFormFields);
-      const response = await SubmitHandler(updatedFormFields, auth, idToken);
+      console.log(result);
+      const response = await SubmitHandler(
+        updatedFormFields,
+        auth,
+        idToken,
+        result
+      );
       if (response.status) {
         setSuccessMessage(response.msg);
         /* signOutMethod(); */
@@ -224,61 +261,13 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
             textAlign="center"
             maxWidth="sm"
           >
-            <Typography
-              style={{ marginTop: "10px", textAlign: "center" }}
-              variant="body1"
-            >
-              Vaihda maksukortti
-            </Typography>
-            {dbData.map((card) => (
-              <Box
-                key={card.id}
-                sx={{
-                  background: "white",
-                  padding: 2,
-                  border: "solid",
-                  borderWidth: isFocused ? 2 : 1,
-                  borderRadius: "4px",
-                  margin: "auto",
-                  borderColor: isFocused ? "black" : "black",
-                  "&:hover": {
-                    borderColor: "#000000",
-                  },
-                  width: "73%",
-                  marginTop: "10px",
-                  marginBottom: "10px",
-                }}
-              >
-                <Typography variant="body1">
-                  {card.brand} **** **** **** {card.last4} {card.expMonth}/
-                  {card.expYear.toString().slice(-2)}
-                </Typography>
-                <Typography variant="body1"></Typography>
-              </Box>
-            ))}
-            <Box
-              sx={{
-                background: "white",
-                padding: 2,
-                border: "solid",
-                borderWidth: isFocused ? 2 : 1,
-                borderRadius: "4px",
-                margin: "auto",
-                borderColor: isFocused ? "black" : "black",
-                "&:hover": {
-                  borderColor: "#000000",
-                },
-                width: "73%",
-                marginTop: "10px",
-                marginBottom: "10px",
-              }}
-            >
-              <CardElement
-                options={CARD_ELEMENT_STYLES}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-              />
-            </Box>
+            <RenderPaymentMethodFields
+              dbData={dbData}
+              isFocused={isFocused}
+              setIsFocused={setIsFocused}
+              editModes={editModes}
+              toggleEdit={toggleEditMode}
+            />
             <Divider variant="middle" />
             <PasswordFields
               fields={formValues}
@@ -322,6 +311,103 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
     </ThemeProvider>
   );
 };
+
+function RenderPaymentMethodFields({
+  dbData,
+  isFocused,
+  setIsFocused,
+  editModes,
+  toggleEdit,
+}: RenderPaymentMethodFieldsTypes) {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const handleEdit = (fieldName: string) => {
+    toggleEdit(fieldName);
+    setDrawerOpen(!drawerOpen);
+  };
+  return (
+    <>
+      <PaymentMethodPopOut
+        dbData={dbData}
+        isFocused={isFocused}
+        setIsFocused={setIsFocused}
+        drawerOpen={drawerOpen}
+      />
+      <Button
+        style={{ marginTop: "0", alignContent: "center" }}
+        onClick={() => handleEdit("paymentMethod")}
+      >
+        {editModes.paymentMethod ? "Cancel" : "Vaihda maksukortti"}
+      </Button>
+    </>
+  );
+}
+
+function PaymentMethodPopOut({
+  dbData,
+  isFocused,
+  setIsFocused,
+  drawerOpen,
+}: PaymentMethodFieldsTypes) {
+  return (
+    <Collapse in={drawerOpen}>
+      <Typography
+        style={{ marginTop: "10px", textAlign: "center" }}
+        variant="body1"
+      >
+        Vaihda maksukortti
+      </Typography>
+      {dbData.map((card) => (
+        <Box
+          key={card.id}
+          sx={{
+            background: "white",
+            padding: 2,
+            border: "solid",
+            borderWidth: isFocused ? 2 : 1,
+            borderRadius: "4px",
+            margin: "auto",
+            borderColor: isFocused ? "black" : "black",
+            "&:hover": {
+              borderColor: "#000000",
+            },
+            width: "73%",
+            marginTop: "10px",
+            marginBottom: "10px",
+          }}
+        >
+          <Typography variant="body1">
+            {card.brand} **** **** **** {card.last4} {card.expMonth}/
+            {card.expYear.toString().slice(-2)}
+          </Typography>
+          <Typography variant="body1"></Typography>
+        </Box>
+      ))}
+      <Box
+        sx={{
+          background: "white",
+          padding: 2,
+          border: "solid",
+          borderWidth: isFocused ? 2 : 1,
+          borderRadius: "4px",
+          margin: "auto",
+          borderColor: isFocused ? "black" : "black",
+          "&:hover": {
+            borderColor: "#000000",
+          },
+          width: "73%",
+          marginTop: "10px",
+          marginBottom: "10px",
+        }}
+      >
+        <CardElement
+          options={CARD_ELEMENT_STYLES}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+        />
+      </Box>
+    </Collapse>
+  );
+}
 
 function PasswordFields({
   fields,

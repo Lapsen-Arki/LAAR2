@@ -20,13 +20,14 @@ const updateStatus: UpdateStatusDataType = {
 const postData = {
   email: { set: false, value: "" },
   displayName: { set: false, value: "" },
-  paymentMethod: { set: false, value: "" },
+  paymentMethod: { set: false, value: {} },
 };
 
 export default async function SubmitHandler(
   data: AccountSettingsFormData,
   auth: Auth,
-  idToken: string | null
+  idToken: string | null,
+  result: string
 ) {
   try {
     if (idToken === null)
@@ -36,7 +37,7 @@ export default async function SubmitHandler(
       throw new AuthenticationError("Salasanaa ei annettu.");
     }
     console.log(data);
-    if (Object.keys(data).length <= 1) {
+    if (Object.keys(data).length <= 1 && result === "unchanged") {
       return { status: true, msg: "Ei muutettuja asetuksia." };
     } else {
       const result = await updateSettings(password, data, auth, idToken);
