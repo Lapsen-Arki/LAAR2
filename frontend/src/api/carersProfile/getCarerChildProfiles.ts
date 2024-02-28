@@ -3,8 +3,7 @@ import { CarerChildProfile } from "../../types/typesFrontend";
 import makeChildObject from "../../utils/makeChildObject";
 import { jwtAuth } from "../jwtAuth";
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const getCarerChildProfiles = async () => {
   try {
@@ -18,7 +17,9 @@ const getCarerChildProfiles = async () => {
     // Käytetään jwtAuth-funktiota idTokenin tarkistamiseen
     const authStatus = await jwtAuth(idToken);
     if (authStatus !== "success") {
-      console.error("ID-tokenin tarkistus epäonnistui tai käyttäjä ei ole kirjautunut.");
+      console.error(
+        "ID-tokenin tarkistus epäonnistui tai käyttäjä ei ole kirjautunut."
+      );
       return [];
     }
 
@@ -40,7 +41,10 @@ const getCarerChildProfiles = async () => {
 
       if (newProfiles && newProfiles.length > 0) {
         existingProfiles = newProfiles;
-        sessionStorage.setItem("childProfiles", JSON.stringify(existingProfiles));
+        sessionStorage.setItem(
+          "childProfiles",
+          JSON.stringify(existingProfiles)
+        );
         makeChildObject();
       } else {
         console.log("Uusia profiileja ei löytynyt.");
