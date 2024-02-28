@@ -10,27 +10,36 @@ import { FirebaseError } from "@firebase/util";
 import { AuthenticationError, PasswordError } from "./errors";
 /* import postSettings from "../../api/postSettings";*/
 import { AccountSettingsFormData, UpdateStatusDataType } from "./types";
-
+import postSettings from "../../api/accountSettings/postSettings";
 const updateStatus: UpdateStatusDataType = {
   password: { updated: false, status: "waiting", msg: "" },
   displayName: { updated: false, status: "waiting", msg: "" },
   email: { updated: false, status: "waiting", msg: "" },
 };
 
+const postData = {
+  email: { set: false, value: "" },
+  displayName: { set: false, value: "" },
+  paymentMethod: { set: false, value: "" },
+};
+
 export default async function SubmitHandler(
   data: AccountSettingsFormData,
-  auth: Auth
+  auth: Auth,
+  idToken: string | null
 ) {
   try {
+    if (idToken === null)
+      throw new AuthenticationError("Käyttäjä ei ole kirjautunut sisään");
     const password = data.oldPassword;
     if (!password || typeof password !== "string") {
       throw new AuthenticationError("Salasanaa ei annettu.");
     }
-
+    console.log(data);
     if (Object.keys(data).length <= 1) {
       return { status: true, msg: "Ei muutettuja asetuksia." };
     } else {
-      const result = await updateSettings(password, data, auth);
+      const result = await updateSettings(password, data, auth, idToken);
       if (result === undefined) throw new Error("Tapahtui virhe");
       if (result.status === false) {
         throw new PasswordError("hello");
@@ -59,7 +68,8 @@ export default async function SubmitHandler(
 async function updateSettings(
   password: string,
   data: AccountSettingsFormData,
-  auth: Auth
+  auth: Auth,
+  idToken: string
 ) {
   try {
     if (auth === null || auth.currentUser === null)
@@ -142,19 +152,22 @@ async function updateSettings(
         .catch(() => {
           return false;
         });
-      if (result)
+      if (result) {
         setUpdatedValues("displayName", {
           updated: true,
           status: "success",
           msg: "Nimi vaihdettu.",
         });
-      else
+        postData.displayName.set = true;
+        postData.displayName.value = data.displayName;
+      } else
         setUpdatedValues("displayName", {
           status: "error",
           msg: "Nimeä ei voitu vaihtaa.",
         });
     }
-
+    const result = await postSettings(postData, idToken);
+    console.log(result);
     return { status: true, msg: "Asetukset päivitetty onnistuneesti." };
   } catch (error) {
     if (error instanceof PasswordError) {

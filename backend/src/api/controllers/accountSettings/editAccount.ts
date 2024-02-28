@@ -10,12 +10,17 @@ class APIError extends Error {
 
 export const editAccount = async (req: Request, res: Response) => {
   try {
-    const idToken = req.headers.authorization?.split("Bearer ")[1];
-    if (!idToken) throw new APIError("Token missing", "token-missing");
-    const auth = admin.auth().verifyIdToken(idToken);
+    const db = admin.firestore();
+    const userId = (res as any).userId;
 
-    throw new APIError(idToken, "not-implemented");
-    return res.status(200).json({ message: "Ok!" });
+    const userDocRef = db.collection("users").doc(userId);
+    const userDoc = await userDocRef.get();
+
+    if (!userDoc.exists) {
+      throw new APIError("User not found", "user-not-found");
+    }
+    console.log(userId);
+    return res.status(200).json({ message: userId });
   } catch (error) {
     if (error instanceof APIError) {
       return res.status(500).json({ message: error.message, code: error.code });

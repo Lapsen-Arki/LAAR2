@@ -51,8 +51,8 @@ router.delete("/carer/:carerId", checkAuth, deleteCarerProfile); // Poista hoita
 router.get("/getCarerChildProfiles", checkAuth, getCarerChildProfiles); // Hae hoidettavien lasten profiilit
 
 // Future User routes plan (?):
-router.get("/get-account", getAccount);
-router.post("/edit-account", editAccount);
+router.get("/get-account-settings", checkAuth, getAccount);
+router.post("/post-account-settings", checkAuth, editAccount);
 
 // router.get("/deleteAccount/:accountId", deleteAccount);
 

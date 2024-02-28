@@ -6,6 +6,15 @@ export type SettingsType = {
     value: string;
   };
 };
+
+export type PaymentMethod = {
+  id: string;
+  brand: string;
+  last4: string;
+  expMonth: number;
+  expYear: number;
+};
+
 export interface EditModes {
   [key: string]: boolean;
 }
@@ -27,6 +36,8 @@ export type UserType = {
 };
 export interface AccountSettingsProps {
   settingsData: SettingsType;
+  dbData: PaymentMethod[];
+  idToken: string | null;
 }
 export interface AccountSettingsFormData {
   displayName?: string;

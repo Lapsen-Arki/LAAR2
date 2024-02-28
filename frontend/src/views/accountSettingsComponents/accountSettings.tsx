@@ -24,6 +24,28 @@ import SubmitHandler from "./settingsSubmitHandler";
 import { AuthenticationError } from "./errors";
 import { TokenContext } from "../../contexts/tokenContext";
 import "./styles.css";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+
+const CARD_ELEMENT_STYLES = {
+  style: {
+    base: {
+      color: "black",
+      iconColor: "black",
+      fontSize: "13px",
+      fontSmoothing: "antialiased",
+      ":-webkit-autofill": {
+        color: "black",
+      },
+      "::placeholder": {
+        color: "#black",
+      },
+    },
+    invalid: {
+      iconColor: "#FFC7EE",
+      color: "#FFC7EE",
+    },
+  },
+};
 
 // AccountSettings component
 // Blame Esa for everything that is wrong with this component
@@ -36,17 +58,24 @@ import "./styles.css";
 // Keeping with the theme, if you add a new field manually then you should probably make a new helper component for it as well.
 // If this still ends up being too complicated I will refactor it later, for now I will document as best as I can
 
-const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
+const AccountSettings: React.FC<AccountSettingsProps> = ({
+  settingsData,
+  dbData,
+  idToken,
+}) => {
   // getAuth from AuthContext provider.
   const { auth } = useContext(AuthContext);
   // Get tokencontext for signout
   const { signOutMethod } = useContext(TokenContext);
-
+  const stripe = useStripe();
+  const elements = useElements();
+  const [isFocused, setIsFocused] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
   // State variables built from settingsData
   // settingsData is in format key: {title: string, value: string, type: string, autocomplete: string}
   // forms are built with these settings, for each key in settingsData
+
   const [formValues, setFormValues] = useState(
     Object.fromEntries(
       Object.entries(settingsData)
@@ -127,17 +156,37 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
       });
     }
   };
+  // Quick hotfix against browser autofill of fields that are not visible
+  const deleteNonEditedFields = () => {
+    for (const fieldName in updatedFormFields) {
+      if (fieldName === "oldPassword") continue;
+      if (!editModes[fieldName]) {
+        delete updatedFormFields[fieldName];
+      }
+    }
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
     setSuccessMessage("");
+    if (!stripe || !elements) {
+      console.error("Stripe or elements not defined");
+      return;
+    }
+    const card = elements.getElement(CardElement);
     try {
+      console.log(card);
+      if (card === null) throw new Error("Kortti ei ole valittu");
+      const res = await stripe.createToken(card);
       if (auth === null || auth.currentUser === null)
         throw new AuthenticationError("Käyttäjä ei ole kirjautunut sisään");
-      const response = await SubmitHandler(updatedFormFields, auth);
+      console.log(updatedFormFields);
+      deleteNonEditedFields();
+      console.log(updatedFormFields);
+      const response = await SubmitHandler(updatedFormFields, auth, idToken);
       if (response.status) {
         setSuccessMessage(response.msg);
-        signOutMethod();
+        /* signOutMethod(); */
       } else {
         setErrorMessage(response.msg);
       }
@@ -147,12 +196,14 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
       }
     }
   };
-
   return (
     <ThemeProvider theme={formTheme}>
       <Container component="main" maxWidth="sm">
         {/* {JSON.stringify(fields)} */}
-        <Typography variant="h4" style={{ textAlign: "center" }}>
+        <Typography
+          variant="h4"
+          style={{ marginTop: "8px", textAlign: "center" }}
+        >
           Tilin asetukset
         </Typography>
         <form onSubmit={handleSubmit}>
@@ -173,6 +224,62 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
             textAlign="center"
             maxWidth="sm"
           >
+            <Typography
+              style={{ marginTop: "10px", textAlign: "center" }}
+              variant="body1"
+            >
+              Vaihda maksukortti
+            </Typography>
+            {dbData.map((card) => (
+              <Box
+                key={card.id}
+                sx={{
+                  background: "white",
+                  padding: 2,
+                  border: "solid",
+                  borderWidth: isFocused ? 2 : 1,
+                  borderRadius: "4px",
+                  margin: "auto",
+                  borderColor: isFocused ? "black" : "black",
+                  "&:hover": {
+                    borderColor: "#000000",
+                  },
+                  width: "73%",
+                  marginTop: "10px",
+                  marginBottom: "10px",
+                }}
+              >
+                <Typography variant="body1">
+                  {card.brand} **** **** **** {card.last4} {card.expMonth}/
+                  {card.expYear.toString().slice(-2)}
+                </Typography>
+                <Typography variant="body1"></Typography>
+              </Box>
+            ))}
+            <Box
+              sx={{
+                background: "white",
+                padding: 2,
+                border: "solid",
+                borderWidth: isFocused ? 2 : 1,
+                borderRadius: "4px",
+                margin: "auto",
+                borderColor: isFocused ? "black" : "black",
+                "&:hover": {
+                  borderColor: "#000000",
+                },
+                width: "73%",
+                marginTop: "10px",
+                marginBottom: "10px",
+              }}
+            >
+              <CardElement
+                options={CARD_ELEMENT_STYLES}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+              />
+            </Box>
+            <Divider variant="middle" />
             <PasswordFields
               fields={formValues}
               onChange={handleFieldChange}
@@ -181,6 +288,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ settingsData }) => {
               drawerOpen={popOutPassword}
             />
           </Box>
+
           <div
             style={{
               display: "flex",
@@ -230,25 +338,30 @@ function PasswordFields({
         drawerOpen={drawerOpen}
       />
       <Button
-        style={{ marginTop: "10px", alignContent: "center" }}
+        style={{ marginTop: "0", alignContent: "center" }}
         onClick={() => toggleEdit("password")}
       >
         {editModes.password ? "Cancel" : "Vaihda salasana"}
       </Button>
       <Divider variant="middle" />
-      <Typography variant="subtitle1" style={{ marginBottom: "2px" }}>
-        Syötä salasana vahvistaaksesi muutokset
-      </Typography>
-      <TextField
-        style={{ width: "90%" }}
-        label="Vanha salasana"
-        type="password"
-        margin="normal"
-        value={fields.oldPassword}
-        onChange={(e) => onChange("oldPassword", e.target.value)}
-        required
-        // ... appropriate styles
-      />
+      <Box sx={{ p: 2 }}>
+        {" "}
+        {/* Add padding */}
+        <Typography variant="subtitle1" style={{ marginBottom: "2px" }}>
+          Syötä salasana vahvistaaksesi muutokset
+        </Typography>
+        <TextField
+          style={{ width: "90%" }}
+          label="Vanha salasana"
+          type="password"
+          margin="normal"
+          value={fields.oldPassword}
+          autoComplete="off"
+          onChange={(e) => onChange("oldPassword", e.target.value)}
+          required
+          // ... appropriate styles
+        />
+      </Box>
       {/* Add error messages and submit button  */}
     </>
   );
@@ -256,17 +369,11 @@ function PasswordFields({
 
 function PasswordPopOut({ fields, onChange, drawerOpen }: PasswordPopOutProps) {
   return (
-    <Collapse
-      in={drawerOpen}
-      style={{ marginTop: "20px", marginBottom: "20px" }}
-    >
+    <Collapse in={drawerOpen}>
       <Box sx={{ p: 2 }}>
         {" "}
         {/* Add padding */}
-        <Typography
-          variant="h6"
-          style={{ marginTop: "20px", marginBottom: "10px" }}
-        >
+        <Typography variant="h6" style={{ marginBottom: "10px" }}>
           Vaihda salasana
         </Typography>
         <TextField
@@ -274,6 +381,7 @@ function PasswordPopOut({ fields, onChange, drawerOpen }: PasswordPopOutProps) {
           type="password"
           margin="dense"
           value={fields.newPassword}
+          autoComplete="off"
           onChange={(e) => onChange("newPassword", e.target.value)}
           style={{ width: "90%" }}
           // ... appropriate styles
@@ -284,6 +392,7 @@ function PasswordPopOut({ fields, onChange, drawerOpen }: PasswordPopOutProps) {
           margin="dense"
           value={fields.confirmPassword}
           style={{ width: "90%" }}
+          autoComplete="off"
           onChange={(e) => onChange("confirmPassword", e.target.value)}
           // ... appropriate styles
         />{" "}

@@ -1,10 +1,10 @@
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
-const postSettings = async (settings: FormData, idToken: string) => {
+const postSettings = async (settings: object, idToken: string) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/edit-account`, {
+    const response = await fetch(`${API_BASE_URL}/post-account-settings`, {
       method: "POST",
-      body: settings,
+      body: JSON.stringify(settings),
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${idToken}`,

@@ -5,19 +5,19 @@ async function buildData(user: UserType) {
     displayName: {
       title: "Nimi",
       type: "text",
-      autocomplete: "name",
+      autocomplete: "off",
       value: user.displayName ?? "",
     },
     /* email: {
       title: "Email",
       type: "email",
-      autocomplete: "email",
+      autocomplete: "off",
       value: user.email ?? "",
     },
     phoneNumber: {
       title: "Puhelinnumero",
       type: "tel",
-      autocomplete: "tel",
+      autocomplete: "off",
       value: user.phoneNumber ?? "",
     }, */
   };
