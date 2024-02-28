@@ -3,8 +3,7 @@ import { CarerChildProfile } from "../../types/typesFrontend";
 import makeChildObject from "../../utils/makeChildObject";
 import { jwtAuth } from "../jwtAuth";
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const getCarerChildProfiles = async () => {
     try {
