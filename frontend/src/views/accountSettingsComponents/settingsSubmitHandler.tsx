@@ -20,14 +20,15 @@ const updateStatus: UpdateStatusDataType = {
 const postData = {
   email: { set: false, value: "" },
   displayName: { set: false, value: "" },
-  paymentMethod: { set: false, value: "" },
+  paymentMethod: { set: false, value: "", default: false },
 };
 
 export default async function SubmitHandler(
   data: AccountSettingsFormData,
   auth: Auth,
   idToken: string | null,
-  token: string
+  token: string,
+  cardAsDefault: boolean
 ) {
   try {
     if (idToken === null)
@@ -43,6 +44,7 @@ export default async function SubmitHandler(
     if (Object.keys(data).length <= 1 && token === "unchanged") {
       return { status: true, msg: "Ei muutettuja asetuksia." };
     } else {
+      postData.paymentMethod.default = cardAsDefault;
       const result = await updateSettings(password, data, auth, idToken);
       if (result === undefined) throw new Error("Tapahtui virhe");
       if (result.status === false) {
@@ -170,6 +172,7 @@ async function updateSettings(
           msg: "Nimeä ei voitu vaihtaa.",
         });
     }
+    console.log(postData);
     const result = await postSettings(postData, idToken);
     if (!result.status) return { status: false, msg: result.message };
     return { status: true, msg: "Asetukset päivitetty onnistuneesti." };

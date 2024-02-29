@@ -28,6 +28,7 @@ import { getCarerChildProfiles } from "./controllers/carersProfile/getCarerChild
 import { editAccount } from "./controllers/accountManagement/editAccount";
 import { getAccount } from "./controllers/accountManagement/getAccount";
 import { deleteAccount } from "./controllers/accountManagement/deleteAccount";
+import { updateCard } from "./controllers/accountManagement/updateCard";
 // test controllers:
 
 const router = express.Router();
@@ -55,7 +56,7 @@ router.get("/getCarerChildProfiles", checkAuth, getCarerChildProfiles); // Hae h
 router.get("/get-account-settings", checkAuth, getAccount);
 router.post("/post-account-settings", checkAuth, editAccount);
 router.post("/delete-account", checkAuth, deleteAccount);
-
+router.post("/update-card", checkAuth, updateCard);
 // router.get("/deleteAccount/:accountId", deleteAccount);
 
 // Stripe routes

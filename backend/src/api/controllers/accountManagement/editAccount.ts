@@ -16,7 +16,7 @@ type StripeToken = {
 };
 
 type EditRequestDataType = {
-  paymentMethod: { set: boolean; value: StripeToken };
+  paymentMethod: { set: boolean; value: StripeToken; default: boolean };
   [key: string]: { set: boolean; value: string | StripeToken };
 };
 type EditDataType = {
@@ -51,11 +51,11 @@ export const editAccount = async (req: Request, res: Response) => {
         );
     }
     const dataToUpdate = await filterUpdateData(requestData);
-    if (Object.keys(dataToUpdate).length === 0)
-      throw new APIError("No data to update", "no-data-to-update");
+    if (Object.keys(dataToUpdate).length !== 0)
+      await userDocRef.update(dataToUpdate);
 
     // Update the user document
-    await userDocRef.update(dataToUpdate);
+
     return res.status(200).json({ message: userId, status: true });
   } catch (error) {
     if (error instanceof APIError) {
@@ -107,15 +107,16 @@ async function updatePaymentMethod(
       customer: stripeCustomerId,
     });
 
-    await stripe.customers.update(
-      stripeCustomerId,
-      {
-        invoice_settings: {
-          default_payment_method: paymentMethod.id,
-        },
-      } // Or the ID of an existing card
-    );
-
+    if (requestData.paymentMethod.default) {
+      await stripe.customers.update(
+        stripeCustomerId,
+        {
+          invoice_settings: {
+            default_payment_method: paymentMethod.id,
+          },
+        } // Or the ID of an existing card
+      );
+    }
     return { message: "Payment method updated", code: "success" };
   } catch (error) {
     console.error(error);

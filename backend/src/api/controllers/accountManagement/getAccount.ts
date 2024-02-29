@@ -41,12 +41,25 @@ export const getAccount = async (req: Request, res: Response) => {
       res.status(404).json({ error: "User not found. Please contact admin." });
       return;
     }
+    const customer = await stripe.customers.retrieve(stripeCustomerId);
+    if (customer.deleted) throw new Error("Customer not found");
+    console.log(customer);
+    let defaultPaymentMethodId: string;
+    if (
+      customer.invoice_settings.default_payment_method === null &&
+      typeof customer.default_source === "string"
+    )
+      defaultPaymentMethodId = customer.default_source;
+    else if (
+      customer.invoice_settings.default_payment_method !== null &&
+      typeof customer.invoice_settings.default_payment_method === "string"
+    )
+      defaultPaymentMethodId = customer.invoice_settings.default_payment_method;
 
     const paymentMethods = await stripe.paymentMethods.list({
       customer: stripeCustomerId,
       type: "card",
     });
-
     // Send sanitized details for security reasons
     const sanitizedPaymentMethods = paymentMethods.data.map((method) => ({
       id: method.id,
@@ -54,8 +67,13 @@ export const getAccount = async (req: Request, res: Response) => {
       last4: method.card?.last4,
       expMonth: method.card?.exp_month,
       expYear: method.card?.exp_year,
+      isDefault: method.id === defaultPaymentMethodId,
     }));
+    console.log(sanitizedPaymentMethods);
 
     return res.status(200).json(sanitizedPaymentMethods);
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error getting account:", error);
+    res.status(500).json({ error: "Error getting account" });
+  }
 };

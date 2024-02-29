@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import AuthContext from "../../contexts/authContext";
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from "../../styles/formThemeMUI";
+import { postCardUpdate } from "../../api/accountManagement/postCardUpdate";
 import {
   Container,
   Divider,
@@ -10,6 +11,8 @@ import {
   Typography,
   Box,
   Collapse,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import {
   RenderFieldsProps,
@@ -19,7 +22,8 @@ import {
   RenderInputProps,
   RenderLabelProps,
   EditModes,
-  PaymentMethod,
+  PaymentMethodFieldsTypes,
+  RenderPaymentMethodFieldsTypes,
 } from "./types";
 import SubmitHandler from "./settingsSubmitHandler";
 import { AuthenticationError } from "./errors";
@@ -27,6 +31,7 @@ import { TokenContext } from "../../contexts/tokenContext";
 import "./styles.css";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { deleteAccount } from "../../api/accountManagement/deleteAccount";
+
 const CARD_ELEMENT_STYLES = {
   style: {
     base: {
@@ -47,17 +52,6 @@ const CARD_ELEMENT_STYLES = {
     },
   },
 };
-type PaymentMethodFieldsTypes = {
-  dbData: PaymentMethod[];
-  isFocused: boolean;
-  setIsFocused: React.Dispatch<React.SetStateAction<boolean>>;
-  drawerOpen?: boolean;
-};
-
-interface RenderPaymentMethodFieldsTypes extends PaymentMethodFieldsTypes {
-  editModes: EditModes;
-  toggleEdit: (fieldName: string) => void;
-}
 
 // AccountSettings component
 // Blame Esa for everything that is wrong with this component
@@ -84,6 +78,8 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
   const [isFocused, setIsFocused] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
+  const [isAccepted, setIsAccepted] = React.useState(false);
+  const [cardAsDefault, setCardAsDefault] = useState(false);
   // State variables built from settingsData
   // settingsData is in format key: {title: string, value: string, type: string, autocomplete: string}
   // forms are built with these settings, for each key in settingsData
@@ -185,6 +181,16 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
   const deleteUser = async () => {
     if (auth === null || auth.currentUser === null || idToken === null) return;
 
+    if (!isAccepted) {
+      alert("Sinun tulee hyväksyä ehdot poistaaksesi tilisi.");
+      return;
+    }
+
+    if (!updatedFormFields.oldPassword) {
+      alert("Syötä salasana poistaaksesi tilisi.");
+      return;
+    }
+
     if (
       !confirm(
         "Oletko varma, että haluat poistaa tilisi? Tämä toiminto EI ole peruutettavissa"
@@ -204,10 +210,11 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
 
     try {
       const result = await deleteAccount(idToken);
+      if (!result.status) throw new Error("Väärä salasana");
       alert(result.message);
       await sleep(3000);
     } catch (error) {
-      console.error("Error deleting account:", error);
+      console.error(error);
     }
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -221,6 +228,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
     }
     return result.token;
   };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
@@ -247,11 +255,12 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
         updatedFormFields,
         auth,
         idToken,
-        token
+        token,
+        cardAsDefault
       );
       if (response.status) {
         setSuccessMessage(response.msg);
-        /* signOutMethod(); */
+        signOutMethod();
       } else {
         setErrorMessage(response.msg);
       }
@@ -295,6 +304,9 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
               setIsFocused={setIsFocused}
               editModes={editModes}
               toggleEdit={toggleEditMode}
+              idToken={idToken}
+              cardAsDefault={cardAsDefault}
+              setCardAsDefault={setCardAsDefault}
             />
             <Divider variant="middle" />
             <PasswordFields
@@ -342,6 +354,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            flexDirection: "column",
           }}
         >
           <Button
@@ -350,12 +363,28 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
             style={{
               backgroundColor: "red",
               width: "90%",
-              marginBottom: "10px",
             }}
             onClick={deleteUser}
           >
             Poista tili
           </Button>
+          <FormControlLabel
+            sx={{ marginTop: 3, width: "95%" }}
+            control={
+              <Checkbox
+                sx={{ "& .MuiSvgIcon-root": { marginBottom: "8px" } }} // Adjusts the checkbox icon alignment if needed
+                checked={isAccepted}
+                onChange={() => setIsAccepted(!isAccepted)}
+                name="accept"
+              />
+            }
+            label={
+              <Typography>
+                Ymmärrän, että käyttäjätilin poistaessani kaikki tiedot poistuu
+                peruuttamattomasti eikä niiden palautus ole enää mahdollista.
+              </Typography>
+            }
+          />
         </div>
       </Container>
     </ThemeProvider>
@@ -368,6 +397,9 @@ function RenderPaymentMethodFields({
   setIsFocused,
   editModes,
   toggleEdit,
+  idToken,
+  cardAsDefault,
+  setCardAsDefault,
 }: RenderPaymentMethodFieldsTypes) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const handleEdit = (fieldName: string) => {
@@ -381,6 +413,9 @@ function RenderPaymentMethodFields({
         isFocused={isFocused}
         setIsFocused={setIsFocused}
         drawerOpen={drawerOpen}
+        idToken={idToken}
+        cardAsDefault={cardAsDefault}
+        setCardAsDefault={setCardAsDefault}
       />
       <Button
         style={{ marginTop: "0", alignContent: "center" }}
@@ -397,7 +432,22 @@ function PaymentMethodPopOut({
   isFocused,
   setIsFocused,
   drawerOpen,
+  idToken,
+  cardAsDefault,
+  setCardAsDefault,
 }: PaymentMethodFieldsTypes) {
+  const updateCard = async (action: string, cardId: string) => {
+    if (idToken === null) {
+      return;
+    }
+    const response = await postCardUpdate(action, idToken, cardId);
+    if (!response.status) {
+      console.error(response.message);
+    } else {
+      console.log(response.message);
+      window.location.reload();
+    }
+  };
   return (
     <Collapse in={drawerOpen}>
       <Typography
@@ -408,28 +458,52 @@ function PaymentMethodPopOut({
       </Typography>
       {dbData.map((card) => (
         <Box
+          display="flex"
+          alignItems="center"
+          maxWidth="sm"
+          justifyContent="space-between"
           key={card.id}
           sx={{
-            background: "white",
-            padding: 2,
-            border: "solid",
-            borderWidth: isFocused ? 2 : 1,
-            borderRadius: "4px",
             margin: "auto",
             borderColor: isFocused ? "black" : "black",
             "&:hover": {
               borderColor: "#000000",
             },
-            width: "73%",
+
             marginTop: "10px",
             marginBottom: "10px",
           }}
         >
-          <Typography variant="body1">
-            {card.brand} **** **** **** {card.last4} {card.expMonth}/
-            {card.expYear.toString().slice(-2)}
-          </Typography>
-          <Typography variant="body1"></Typography>
+          <Box
+            flexBasis="50%"
+            display="flex"
+            sx={{ textAlign: "left", flexDirection: "column" }}
+          >
+            <Typography variant="body1">
+              **** **** **** **** {card.last4}
+            </Typography>
+            <Typography variant="body1">
+              {card.brand} {card.expMonth}/{card.expYear.toString().slice(-2)}
+            </Typography>
+            {card.isDefault && (
+              <Typography variant="body1">Oletuskortti</Typography>
+            )}
+            <Typography variant="body1"></Typography>
+          </Box>
+          <Button
+            disabled={card.isDefault}
+            style={{ width: "25%", fontSize: "12px" }}
+            onClick={() => updateCard("update", card.id)}
+          >
+            Aseta Oletukseksi
+          </Button>
+          <Button
+            disabled={card.isDefault}
+            style={{ width: "15%", fontSize: "12px" }}
+            onClick={() => updateCard("delete", card.id)}
+          >
+            Poista Kortti
+          </Button>
         </Box>
       ))}
       <Box
@@ -455,6 +529,20 @@ function PaymentMethodPopOut({
           onBlur={() => setIsFocused(false)}
         />
       </Box>
+      <FormControlLabel
+        sx={{ marginTop: 3, width: "95%" }}
+        control={
+          <Checkbox
+            sx={{ "& .MuiSvgIcon-root": { marginBottom: "8px" } }} // Adjusts the checkbox icon alignment if needed
+            checked={cardAsDefault}
+            onChange={() => setCardAsDefault(!cardAsDefault)}
+            name="accept"
+          />
+        }
+        label={
+          <Typography>Aseta tämä kortti oletukseksi maksukortiksi.</Typography>
+        }
+      />
     </Collapse>
   );
 }

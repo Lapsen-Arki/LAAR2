@@ -13,6 +13,7 @@ export type PaymentMethod = {
   last4: string;
   expMonth: number;
   expYear: number;
+  isDefault: boolean;
 };
 
 export interface EditModes {
@@ -76,4 +77,20 @@ export interface PasswordPopOutProps {
   fields: { [key: string]: string };
   onChange: (fieldName: string, value: string) => void;
   drawerOpen: boolean;
+}
+
+export type PaymentMethodFieldsTypes = {
+  dbData: PaymentMethod[];
+  isFocused: boolean;
+  setIsFocused: React.Dispatch<React.SetStateAction<boolean>>;
+  drawerOpen?: boolean;
+  idToken: string | null;
+  cardAsDefault: boolean;
+  setCardAsDefault: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export interface RenderPaymentMethodFieldsTypes
+  extends PaymentMethodFieldsTypes {
+  editModes: EditModes;
+  toggleEdit: (fieldName: string) => void;
 }
