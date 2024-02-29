@@ -38,7 +38,7 @@ export default function RecommComp({
   const [selectionList, setSelectionList] = useState<string[]>([]);
   const [subscribed, setSubscribed] = useState(false);
   const [collapseOpen, setCollapseOpen] = useState<CollapseOpen>({});
-  const [shoppingList, setShoppingList] = useState(false);
+  const [shoppingList, setShoppingList] = useState<string[] | null>(null);
   const { isLoggedIn, idToken } = useContext(TokenContext);
   const navigate = useNavigate();
 
@@ -51,7 +51,31 @@ export default function RecommComp({
       }
     };
     getSubStatus();
-  });
+    const savedShoppingListJSON = sessionStorage.getItem("shoppingList");
+    if (savedShoppingListJSON) {
+      const savedShoppingList = JSON.parse(savedShoppingListJSON);
+      setShoppingList(savedShoppingList);
+    }
+  }, [idToken]);
+
+  const handleShoppingList = () => {
+    // 1. Tallentaa tai päivittää ensin session storageen
+    const shoppingListJSON = sessionStorage.getItem("shoppingList");
+    if (!shoppingListJSON) {
+      sessionStorage.setItem("shoppingList", JSON.stringify(selectionList));
+      setShoppingList(selectionList);
+    } else {
+      const oldShoppingList = JSON.parse(shoppingListJSON);
+      const filteredList = selectionList.filter(
+        (item) => !oldShoppingList.includes(item)
+      );
+      const newList: string[] = [...oldShoppingList, ...filteredList];
+      sessionStorage.setItem("shoppingList", JSON.stringify(newList));
+      setShoppingList(newList);
+    }
+    // 2. 10-30 sekunnun timeoutin jälkeen tallentaa tietokantaan, eli kutsuu API function:
+    // Koska muuten: "eikun lisäänkin mansikat vielä ostoslistalle" tms
+  };
 
   const handleCollapse = (itemName: string) => {
     setCollapseOpen((prevCollapseOpen) => ({
@@ -66,10 +90,12 @@ export default function RecommComp({
     });
     window.scrollTo(0, 0);
   };
+
   const registerNowClick = () => {
     navigate("/register");
     window.scrollTo(0, 0);
   };
+
   const subscribeNowClick = () => {
     navigate("/subscription");
     window.scrollTo(0, 0);
@@ -214,13 +240,21 @@ export default function RecommComp({
           </Button>
           {mealType && (
             <Button
-              onClick={() => setShoppingList(!shoppingList)}
+              onClick={handleShoppingList}
               sx={{ mt: 5, mb: 5, ml: 1 }}
               variant="contained"
             >
-              {shoppingList ? "Päivitä ostoslista" : "Luo ostoslista"}
+              {shoppingList ? "Lisää ostoslistalle" : "Luo ostoslista"}
             </Button>
           )}
+        </div>
+      )}
+      {shoppingList && mealType && (
+        <div>
+          <Typography variant="h5">Ostoslista:</Typography>
+          {shoppingList.map((listItem) => {
+            return <Typography key={listItem}>{listItem}</Typography>;
+          })}
         </div>
       )}
       {!isLoggedIn && selectedBox.length > 0 && (
@@ -235,6 +269,15 @@ export default function RecommComp({
           <Typography>
             Avaa kaikki ominaisuudet ja aloita 14 päivän ilmainen kokeilu!
           </Typography>
+          {mealType && (
+            <Button
+              onClick={handleShoppingList}
+              sx={{ mt: 5, mb: 5, ml: 1 }}
+              variant="contained"
+            >
+              {shoppingList ? "Lisää ostoslistalle" : "Luo ostoslista"}
+            </Button>
+          )}
         </>
       )}
       {isLoggedIn && !subscribed && selectedBox.length > 0 && (
