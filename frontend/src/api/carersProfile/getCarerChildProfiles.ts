@@ -35,6 +35,12 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
       });
   
       const newProfiles = response.data.carerChildProfiles;
+
+    // Tarkistetaan, onko uusia profiileja löydetty
+    if (!newProfiles || newProfiles.length === 0) {
+      console.error("Profiileja ei ole vielä lisätty.");
+      return [];
+    }
   
       // Lisätään vain ne uudet profiilit, joita ei ole jo olemassa
       const uniqueProfiles = newProfiles.filter(newProfile => 
@@ -48,11 +54,11 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
       sessionStorage.setItem("childProfiles", JSON.stringify(combinedProfiles));
   
       makeChildObject();
-
+    
       return combinedProfiles;
     } catch (error) {
-      //("Profiileja ei ole vielä lisätty.");
-      //("Virhe profiileja haettaessa:", error);
+      console.log("Profiileja ei ole vielä lisätty.");
+      console.error("Virhe profiileja haettaessa:", error);
       return [];
     }
   };
