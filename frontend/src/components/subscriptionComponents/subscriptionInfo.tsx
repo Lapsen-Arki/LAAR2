@@ -62,7 +62,7 @@ const IsSubscribed = ({
         >
           <TableBody>
             <TableRow>
-              <TableCell>Jäsenyys alkanut</TableCell>
+              <TableCell>Tilaus alkanut</TableCell>
               <TableCell align="right">
                 {formatDate(subscription.created)}
               </TableCell>
