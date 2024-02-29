@@ -3,6 +3,7 @@ import { RecommendationsType } from "../../types/recommTypes";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TokenContext } from "../../contexts/tokenContext";
+import { getSubscriptionStatus } from "../../api/stripeSubscriptions";
 
 // Getting real child data somewhere:
 
@@ -22,8 +23,17 @@ export default function RecommComp({
   // selectedChild pitää saada tänne -> resetoida selectionList kun se muuttuu.
   const [selectedBox, setSelectedBox] = useState<string | string[]>("");
   const [selectionList, setSelectionList] = useState<string[]>([]);
-  const { isLoggedIn } = useContext(TokenContext);
+  const [subscribed, setSubscribed] = useState(false);
+  const { isLoggedIn, idToken } = useContext(TokenContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getSubStatus = async () => {
+      const subscribedStatus = await getSubscriptionStatus(idToken);
+      setSubscribed(subscribedStatus);
+    };
+    getSubStatus();
+  });
 
   const handleClick = () => {
     navigate("/results", {
@@ -33,6 +43,10 @@ export default function RecommComp({
   };
   const registerNowClick = () => {
     navigate("/register");
+    window.scrollTo(0, 0);
+  };
+  const subscribeNowClick = () => {
+    navigate("/subscription");
     window.scrollTo(0, 0);
   };
 
@@ -135,7 +149,7 @@ export default function RecommComp({
           </div>
         );
       })}
-      {isLoggedIn && selectedBox.length > 0 && (
+      {subscribed && isLoggedIn && selectedBox.length > 0 && (
         <Button onClick={handleClick} sx={{ mt: 5, mb: 5 }} variant="contained">
           {mealType ? "Kokoa Ateria" : "Valitse aktiviteetti"}
         </Button>
@@ -152,6 +166,18 @@ export default function RecommComp({
           <Typography>
             Avaa kaikki ominaisuudet ja aloita 14 päivän ilmainen kokeilu!
           </Typography>
+        </>
+      )}
+      {isLoggedIn && !subscribed && selectedBox.length > 0 && (
+        <>
+          <Button
+            onClick={subscribeNowClick}
+            sx={{ mt: 5, mb: 2 }}
+            variant="contained"
+          >
+            Jatka tilausta
+          </Button>
+          <Typography>Ja avaa kaikki ominaisuudet!</Typography>
         </>
       )}
     </div>

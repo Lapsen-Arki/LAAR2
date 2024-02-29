@@ -3,7 +3,7 @@ import { Card, CardContent, Typography, Tooltip, Avatar } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { calculateAge, splitNameToFitWidth } from './profileFunctions';
 import { useProfileUtils } from '../../customHooks/useProfileUtils';
-import CircularProgress from '@mui/material/CircularProgress';
+import LoadingComponent from '../LoadingComponent';
 
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import PersonIcon from '@mui/icons-material/Person';
@@ -89,7 +89,7 @@ const CarerChildComponent: React.FC = () => {
             </div>
           ))}
         </div>
-      ):(<CircularProgress sx={{ color: '#63c8cc' }} />)
+      ):(<LoadingComponent />)
       }
     </div>
   );
