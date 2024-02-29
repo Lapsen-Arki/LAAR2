@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   TextField,
@@ -7,6 +7,9 @@ import {
   Checkbox,
   FormControlLabel,
   Box,
+  Collapse,
+  IconButton,
+  InputAdornment
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from "../../styles/formThemeMUI";
@@ -16,6 +19,8 @@ import { RegisterData } from "../../types/typesFrontend";
 import { useNavigate } from "react-router-dom";
 import ReturnBtn from "../../components/returnBtn";
 import { Link } from "react-router-dom";
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { HelpOutline } from '@mui/icons-material';
 
 // TODO: 1. Pankkikortin vahvistuksen lisääminen 2. EXTRA: Google ja Facebook kirjautumis vaihtoehdot
 const CARD_ELEMENT_STYLES = {
@@ -40,6 +45,8 @@ const CARD_ELEMENT_STYLES = {
 };
 
 export default function Register() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
   const [isFocused, setIsFocused] = React.useState(false);
@@ -91,6 +98,15 @@ export default function Register() {
       }
     }
   };
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
+  
   return (
     <ThemeProvider theme={formTheme}>
       <Container component="main" maxWidth="sm" style={{ textAlign: "center" }}>
@@ -131,10 +147,33 @@ export default function Register() {
             fullWidth
             label="Salasana"
             autoComplete="password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             value={formData.password}
             onChange={handleChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                    aria-label="toggle password visibility"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
+
+          <IconButton onClick={handleToggle} aria-label="Lisätietoja salasanavaatimuksista">
+            <HelpOutline sx={{ color: '#63c8cc' }} /> <span style={{ fontSize: 18 }}>Klikkaa tästä lisätietoja salasanavaatimuksista</span>
+          </IconButton>
+          <Collapse in={isOpen}>
+            <Typography variant="body1">
+              Salasanan tulee olla vähintään 8 merkkiä pitkä ja sisältää ainakin yhden ison kirjaimen, yhden pienen kirjaimen, yhden numeron sekä vähintään yhden seuraavista erikoismerkeistä: @, $, !, %, *, ?, &.
+            </Typography>
+          </Collapse>
+          
           <TextField
             name="confirmPassword"
             variant="outlined"
@@ -143,9 +182,22 @@ export default function Register() {
             fullWidth
             label="Vahvista salasana"
             autoComplete="password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             value={formData.confirmPassword}
             onChange={handleChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                    aria-label="toggle password visibility"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
 
           <Typography style={{ textAlign: "left" }} variant="body1">
