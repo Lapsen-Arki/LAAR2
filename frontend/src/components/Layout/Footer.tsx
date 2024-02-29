@@ -42,7 +42,7 @@ export default function Footer() {
           </Link>
           <Link
             className="footer-li footer-link"
-            to="https://www.kauppa.lapsen-arki.fi/tietoa-meista-2/"
+            to="https://www.kauppa.lapsen-arki.fi/tietoa-meista/"
           >
             Tietoa meistä
           </Link>
