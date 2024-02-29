@@ -220,14 +220,14 @@ export default function CarersProfile() {
           {inviteResult && inviteResult.includes("409") && (
             <Alert severity="info" sx={{ display: "-webkit-inline-box" }}>
               <AlertTitle>Hups!</AlertTitle>
-              Käyttäjä on jo kutsuttu.
+              Käyttäjä on jo kutsuttu, voit halutessasi kutsua toisen henkilön.
             </Alert>
           )}
 
           {inviteResult && inviteResult.includes("404") && (
             <Alert severity="warning">
               <AlertTitle>No höh, jokin meni pieleen.</AlertTitle>
-              Kutsuttava käyttäjä ei ole olemassa, tarkista sähköpostiosoite.
+              Se henkilö, jonka yritit kutsua, ei ole rekisteröitynyt vielä. Tarkista sähköpostiosoite ja yritä uudelleen.
             </Alert>
           )}
 
