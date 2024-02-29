@@ -38,7 +38,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     // Tarkistetaan, onko uusia profiileja löydetty
     if (!newProfiles || newProfiles.length === 0) {
-      console.error("Profiileja ei ole vielä lisätty.");
+      //("Profiileja ei ole vielä lisätty.");
       return [];
     }
   
@@ -57,7 +57,6 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     
       return combinedProfiles;
     } catch (error) {
-      console.log("Profiileja ei ole vielä lisätty.");
       console.error("Virhe profiileja haettaessa:", error);
       return [];
     }
