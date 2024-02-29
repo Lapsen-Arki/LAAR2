@@ -11,8 +11,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TokenContext } from "../../contexts/tokenContext";
 import { getSubscriptionStatus } from "../../api/stripeSubscriptions";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 // Getting real child data somewhere:
+
+interface CollapseOpen {
+  [key: string]: boolean;
+}
 
 export default function RecommComp({
   recommendations,
@@ -31,17 +37,27 @@ export default function RecommComp({
   const [selectedBox, setSelectedBox] = useState<string | string[]>("");
   const [selectionList, setSelectionList] = useState<string[]>([]);
   const [subscribed, setSubscribed] = useState(false);
-  const [collapseOpen, setCollapseOpen] = useState(false);
+  const [collapseOpen, setCollapseOpen] = useState<CollapseOpen>({});
   const { isLoggedIn, idToken } = useContext(TokenContext);
   const navigate = useNavigate();
 
   useEffect(() => {
     const getSubStatus = async () => {
-      const subscribedStatus = await getSubscriptionStatus(idToken);
-      setSubscribed(subscribedStatus);
+      let subscribedStatus;
+      if (idToken) {
+        subscribedStatus = await getSubscriptionStatus(idToken);
+        setSubscribed(subscribedStatus);
+      }
     };
     getSubStatus();
   });
+
+  const handleCollapse = (itemName: string) => {
+    setCollapseOpen((prevCollapseOpen) => ({
+      ...prevCollapseOpen,
+      [itemName]: !prevCollapseOpen[itemName],
+    }));
+  };
 
   const handleClick = () => {
     navigate("/results", {
@@ -119,22 +135,44 @@ export default function RecommComp({
                     return (
                       <React.Fragment key={itemName}>
                         {titleRendered === 1 && (
-                          <Grid item xs={12}>
+                          <Grid
+                            item
+                            xs={12}
+                            sx={{
+                              textAlign: "left",
+                            }}
+                          >
                             <Typography
                               variant="h5"
-                              sx={{ marginLeft: 0, textAlign: "left" }}
+                              sx={{
+                                marginLeft: 0,
+                                textAlign: "center",
+                                display: "inline-flex",
+                                flexDirection: "column",
+                              }}
                             >
                               {recommendation.title}:
+                              <Button
+                                variant="outlined"
+                                sx={{ fontSize: 8, p: 0, width: 2 }}
+                                onClick={() =>
+                                  handleCollapse(recommendation.title)
+                                }
+                              >
+                                {!collapseOpen[recommendation.title] && (
+                                  <KeyboardArrowDownIcon
+                                    sx={{ fontSize: 20 }}
+                                  />
+                                )}
+                                {collapseOpen[recommendation.title] && (
+                                  <KeyboardArrowUpIcon sx={{ fontSize: 20 }} />
+                                )}
+                              </Button>
                             </Typography>
-                            <Button
-                              onClick={() => setCollapseOpen(!collapseOpen)}
-                            >
-                              näytä/piilota
-                            </Button>
                           </Grid>
                         )}
                         <Grid item xs={12} sm={6} md={3} lg={2}>
-                          <Collapse in={collapseOpen}>
+                          <Collapse in={collapseOpen[recommendation.title]}>
                             <Card>
                               <CardActionArea
                                 sx={{
