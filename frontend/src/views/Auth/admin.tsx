@@ -25,6 +25,7 @@ const AdminPage = () => {
   const [category, setCategory] = React.useState("");
   const [typeSelect, setTypeSelect] = React.useState("");
   const [openInstructions, setOpenInstructions] = useState(false);
+  const [openTitleInstructions, setOpenTitleInstructions] = useState(false);
   const [openLoginModal, setOpenLoginModal] = React.useState(false);
   const [formData, setFormData] = React.useState<FormDataToBackend>({
     title: "",
@@ -150,10 +151,16 @@ const AdminPage = () => {
               <strong>Tyyppi = missä blockissa ja miten data näytetään.</strong>
             </Typography>
             <br />
-            <Button onClick={() => setOpenInstructions(!openInstructions)}>
-              <strong>Ohjeet tyyppien käyttöön:</strong>
+            <Button
+              variant="outlined"
+              onClick={() => setOpenInstructions(!openInstructions)}
+            >
+              <strong>Avaa ohjeet tyyppien käyttöön:</strong>
             </Button>
-            <Collapse in={openInstructions}>
+            <Collapse
+              in={openInstructions}
+              sx={{ border: "solid", borderWidth: 2, p: 2.5, mb: 5, mt: 2 }}
+            >
               <Typography>
                 <strong>Vinkkeihin on 3 tyyppiä.</strong> Päiväunet, iltatoimet
                 ja nukkuminen. <br /> <br />
@@ -221,6 +228,108 @@ const AdminPage = () => {
             aktiviteetit tai vinkit saman otsikon alle.
           </strong>
         </Typography>
+        <Button
+          variant="outlined"
+          sx={{ mb: 1 }}
+          onClick={() => setOpenTitleInstructions(!openTitleInstructions)}
+        >
+          <strong>Avaa ohjeet otsikon käyttöön:</strong>
+        </Button>
+        <Collapse
+          sx={{ border: "solid", borderWidth: 2, p: 2.5, mb: 5 }}
+          in={openTitleInstructions}
+        >
+          <Typography>
+            Jos lisäät täsmälleen samat seuraavat tiedot:
+            <br /> 1. Kategoria <br /> 2. Tyyppi <br /> 3. Otsikko. <br />
+            niin ruuat, aktiviteetit ja vinkit näkyvät aina saman otsikon
+            alapuoella. <br /> <br />
+            Jos taas jokin näistä kolmesta poikkeaa, niin luot kokonaan uuden
+            dokumentin tietokantaan, eli lisätyt ateriat, aktiviteetit tai
+            vinkit näkyvät toisen otsikon alla.
+            <br /> <br />
+            <strong>Esimerkki 1.</strong>
+            <br />
+            Lisäät seuraavat tiedot: <br />
+            <strong>T1</strong> <br />
+            1. Kategoria: Ateria <br />
+            2. Tyyppi: Molemmat <br />
+            3. Otsikko: Marjat <br />
+            <strong>JA</strong>
+            <br />
+            <strong>T2</strong>
+            <br />
+            1. Kategoria: Ateria <br />
+            2. Tyyppi: Pieni <br />
+            3. Otsikko: Marjat <br />
+            <strong>TULOS:</strong> <br />
+            <strong>Pienien aterioiden timeblock sivuilla:</strong> näkyy marjat
+            otsikko 2 kertaa, koska koska T1 ja T2 tyypit poikkeavat toisistaan.{" "}
+            <br />
+            <strong>1.</strong> ensimmäisen lisätyn tiedon <strong>T1</strong>{" "}
+            tyyppi on molemmat ja tämä näyttää marjat kaikilla ateria sivuilla
+            ja <br />
+            <strong>2.</strong> Toisen lisätyn tiedon <strong>T2</strong> tyyppi
+            on Pieni, niin Marjat näkyvät kaikkien pienien aterioiden sivuilla.
+            <br />
+            <strong>Isojen aterioiden timeblock sivuilla: </strong>näkyy marjat
+            otsikko 1 kerran, koska, <br />
+            <strong>1.</strong> Ensimmäisen tiedon <strong>T1</strong> tyyppi on
+            Molemmat, niin tieto näkyy kaikilla ateria sivuilla, myös isojen
+            ateroiden sivuille, kuten lounas ja päivällinen.
+            <br />
+            <strong>2.</strong> Toisen lisätyn tiedon <strong>T2</strong> tyypi
+            on Pieni, mikä näkyy ainoastaan pienien aterioiden sivuilla, mutta
+            ei isojen aterioiden sivuilla.
+            <br />
+            <br />
+            <strong>Esimerkki 2.</strong>
+            <br />
+            Lisäät seuraavat tiedot: <br />
+            <strong>T1</strong> <br />
+            1. Kategoria: Ateria <br />
+            2. Tyyppi: Molemmat <br />
+            3. Otsikko: Marjat <br />
+            <strong>JA</strong>
+            <br />
+            <strong>T2</strong>
+            <br />
+            1. Kategoria: Ateria <br />
+            2. Tyyppi: Molemmat <br />
+            3. Otsikko: Marjat <br />
+            <strong>TULOS:</strong> <br />
+            <Typography>
+              Ruuat näkyvät kaikilla ateriasivuilla aina saman otsikon
+              alapuoella.
+            </Typography>
+            <br />
+            <br />
+            <strong>Esimerkki 3.</strong>
+            <br />
+            Lisäät seuraavat tiedot: <br />
+            <strong>T1</strong> <br />
+            1. Kategoria: Ateria <br />
+            2. Tyyppi: Molemmat <br />
+            3. Otsikko: Marjat <br />
+            <strong>JA</strong>
+            <br />
+            <strong>T2</strong>
+            <br />
+            1. Kategoria: Ateria <br />
+            2. Tyyppi: Molemmat <br />
+            3. Otsikko: MARJAT <br />
+            <strong>TULOS:</strong> <br />
+            <strong>Kaikkien aterioiden timeblock sivuilla:</strong> näkyy
+            otsikot MARJAT ja Marjat otsikko 2 kertaa, koska T1 ja T2 otsikot
+            poikkeavat toisistaan. <br />
+            <strong>1.</strong> ensimmäisen lisätyn tiedon <strong>T1</strong>{" "}
+            otsikko on Marjat ja tämä näyttää Marjat otsikon ja sen alla olevat
+            tiedot kaikilla ateriasivuilla ja <br />
+            <strong>2.</strong> Toisen lisätyn tiedon <strong>T2</strong>{" "}
+            otsikko on MARJAT, niin MARJAT ja sen alla olevat tiedot näkyvät
+            kaikkien aterioiden sivuilla.
+          </Typography>
+        </Collapse>
         <TextField
           sx={{
             marginTop: 0,
