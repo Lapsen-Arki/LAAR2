@@ -38,6 +38,7 @@ export default function RecommComp({
   const [selectionList, setSelectionList] = useState<string[]>([]);
   const [subscribed, setSubscribed] = useState(false);
   const [collapseOpen, setCollapseOpen] = useState<CollapseOpen>({});
+  const [shoppingList, setShoppingList] = useState(false);
   const { isLoggedIn, idToken } = useContext(TokenContext);
   const navigate = useNavigate();
 
@@ -203,9 +204,24 @@ export default function RecommComp({
         );
       })}
       {subscribed && isLoggedIn && selectedBox.length > 0 && (
-        <Button onClick={handleClick} sx={{ mt: 5, mb: 5 }} variant="contained">
-          {mealType ? "Kokoa Ateria" : "Valitse aktiviteetti"}
-        </Button>
+        <div>
+          <Button
+            onClick={handleClick}
+            sx={{ mt: 5, mb: 5 }}
+            variant="contained"
+          >
+            {mealType ? "Kokoa Ateria" : "Valitse aktiviteetti"}
+          </Button>
+          {mealType && (
+            <Button
+              onClick={() => setShoppingList(!shoppingList)}
+              sx={{ mt: 5, mb: 5, ml: 1 }}
+              variant="contained"
+            >
+              {shoppingList ? "Päivitä ostoslista" : "Luo ostoslista"}
+            </Button>
+          )}
+        </div>
       )}
       {!isLoggedIn && selectedBox.length > 0 && (
         <>
