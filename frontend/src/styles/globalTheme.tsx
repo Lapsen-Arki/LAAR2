@@ -18,13 +18,13 @@ export const globalTheme = createTheme({
         },
         //Secondary
         outlined: {
-          color: "#A68477",
+          color: "black",
           fontWeight: "bold",
-          borderColor: "#A68477",
+          borderColor: highlightColor,
 
           "&:hover": {
-            backgroundColor: "#fff",
-            borderColor: "transparent",
+            borderColor: hoverHighlight,
+            color: hoverHighlight,
           },
         },
         //Tertiary
