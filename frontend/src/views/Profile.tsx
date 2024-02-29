@@ -4,6 +4,7 @@ import { Button, Box, Tooltip, Alert } from "@mui/material";
 
 import { TokenContext } from "../contexts/tokenContext";
 import PleaseLoginModal from "../components/modals/pleaseLoginModal.tsx";
+import HomeNavigate from "../components/homeNavigateComponent.tsx";
 
 import { useProfileUtils } from "../customHooks/useProfileUtils.tsx";
 import InvitedCarersComponent from "../components/profileComponents/invitedCarers.tsx";
@@ -32,6 +33,11 @@ export default function Profile() {
     <div className="profile-container">
       <div className="profile-view">
         {/* Otsikkorivi painikkeille */}
+
+        <div className="buttons-header" style={{ textAlign: 'center' }}>
+          <HomeNavigate tooltip="Lasten päivärytmiin" />
+        </div>
+
         <div className="buttons-header">
           <Tooltip title="Lisää profiili">
             <Button
@@ -42,6 +48,7 @@ export default function Profile() {
               Lisää profiili
             </Button>
           </Tooltip>
+
           <Tooltip title="Kutsu hoitaja">
             <Button
               variant="contained"
