@@ -23,7 +23,10 @@ export default function useGetRecommData(
     const fetchData = async () => {
       // Use session storage OR fetch & set the data:
 
-      const subscribed = await getSubscriptionStatus(idToken);
+      let subscribed;
+      if (idToken) {
+        subscribed = await getSubscriptionStatus(idToken);
+      }
 
       if (idToken && subscribed) {
         // Checking sessionStorage:
