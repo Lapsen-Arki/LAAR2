@@ -3,7 +3,7 @@ import buildData from "./accountSettingsComponents/dataHandler";
 import AccountSettings from "./accountSettingsComponents/accountSettings";
 import { UserContext } from "../contexts/userContext";
 import { AuthProvider } from "../contexts/authContext";
-import getSettings from "../api/accountSettings/getSettings";
+import getSettings from "../api/accountManagement/getSettings";
 import { TokenContext } from "../contexts/tokenContext";
 import { PaymentMethod } from "./accountSettingsComponents/types";
 import "../conf/firebaseSdkConfig";

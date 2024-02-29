@@ -26,7 +26,7 @@ import { AuthenticationError } from "./errors";
 import { TokenContext } from "../../contexts/tokenContext";
 import "./styles.css";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-
+import { deleteAccount } from "../../api/accountManagement/deleteAccount";
 const CARD_ELEMENT_STYLES = {
   style: {
     base: {
@@ -124,7 +124,8 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
 
   // Popout state for the change password field. This causes the password fields to pop out instead of always being visible to the user to save space on the page.
   const [popOutPassword, setPopoutPassword] = useState(false);
-
+  const sleep = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
   // Here we update the formValues and updatedFormFields objects when the form fields are changed.
   // This is done by using the field name as the key, and the value as the value.
   // The formValues show the current values of the form fields, and the updatedFormFields is used to store the values for submission.
@@ -179,6 +180,34 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       if (!editModes[fieldName]) {
         delete updatedFormFields[fieldName];
       }
+    }
+  };
+  const deleteUser = async () => {
+    if (auth === null || auth.currentUser === null || idToken === null) return;
+
+    if (
+      !confirm(
+        "Oletko varma, että haluat poistaa tilisi? Tämä toiminto EI ole peruutettavissa"
+      )
+    ) {
+      return; // User canceled the first confirmation
+    }
+
+    // Second confirmation
+    if (
+      !confirm(
+        "Oletko AIVAN varma, että haluat poistaa tilisi? Tämä toiminto EI ole peruutettavissa"
+      )
+    ) {
+      return; // User canceled the second confirmation
+    }
+
+    try {
+      const result = await deleteAccount(idToken);
+      alert(result.message);
+      await sleep(3000);
+    } catch (error) {
+      console.error("Error deleting account:", error);
     }
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -293,6 +322,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
               Tallenna muutokset
             </Button>
           </div>
+
           <Typography
             textAlign="center"
             sx={{ color: "red", marginBottom: 2, marginTop: 2 }}
@@ -306,6 +336,27 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
             {successMessage}
           </Typography>
         </form>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            style={{
+              backgroundColor: "red",
+              width: "90%",
+              marginBottom: "10px",
+            }}
+            onClick={deleteUser}
+          >
+            Poista tili
+          </Button>
+        </div>
       </Container>
     </ThemeProvider>
   );

@@ -10,7 +10,7 @@ import { FirebaseError } from "@firebase/util";
 import { AuthenticationError, PasswordError } from "./errors";
 /* import postSettings from "../../api/postSettings";*/
 import { AccountSettingsFormData, UpdateStatusDataType } from "./types";
-import postSettings from "../../api/accountSettings/postSettings";
+import postSettings from "../../api/accountManagement/postSettings";
 const updateStatus: UpdateStatusDataType = {
   password: { updated: false, status: "waiting", msg: "" },
   displayName: { updated: false, status: "waiting", msg: "" },

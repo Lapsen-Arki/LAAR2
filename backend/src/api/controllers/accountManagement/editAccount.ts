@@ -38,13 +38,17 @@ export const editAccount = async (req: Request, res: Response) => {
     }
 
     const requestData = req.body as EditRequestDataType;
-    const updatePaymentResult: PaymentResult = await updatePaymentMethod(
-      userDoc,
-      requestData
-    );
-    if (updatePaymentResult.code !== "success")
-      throw new APIError(updatePaymentResult.message, updatePaymentResult.code);
+
     if (requestData.paymentMethod.set) {
+      const updatePaymentResult: PaymentResult = await updatePaymentMethod(
+        userDoc,
+        requestData
+      );
+      if (updatePaymentResult.code !== "success")
+        throw new APIError(
+          updatePaymentResult.message,
+          updatePaymentResult.code
+        );
     }
     const dataToUpdate = await filterUpdateData(requestData);
     if (Object.keys(dataToUpdate).length === 0)
@@ -91,22 +95,20 @@ async function updatePaymentMethod(
   try {
     const token = requestData.paymentMethod.value;
     const stripeCustomerId = userDoc.data()?.stripeCustomerId;
-    const customer = await stripe.customers.retrieve(stripeCustomerId);
-    console.log("customer", customer);
-    console.log("token", token);
+
     const paymentMethod = await stripe.paymentMethods.create({
       type: "card",
       card: {
         token: token.id,
       },
     });
-    console.log("paymentMethod", paymentMethod);
+
     await stripe.paymentMethods.attach(paymentMethod.id, {
       customer: stripeCustomerId,
     });
 
-    const updatedCustomer = await stripe.customers.update(
-      customer.id,
+    await stripe.customers.update(
+      stripeCustomerId,
       {
         invoice_settings: {
           default_payment_method: paymentMethod.id,
@@ -114,10 +116,6 @@ async function updatePaymentMethod(
       } // Or the ID of an existing card
     );
 
-    console.log("updatedCustomer", updatedCustomer);
-    console.log("customer", customer);
-    console.log("stripeCustomerId", stripeCustomerId);
-    console.log("token", token);
     return { message: "Payment method updated", code: "success" };
   } catch (error) {
     console.error(error);

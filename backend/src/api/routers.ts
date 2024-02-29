@@ -25,8 +25,9 @@ import { getCarerProfile } from "./controllers/carersProfile/getCarerProfile";
 import { deleteCarerProfile } from "./controllers/carersProfile/deleteCarerProfile";
 import { getCarerChildProfiles } from "./controllers/carersProfile/getCarerChildProfiles";
 
-import { editAccount } from "./controllers/accountSettings/editAccount";
-import { getAccount } from "./controllers/accountSettings/getAccount";
+import { editAccount } from "./controllers/accountManagement/editAccount";
+import { getAccount } from "./controllers/accountManagement/getAccount";
+import { deleteAccount } from "./controllers/accountManagement/deleteAccount";
 // test controllers:
 
 const router = express.Router();
@@ -53,6 +54,7 @@ router.get("/getCarerChildProfiles", checkAuth, getCarerChildProfiles); // Hae h
 // Future User routes plan (?):
 router.get("/get-account-settings", checkAuth, getAccount);
 router.post("/post-account-settings", checkAuth, editAccount);
+router.post("/delete-account", checkAuth, deleteAccount);
 
 // router.get("/deleteAccount/:accountId", deleteAccount);
 
