@@ -9,7 +9,8 @@ import {
   Box,
   Collapse,
   IconButton,
-  InputAdornment
+  InputAdornment,
+  Tooltip
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from "../../styles/formThemeMUI";
@@ -165,9 +166,12 @@ export default function Register() {
             }}
           />
 
-          <IconButton onClick={handleToggle} aria-label="Lisätietoja salasanavaatimuksista">
-            <HelpOutline sx={{ color: '#63c8cc' }} /> <span style={{ fontSize: 18 }}>Klikkaa tästä lisätietoja salasanavaatimuksista</span>
-          </IconButton>
+          <Tooltip title="Klikkaa avataksesi salasanavaatimukset">
+            <IconButton onClick={handleToggle} aria-label="Lisätietoja salasanavaatimuksista">
+              <HelpOutline sx={{ color: '#63c8cc' }} /> <span style={{ fontSize: 18 }}>Klikkaa tästä lisätietoja salasanavaatimuksista</span>
+            </IconButton>
+          </Tooltip>
+          
           <Collapse in={isOpen}>
             <Typography variant="body1">
               Salasanan tulee olla vähintään 8 merkkiä pitkä ja sisältää ainakin yhden ison kirjaimen, yhden pienen kirjaimen, yhden numeron sekä vähintään yhden seuraavista erikoismerkeistä: @, $, !, %, *, ?, &.
