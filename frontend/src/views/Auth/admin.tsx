@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Typography,
   TextField,
@@ -8,6 +8,7 @@ import {
   FormControl,
   InputLabel,
   TextareaAutosize,
+  Collapse,
 } from "@mui/material";
 import { FormDataToBackend } from "../../types/recommTypes";
 import { adminAddData } from "../../api/adminAddData";
@@ -23,6 +24,7 @@ const AdminPage = () => {
   const [successMessage, setSuccessMessage] = React.useState("");
   const [category, setCategory] = React.useState("");
   const [typeSelect, setTypeSelect] = React.useState("");
+  const [openInstructions, setOpenInstructions] = useState(false);
   const [openLoginModal, setOpenLoginModal] = React.useState(false);
   const [formData, setFormData] = React.useState<FormDataToBackend>({
     title: "",
@@ -87,13 +89,17 @@ const AdminPage = () => {
   return (
     <div style={{ maxWidth: 500 }}>
       <Typography variant="h3">Admin Page</Typography>
+      <Typography variant="body1">
+        <strong style={{ color: "red" }}>
+          HUOM! Täytä lomakkeet hyvin huolellisesti ja tarkista oikeinkirjoitus.
+        </strong>
+      </Typography>
+      <Typography variant="body1">
+        Jos teet virheitä, niin ne tulee korjata manuaalisesti tietokannan
+        kautta.
+      </Typography>
+
       <Typography variant="h5">Lisää tieto:</Typography>
-      <Typography variant="body1">
-        HUOM! Täytä lomakkeet hyvin huolellisesti ja tarkista oikeinkirjoitus.
-      </Typography>
-      <Typography variant="body1">
-        Jos teet virheitä, niin ne tulee korjata tietokannan kautta.
-      </Typography>
 
       {/*main category */}
       <form onSubmit={handleSubmit}>
@@ -131,10 +137,56 @@ const AdminPage = () => {
           </Select>
         </FormControl>
         {category !== "activity" && (
-          <Typography>
-            Tyyppi määrittää missä tai missä time blockissa sisältö näytetään.
-            Tämä ei näy käyttäjälle:
-          </Typography>
+          <div>
+            <Typography>
+              Tyyppi on <strong>tekninen tunniste</strong>, joka määrittää missä
+              time blockissa/blockeissa sisältö näytetään.{" "}
+              <strong>tyyppejä voi olla tällä hetkellä vain 3</strong>, sillä
+              tyyppejä voidaan esittää vinkeissä ja aterioissa ainoastaan 3 eri
+              tavalla. <strong>TYYPPI EI NÄY KÄYTTÄJÄLLE. </strong>
+            </Typography>
+            <br />
+            <Typography>
+              <strong>Tyyppi = missä blockissa ja miten data näytetään.</strong>
+            </Typography>
+            <br />
+            <Button onClick={() => setOpenInstructions(!openInstructions)}>
+              <strong>Ohjeet tyyppien käyttöön:</strong>
+            </Button>
+            <Collapse in={openInstructions}>
+              <Typography>
+                <strong>Vinkkeihin on 3 tyyppiä.</strong> Päiväunet, iltatoimet
+                ja nukkuminen. <br /> <br />
+                <strong>1. päiväunet: </strong>
+                Jos valitset päiväunet tyypin, niin vinkki ja se sisällöt kuten
+                otsikko, kuva ja tekstisisältö näkyy päiväunet timeblockin
+                sisällä. <br /> <strong>2. iltatoimet: </strong> Jos valitset
+                iltatoimet tyypin, niin vinkki ja se sisällöt kuten otsikko,
+                kuva ja tekstisisältö näkyy iltatoimet timeblockin sisällä.{" "}
+                <br />
+                <strong>3. nukkuminen: </strong> Jos valitset nukkuminen tyypin,
+                niin vinkki ja se sisällöt kuten otsikko, kuva ja tekstisisältö
+                näkyy nukkuminen timeblockin sisällä.
+                <br />
+                <br />
+                <strong>Aterioihin on 3 tyyppiä.</strong> Pieni, iso ja
+                molemmat. <br /> <br />
+                <strong>1. Pieni: </strong>
+                Jos valitset pienen aterian tyypin, niin ateriaehdotukset ja
+                niiden sisällöt kuten otsikko, kuva ja tekstisisältö näkyvät
+                pienien aterioiden timeblockkien sisällä olevilla sivuilla,
+                kuten aamupala, välipala ja iltapala. <br />{" "}
+                <strong>2. iso: </strong> Jos valitset ison aterian tyypin, niin
+                ateriaehdotukset ja niiden sisällöt kuten otsikot, kuvat ja
+                tekstisisällöt näkyvät iltatoimet timeblockin sisällä olevilla
+                sivuilla, kuten lounas ja päivällinen. <br />
+                <strong>3. molemmat: </strong> Jos valitset molempien aterioiden
+                tyypin, niin ateria ehdotukset ja niiden sisällöt kuten otsikko,
+                kuva ja tekstisisältö näkyy kaikkien ateria timeblockkien
+                sisällä olevilla sivuilla.
+              </Typography>
+            </Collapse>
+          </div>
         )}
 
         {/*type / identifier: */}
@@ -162,7 +214,13 @@ const AdminPage = () => {
             </Select>
           </FormControl>
         )}
-
+        <Typography sx={{ mt: 2 }}>
+          Otsikko minkä alla näkyy aktiviteetti tai ateria ehdotukset. <br />
+          <strong>
+            HUOM. Kirjoita otsikot täsmälleen smalla tavalla, jos haluat ruuat,
+            aktiviteetit tai vinkit saman otsikon alle.
+          </strong>
+        </Typography>
         <TextField
           sx={{
             marginTop: 0,
@@ -175,9 +233,9 @@ const AdminPage = () => {
           onChange={handleChange}
           required
         />
-        <Typography>
-          Ruuan tai aktiviteetin nimi. HUOM. Älä lisää identtisiä nimiä samalla
-          otsikolla, kategorialla ja tyypillä.
+        <Typography sx={{ mt: 2 }}>
+          Ruuan tai aktiviteetin nimi.{" "}
+          <strong>HUOM. Älä lisää identtisiä nimiä.</strong>
         </Typography>
         <TextField
           sx={{
@@ -191,7 +249,7 @@ const AdminPage = () => {
           onChange={handleChange}
           required
         />
-        <Typography>Ikäraja kuukausina:</Typography>
+        <Typography sx={{ mt: 2 }}>Ikäraja kuukausina:</Typography>
         <TextField
           sx={{
             marginTop: 0,

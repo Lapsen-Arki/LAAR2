@@ -1,4 +1,11 @@
-import { Typography, Grid, Card, CardActionArea, Button } from "@mui/material";
+import {
+  Typography,
+  Grid,
+  Card,
+  CardActionArea,
+  Button,
+  Collapse,
+} from "@mui/material";
 import { RecommendationsType } from "../../types/recommTypes";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -24,6 +31,7 @@ export default function RecommComp({
   const [selectedBox, setSelectedBox] = useState<string | string[]>("");
   const [selectionList, setSelectionList] = useState<string[]>([]);
   const [subscribed, setSubscribed] = useState(false);
+  const [collapseOpen, setCollapseOpen] = useState(false);
   const { isLoggedIn, idToken } = useContext(TokenContext);
   const navigate = useNavigate();
 
@@ -118,27 +126,34 @@ export default function RecommComp({
                             >
                               {recommendation.title}:
                             </Typography>
+                            <Button
+                              onClick={() => setCollapseOpen(!collapseOpen)}
+                            >
+                              näytä/piilota
+                            </Button>
                           </Grid>
                         )}
                         <Grid item xs={12} sm={6} md={3} lg={2}>
-                          <Card>
-                            <CardActionArea
-                              sx={{
-                                padding: 2,
-                                minHeight: 80,
-                                backgroundColor: Array.isArray(selectedBox)
-                                  ? selectedBox.includes(itemName)
+                          <Collapse in={collapseOpen}>
+                            <Card>
+                              <CardActionArea
+                                sx={{
+                                  padding: 2,
+                                  minHeight: 80,
+                                  backgroundColor: Array.isArray(selectedBox)
+                                    ? selectedBox.includes(itemName)
+                                      ? "orange"
+                                      : "white"
+                                    : selectedBox === itemName
                                     ? "orange"
-                                    : "white"
-                                  : selectedBox === itemName
-                                  ? "orange"
-                                  : "white",
-                              }}
-                              onClick={() => selectionHandler(itemName)}
-                            >
-                              <Typography variant="h6">{itemName}</Typography>
-                            </CardActionArea>
-                          </Card>
+                                    : "white",
+                                }}
+                                onClick={() => selectionHandler(itemName)}
+                              >
+                                <Typography variant="h6">{itemName}</Typography>
+                              </CardActionArea>
+                            </Card>
+                          </Collapse>
                         </Grid>
                       </React.Fragment>
                     );
