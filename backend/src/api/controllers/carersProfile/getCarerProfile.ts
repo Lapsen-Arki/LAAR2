@@ -10,7 +10,6 @@ interface CarerProfile {
 
 const getCarerProfile = async (req: Request, res: Response): Promise<void> => {
   try {
-    checkAuth(req, res, async () => {
       const senderUid = (res as any).userId; // middleware asettaa userId:n res-objektiin
       //("Sender UID:", senderUid);
 
@@ -42,7 +41,7 @@ const getCarerProfile = async (req: Request, res: Response): Promise<void> => {
       }
 
       res.status(200).json(profiles);
-    });
+    
   } catch (error: any) {
     console.error("Hoitajaprofiilien hakeminen epäonnistui", error);
     res.status(500).json({ error: "Jotain meni pieleen" });

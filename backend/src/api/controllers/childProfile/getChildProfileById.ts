@@ -21,7 +21,6 @@ const getChildProfileById = async (
 
   try {
     // Käytä checkAuth-middlewarea tokenien tarkastukseen
-    checkAuth(req, res, async () => {
       const creatorId = (res as any).userId; // Hae userId res-objektista
 
       const db = admin.firestore();
@@ -40,7 +39,6 @@ const getChildProfileById = async (
       profileData.id = profileDoc.id;
 
       res.status(200).json(profileData);
-    });
   } catch (error: any) {
     console.error("Profiilin hakeminen epäonnistui", error);
     res.status(500).json({ error: "Jotain meni pieleen" });

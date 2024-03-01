@@ -21,7 +21,6 @@ interface ExtendedChildProfile extends ChildProfile {
 const getCarerChildProfiles = async (req: Request, res: Response) => {
   try {
     // Tarkista ensin käyttäjän todennus ja hae userId
-    checkAuth(req, res, async () => {
       const receiverUid = (res as any).userId; // Käytetään tallennettua UID:ta
 
       const db = admin.firestore();
@@ -61,7 +60,6 @@ const getCarerChildProfiles = async (req: Request, res: Response) => {
       }
 
       return res.status(200).json({ carerChildProfiles });
-    });
   } catch (error) {
     console.error("Virhe hoidettavien lapsiprofiilien haussa: ", error);
     return res.status(500).json({ error: "Palvelinvirhe" });
