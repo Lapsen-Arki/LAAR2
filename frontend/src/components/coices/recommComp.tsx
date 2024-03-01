@@ -152,7 +152,7 @@ export default function RecommComp({
         }
 
         return (
-          <div key={index} style={{ marginTop: 25 }}>
+          <div key={index} style={{ marginTop: 25, marginBottom: 50 }}>
             <Grid container spacing={3} sx={{ textAlign: "center" }}>
               {/* Iterate trough all the recommendations in the object */}
               {Object.entries(recommendation.recomm).map(
