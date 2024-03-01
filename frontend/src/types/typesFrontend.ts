@@ -94,7 +94,7 @@ export interface SubscriptionData {
 }
 
 export interface ConfirmationDialogProps {
-  subscriptionCancelled: boolean | undefined;
+  subscription : SubscriptionData | null | undefined;
   onCancelSubscription: () => Promise<void>;
   onStartSubscription: () => Promise<void>;
   open: boolean;
