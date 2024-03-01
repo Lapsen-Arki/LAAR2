@@ -7,7 +7,7 @@ export default function ShoppingListComp({
 }) {
   return (
     <Paper
-      sx={{ p: 3, pb: 5, maxWidth: 280, m: 5 }}
+      sx={{ p: 3, pb: 5, maxWidth: 280, display: "block", mx: "auto", my: 2 }}
       variant="elevation"
       elevation={10}
     >

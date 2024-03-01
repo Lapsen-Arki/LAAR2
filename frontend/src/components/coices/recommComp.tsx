@@ -14,6 +14,7 @@ import { getSubscriptionStatus } from "../../api/stripeSubscriptions";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import ShoppingListComp from "../shoppingListComp";
+import ReturnBtn from "../returnBtn";
 
 // Getting real child data somewhere:
 
@@ -52,7 +53,7 @@ export default function RecommComp({
       }
     };
     getSubStatus();
-    const savedShoppingListJSON = sessionStorage.getItem("shoppingList");
+    const savedShoppingListJSON = localStorage.getItem("shoppingList");
     if (savedShoppingListJSON) {
       const savedShoppingList = JSON.parse(savedShoppingListJSON);
       setShoppingList(savedShoppingList);
@@ -61,9 +62,9 @@ export default function RecommComp({
 
   const handleShoppingList = () => {
     // 1. Tallentaa tai päivittää ensin session storageen
-    const shoppingListJSON = sessionStorage.getItem("shoppingList");
+    const shoppingListJSON = localStorage.getItem("shoppingList");
     if (!shoppingListJSON) {
-      sessionStorage.setItem("shoppingList", JSON.stringify(selectionList));
+      localStorage.setItem("shoppingList", JSON.stringify(selectionList));
       setShoppingList(selectionList);
     } else {
       const oldShoppingList = JSON.parse(shoppingListJSON);
@@ -71,7 +72,7 @@ export default function RecommComp({
         (item) => !oldShoppingList.includes(item)
       );
       const newList: string[] = [...oldShoppingList, ...filteredList];
-      sessionStorage.setItem("shoppingList", JSON.stringify(newList));
+      localStorage.setItem("shoppingList", JSON.stringify(newList));
       setShoppingList(newList);
     }
     // 2. 10-30 sekunnun timeoutin jälkeen tallentaa tietokantaan, eli kutsuu API function:
@@ -230,32 +231,36 @@ export default function RecommComp({
           </div>
         );
       })}
-      {subscribed && isLoggedIn && selectedBox.length > 0 && (
-        <div>
+
+      <div>
+        {/* Kokoa Ateria btn */}
+        {subscribed && isLoggedIn && selectedBox.length > 0 && (
           <Button
             onClick={handleClick}
-            sx={{ mt: 5, mb: 5 }}
+            sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
             variant="contained"
           >
             {mealType ? "Kokoa Ateria" : "Valitse aktiviteetti"}
           </Button>
-          {mealType && (
-            <Button
-              onClick={handleShoppingList}
-              sx={{ mt: 5, mb: 5, ml: 1 }}
-              variant="contained"
-            >
-              {shoppingList ? "Lisää ostoslistalle" : "Luo ostoslista"}
-            </Button>
-          )}
-        </div>
-      )}
+        )}
+        {/* Ostoslistqa btn */}
+        {mealType && selectedBox.length > 0 && (
+          <Button
+            onClick={handleShoppingList}
+            sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
+            variant="contained"
+          >
+            {shoppingList ? "Lisää ostoslistalle" : "Luo ostoslista"}
+          </Button>
+        )}
+      </div>
 
+      {/* Avaa kaikki ominaisuudet btn */}
       {!isLoggedIn && selectedBox.length > 0 && (
         <>
           <Button
             onClick={registerNowClick}
-            sx={{ mt: 5, mb: 2, mr: 1 }}
+            sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
             variant="contained"
           >
             Rekisteröidy nyt!
@@ -263,22 +268,14 @@ export default function RecommComp({
           <Typography>
             Avaa kaikki ominaisuudet ja aloita 14 päivän ilmainen kokeilu!
           </Typography>
-          {mealType && (
-            <Button
-              onClick={handleShoppingList}
-              sx={{ mt: 5, mb: 5 }}
-              variant="contained"
-            >
-              {shoppingList ? "Lisää ostoslistalle" : "Luo ostoslista"}
-            </Button>
-          )}
         </>
       )}
+      {/* Jatka tilausta btn */}
       {isLoggedIn && !subscribed && selectedBox.length > 0 && (
         <>
           <Button
             onClick={subscribeNowClick}
-            sx={{ mt: 5, mb: 2 }}
+            sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
             variant="contained"
           >
             Jatka tilausta
@@ -286,8 +283,16 @@ export default function RecommComp({
           <Typography>Ja avaa kaikki ominaisuudet!</Typography>
         </>
       )}
+      <div style={{ marginTop: 50 }}>
+        <ReturnBtn message="Palaa etusivulle" />
+      </div>
+      {/* Shopping list: */}
       {shoppingList && mealType && (
-        <ShoppingListComp shoppingList={shoppingList} />
+        <div>
+          <ShoppingListComp shoppingList={shoppingList} />
+
+          {shoppingList.length > 15 && <ReturnBtn message="palaa etusivulle" />}
+        </div>
       )}
     </div>
   );

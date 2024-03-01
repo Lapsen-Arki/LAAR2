@@ -154,7 +154,6 @@ export default function ChoicesPage() {
         <br />
         <br />
         <br />
-        <ReturnBtn message="palaa etusivulle" />
       </Container>
     </>
   );
