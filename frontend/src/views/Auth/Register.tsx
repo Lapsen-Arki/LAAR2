@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Container,
   TextField,
@@ -7,6 +7,10 @@ import {
   Checkbox,
   FormControlLabel,
   Box,
+  Collapse,
+  IconButton,
+  InputAdornment,
+  Tooltip,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from "../../styles/formThemeMUI";
@@ -16,6 +20,8 @@ import { RegisterData } from "../../types/typesFrontend";
 import { useNavigate } from "react-router-dom";
 import ReturnBtn from "../../components/returnBtn";
 import { Link } from "react-router-dom";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { HelpOutline } from "@mui/icons-material";
 
 // TODO: 1. Pankkikortin vahvistuksen lisääminen 2. EXTRA: Google ja Facebook kirjautumis vaihtoehdot
 const CARD_ELEMENT_STYLES = {
@@ -40,6 +46,8 @@ const CARD_ELEMENT_STYLES = {
 };
 
 export default function Register() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
   const [isFocused, setIsFocused] = React.useState(false);
@@ -91,6 +99,15 @@ export default function Register() {
       }
     }
   };
+
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <ThemeProvider theme={formTheme}>
       <Container component="main" maxWidth="sm" style={{ textAlign: "center" }}>
@@ -123,18 +140,51 @@ export default function Register() {
             value={formData.name}
             onChange={handleChange}
           />
+
+          <Tooltip title="Klikkaa avataksesi salasanavaatimukset">
+            <IconButton
+              onClick={handleToggle}
+              aria-label="Lisätietoja salasanavaatimuksista"
+            >
+              <HelpOutline sx={{ color: "#63c8cc" }} />{" "}
+              <span style={{ fontSize: 14 }}>Avaa salasanavaatimukset</span>
+            </IconButton>
+          </Tooltip>
+
+          <Collapse in={isOpen}>
+            <Typography sx={{ fontSize: 14, mb: 1 }} variant="body1">
+              Salasanan tulee olla vähintään 8 merkkiä pitkä ja sisältää ainakin
+              yhden ison kirjaimen, yhden pienen kirjaimen, yhden numeron sekä
+              vähintään yhden seuraavista erikoismerkeistä: @, $, !, %, *, ?, &.
+            </Typography>
+          </Collapse>
+
           <TextField
             name="password"
             variant="outlined"
-            margin="dense"
+            margin="none"
             required
             fullWidth
             label="Salasana"
             autoComplete="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={formData.password}
             onChange={handleChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                    aria-label="toggle password visibility"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
+
           <TextField
             name="confirmPassword"
             variant="outlined"
@@ -143,9 +193,22 @@ export default function Register() {
             fullWidth
             label="Vahvista salasana"
             autoComplete="password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={formData.confirmPassword}
             onChange={handleChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                    aria-label="toggle password visibility"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
 
           <Typography style={{ textAlign: "left" }} variant="body1">
@@ -190,9 +253,9 @@ export default function Register() {
             style={{ marginTop: 15, wordBreak: "break-word", hyphens: "auto" }}
             variant="body1"
           >
-            Rekisteröitymällä aloitan 14 vrk ilmaisen kokeulujakson ja palvelun
+            Rekisteröitymällä aloitan 14 vrk ilmaisen kokeilujakson ja palvelun
             hinta on tämän jälkeen 6,99€/kk. Tilauksen voit peruttaa koska
-            tahansa päättymään maksukauden loppuun.
+            tahansa.
           </Typography>
           {/* Repeat for other fields like password, confirm password, etc. */}
 

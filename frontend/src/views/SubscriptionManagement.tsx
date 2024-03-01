@@ -112,7 +112,7 @@ const SubscriptionManagement: React.FC = () => {
       <ConfirmationDialog
         onCancelSubscription={handleCancelSubscription}
         onStartSubscription={handleStartSubscription}
-        subscriptionCancelled={subscription?.cancel_at_period_end}
+        subscription={subscription}
         open={open}
         onClose={handleConfirmationDialogClose}
       />
@@ -127,19 +127,13 @@ const SubscriptionManagement: React.FC = () => {
         </Card>
       )}
       <br></br>
-      {!isLoading && subscription?.cancel_at_period_end && (
-        <Button
-          onClick={handleConfirmationDialogOpen}
-          variant="contained"
-          sx={{
-            backgroundColor: "#63c8cc",
-          }}
-        >
+      {!isLoading && (subscription?.cancel_at_period_end || !subscription) && (
+        <Button onClick={handleConfirmationDialogOpen} variant="contained">
           Jatka tilausta
         </Button>
       )}{" "}
       {isLoading && <LoadingComponent />}
-      {!isLoading && !subscription?.cancel_at_period_end && (
+      {!isLoading && subscription && !subscription?.cancel_at_period_end && (
         <Button onClick={handleConfirmationDialogOpen} variant="contained">
           Keskeytä tilaus
         </Button>
