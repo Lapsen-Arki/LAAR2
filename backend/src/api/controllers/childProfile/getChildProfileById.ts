@@ -1,7 +1,5 @@
 import { Request, Response } from "express";
 import admin from "../../../config/firebseConfig";
-import { firestore } from "firebase-admin";
-import checkAuth from "../../../middleware/checkAuth";
 
 interface ChildProfile {
   id: string;

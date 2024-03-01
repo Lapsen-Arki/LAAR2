@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import admin from "../../../config/firebseConfig";
-import checkAuth from "../../../middleware/checkAuth";
 
 // Määritellään lapsiprofiilin rakenne
 interface ChildProfile {
