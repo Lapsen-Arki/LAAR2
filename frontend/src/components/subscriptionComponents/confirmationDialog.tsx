@@ -12,7 +12,7 @@ const ConfirmationDialog = (props: ConfirmationDialogProps) => {
   const {
     onCancelSubscription,
     onStartSubscription,
-    subscriptionCancelled,
+    subscription,
     onClose,
     open,
   } = props;
@@ -24,19 +24,23 @@ const ConfirmationDialog = (props: ConfirmationDialogProps) => {
     <div>
       <Dialog onClose={handleClose} open={open}>
         <DialogTitle>
-          {subscriptionCancelled
-            ? "Olet jatkamassa tilausta"
-            : "Olet keskeyttämässä tilausta"}
+          {(!subscription || subscription.cancel_at_period_end) &&
+            "Olet jatkamassa tilausta"}
+          {subscription &&
+            !subscription.cancel_at_period_end &&
+            "Olet keskeyttämässä tilausta"}
         </DialogTitle>
         <DialogContent dividers>
           <DialogContentText>
-            {subscriptionCancelled
-              ? "Painamalla 'Jatka tilausta'-painiketta jatkat jäsenyyttäsi LAAR:ssa. Sinua tullaan veloittamaan automaattisesti aina seuraavan jäsenyyskuukauden alkaessa."
-              : "Painamalla 'Keskeytä tilaus'-painiketta keskeytät jäsenyytesi LAAR:ssa. Sinua ei veloiteta enää tulevista kuukausista. Jäsenyytesi jatkuu maksetun kuukauden loppuun saakka. Voit jatkaa jäsenyyttäsi koska tahansa."}
+            {(!subscription || subscription.cancel_at_period_end) &&
+              "Painamalla 'Jatka tilausta'-painiketta jatkat jäsenyyttäsi LAAR:ssa. Sinua tullaan veloittamaan automaattisesti aina seuraavan jäsenyyskuukauden alkaessa."}
+            {subscription &&
+              !subscription.cancel_at_period_end &&
+              "Painamalla 'Keskeytä tilaus'-painiketta keskeytät jäsenyytesi LAAR:ssa. Sinua ei veloiteta enää tulevista kuukausista. Jäsenyytesi jatkuu maksetun kuukauden loppuun saakka. Voit jatkaa jäsenyyttäsi koska tahansa."}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          {subscriptionCancelled ? (
+          {(!subscription || subscription.cancel_at_period_end) && (
             <Button
               onClick={onStartSubscription}
               variant="contained"
@@ -44,7 +48,8 @@ const ConfirmationDialog = (props: ConfirmationDialogProps) => {
             >
               Jatka tilausta
             </Button>
-          ) : (
+          )}
+          {subscription && !subscription.cancel_at_period_end && (
             <Button
               onClick={onCancelSubscription}
               variant="contained"
