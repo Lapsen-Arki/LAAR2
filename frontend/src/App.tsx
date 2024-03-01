@@ -12,6 +12,7 @@ import SubscriptionManagement from "./views/SubscriptionManagement";
 import AccountSettingsPage from "./views/accountSettings";
 import ChoicesPage from "./views/choices";
 import Results from "./views/results";
+import ShoppingList from "./views/shoppingList";
 
 // Higher Order Components (HOC):
 import Layout from "./components/Layout/Layout";
@@ -58,6 +59,7 @@ function App() {
                     element={<SubscriptionManagement />}
                   />
                   <Route path="/account" element={<AccountSettingsPage />} />
+                  <Route path="/shopping-list" element={<ShoppingList />} />
                 </Routes>
               </Layout>
             </Elements>

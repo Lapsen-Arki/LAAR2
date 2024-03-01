@@ -16,14 +16,14 @@ export default function LandingComp() {
         <Typography variant="h5">Tueksi vanhemmuuden polulla.</Typography>
         <hr />
         <Typography variant="body1">
-          Olemme täällä auttamassa uusien vanhempien arkea ja arkirutiinia,
-          antamassa haluskoja suositukisa aktiviteetteihin, käytännön vinkkejä
-          sekä ideoita aterioiden kokoamiseen eri ikäisille vauva- ja
+          Olemme täällä auttamassa uusien vanhempien arkea ja arkirutiineja,
+          antamassa hauskoja suosituksia aktiviteetteihin, käytännön vinkkejä
+          sekä ideoita aterioiden kokoamiseen eri-ikäisille vauva- ja
           taaperoikäisille lapsille.
         </Typography>
         <br />
         <Typography variant="body1">
-          Tutustu alla siihen, miten sovelluksemme voi rikastuttaa sinun ja
+          Tutustu alta siihen, miten sovelluksemme voi rikastuttaa sinun ja
           perheesi arkea. Jos koet, että Lapsen Arki voisi olla osa teidän
           perheenjäsentenne päivittäistä elämää, liittykää rohkeasti mukaan
           yhteisöömme. Toivotamme sinut lämpimästi tervetulleeksi!
