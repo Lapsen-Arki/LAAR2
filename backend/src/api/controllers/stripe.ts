@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
 import stripeConf from "../../config/stripeClient";
-import checkAuth from "../../middleware/checkAuth";
 
 const stripe = stripeConf();
 
@@ -10,7 +9,6 @@ const startSubscription = async (
   res: Response
 ): Promise<void> => {
   try {
-    checkAuth(req, res, async () => {
       const db = admin.firestore();
 
       const userId = (res as any).userId;
@@ -70,7 +68,6 @@ const startSubscription = async (
             .json({ created, current_period_end, cancel_at_period_end });
         }
       }
-    });
   } catch (error) {
     console.error("Error starting subscription:", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -82,7 +79,6 @@ const cancelSubscription = async (
   res: Response
 ): Promise<void> => {
   try {
-    checkAuth(req, res, async () => {
       const db = admin.firestore();
       const userId = (res as any).userId;
 
@@ -107,7 +103,6 @@ const cancelSubscription = async (
       res
         .status(200)
         .json({ created, current_period_end, cancel_at_period_end });
-    });
   } catch (error) {
     console.error("Error canceling subscription:", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -119,7 +114,6 @@ const getSubscriptionById = async (
   res: Response
 ): Promise<void> => {
   try {
-    checkAuth(req, res, async () => {
       const db = admin.firestore();
 
       const userId = (res as any).userId;
@@ -148,9 +142,9 @@ const getSubscriptionById = async (
           .json({ created, current_period_end, cancel_at_period_end });
         return;
       } else {
-        return res.status(200).json(null);
+        res.status(200).json(null);
+		return;
       }
-    });
   } catch (error) {
     res.status(500).json({ error: "Internal Server Error" });
     return;
