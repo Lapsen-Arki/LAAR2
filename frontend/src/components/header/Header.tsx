@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 
 export default function Header() {
   const [openBurger, setOpenBurger] = useState(false);
-  const [smallScreen, setSmallScreen] = useState(false);
+  const [smallScreen, setSmallScreen] = useState(window.innerWidth < 600);
 
   useEffect(() => {
     const handleResize = () => {

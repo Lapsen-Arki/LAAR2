@@ -37,7 +37,7 @@ export default function RecommComp({
   // selectedChild pitää saada tänne -> resetoida selectionList kun se muuttuu.
   const [selectedBox, setSelectedBox] = useState<string | string[]>("");
   const [selectionList, setSelectionList] = useState<string[]>([]);
-  const [subscribed, setSubscribed] = useState(false);
+  const [subscribed, setSubscribed] = useState<boolean | null>(false);
   const [collapseOpen, setCollapseOpen] = useState<CollapseOpen>({});
   const [shoppingList, setShoppingList] = useState<string[] | null>(null);
   const { isLoggedIn, idToken } = useContext(TokenContext);
