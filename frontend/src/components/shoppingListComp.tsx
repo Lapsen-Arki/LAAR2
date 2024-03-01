@@ -12,8 +12,12 @@ export default function ShoppingListComp({
       elevation={10}
     >
       <Typography
-        sx={{ fontFamily: "'Indie Flower', cursive", mb: 2 }}
-        variant="h3"
+        sx={{
+          fontFamily: "'Indie Flower', cursive",
+          mb: 2,
+          textAlign: "center",
+        }}
+        variant="h4"
       >
         Ostoslista:{" "}
       </Typography>

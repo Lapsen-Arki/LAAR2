@@ -1,6 +1,7 @@
 import { Container } from "@mui/material";
 import { useEffect, useState } from "react";
 import ShoppingListComp from "../components/shoppingListComp";
+import ReturnBtn from "../components/returnBtn";
 
 export default function ShoppingList() {
   const [shoppingList, setShoppingList] = useState<string[]>([]);
@@ -14,7 +15,8 @@ export default function ShoppingList() {
   }, []);
 
   return (
-    <Container>
+    <Container sx={{ width: 400 }}>
+      <ReturnBtn />
       <ShoppingListComp shoppingList={shoppingList} />
     </Container>
   );
