@@ -44,7 +44,8 @@ const stripeSubscription = async (
 
 const getSubscriptionStatus = async (
   idToken: string | null
-): Promise<boolean> => {
+): Promise<boolean | null> => {
+	if (idToken) {
   try {
     let subscriptionStatus: SubscriptionData;
 
@@ -73,6 +74,8 @@ const getSubscriptionStatus = async (
     console.error("Tilausta noudettaessa tapahtui virhe.");
     return false;
   }
+}
+return null;
 };
 
 export { stripeSubscription, getSubscriptionStatus };
