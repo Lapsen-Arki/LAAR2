@@ -1,10 +1,9 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const postSettings = async (settings: FormData, idToken: string) => {
+export const deleteAccount = async (idToken: string) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/edit-account`, {
+    const response = await fetch(`${API_BASE_URL}/delete-account`, {
       method: "POST",
-      body: settings,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${idToken}`,
@@ -14,11 +13,9 @@ const postSettings = async (settings: FormData, idToken: string) => {
       return await response.json();
     } else {
       const data = await response.json();
-      throw new Error(data.message);
+      return data;
     }
   } catch (error) {
-    return error;
+    console.error(error);
   }
 };
-
-export default postSettings;
