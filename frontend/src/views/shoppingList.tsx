@@ -1,8 +1,9 @@
-import { Container, Paper, Typography } from "@mui/material";
+import { Container } from "@mui/material";
 import { useEffect, useState } from "react";
+import ShoppingListComp from "../components/shoppingListComp";
 
 export default function ShoppingList() {
-  const [shoppingList, setShoppingList] = useState([]);
+  const [shoppingList, setShoppingList] = useState<string[]>([]);
 
   useEffect(() => {
     const shoppingListJSON = sessionStorage.getItem("shoppingList");
@@ -14,29 +15,7 @@ export default function ShoppingList() {
 
   return (
     <Container>
-      <Paper sx={{ p: 2, pb: 5 }} variant="elevation" elevation={10}>
-        <Typography
-          sx={{ fontFamily: "'Indie Flower', cursive", mb: 2 }}
-          variant="h3"
-        >
-          Ostoslista:{" "}
-        </Typography>
-        {shoppingList.map((listItem) => {
-          return (
-            <Typography
-              key={listItem}
-              variant="body1"
-              sx={{
-                fontFamily: "'Indie Flower', cursive",
-                fontSize: 20,
-                marginTop: 1,
-              }}
-            >
-              - {listItem}
-            </Typography>
-          );
-        })}
-      </Paper>
+      <ShoppingListComp shoppingList={shoppingList} />
     </Container>
   );
 }

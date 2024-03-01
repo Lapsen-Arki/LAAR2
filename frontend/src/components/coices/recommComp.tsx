@@ -13,6 +13,7 @@ import { TokenContext } from "../../contexts/tokenContext";
 import { getSubscriptionStatus } from "../../api/stripeSubscriptions";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import ShoppingListComp from "../shoppingListComp";
 
 // Getting real child data somewhere:
 
@@ -249,19 +250,12 @@ export default function RecommComp({
           )}
         </div>
       )}
-      {shoppingList && mealType && (
-        <div>
-          <Typography variant="h5">Ostoslista:</Typography>
-          {shoppingList.map((listItem) => {
-            return <Typography key={listItem}>{listItem}</Typography>;
-          })}
-        </div>
-      )}
+
       {!isLoggedIn && selectedBox.length > 0 && (
         <>
           <Button
             onClick={registerNowClick}
-            sx={{ mt: 5, mb: 2 }}
+            sx={{ mt: 5, mb: 2, mr: 1 }}
             variant="contained"
           >
             Rekisteröidy nyt!
@@ -272,7 +266,7 @@ export default function RecommComp({
           {mealType && (
             <Button
               onClick={handleShoppingList}
-              sx={{ mt: 5, mb: 5, ml: 1 }}
+              sx={{ mt: 5, mb: 5 }}
               variant="contained"
             >
               {shoppingList ? "Lisää ostoslistalle" : "Luo ostoslista"}
@@ -291,6 +285,9 @@ export default function RecommComp({
           </Button>
           <Typography>Ja avaa kaikki ominaisuudet!</Typography>
         </>
+      )}
+      {shoppingList && mealType && (
+        <ShoppingListComp shoppingList={shoppingList} />
       )}
     </div>
   );
