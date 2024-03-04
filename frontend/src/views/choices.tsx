@@ -106,7 +106,7 @@ export default function ChoicesPage() {
       <Container
         sx={{
           width: {
-            xs: "100%",
+            xs: "95%",
             sm: "600px",
             md: "800px",
             lg: "1200px",
@@ -154,7 +154,6 @@ export default function ChoicesPage() {
         <br />
         <br />
         <br />
-        <ReturnBtn message="palaa etusivulle" />
       </Container>
     </>
   );

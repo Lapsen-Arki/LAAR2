@@ -95,13 +95,18 @@ export default function Header() {
                 >
                   <HeaderLink
                     setOpen={setOpenBurger}
-                    navLinkTo="https://www.kauppa.lapsen-arki.fi/blogi-artikkelit/"
-                    navLinkName="Blogi"
+                    navLinkTo="/shopping-list"
+                    navLinkName="Ostoslista"
                   />
                   <HeaderLink
                     setOpen={setOpenBurger}
                     navLinkTo="https://www.kauppa.lapsen-arki.fi/kauppa/"
                     navLinkName="Kauppa"
+                  />
+                  <HeaderLink
+                    setOpen={setOpenBurger}
+                    navLinkTo="https://www.kauppa.lapsen-arki.fi/blogi-artikkelit/"
+                    navLinkName="Blogi"
                   />
                   <HeaderIcons setOpen={setOpenBurger} />
                 </Box>
