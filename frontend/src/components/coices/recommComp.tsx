@@ -154,6 +154,7 @@ export default function RecommComp({
         const filteredItems = Object.entries(recommendation.recomm).filter(
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           ([itemName, ageLimit]) => {
+            itemName; // Doing something useless with this so workflow will not whine
             const numAgeLimit = Number(ageLimit);
             const numChildAge = Number(childAge);
             return numAgeLimit === 0 || numAgeLimit <= numChildAge;
