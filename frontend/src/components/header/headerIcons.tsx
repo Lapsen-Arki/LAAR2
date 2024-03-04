@@ -24,7 +24,7 @@ export default function HeaderIcons({
   };
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center", ml: 2, mb: 2, mt: 1.5 }}>
+    <Box sx={{ display: "flex", flexDirection: 'row', alignItems: "center", ml: 2, mb: 2, mt: 1.5 }}>
       {/* Logout icon: */}
       {isLoggedIn && (
         <div>
