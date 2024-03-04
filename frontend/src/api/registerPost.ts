@@ -2,9 +2,7 @@ import axios from "axios";
 import { RegisterData } from "../types/typesFrontend";
 import { Token } from "@stripe/stripe-js";
 
-// TODO: Move to env variables etc:
-const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const registerUser = async (
   registerData: RegisterData,

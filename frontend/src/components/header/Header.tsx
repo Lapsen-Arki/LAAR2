@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 
 export default function Header() {
   const [openBurger, setOpenBurger] = useState(false);
-  const [smallScreen, setSmallScreen] = useState(false);
+  const [smallScreen, setSmallScreen] = useState(window.innerWidth < 600);
 
   useEffect(() => {
     const handleResize = () => {
@@ -95,13 +95,18 @@ export default function Header() {
                 >
                   <HeaderLink
                     setOpen={setOpenBurger}
-                    navLinkTo="https://www.kauppa.lapsen-arki.fi/blogi-artikkelit/"
-                    navLinkName="Blogi"
+                    navLinkTo="/shopping-list"
+                    navLinkName="Ostoslista"
                   />
                   <HeaderLink
                     setOpen={setOpenBurger}
                     navLinkTo="https://www.kauppa.lapsen-arki.fi/kauppa/"
                     navLinkName="Kauppa"
+                  />
+                  <HeaderLink
+                    setOpen={setOpenBurger}
+                    navLinkTo="https://www.kauppa.lapsen-arki.fi/blogi-artikkelit/"
+                    navLinkName="Blogi"
                   />
                   <HeaderIcons setOpen={setOpenBurger} />
                 </Box>

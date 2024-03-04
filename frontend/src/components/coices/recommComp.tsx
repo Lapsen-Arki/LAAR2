@@ -1,10 +1,26 @@
-import { Typography, Grid, Card, CardActionArea, Button } from "@mui/material";
+import {
+  Typography,
+  Grid,
+  Card,
+  CardActionArea,
+  Button,
+  Collapse,
+} from "@mui/material";
 import { RecommendationsType } from "../../types/recommTypes";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TokenContext } from "../../contexts/tokenContext";
+import { getSubscriptionStatus } from "../../api/stripeSubscriptions";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import ShoppingListComp from "../shoppingListComp";
+import ReturnBtn from "../returnBtn";
 
 // Getting real child data somewhere:
+
+interface CollapseOpen {
+  [key: string]: boolean;
+}
 
 export default function RecommComp({
   recommendations,
@@ -22,8 +38,53 @@ export default function RecommComp({
   // selectedChild pitää saada tänne -> resetoida selectionList kun se muuttuu.
   const [selectedBox, setSelectedBox] = useState<string | string[]>("");
   const [selectionList, setSelectionList] = useState<string[]>([]);
-  const { isLoggedIn } = useContext(TokenContext);
+  const [subscribed, setSubscribed] = useState<boolean | null>(false);
+  const [collapseOpen, setCollapseOpen] = useState<CollapseOpen>({});
+  const [shoppingList, setShoppingList] = useState<string[] | null>(null);
+  const { isLoggedIn, idToken } = useContext(TokenContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getSubStatus = async () => {
+      let subscribedStatus;
+      if (idToken) {
+        subscribedStatus = await getSubscriptionStatus(idToken);
+        setSubscribed(subscribedStatus);
+      }
+    };
+    getSubStatus();
+    const savedShoppingListJSON = localStorage.getItem("shoppingList");
+    if (savedShoppingListJSON) {
+      const savedShoppingList = JSON.parse(savedShoppingListJSON);
+      setShoppingList(savedShoppingList);
+    }
+  }, [idToken]);
+
+  const handleShoppingList = () => {
+    // 1. Tallentaa tai päivittää ensin session storageen
+    const shoppingListJSON = localStorage.getItem("shoppingList");
+    if (!shoppingListJSON) {
+      localStorage.setItem("shoppingList", JSON.stringify(selectionList));
+      setShoppingList(selectionList);
+    } else {
+      const oldShoppingList = JSON.parse(shoppingListJSON);
+      const filteredList = selectionList.filter(
+        (item) => !oldShoppingList.includes(item)
+      );
+      const newList: string[] = [...oldShoppingList, ...filteredList];
+      localStorage.setItem("shoppingList", JSON.stringify(newList));
+      setShoppingList(newList);
+    }
+    // 2. 10-30 sekunnun timeoutin jälkeen tallentaa tietokantaan, eli kutsuu API function:
+    // Koska muuten: "eikun lisäänkin mansikat vielä ostoslistalle" tms
+  };
+
+  const handleCollapse = (itemName: string) => {
+    setCollapseOpen((prevCollapseOpen) => ({
+      ...prevCollapseOpen,
+      [itemName]: !prevCollapseOpen[itemName],
+    }));
+  };
 
   const handleClick = () => {
     navigate("/results", {
@@ -31,8 +92,14 @@ export default function RecommComp({
     });
     window.scrollTo(0, 0);
   };
+
   const registerNowClick = () => {
     navigate("/register");
+    window.scrollTo(0, 0);
+  };
+
+  const subscribeNowClick = () => {
+    navigate("/subscription");
     window.scrollTo(0, 0);
   };
 
@@ -85,7 +152,7 @@ export default function RecommComp({
         }
 
         return (
-          <div key={index} style={{ marginTop: 25 }}>
+          <div key={index} style={{ marginTop: 25, marginBottom: 50 }}>
             <Grid container spacing={3} sx={{ textAlign: "center" }}>
               {/* Iterate trough all the recommendations in the object */}
               {Object.entries(recommendation.recomm).map(
@@ -97,34 +164,63 @@ export default function RecommComp({
                     return (
                       <React.Fragment key={itemName}>
                         {titleRendered === 1 && (
-                          <Grid item xs={12}>
+                          <Grid
+                            item
+                            xs={12}
+                            sx={{
+                              textAlign: "left",
+                            }}
+                          >
                             <Typography
                               variant="h5"
-                              sx={{ marginLeft: 0, textAlign: "left" }}
+                              sx={{
+                                marginLeft: 0,
+                                textAlign: "center",
+                                display: "inline-flex",
+                                flexDirection: "column",
+                              }}
                             >
                               {recommendation.title}:
+                              <Button
+                                variant="outlined"
+                                sx={{ fontSize: 8, p: 0, width: 2 }}
+                                onClick={() =>
+                                  handleCollapse(recommendation.title)
+                                }
+                              >
+                                {!collapseOpen[recommendation.title] && (
+                                  <KeyboardArrowDownIcon
+                                    sx={{ fontSize: 20 }}
+                                  />
+                                )}
+                                {collapseOpen[recommendation.title] && (
+                                  <KeyboardArrowUpIcon sx={{ fontSize: 20 }} />
+                                )}
+                              </Button>
                             </Typography>
                           </Grid>
                         )}
                         <Grid item xs={12} sm={6} md={3} lg={2}>
-                          <Card>
-                            <CardActionArea
-                              sx={{
-                                padding: 2,
-                                minHeight: 80,
-                                backgroundColor: Array.isArray(selectedBox)
-                                  ? selectedBox.includes(itemName)
+                          <Collapse in={collapseOpen[recommendation.title]}>
+                            <Card>
+                              <CardActionArea
+                                sx={{
+                                  padding: 2,
+                                  minHeight: 80,
+                                  backgroundColor: Array.isArray(selectedBox)
+                                    ? selectedBox.includes(itemName)
+                                      ? "orange"
+                                      : "white"
+                                    : selectedBox === itemName
                                     ? "orange"
-                                    : "white"
-                                  : selectedBox === itemName
-                                  ? "orange"
-                                  : "white",
-                              }}
-                              onClick={() => selectionHandler(itemName)}
-                            >
-                              <Typography variant="h6">{itemName}</Typography>
-                            </CardActionArea>
-                          </Card>
+                                    : "white",
+                                }}
+                                onClick={() => selectionHandler(itemName)}
+                              >
+                                <Typography variant="h6">{itemName}</Typography>
+                              </CardActionArea>
+                            </Card>
+                          </Collapse>
                         </Grid>
                       </React.Fragment>
                     );
@@ -135,16 +231,36 @@ export default function RecommComp({
           </div>
         );
       })}
-      {isLoggedIn && selectedBox.length > 0 && (
-        <Button onClick={handleClick} sx={{ mt: 5, mb: 5 }} variant="contained">
-          {mealType ? "Kokoa Ateria" : "Valitse aktiviteetti"}
-        </Button>
-      )}
+
+      <div>
+        {/* Kokoa Ateria btn */}
+        {subscribed && isLoggedIn && selectedBox.length > 0 && (
+          <Button
+            onClick={handleClick}
+            sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
+            variant="contained"
+          >
+            {mealType ? "Kokoa Ateria" : "Valitse aktiviteetti"}
+          </Button>
+        )}
+        {/* Ostoslistqa btn */}
+        {mealType && selectedBox.length > 0 && (
+          <Button
+            onClick={handleShoppingList}
+            sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
+            variant="contained"
+          >
+            {shoppingList ? "Lisää ostoslistalle" : "Luo ostoslista"}
+          </Button>
+        )}
+      </div>
+
+      {/* Avaa kaikki ominaisuudet btn */}
       {!isLoggedIn && selectedBox.length > 0 && (
         <>
           <Button
             onClick={registerNowClick}
-            sx={{ mt: 5, mb: 2 }}
+            sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
             variant="contained"
           >
             Rekisteröidy nyt!
@@ -153,6 +269,30 @@ export default function RecommComp({
             Avaa kaikki ominaisuudet ja aloita 14 päivän ilmainen kokeilu!
           </Typography>
         </>
+      )}
+      {/* Jatka tilausta btn */}
+      {isLoggedIn && !subscribed && selectedBox.length > 0 && (
+        <>
+          <Button
+            onClick={subscribeNowClick}
+            sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
+            variant="contained"
+          >
+            Jatka tilausta
+          </Button>
+          <Typography>Ja avaa kaikki ominaisuudet!</Typography>
+        </>
+      )}
+      <div style={{ marginTop: 50 }}>
+        <ReturnBtn message="Palaa etusivulle" />
+      </div>
+      {/* Shopping list: */}
+      {shoppingList && mealType && (
+        <div>
+          <ShoppingListComp shoppingList={shoppingList} />
+
+          {shoppingList.length > 15 && <ReturnBtn message="palaa etusivulle" />}
+        </div>
       )}
     </div>
   );

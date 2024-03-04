@@ -63,13 +63,22 @@ export default function ChildInfoComp({
               >
                 Lapsen allergiat:
               </Typography>
+              {mealType && childData.allergies && (
+                <Typography
+                  sx={{ marginRight: 1, textAlign: "center" }}
+                  variant="body1"
+                >
+                  <strong>{childData.allergies}</strong>
+                </Typography>
+              )}
               <Typography
                 sx={{
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
+                  textAlign: "center",
+                  fontSize: "small",
                 }}
-                style={{ fontSize: "small" }}
               >
                 (HUOM. Allergioita ei oiteta huomioon ruokasuosituksissa.
                 Tarkista aina allergeenit.)
@@ -82,13 +91,7 @@ export default function ChildInfoComp({
               justifyContent: "center",
               alignItems: "center",
             }}
-          >
-            {mealType && childData.allergies && (
-              <Typography sx={{ marginRight: 1 }} variant="body1">
-                <strong>{childData.allergies}</strong>
-              </Typography>
-            )}
-          </Grid>
+          ></Grid>
         </>
       )}
     </>
