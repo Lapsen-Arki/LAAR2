@@ -1,4 +1,4 @@
-import { Button, CardMedia, Typography } from "@mui/material";
+import { Box, Button, CardMedia, Typography } from "@mui/material";
 import { RecommendationsType } from "../../types/recommTypes";
 import useGetRecommData from "../../customHooks/useGetRecommData";
 import { useContext } from "react";
@@ -43,21 +43,32 @@ export default function TipsComp({ adviseType }: { adviseType: string }) {
         return (
           <div key={index}>
             {recommendation.photos && (
-              <CardMedia
-                component="img"
-                image={correctImage}
-                alt="Placeholder Image"
-                sx={{ maxWidth: 300, maxHeight: 300 }}
-              />
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  image={correctImage}
+                  alt="Placeholder Image"
+                  sx={{ maxWidth: 300, maxHeight: 300 }}
+                />
+              </Box>
             )}
             <Typography variant="h4">{recommendation.title}</Typography>
 
-            <Typography
-              component="pre"
-              style={{ whiteSpace: "pre-wrap", marginBottom: 20 }}
-            >
-              {recommendation.textContent[recommendation.title]}
-            </Typography>
+            {Object.entries(recommendation.textContent).map(([key, value]) => (
+              <Typography
+                key={key}
+                component="pre"
+                style={{ whiteSpace: "pre-wrap", marginBottom: 20 }}
+              >
+                {value}
+              </Typography>
+            ))}
             <hr />
             {!isLoggedIn && (
               <>
