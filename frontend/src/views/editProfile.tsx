@@ -208,7 +208,6 @@ const EditProfile = () => {
             label="Erityisruokavaliot"
             margin="dense"
             variant="outlined"
-            inputProps={{ maxLength: 50 }}
             value={childAllergies}
             onChange={(e) => setChildAllergies(e.target.value)}
           />
