@@ -365,7 +365,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
             variant="contained"
             color="primary"
             style={{
-              backgroundColor: "red",
+              backgroundColor: "#FF5733",
               width: "90%",
             }}
             onClick={deleteUser}
