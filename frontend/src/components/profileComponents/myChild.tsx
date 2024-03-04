@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -6,9 +6,7 @@ import {
   Avatar,
   IconButton,
   Tooltip,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
+  Collapse,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
@@ -31,6 +29,17 @@ const MyChildComponent: React.FC = () => {
     cancelDelete,
     handleDeleteConfirmed,
   } = useProfileUtils();
+
+  const [expandedCollapses, setExpandedCollapses] = useState<{
+    [key: string]: boolean;
+  }>({});
+
+  const handleToggle = (id: string) => {
+    setExpandedCollapses((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   return (
     <div style={{ flex: 1 }}>
@@ -105,34 +114,6 @@ const MyChildComponent: React.FC = () => {
                     {calculateAge(new Date(profile.birthdate)).birthdayWish}
                   </Typography>
 
-                  <Accordion
-                    disableGutters
-                    sx={{ border: "none", boxShadow: "none" }}
-                  >
-                    <AccordionSummary
-                      aria-controls="allergies-dropdown"
-                      id="allergies-dropdown"
-                      expandIcon={<ExpandMoreIcon />}
-                      sx={{
-                        paddingLeft: 0,
-                        paddingRight: 0,
-                        paddingTop: 0,
-                        "&:before": {
-                          display: "none", // Remove the line at the top
-                        },
-                      }}
-                    >
-                      <Typography variant="subtitle1" color="text.secondary">
-                        Allergiat
-                      </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails sx={{ paddingLeft: 0 }}>
-                      <Typography variant="subtitle1" color="text.secondary">
-                        {profile.allergies}
-                      </Typography>
-                    </AccordionDetails>
-                  </Accordion>
-
                   <Typography
                     variant="subtitle1"
                     color="text.secondary"
@@ -140,6 +121,35 @@ const MyChildComponent: React.FC = () => {
                   >
                     {`Pääsy muilla: ${profile.accessRights ? "Kyllä" : "Ei"}`}
                   </Typography>
+
+                  <Typography
+                    variant="subtitle1"
+                    onClick={() => handleToggle(profile.id)}
+                    color="text.secondary"
+                    component="div"
+                  >
+                    Erityisruokavaliot
+                    <IconButton style={{ marginLeft: "auto" }}>
+                      <ExpandMoreIcon
+                        style={{
+                          transform: expandedCollapses[profile.id]
+                            ? "rotate(180deg)"
+                            : "rotate(0deg)",
+                        }}
+                      />
+                    </IconButton>
+                  </Typography>
+                  <Collapse in={expandedCollapses[profile.id]} sx={{maxWidth: '200px'}}>
+                    <Typography
+                      variant="subtitle1"
+                      color="text.secondary"
+                      style={{ fontFamily: "monospace" }}
+                    >
+                      {profile.allergies
+                        ? profile.allergies
+                        : "Ei lisättyjä erityisruokavalioita."}
+                    </Typography>
+                  </Collapse>
                 </CardContent>
 
                 <div className="card-icons">

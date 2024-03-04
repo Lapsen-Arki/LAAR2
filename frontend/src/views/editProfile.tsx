@@ -205,7 +205,7 @@ const EditProfile = () => {
           <TextField
             sx={{ width: 260 }}
             id="childAllergies"
-            label="Allergiat"
+            label="Erityisruokavaliot"
             margin="dense"
             variant="outlined"
             inputProps={{ maxLength: 50 }}
