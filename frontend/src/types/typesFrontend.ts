@@ -2,6 +2,16 @@ import { Token } from "@stripe/stripe-js";
 
 // FRONTEND TYPE INTERFACES
 
+export interface Message {
+  id: string;
+  senderId: string;
+  receiverId: string;
+  message: string;
+  text: string;
+  timestamp: Date;
+  isUser: boolean;
+}
+
 export interface RegisterData {
   email: string;
   name: string;
@@ -94,7 +104,7 @@ export interface SubscriptionData {
 }
 
 export interface ConfirmationDialogProps {
-  subscription : SubscriptionData | null | undefined;
+  subscription: SubscriptionData | null | undefined;
   onCancelSubscription: () => Promise<void>;
   onStartSubscription: () => Promise<void>;
   open: boolean;

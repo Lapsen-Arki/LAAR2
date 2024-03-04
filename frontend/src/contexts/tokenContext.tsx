@@ -43,7 +43,7 @@ function TokenProvider({ children }: { children: ReactNode }) {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
-        setIdToken(null);
+        if (sessionStorage.getItem("")) setIdToken(null);
         sessionStorage.clear();
         localStorage.clear();
         navigate("/");

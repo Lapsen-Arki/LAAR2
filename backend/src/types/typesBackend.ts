@@ -1,5 +1,15 @@
 // BACKEND TYPE INTERFACES
 
+export interface Message {
+  id: string;
+  senderId: string;
+  receiverId: string;
+  message: string;
+  text: string; // Chattirobotti message content
+  timestamp: Date; // Change the type to number
+  isUser: boolean;
+}
+
 export interface RegisterData {
   email: string;
   name: string;
