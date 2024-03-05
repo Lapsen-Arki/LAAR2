@@ -9,6 +9,7 @@ import NameDropDown from "../components/index/nameDropDown";
 import { getChildProfiles } from "../api/childProfile/getChildProfiles";
 import makeChildObject from "../utils/makeChildObject";
 import { getCarerChildProfiles } from "../api/carersProfile/getCarerChildProfiles";
+import selectRandomPhoto from "../utils/randomPhoto";
 
 export default function IndexPage() {
   const { isLoggedIn, idToken } = useContext(TokenContext);
@@ -29,7 +30,22 @@ export default function IndexPage() {
   return (
     <>
       <Container>
-        {!isLoggedIn && <LandingComp />}
+        {!isLoggedIn ? (
+          <LandingComp />
+        ) : (
+          <img
+            src={selectRandomPhoto()}
+            alt="Kuva"
+            style={{
+              width: "80%",
+              maxWidth: 500,
+              height: "auto",
+              display: "block", // Make the image a block-level element
+              marginLeft: "auto", // Automatically adjust the left margin
+              marginRight: "auto",
+            }}
+          />
+        )}
         <NameDropDown />
         <TimeBlockComp /> {/* <-- Routes to choices page with renderIdentif */}
         <Typography variant="h5">
