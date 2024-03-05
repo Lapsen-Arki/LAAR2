@@ -15,8 +15,12 @@ export default function ActivityComp({
 
   return (
     <>
-      <Typography variant="h4">Aktiviteetteja:</Typography>
-      <Typography>Lapsen ikään sopivia aktiviteetteja:</Typography>
+      <Typography sx={{ textAlign: "center" }} variant="h4">
+        Aktiviteetteja:
+      </Typography>
+      <Typography sx={{ textAlign: "center" }}>
+        Lapsen ikään sopivia aktiviteetteja:
+      </Typography>
       <RecommComp
         recommendations={recommendations}
         multipleSelections={true}
