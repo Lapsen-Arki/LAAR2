@@ -11,6 +11,7 @@ import {
 
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 
 import { ThemeProvider } from "@mui/material/styles";
 import HeaderLink from "./headerLink";
@@ -29,7 +30,7 @@ export default function Header() {
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "left", margin: 2 }}>
       <div style={{ display: "flex", alignItems: "baseline" }}>
         <BrandingBanner />
-        <CloseIcon />
+        <CancelPresentationIcon />
       </div>
       <HeaderLink />
       <Divider />
@@ -75,6 +76,7 @@ export default function Header() {
                 "& .MuiDrawer-paper": {
                   boxSizing: "border-box",
                   width: "360px",
+                  backgroundColor: "#fff4ec",
                 },
               }}
             >

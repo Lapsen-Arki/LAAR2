@@ -85,6 +85,7 @@ export default function HeaderIcons() {
             keepMounted
             open={Boolean(settingsAnchor)}
             onClose={() => setSettingsAnchor(null)}
+            sx={{ display: { xs: "none", md: "block" } }}
           >
             <MenuItem
               component={Link}
@@ -98,7 +99,7 @@ export default function HeaderIcons() {
               to="/subscription"
               onClick={handleAnchorClose}
             >
-              Tilaus asetukset
+              Tilaukset
             </MenuItem>
             <MenuItem
               component={Link}
