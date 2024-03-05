@@ -1,18 +1,19 @@
 import LoginIcon from "@mui/icons-material/Login";
-import HomeIcon from '@mui/icons-material/Home';
+import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { IconButton, Box, Tooltip, Menu, MenuItem } from "@mui/material";
+import { 
+  IconButton, 
+  Box, Tooltip, 
+  Menu, 
+  MenuItem 
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import { TokenContext } from "../../contexts/tokenContext";
 import { useContext, useState } from "react";
 
-export default function HeaderIcons({
-  setOpen,
-}: {
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
+export default function HeaderIcons() {
   const { isLoggedIn, signOutMethod } = useContext(TokenContext);
   const [settingsAnchor, setSettingsAnchor] = useState<null | HTMLElement>(
     null
@@ -20,11 +21,19 @@ export default function HeaderIcons({
 
   const handleAnchorClose = () => {
     setSettingsAnchor(null);
-    setOpen(false);
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: 'row', alignItems: "center", ml: 2, mb: 2, mt: 1.5 }}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        ml: 2,
+        mb: 2,
+        mt: 1.5,
+      }}
+    >
       {/* Logout icon: */}
       {isLoggedIn && (
         <div>
@@ -32,7 +41,6 @@ export default function HeaderIcons({
             <IconButton
               size="large"
               onClick={() => {
-                setOpen(false);
                 signOutMethod();
               }}
               color="inherit"
@@ -47,13 +55,7 @@ export default function HeaderIcons({
       {isLoggedIn ? (
         <div>
           <Tooltip title="Etusivu">
-            <IconButton
-              size="large"
-              component={Link}
-              onClick={() => setOpen(false)}
-              to="/"
-              color="inherit"
-            >
+            <IconButton size="large" component={Link} to="/" color="inherit">
               <HomeIcon />
             </IconButton>
           </Tooltip>
@@ -62,7 +64,6 @@ export default function HeaderIcons({
             <IconButton
               size="large"
               component={Link}
-              onClick={() => setOpen(false)}
               to="/profile"
               color="inherit"
             >
@@ -115,7 +116,6 @@ export default function HeaderIcons({
         <div>
           <Tooltip title="Kirjaudu sisään">
             <IconButton
-              onClick={() => setOpen(false)}
               size="large"
               component={Link}
               to="/login"
@@ -126,13 +126,7 @@ export default function HeaderIcons({
           </Tooltip>
 
           <Tooltip title="Etusivu">
-            <IconButton
-              onClick={() => setOpen(false)}
-              size="large"
-              component={Link}
-              to="/"
-              color="inherit"
-            >
+            <IconButton size="large" component={Link} to="/" color="inherit">
               <HomeIcon />
             </IconButton>
           </Tooltip>

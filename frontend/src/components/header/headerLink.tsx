@@ -5,9 +5,14 @@ import ListItemText from "@mui/material/ListItemText";
 import { Link } from "react-router-dom";
 
 // HeaderLinks component for individual links
-export default function HeaderLink () {
+export default function HeaderLink() {
   return (
-    <List sx={{ display: { sx: 'block', sm: 'flex'}}}>
+    <List sx={{ display: { sx: "block", md: "flex" } }}>
+      <ListItem disablePadding sx={{ display: { md: "none" } }}>
+        <ListItemButton component={Link} to="/" sx={{ textAlign: "left" }}>
+          <ListItemText primary="Etusivu" />
+        </ListItemButton>
+      </ListItem>
       <ListItem disablePadding>
         <ListItemButton
           component={Link}
@@ -37,6 +42,4 @@ export default function HeaderLink () {
       </ListItem>
     </List>
   );
-};
-
-
+}

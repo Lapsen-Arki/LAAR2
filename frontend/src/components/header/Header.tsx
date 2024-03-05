@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import { headingTheme } from "../../styles/themeMUI";
 import {
   AppBar,
@@ -15,6 +14,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import { ThemeProvider } from "@mui/material/styles";
 import HeaderLink from "./headerLink";
+import HeaderIconsAsText from "./headerIconsAsText";
 import HeaderIcons from "./headerIcons";
 import BrandingBanner from "./headerBrandingBanner";
 
@@ -31,9 +31,9 @@ export default function Header() {
         <BrandingBanner />
         <CloseIcon />
       </div>
-      <Divider />
       <HeaderLink />
-      <HeaderIcons setOpen={setMobileOpen} />
+      <Divider />
+      <HeaderIconsAsText />
     </Box>
   );
 
@@ -44,22 +44,21 @@ export default function Header() {
           <AppBar component="nav">
             <Toolbar>
               <BrandingBanner />
-
               {/* Burger menu icon: */}
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
                 edge="end"
                 onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { sm: "none" } }}
+                sx={{ mr: 2, display: { md: "none" } }}
               >
                 <MenuIcon />
               </IconButton>
 
               {/* NavBar Navigation links */}
-              <Box sx={{ display: { xs: "none", sm: "flex" } }}>
+              <Box sx={{ display: { xs: "none", md: "flex" } }}>
                 <HeaderLink />
-                <HeaderIcons setOpen={setMobileOpen} />
+                <HeaderIcons />
               </Box>
             </Toolbar>
           </AppBar>
@@ -72,7 +71,7 @@ export default function Header() {
                 keepMounted: true, // Better open performance on mobile.
               }}
               sx={{
-                display: { xs: "block", sm: "none" },
+                display: { xs: "block", md: "none" },
                 "& .MuiDrawer-paper": {
                   boxSizing: "border-box",
                   width: "65vw",
