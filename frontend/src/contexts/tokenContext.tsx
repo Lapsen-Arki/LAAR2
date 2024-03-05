@@ -43,9 +43,13 @@ function TokenProvider({ children }: { children: ReactNode }) {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
+        const savedList = localStorage.getItem("shoppingList");
         setIdToken(null);
         sessionStorage.clear();
         localStorage.clear();
+        if (savedList) {
+          localStorage.setItem("shoppingList", savedList);
+        }
         navigate("/");
       })
       .catch((error) => {

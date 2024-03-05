@@ -151,149 +151,179 @@ export default function RecommComp({
           }
         }
 
-        return (
-          <div key={index} style={{ marginTop: 25, marginBottom: 50 }}>
-            <Grid container spacing={3} sx={{ textAlign: "center" }}>
-              {/* Iterate trough all the recommendations in the object */}
-              {Object.entries(recommendation.recomm).map(
-                ([itemName, ageLimit]) => {
-                  const numAgeLimit = Number(ageLimit);
-                  const numChildAge = Number(childAge);
-                  if (numAgeLimit === 0 || numAgeLimit <= numChildAge) {
-                    titleRendered++;
-                    return (
-                      <React.Fragment key={itemName}>
-                        {titleRendered === 1 && (
-                          <Grid
-                            item
-                            xs={12}
-                            sx={{
-                              textAlign: "left",
-                            }}
-                          >
-                            <Typography
-                              variant="h5"
-                              sx={{
-                                marginLeft: 0,
-                                textAlign: "center",
-                                display: "inline-flex",
-                                flexDirection: "column",
-                              }}
-                            >
-                              {recommendation.title}:
-                              <Button
-                                variant="outlined"
-                                sx={{ fontSize: 8, p: 0, width: 2 }}
-                                onClick={() =>
-                                  handleCollapse(recommendation.title)
-                                }
-                              >
-                                {!collapseOpen[recommendation.title] && (
-                                  <KeyboardArrowDownIcon
-                                    sx={{ fontSize: 20 }}
-                                  />
-                                )}
-                                {collapseOpen[recommendation.title] && (
-                                  <KeyboardArrowUpIcon sx={{ fontSize: 20 }} />
-                                )}
-                              </Button>
-                            </Typography>
-                          </Grid>
-                        )}
-                        <Grid item xs={12} sm={6} md={3} lg={2}>
-                          <Collapse in={collapseOpen[recommendation.title]}>
-                            <Card>
-                              <CardActionArea
-                                sx={{
-                                  padding: 2,
-                                  minHeight: 80,
-                                  backgroundColor: Array.isArray(selectedBox)
-                                    ? selectedBox.includes(itemName)
-                                      ? "orange"
-                                      : "white"
-                                    : selectedBox === itemName
-                                    ? "orange"
-                                    : "white",
-                                }}
-                                onClick={() => selectionHandler(itemName)}
-                              >
-                                <Typography variant="h6">{itemName}</Typography>
-                              </CardActionArea>
-                            </Card>
-                          </Collapse>
-                        </Grid>
-                      </React.Fragment>
-                    );
-                  }
-                }
-              )}
-            </Grid>
-          </div>
+        const filteredItems = Object.entries(recommendation.recomm).filter(
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          ([itemName, ageLimit]) => {
+            itemName; // Doing something useless with this so workflow will not whine
+            const numAgeLimit = Number(ageLimit);
+            const numChildAge = Number(childAge);
+            return numAgeLimit === 0 || numAgeLimit <= numChildAge;
+          }
         );
+
+        if (filteredItems.length > 0) {
+          return (
+            <div key={index} style={{ marginTop: 25, marginBottom: 50 }}>
+              <Grid
+                container
+                spacing={2}
+                sx={{
+                  textAlign: "center",
+                  border: "solid",
+                  borderColor: "#fad4b4",
+                  pr: 2,
+                  pb: 2,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {/* Iterate trough all the recommendations in the object */}
+                {Object.entries(recommendation.recomm).map(
+                  ([itemName, ageLimit]) => {
+                    const numAgeLimit = Number(ageLimit);
+                    const numChildAge = Number(childAge);
+                    if (numAgeLimit === 0 || numAgeLimit <= numChildAge) {
+                      titleRendered++;
+                      return (
+                        <React.Fragment key={itemName}>
+                          {titleRendered === 1 && (
+                            <Grid item xs={12}>
+                              <Typography
+                                variant="h5"
+                                sx={{
+                                  display: "inline-flex",
+                                  flexDirection: "column",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                }}
+                              >
+                                {recommendation.title}:
+                                <Button
+                                  variant="outlined"
+                                  sx={{
+                                    fontSize: 8,
+                                    p: 0,
+                                    width: 2,
+                                  }}
+                                  onClick={() =>
+                                    handleCollapse(recommendation.title)
+                                  }
+                                >
+                                  {!collapseOpen[recommendation.title] && (
+                                    <KeyboardArrowDownIcon
+                                      sx={{ fontSize: 20 }}
+                                    />
+                                  )}
+                                  {collapseOpen[recommendation.title] && (
+                                    <KeyboardArrowUpIcon
+                                      sx={{ fontSize: 20 }}
+                                    />
+                                  )}
+                                </Button>
+                              </Typography>
+                            </Grid>
+                          )}
+                          <Grid item xs={12} sm={6} md={4} lg={3}>
+                            <Collapse in={collapseOpen[recommendation.title]}>
+                              <Card>
+                                <CardActionArea
+                                  sx={{
+                                    minHeight: 80,
+                                    backgroundColor: Array.isArray(selectedBox)
+                                      ? selectedBox.includes(itemName)
+                                        ? "orange"
+                                        : "white"
+                                      : selectedBox === itemName
+                                      ? "orange"
+                                      : "white",
+                                  }}
+                                  onClick={() => selectionHandler(itemName)}
+                                >
+                                  <Typography variant="h6">
+                                    {itemName}
+                                  </Typography>
+                                </CardActionArea>
+                              </Card>
+                            </Collapse>
+                          </Grid>
+                        </React.Fragment>
+                      );
+                    }
+                  }
+                )}
+              </Grid>
+            </div>
+          );
+        }
       })}
 
-      <div>
-        {/* Kokoa Ateria btn */}
-        {subscribed && isLoggedIn && selectedBox.length > 0 && (
-          <Button
-            onClick={handleClick}
-            sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
-            variant="contained"
-          >
-            {mealType ? "Kokoa Ateria" : "Valitse aktiviteetti"}
-          </Button>
-        )}
-        {/* Ostoslistqa btn */}
-        {mealType && selectedBox.length > 0 && (
-          <Button
-            onClick={handleShoppingList}
-            sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
-            variant="contained"
-          >
-            {shoppingList ? "Lisää ostoslistalle" : "Luo ostoslista"}
-          </Button>
-        )}
-      </div>
-
-      {/* Avaa kaikki ominaisuudet btn */}
-      {!isLoggedIn && selectedBox.length > 0 && (
-        <>
-          <Button
-            onClick={registerNowClick}
-            sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
-            variant="contained"
-          >
-            Rekisteröidy nyt!
-          </Button>
-          <Typography>
-            Avaa kaikki ominaisuudet ja aloita 14 päivän ilmainen kokeilu!
-          </Typography>
-        </>
-      )}
-      {/* Jatka tilausta btn */}
-      {isLoggedIn && !subscribed && selectedBox.length > 0 && (
-        <>
-          <Button
-            onClick={subscribeNowClick}
-            sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
-            variant="contained"
-          >
-            Jatka tilausta
-          </Button>
-          <Typography>Ja avaa kaikki ominaisuudet!</Typography>
-        </>
-      )}
-      <div style={{ marginTop: 50 }}>
-        <ReturnBtn message="Palaa etusivulle" />
-      </div>
-      {/* Shopping list: */}
-      {shoppingList && mealType && (
+      <div style={{ textAlign: "right" }}>
         <div>
-          <ShoppingListComp shoppingList={shoppingList} />
-
-          {shoppingList.length > 15 && <ReturnBtn message="palaa etusivulle" />}
+          {/* Kokoa Ateria btn */}
+          {subscribed && isLoggedIn && selectedBox.length > 0 && (
+            <Button
+              onClick={handleClick}
+              sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
+              variant="contained"
+            >
+              {mealType ? "Kokoa Ateria" : "Valitse aktiviteetti"}
+            </Button>
+          )}
+          {/* Ostoslistqa btn */}
+          {mealType && selectedBox.length > 0 && (
+            <Button
+              onClick={handleShoppingList}
+              sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
+              variant="contained"
+            >
+              {shoppingList ? "Lisää ostoslistalle" : "Luo ostoslista"}
+            </Button>
+          )}
         </div>
-      )}
+
+        {/* Avaa kaikki ominaisuudet btn */}
+        {!isLoggedIn && selectedBox.length > 0 && (
+          <>
+            <Button
+              onClick={registerNowClick}
+              sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
+              variant="contained"
+            >
+              Rekisteröidy nyt!
+            </Button>
+            <Typography>
+              Avaa kaikki ominaisuudet ja aloita 14 päivän ilmainen kokeilu!
+            </Typography>
+          </>
+        )}
+        {/* Jatka tilausta btn */}
+        {isLoggedIn && !subscribed && selectedBox.length > 0 && (
+          <>
+            <Button
+              onClick={subscribeNowClick}
+              sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
+              variant="contained"
+            >
+              Jatka tilausta
+            </Button>
+            <Typography>Ja avaa kaikki ominaisuudet!</Typography>
+          </>
+        )}
+        <div style={{ marginTop: 50 }}>
+          <ReturnBtn message="Palaa etusivulle" />
+        </div>
+        {/* Shopping list: */}
+        {shoppingList && mealType && (
+          <div style={{ textAlign: "left" }}>
+            <ShoppingListComp shoppingList={shoppingList} />
+
+            {shoppingList.length > 15 && (
+              <ReturnBtn message="palaa etusivulle" />
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
