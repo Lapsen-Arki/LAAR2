@@ -209,13 +209,11 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
 
     if (!isAccepted) {
       setAcceptTermsDialogOpen(true);
-      //alert("Sinun tulee hyväksyä ehdot poistaaksesi tilisi.");
       return;
     }
 
     if (!updatedFormFields.oldPassword) {
       setEnterPasswordDialogOpen(true);
-      //alert("Syötä salasana poistaaksesi tilisi.");
       return;
     }
 
@@ -223,36 +221,12 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
   };
 
   const handleFirstConfirmation = () => {
-    console.log("first confirm");
-
     setTimeout(() => {
       setSecondConfirmationDialogOpen(true);
-      console.log(secondConfirmationDialogOpen);
     }, 1000);
   };
 
   const handleSecondConfirmation = async () => {
-    console.log("in handleSecondConfirmation");
-
-    /*
-    if (
-      !confirm(
-        "Oletko varma, että haluat poistaa tilisi? Tämä toiminto EI ole peruutettavissa"
-      )
-    ) {
-      return; // User canceled the first confirmation
-    }
-
-    // Second confirmation
-    if (
-      !confirm(
-        "Oletko AIVAN varma, että haluat poistaa tilisi? Tämä toiminto EI ole peruutettavissa"
-      )
-    ) {
-      return; // User canceled the second confirmation
-    }
-*/
-
     try {
       if (idToken) {
         const result = await deleteAccount(idToken);
@@ -544,7 +518,6 @@ function PaymentMethodPopOut({
     if (!response.status) {
       console.error(response.message);
     } else {
-      console.log(response.message);
       window.location.reload();
     }
   };
