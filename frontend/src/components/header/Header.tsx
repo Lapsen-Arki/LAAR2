@@ -74,7 +74,7 @@ export default function Header() {
                 display: { xs: "block", md: "none" },
                 "& .MuiDrawer-paper": {
                   boxSizing: "border-box",
-                  width: "65vw",
+                  width: "360px",
                 },
               }}
             >
