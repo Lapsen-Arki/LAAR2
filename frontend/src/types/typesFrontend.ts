@@ -100,3 +100,10 @@ export interface ConfirmationDialogProps {
   open: boolean;
   onClose: () => void;
 }
+
+// Memo-related types
+
+export interface Memo {
+  type: string;
+  content: string;
+}
