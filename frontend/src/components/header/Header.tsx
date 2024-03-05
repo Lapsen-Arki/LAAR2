@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
 
 import { ThemeProvider } from "@mui/material/styles";
