@@ -33,8 +33,8 @@ import { TokenContext } from "../../contexts/tokenContext";
 import "./styles.css";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { deleteAccount } from "../../api/accountManagement/deleteAccount";
-
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import ConfirmationDialog from "../../components/ConfirmationDialog";
 
 const CARD_ELEMENT_STYLES = {
   style: {
@@ -182,41 +182,59 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       }
     }
   };
+
+  // dialog set
+  const [acceptTermsDialogOpen, setAcceptTermsDialogOpen] = useState(false);
+  const [enterPasswordDialogOpen, setEnterPasswordDialogOpen] = useState(false);
+  const [firstConfirmationDialogOpen, setFirstConfirmationDialogOpen] =
+    useState(false);
+  const [secondConfirmationDialogOpen, setSecondConfirmationDialogOpen] =
+    useState(false);
+
+  const handleClose = () => {
+    setAcceptTermsDialogOpen(false);
+    setEnterPasswordDialogOpen(false);
+    setFirstConfirmationDialogOpen(false);
+    setSecondConfirmationDialogOpen(false);
+    return;
+  };
+
+  const handleConfirm = () => {
+    handleClose();
+  };
+  /// dialog end
+
   const deleteUser = async () => {
     if (auth === null || auth.currentUser === null || idToken === null) return;
 
     if (!isAccepted) {
-      alert("Sinun tulee hyväksyä ehdot poistaaksesi tilisi.");
+      setAcceptTermsDialogOpen(true);
       return;
     }
 
     if (!updatedFormFields.oldPassword) {
-      alert("Syötä salasana poistaaksesi tilisi.");
+      setEnterPasswordDialogOpen(true);
       return;
     }
 
-    if (
-      !confirm(
-        "Oletko varma, että haluat poistaa tilisi? Tämä toiminto EI ole peruutettavissa"
-      )
-    ) {
-      return; // User canceled the first confirmation
-    }
+    setFirstConfirmationDialogOpen(true);
+  };
 
-    // Second confirmation
-    if (
-      !confirm(
-        "Oletko AIVAN varma, että haluat poistaa tilisi? Tämä toiminto EI ole peruutettavissa"
-      )
-    ) {
-      return; // User canceled the second confirmation
-    }
+  const handleFirstConfirmation = () => {
+    setTimeout(() => {
+      setSecondConfirmationDialogOpen(true);
+    }, 1000);
+  };
 
+  const handleSecondConfirmation = async () => {
     try {
-      const result = await deleteAccount(idToken);
-      if (!result.status) throw new Error("Väärä salasana");
-      alert(result.message);
-      await sleep(3000);
+      if (idToken) {
+        const result = await deleteAccount(idToken);
+        if (!result.status) throw new Error("Väärä salasana");
+        await sleep(3000);
+        setSecondConfirmationDialogOpen(false);
+        signOutMethod();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -274,6 +292,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       }
     }
   };
+
   return (
     <ThemeProvider theme={formTheme}>
       <Container component="main" maxWidth="sm">
@@ -390,6 +409,57 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
             }
           />
         </div>
+
+        <ConfirmationDialog
+          open={acceptTermsDialogOpen}
+          onClose={handleClose}
+          onConfirm={handleConfirm}
+          title="Hyväksy ehdot"
+          content="Sinun tulee hyväksyä ehdot poistaaksesi tilisi."
+          showCancel={true}
+          cancelButtonText="Ok"
+          cancelButtonBackgroundColor="#57bfb1"
+        />
+        <ConfirmationDialog
+          open={enterPasswordDialogOpen}
+          onClose={handleClose}
+          onConfirm={handleConfirm}
+          title="Salasana puuttuu"
+          content="Syötä salasana poistaaksesi tilisi."
+          showCancel={true}
+          cancelButtonText="Ok"
+          cancelButtonBackgroundColor="#57bfb1"
+        />
+        <ConfirmationDialog
+          open={firstConfirmationDialogOpen}
+          onClose={handleClose}
+          onConfirm={handleFirstConfirmation}
+          title="Vahvista toiminto"
+          content="Oletko varma, että haluat poistaa tilisi? Tämä toiminto EI ole peruutettavissa."
+          showCancel={true}
+          showConfirm={true}
+          confirmButtonText="Kyllä"
+          confirmButtonColor=""
+          confirmButtonBackgroundColor="#FF4500"
+          cancelButtonText="Ei"
+          cancelButtonColor=""
+          cancelButtonBackgroundColor="#57bfb1"
+        />
+        <ConfirmationDialog
+          open={secondConfirmationDialogOpen}
+          onClose={handleClose}
+          onConfirm={handleSecondConfirmation}
+          title="Vahvista toiminto"
+          content="Oletko AIVAN varma, että haluat poistaa tilisi? Tämä toiminto EI ole peruutettavissa."
+          showCancel={true}
+          showConfirm={true}
+          confirmButtonText="Kyllä"
+          confirmButtonColor=""
+          confirmButtonBackgroundColor="#FF4500"
+          cancelButtonText="Ei"
+          cancelButtonColor=""
+          cancelButtonBackgroundColor="#57bfb1"
+        />
       </Container>
     </ThemeProvider>
   );
@@ -448,7 +518,6 @@ function PaymentMethodPopOut({
     if (!response.status) {
       console.error(response.message);
     } else {
-      console.log(response.message);
       window.location.reload();
     }
   };
@@ -558,7 +627,6 @@ function PasswordFields({
   toggleEdit,
   drawerOpen,
 }: PasswordFieldsProps) {
-
   const [showPassword, setShowPassword] = useState(false);
   const handleTogglePasswordVisibilityOld = () => {
     setShowPassword(!showPassword);
@@ -609,7 +677,6 @@ function PasswordFields({
 }
 
 function PasswordPopOut({ fields, onChange, drawerOpen }: PasswordPopOutProps) {
-
   const [showPassword, setShowPassword] = useState(false);
   const handleTogglePasswordVisibilityNew = () => {
     setShowPassword(!showPassword);
@@ -634,7 +701,10 @@ function PasswordPopOut({ fields, onChange, drawerOpen }: PasswordPopOutProps) {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton onClick={handleTogglePasswordVisibilityNew} edge="end">
+                <IconButton
+                  onClick={handleTogglePasswordVisibilityNew}
+                  edge="end"
+                >
                   {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </InputAdornment>
@@ -653,7 +723,10 @@ function PasswordPopOut({ fields, onChange, drawerOpen }: PasswordPopOutProps) {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton onClick={handleTogglePasswordVisibilityNew} edge="end">
+                <IconButton
+                  onClick={handleTogglePasswordVisibilityNew}
+                  edge="end"
+                >
                   {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </InputAdornment>
