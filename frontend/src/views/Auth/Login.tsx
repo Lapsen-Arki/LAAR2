@@ -8,6 +8,8 @@ import {
   Grid,
   TextField,
   Typography,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from "../../styles/formThemeMUI";
@@ -19,6 +21,7 @@ import ResetPasswordModal from "../../components/modals/resetPasswordModal";
 import VerifyEmailModal from "../../components/modals/verifyEmailModal";
 import ReturnBtn from "../../components/returnBtn";
 import { Link } from "react-router-dom";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Login: React.FC = (): JSX.Element => {
   const [email, setEmail] = useState("");
@@ -81,6 +84,11 @@ const Login: React.FC = (): JSX.Element => {
     setRememberMe(event.target.checked);
   };
 
+  const [showPassword, setShowPassword] = useState(false);
+  const handleTogglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <ThemeProvider theme={formTheme}>
       <Container component="main" maxWidth="sm" sx={{ textAlign: "center" }}>
@@ -113,12 +121,26 @@ const Login: React.FC = (): JSX.Element => {
             required
             fullWidth
             label="Salasana"
-            type="password"
+            type={showPassword ? "text" : "password"}
             autoComplete="current-password"
             value={password}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setPassword(e.target.value)
             }
+
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleTogglePasswordVisibility}
+                    edge="end"
+                    aria-label="toggle password visibility"
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
 
           <Grid
