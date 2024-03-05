@@ -62,10 +62,12 @@ const NoteBook: React.FC = () => {
 
       <Collapse in={isOpen}>
         <MemoCreator addMemo={addMemo} />
-        {memos.map((memo, index) => (
-          <NotePage key={index} memo={memo} />
-        ))}
       </Collapse>
+
+        {memos.map((memo, index) => (
+            <NotePage key={index} memo={memo} />
+            ))}
+
       <ReturnBtn />
       </Container>
     </ThemeProvider>
