@@ -226,7 +226,6 @@ const handleFirstConfirmation = () => {
 };
 
 const handleSecondConfirmation = async () => {
-
   
     /*
     if (
@@ -248,10 +247,14 @@ const handleSecondConfirmation = async () => {
 */
 
     try {
-      const result = await deleteAccount(idToken);
-      if (!result.status) throw new Error("Väärä salasana");
-      alert(result.message);
-      await sleep(3000);
+      if (idToken){
+        const result = await deleteAccount(idToken);
+        if (!result.status) throw new Error("Väärä salasana");
+        alert(result.message);
+        await sleep(3000);
+        setSecondConfirmationDialogOpen(false);
+      }
+      
     } catch (error) {
       console.error(error);
     }
@@ -309,6 +312,7 @@ const handleSecondConfirmation = async () => {
       }
     }
   };
+  
   return (
     <ThemeProvider theme={formTheme}>
       <Container component="main" maxWidth="sm">
