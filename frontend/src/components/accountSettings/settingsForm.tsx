@@ -2,58 +2,25 @@ import React, { useContext, useState } from "react";
 import AuthContext from "../../contexts/authContext";
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from "../../styles/formThemeMUI";
-import { postCardUpdate } from "../../api/accountManagement/postCardUpdate";
+import { RenderPaymentMethodFields } from "./paymentMethodFields";
+import { RenderPasswordFields } from "./passwordFields";
+import { RenderSettingsDataFields } from "./settingsDataFields";
 import {
   Container,
   Divider,
-  TextField,
   Button,
   Typography,
   Box,
-  Collapse,
   FormControlLabel,
   Checkbox,
-  IconButton,
-  InputAdornment,
 } from "@mui/material";
-import {
-  RenderFieldsProps,
-  AccountSettingsProps,
-  PasswordFieldsProps,
-  PasswordPopOutProps,
-  RenderInputProps,
-  RenderLabelProps,
-  EditModes,
-  PaymentMethodFieldsTypes,
-  RenderPaymentMethodFieldsTypes,
-} from "./types";
+import { RenderFieldsProps, AccountSettingsProps, EditModes } from "./types";
 import SubmitHandler from "./settingsSubmitHandler";
 import { AuthenticationError } from "./errors";
 import { TokenContext } from "../../contexts/tokenContext";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { deleteAccount } from "../../api/accountManagement/deleteAccount";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
-const CARD_ELEMENT_STYLES = {
-  style: {
-    base: {
-      color: "black",
-      iconColor: "black",
-      fontSize: "13px",
-      fontSmoothing: "antialiased",
-      ":-webkit-autofill": {
-        color: "black",
-      },
-      "::placeholder": {
-        color: "#black",
-      },
-    },
-    invalid: {
-      iconColor: "#FFC7EE",
-      color: "#FFC7EE",
-    },
-  },
-};
 
 // AccountSettings component
 // Blame Esa for everything that is wrong with this component
@@ -314,7 +281,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
         </Typography>
         <form onSubmit={handleSubmit}>
           {Object.keys(settingsData).map((field) => (
-            <RenderFields
+            <RenderSettingsDataFields
               key={field}
               fields={formValues}
               fieldName={field}
@@ -341,7 +308,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
               setCardAsDefault={setCardAsDefault}
             />
             <Divider variant="middle" />
-            <PasswordFields
+            <RenderPasswordFields
               fields={formValues}
               onChange={handleFieldChange}
               editModes={editModes}
@@ -473,344 +440,5 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
     </ThemeProvider>
   );
 };
-
-function RenderPaymentMethodFields({
-  dbData,
-  isFocused,
-  setIsFocused,
-  editModes,
-  toggleEdit,
-  idToken,
-  cardAsDefault,
-  setCardAsDefault,
-}: RenderPaymentMethodFieldsTypes) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const handleEdit = (fieldName: string) => {
-    toggleEdit(fieldName);
-    setDrawerOpen(!drawerOpen);
-  };
-  return (
-    <>
-      <PaymentMethodPopOut
-        dbData={dbData}
-        isFocused={isFocused}
-        setIsFocused={setIsFocused}
-        drawerOpen={drawerOpen}
-        idToken={idToken}
-        cardAsDefault={cardAsDefault}
-        setCardAsDefault={setCardAsDefault}
-      />
-      <Button
-        style={{ marginTop: "0", alignContent: "center" }}
-        onClick={() => handleEdit("paymentMethod")}
-      >
-        {editModes.paymentMethod ? "Cancel" : "Vaihda maksukortti"}
-      </Button>
-    </>
-  );
-}
-
-function PaymentMethodPopOut({
-  dbData,
-  isFocused,
-  setIsFocused,
-  drawerOpen,
-  idToken,
-  cardAsDefault,
-  setCardAsDefault,
-}: PaymentMethodFieldsTypes) {
-  const updateCard = async (action: string, cardId: string) => {
-    if (idToken === null) {
-      return;
-    }
-    const response = await postCardUpdate(action, idToken, cardId);
-    if (!response.status) {
-      console.error(response.message);
-    } else {
-      window.location.reload();
-    }
-  };
-  return (
-    <Collapse in={drawerOpen}>
-      <Typography
-        style={{ marginTop: "10px", textAlign: "center" }}
-        variant="body1"
-      >
-        Vaihda maksukortti
-      </Typography>
-      {dbData.map((card) => (
-        <Box
-          display="flex"
-          alignItems="center"
-          maxWidth="sm"
-          justifyContent="space-between"
-          key={card.id}
-          sx={{
-            margin: "auto",
-            borderColor: isFocused ? "black" : "black",
-            "&:hover": {
-              borderColor: "#000000",
-            },
-
-            marginTop: "10px",
-            marginBottom: "10px",
-          }}
-        >
-          <Box
-            flexBasis="50%"
-            display="flex"
-            sx={{ textAlign: "left", flexDirection: "column" }}
-          >
-            <Typography variant="body1">
-              **** **** **** **** {card.last4}
-            </Typography>
-            <Typography variant="body1">
-              {card.brand} {card.expMonth}/{card.expYear.toString().slice(-2)}
-            </Typography>
-            {card.isDefault && (
-              <Typography variant="body1">Oletuskortti</Typography>
-            )}
-            <Typography variant="body1"></Typography>
-          </Box>
-          <Button
-            disabled={card.isDefault}
-            style={{ width: "25%", fontSize: "12px" }}
-            onClick={() => updateCard("update", card.id)}
-          >
-            Aseta Oletukseksi
-          </Button>
-          <Button
-            disabled={card.isDefault}
-            style={{ width: "15%", fontSize: "12px" }}
-            onClick={() => updateCard("delete", card.id)}
-          >
-            Poista Kortti
-          </Button>
-        </Box>
-      ))}
-      <Box
-        sx={{
-          background: "white",
-          padding: 2,
-          border: "solid",
-          borderWidth: isFocused ? 2 : 1,
-          borderRadius: "4px",
-          margin: "auto",
-          borderColor: isFocused ? "black" : "black",
-          "&:hover": {
-            borderColor: "#000000",
-          },
-          width: "73%",
-          marginTop: "10px",
-          marginBottom: "10px",
-        }}
-      >
-        <CardElement
-          options={CARD_ELEMENT_STYLES}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-        />
-      </Box>
-      <FormControlLabel
-        sx={{ marginTop: 3, width: "95%" }}
-        control={
-          <Checkbox
-            sx={{ "& .MuiSvgIcon-root": { marginBottom: "8px" } }} // Adjusts the checkbox icon alignment if needed
-            checked={cardAsDefault}
-            onChange={() => setCardAsDefault(!cardAsDefault)}
-            name="accept"
-          />
-        }
-        label={
-          <Typography>Aseta tämä kortti oletukseksi maksukortiksi.</Typography>
-        }
-      />
-    </Collapse>
-  );
-}
-
-function PasswordFields({
-  fields,
-  onChange,
-  editModes,
-  toggleEdit,
-  drawerOpen,
-}: PasswordFieldsProps) {
-  const [showPassword, setShowPassword] = useState(false);
-  const handleTogglePasswordVisibilityOld = () => {
-    setShowPassword(!showPassword);
-  };
-
-  return (
-    <>
-      <PasswordPopOut
-        fields={fields}
-        onChange={onChange}
-        drawerOpen={drawerOpen}
-      />
-      <Button
-        style={{ marginTop: "0", alignContent: "center" }}
-        onClick={() => toggleEdit("password")}
-      >
-        {editModes.password ? "Cancel" : "Vaihda salasana"}
-      </Button>
-      <Divider variant="middle" />
-      <Box sx={{ p: 2 }}>
-        {" "}
-        {/* Add padding */}
-        <Typography variant="subtitle1" style={{ marginBottom: "2px" }}>
-          Syötä salasana vahvistaaksesi muutokset
-        </Typography>
-        <TextField
-          style={{ width: "90%" }}
-          label="Vanha salasana"
-          type={showPassword ? "text" : "password"}
-          margin="normal"
-          value={fields.oldPassword}
-          autoComplete="off"
-          onChange={(e) => onChange("oldPassword", e.target.value)}
-          required
-          InputProps={{
-            endAdornment: (
-              <IconButton onClick={handleTogglePasswordVisibilityOld}>
-                {showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            ),
-          }}
-          // ... appropriate styles
-        />
-      </Box>
-      {/* Add error messages and submit button  */}
-    </>
-  );
-}
-
-function PasswordPopOut({ fields, onChange, drawerOpen }: PasswordPopOutProps) {
-  const [showPassword, setShowPassword] = useState(false);
-  const handleTogglePasswordVisibilityNew = () => {
-    setShowPassword(!showPassword);
-  };
-
-  return (
-    <Collapse in={drawerOpen}>
-      <Box sx={{ p: 2 }}>
-        {" "}
-        {/* Add padding */}
-        <Typography variant="h6" style={{ marginBottom: "10px" }}>
-          Vaihda salasana
-        </Typography>
-        <TextField
-          label="Uusi salasana"
-          type={showPassword ? "text" : "password"}
-          margin="dense"
-          value={fields.newPassword}
-          autoComplete="off"
-          onChange={(e) => onChange("newPassword", e.target.value)}
-          style={{ width: "90%" }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={handleTogglePasswordVisibilityNew}
-                  edge="end"
-                >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          // ... appropriate styles
-        />
-        <TextField
-          label="Vahvista uusi salasana"
-          type={showPassword ? "text" : "password"}
-          margin="dense"
-          value={fields.confirmPassword}
-          style={{ width: "90%" }}
-          autoComplete="off"
-          onChange={(e) => onChange("confirmPassword", e.target.value)}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={handleTogglePasswordVisibilityNew}
-                  edge="end"
-                >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-          // ... appropriate styles
-        />{" "}
-        {/* ... rest of your password fields and button */}
-      </Box>
-    </Collapse>
-  );
-}
-
-function RenderFields({
-  fields,
-  fieldName,
-  onChange,
-  toggleEdit,
-  editModes,
-  sub,
-}: RenderFieldsProps) {
-  return (
-    <>
-      <Typography
-        variant="subtitle1"
-        style={{ marginBottom: "2px", textAlign: "left" }}
-      >
-        {sub[fieldName].title}
-      </Typography>
-      <Box display="flex" alignItems="center" maxWidth="sm">
-        <Box flexBasis="90%">
-          {editModes[fieldName] ? (
-            <RenderInput
-              fields={fields}
-              fieldName={fieldName}
-              onChange={onChange}
-              sub={sub}
-            />
-          ) : (
-            <RenderLabel fields={fields} fieldName={fieldName} />
-          )}
-        </Box>
-        <Button style={{ width: "10%" }} onClick={() => toggleEdit(fieldName)}>
-          {editModes[fieldName] ? "Cancel" : "Edit"}
-        </Button>
-      </Box>
-      <Divider variant="middle" />
-    </>
-  );
-}
-
-function RenderInput({ fields, fieldName, onChange, sub }: RenderInputProps) {
-  return (
-    <TextField
-      name={fieldName}
-      variant="outlined"
-      margin="normal"
-      value={fields[fieldName]}
-      type={sub[fieldName].type}
-      autoComplete={sub[fieldName].autocomplete}
-      autoFocus
-      onChange={(e) => onChange(fieldName, e.target.value)}
-    />
-  );
-}
-
-function RenderLabel({ fields, fieldName }: RenderLabelProps) {
-  return (
-    <Typography
-      variant="body1"
-      style={{ marginLeft: "8px", marginRight: "10px", width: "90%" }}
-    >
-      {fields[fieldName]}
-    </Typography>
-  );
-}
 
 export default AccountSettings;
