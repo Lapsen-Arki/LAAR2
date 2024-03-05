@@ -28,10 +28,10 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
+        <Button onClick={onClose} color="primary" sx={{ backgroundColor: "#57bfb1" }}>
           Ei
         </Button>
-        <Button onClick={() => { onConfirm(); onClose(); }} color="error">
+        <Button onClick={() => { onConfirm(); onClose(); }} color="error" sx={{ backgroundColor: "#FF4500" }}>
           Kyllä
         </Button>
       </DialogActions>

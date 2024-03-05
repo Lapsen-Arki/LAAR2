@@ -6,6 +6,7 @@ import { AuthProvider } from "../contexts/authContext";
 import getSettings from "../api/accountManagement/getSettings";
 import { TokenContext } from "../contexts/tokenContext";
 import { PaymentMethod } from "./accountSettingsComponents/types";
+import LoadingComponent from "../components/LoadingComponent";
 import "../conf/firebaseSdkConfig";
 const AccountSettingsPage = () => {
   const [settingsData, setSettingsData] = useState({});
@@ -32,7 +33,7 @@ const AccountSettingsPage = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div><LoadingComponent /></div>;
   return (
     <>
       <AuthProvider>
