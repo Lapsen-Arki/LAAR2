@@ -27,6 +27,9 @@ const stripeSubscription = async (
         },
       }
     );
+    if (!response) {
+      return null;
+    }
     sessionStorage.setItem(
       "storedSubscriptionStatus",
       JSON.stringify(response.data)
@@ -59,7 +62,9 @@ const getSubscriptionStatus = async (
         const response = await stripeSubscription(idToken, "get-subscription");
         subscriptionStatus = response;
       }
-
+      if (!subscriptionStatus) {
+        return null;
+      }
       const currentTimestampInSeconds = Math.floor(new Date().getTime() / 1000);
 
       if (
@@ -72,7 +77,7 @@ const getSubscriptionStatus = async (
       }
     } catch (error) {
       console.error("Tilausta noudettaessa tapahtui virhe.");
-      return false;
+      return null;
     }
   }
   return null;

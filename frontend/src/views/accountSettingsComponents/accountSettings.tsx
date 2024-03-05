@@ -13,6 +13,8 @@ import {
   Collapse,
   FormControlLabel,
   Checkbox,
+  IconButton,
+  InputAdornment,
 } from "@mui/material";
 import {
   RenderFieldsProps,
@@ -31,6 +33,8 @@ import { TokenContext } from "../../contexts/tokenContext";
 import "./styles.css";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { deleteAccount } from "../../api/accountManagement/deleteAccount";
+
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const CARD_ELEMENT_STYLES = {
   style: {
@@ -361,7 +365,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
             variant="contained"
             color="primary"
             style={{
-              backgroundColor: "red",
+              backgroundColor: "#FF4500",
               width: "90%",
             }}
             onClick={deleteUser}
@@ -554,6 +558,12 @@ function PasswordFields({
   toggleEdit,
   drawerOpen,
 }: PasswordFieldsProps) {
+
+  const [showPassword, setShowPassword] = useState(false);
+  const handleTogglePasswordVisibilityOld = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <>
       <PasswordPopOut
@@ -577,12 +587,19 @@ function PasswordFields({
         <TextField
           style={{ width: "90%" }}
           label="Vanha salasana"
-          type="password"
+          type={showPassword ? "text" : "password"}
           margin="normal"
           value={fields.oldPassword}
           autoComplete="off"
           onChange={(e) => onChange("oldPassword", e.target.value)}
           required
+          InputProps={{
+            endAdornment: (
+              <IconButton onClick={handleTogglePasswordVisibilityOld}>
+                {showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            ),
+          }}
           // ... appropriate styles
         />
       </Box>
@@ -592,6 +609,12 @@ function PasswordFields({
 }
 
 function PasswordPopOut({ fields, onChange, drawerOpen }: PasswordPopOutProps) {
+
+  const [showPassword, setShowPassword] = useState(false);
+  const handleTogglePasswordVisibilityNew = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <Collapse in={drawerOpen}>
       <Box sx={{ p: 2 }}>
@@ -602,22 +625,40 @@ function PasswordPopOut({ fields, onChange, drawerOpen }: PasswordPopOutProps) {
         </Typography>
         <TextField
           label="Uusi salasana"
-          type="password"
+          type={showPassword ? "text" : "password"}
           margin="dense"
           value={fields.newPassword}
           autoComplete="off"
           onChange={(e) => onChange("newPassword", e.target.value)}
           style={{ width: "90%" }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={handleTogglePasswordVisibilityNew} edge="end">
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
           // ... appropriate styles
         />
         <TextField
           label="Vahvista uusi salasana"
-          type="password"
+          type={showPassword ? "text" : "password"}
           margin="dense"
           value={fields.confirmPassword}
           style={{ width: "90%" }}
           autoComplete="off"
           onChange={(e) => onChange("confirmPassword", e.target.value)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={handleTogglePasswordVisibilityNew} edge="end">
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
           // ... appropriate styles
         />{" "}
         {/* ... rest of your password fields and button */}
