@@ -30,12 +30,10 @@ import {
 import SubmitHandler from "./settingsSubmitHandler";
 import { AuthenticationError } from "./errors";
 import { TokenContext } from "../../contexts/tokenContext";
-import "./styles.css";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { deleteAccount } from "../../api/accountManagement/deleteAccount";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
-
 const CARD_ELEMENT_STYLES = {
   style: {
     base: {
@@ -87,7 +85,6 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
   // State variables built from settingsData
   // settingsData is in format key: {title: string, value: string, type: string, autocomplete: string}
   // forms are built with these settings, for each key in settingsData
-
   const [formValues, setFormValues] = useState(
     Object.fromEntries(
       Object.entries(settingsData)
@@ -130,23 +127,31 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
   // This is done by using the field name as the key, and the value as the value.
   // The formValues show the current values of the form fields, and the updatedFormFields is used to store the values for submission.
   const handleFieldChange = (fieldName: string, value: string) => {
+    // sets the fieldname key to the new value on change
     setFormValues({
       ...formValues,
       [fieldName]: value,
     });
+    // Also updates it to the updatedFormFields object, which is used to store the updated values for submission.
     setUpdatedFormFields({
       ...updatedFormFields,
       [fieldName]: value,
     });
   };
+  // Toggle edit mode, for removing updatedFieldData and for changing the display state of the input fields
   const toggleEditMode = (fieldName: string) => {
+    // Toggles the edit mode of key fieldname by setting it to equal the opposite of the current value.
     setEditModes({
       ...editModes,
       [fieldName]: !editModes[fieldName],
     });
+    // If the toggled field is payment method, skip the rest of this function and return.
+    // This is because paymentMethod uses a separate data component and does not need to be handled here.
     if (fieldName === "paymentMethod") {
       return;
     }
+    // If the toggled field is password, it will pop out the password fields instead of just changing the edit mode.
+    // This is because the password fields are two separate fields, and require both to be toggled at the same time.
     if (fieldName === "password") {
       setPopoutPassword(!popOutPassword);
       setFormValues({
@@ -154,6 +159,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
         newPassword: "",
         confirmPassword: "",
       });
+      // On toggle, delete the password fields from the updatedFormFields object, so that the unchanged values will not be submitted.
       setUpdatedFormFields((prev) => {
         const updated = { ...prev };
         delete updated.newPassword;
@@ -161,11 +167,14 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
         return updated;
       });
     }
+    // Logic for all the rest of the fields that are built through settingsData object.
     if (editModes[fieldName] && fieldName !== "password") {
+      // This sets the formValues object to the original values from the settingsData object.
       setFormValues({
         ...formValues,
         [fieldName]: settingsData[fieldName].value,
       });
+      // This deletes the field from the updatedFormFields object, so that the unchanged values will not be submitted.
       setUpdatedFormFields((prev) => {
         const updated = { ...prev };
         delete updated[fieldName];
