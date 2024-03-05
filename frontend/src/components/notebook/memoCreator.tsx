@@ -2,13 +2,10 @@ import React, { useState } from 'react';
 import { Memo } from '../../types/typesFrontend';
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from "../../styles/formThemeMUI";
-import ReturnBtn from "../../components/returnBtn";
 import {
-    Container,
     Button,
     Select,
     MenuItem,
-    Typography,
     TextField,
     FormControl,
     InputLabel,
@@ -44,14 +41,10 @@ const MemoCreator: React.FC<MemoCreatorProps> = ({ addMemo }) => {
 
   return (
     <ThemeProvider theme={formTheme}>
-      <Container component="main" maxWidth="sm" style={{ textAlign: "center" }}>
         <form onSubmit={handleSubmit}>
           <Box marginBottom={2}>
-            <Typography variant="body1" gutterBottom>
-              Muistelman tyyppi:
-            </Typography>
             <FormControl fullWidth>
-              <InputLabel id="memoType-label">Tyyppi</InputLabel>
+              <InputLabel id="memoType-label">Tyyppi *</InputLabel>
               <Select
                 labelId="memoType-label"
                 id="memoType"
@@ -84,13 +77,10 @@ const MemoCreator: React.FC<MemoCreatorProps> = ({ addMemo }) => {
             sx={{ marginTop: 2, marginBottom: 2 }}
             type="submit"
             variant="contained"
-            fullWidth
           >
-            Lisää muistelma
+            Luo muistilappu
           </Button>
         </form>
-        <ReturnBtn />
-      </Container>
     </ThemeProvider>
   );
 };
