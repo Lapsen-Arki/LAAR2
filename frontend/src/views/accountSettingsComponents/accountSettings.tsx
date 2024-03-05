@@ -33,8 +33,8 @@ import { TokenContext } from "../../contexts/tokenContext";
 import "./styles.css";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { deleteAccount } from "../../api/accountManagement/deleteAccount";
-
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import ConfirmationDialog from "../../components/ConfirmationDialog";
 
 const CARD_ELEMENT_STYLES = {
   style: {
@@ -182,19 +182,53 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       }
     }
   };
+
+  // dialog set
+  const [acceptTermsDialogOpen, setAcceptTermsDialogOpen] = useState(false);
+  const [enterPasswordDialogOpen, setEnterPasswordDialogOpen] = useState(false);
+  const [firstConfirmationDialogOpen, setFirstConfirmationDialogOpen] = useState(false);
+  const [secondConfirmationDialogOpen, setSecondConfirmationDialogOpen] = useState(false);
+  
+  const handleClose = () => {
+    setAcceptTermsDialogOpen(false);
+    setEnterPasswordDialogOpen(false);
+    setFirstConfirmationDialogOpen(false);
+    setSecondConfirmationDialogOpen(false);
+    return;
+  };
+  
+  const handleConfirm = () => {
+    handleClose();
+  };
+  /// dialog end
+
   const deleteUser = async () => {
     if (auth === null || auth.currentUser === null || idToken === null) return;
 
     if (!isAccepted) {
-      alert("Sinun tulee hyväksyä ehdot poistaaksesi tilisi.");
+      setAcceptTermsDialogOpen(true);
+      //alert("Sinun tulee hyväksyä ehdot poistaaksesi tilisi.");
       return;
     }
 
     if (!updatedFormFields.oldPassword) {
-      alert("Syötä salasana poistaaksesi tilisi.");
+      setEnterPasswordDialogOpen(true);
+      //alert("Syötä salasana poistaaksesi tilisi.");
       return;
     }
 
+
+    setFirstConfirmationDialogOpen(true);
+};
+
+const handleFirstConfirmation = () => {
+  setSecondConfirmationDialogOpen(true);
+};
+
+const handleSecondConfirmation = async () => {
+
+  
+    /*
     if (
       !confirm(
         "Oletko varma, että haluat poistaa tilisi? Tämä toiminto EI ole peruutettavissa"
@@ -211,6 +245,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
     ) {
       return; // User canceled the second confirmation
     }
+*/
 
     try {
       const result = await deleteAccount(idToken);
@@ -390,6 +425,58 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
             }
           />
         </div>
+
+    <ConfirmationDialog
+      open={acceptTermsDialogOpen}
+      onClose={handleClose}
+      onConfirm={handleConfirm}
+      title="Hyväksy ehdot"
+      content="Sinun tulee hyväksyä ehdot poistaaksesi tilisi."
+      showCancel={true}
+      cancelButtonText="Ok"
+      cancelButtonBackgroundColor="#57bfb1"
+    />
+    <ConfirmationDialog
+      open={enterPasswordDialogOpen}
+      onClose={handleClose}
+      onConfirm={handleConfirm}
+      title="Salasana puuttuu"
+      content="Syötä salasana poistaaksesi tilisi."
+      showCancel={true}
+      cancelButtonText="Ok"
+      cancelButtonBackgroundColor="#57bfb1"
+    />
+    <ConfirmationDialog
+      open={firstConfirmationDialogOpen}
+      onClose={handleClose}
+      onConfirm={handleFirstConfirmation}
+      title="Vahvista toiminto"
+      content="Oletko varma, että haluat poistaa tilisi? Tämä toiminto EI ole peruutettavissa."
+      showCancel={true}
+      showConfirm={true}
+      confirmButtonText="Kyllä"
+      confirmButtonColor=""
+      confirmButtonBackgroundColor="#FF4500"
+      cancelButtonText="Ei"
+      cancelButtonColor=""
+      cancelButtonBackgroundColor="#57bfb1"
+    />
+    <ConfirmationDialog
+      open={secondConfirmationDialogOpen}
+      onClose={handleClose}
+      onConfirm={handleSecondConfirmation}
+      title="Vahvista toiminto"
+      content="Oletko AIVAN varma, että haluat poistaa tilisi? Tämä toiminto EI ole peruutettavissa."
+      showCancel={true}
+      showConfirm={true}
+      confirmButtonText="Kyllä"
+      confirmButtonColor=""
+      confirmButtonBackgroundColor="#FF4500"
+      cancelButtonText="Ei"
+      cancelButtonColor=""
+      cancelButtonBackgroundColor="#57bfb1"
+    />
+
       </Container>
     </ThemeProvider>
   );
