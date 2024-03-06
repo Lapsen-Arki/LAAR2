@@ -106,4 +106,5 @@ export interface ConfirmationDialogProps {
 export interface Memo {
   type: string;
   content: string;
+  id: string;
 }

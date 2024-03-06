@@ -13,6 +13,9 @@ import {
     Tooltip,
     Button,
 } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 const NoteBook: React.FC = () => {
   const [memos, setMemos] = useState<Memo[]>([]);
@@ -37,38 +40,37 @@ const NoteBook: React.FC = () => {
 
   return (
     <ThemeProvider theme={formTheme}>
-    <Container component="main" maxWidth="sm" style={{ textAlign: "center" }}>
-      <Typography 
-        variant="h4"
-        component="h1"
-        gutterBottom
-        sx={{textAlign: 'center'}}
-      >
-        Muistikirja
-      </Typography>
+      <Container component="main" maxWidth="sm" style={{ textAlign: "center" }}>
+        <Typography 
+          variant="h6"
+          component="h6"
+          sx={{textAlign: 'center'}}
+        >
+          Lisää väliaikainen muistilappu
+        </Typography>
 
-      <Tooltip title="Lisää muistelmia">
-        <Button
+        <Tooltip title="Lisää muistelmia">
+          <Button
             sx={{ marginTop: 2, marginBottom: 2 }}
             type="submit"
-            variant="contained"
-            fullWidth
+            variant="outlined"
             onClick={handleToggle}
           >
-            Lisää muistelmia
-        </Button>
+            <AddIcon />
+            {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          </Button>
+        </Tooltip>
 
-      </Tooltip>
-
-      <Collapse in={isOpen}>
-        <MemoCreator addMemo={addMemo} />
-      </Collapse>
-
+        <Collapse in={isOpen}>
+          <MemoCreator addMemo={addMemo} />
+        </Collapse>
+        <ReturnBtn />
+      </Container>
+    
+      <Container component="main" maxWidth="sm" style={{ textAlign: "center", boxShadow: 'unset' }}>
         {memos.map((memo, index) => (
             <NotePage key={index} memo={memo} />
             ))}
-
-      <ReturnBtn />
       </Container>
     </ThemeProvider>
   );

@@ -29,6 +29,7 @@ const MemoCreator: React.FC<MemoCreatorProps> = ({ addMemo }) => {
     }
 
     const newMemo: Memo = {
+      id: Date.now().toString(), // Käytetään Date.now() generoidaksemme uniikin id:n muistilapulle.
       type: memoType,
       content: content,
     };

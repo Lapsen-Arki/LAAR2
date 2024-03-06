@@ -1,5 +1,6 @@
 import React from 'react';
 import { Memo } from '../../types/typesFrontend';
+import './noteBook.css'; 
 
 const NotePage: React.FC<{ memo: Memo }> = ({ memo }) => {
   const renderMemoContent = () => {

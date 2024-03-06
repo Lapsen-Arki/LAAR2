@@ -1,11 +1,14 @@
 import React from 'react';
+import { Paper } from '@mui/material'; 
 
-const PostIt: React.FC<{ content: string }> = ({ content }) => {
+const PostItMemo: React.FC<{ content: string }> = ({ content }) => {
   return (
-    <div className="post-it">
+    <Paper
+      elevation={3}
+    >
       {content}
-    </div>
+    </Paper>
   );
 };
 
-export default PostIt;
+export default PostItMemo;

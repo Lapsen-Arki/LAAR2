@@ -1,0 +1,51 @@
+/* PostIt */
+.post-it-memo {
+    background-color: #fefecd; /* Post-it lapun keltainen */
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    min-height: 100px;
+    min-width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: bold;
+    line-height: 1.5;
+    text-align: center;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.2);
+  }
+
+  /* Balloon */
+
+  .balloon-memo {
+    position: relative;
+    background-color: #f0c0ff; /* Ilmapallon väri violetti */
+    padding: 50px; /* Lisää paddingia, jotta tekstillä on enemmän tilaa */
+    border-radius: 50% / 80%; /* Korostetaan ylä- ja alapään pyöreyttä */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-weight: bold;
+    color: black;
+    flex-wrap: wrap; /* Tämä sallii tekstin käärimisen, jos se on liian pitkä */
+    max-width: 100%; /* Mahdollistaa ilmapallon leveyden joustavuuden */
+    margin: 20px auto; /* Keskittää ilmapallon ja antaa tilaa alhaalta */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Lisää varjostusta syvyyden tunteen luomiseksi */
+    overflow: hidden; /* Estää sisällön vuotamisen ulos ilmapallon reunojen yli */
+  }
+  
+  .balloon-memo:after {
+    content: "";
+    position: absolute;
+    bottom: -20px; /* Muutetaan sijaintia, jotta naru näkyy selkeämmin */
+    left: 50%;
+    transform: translateX(-50%) translateY(100%); /* Asetetaan naru selkeästi ilmapallon alapuolelle */
+    border: solid;
+    border-color: #f0c0ff transparent transparent transparent; /* Tarkistetaan värit, jotta naru erottuu */
+    border-width: 20px 10px 0 10px; /* Säädä narun kokoa tarvittaessa */
+    /* Lisää näkyvyyttä varjostuksella, jos tarpeen */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
