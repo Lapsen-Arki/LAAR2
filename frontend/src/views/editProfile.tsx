@@ -197,6 +197,7 @@ const EditProfile = () => {
               onChange={(newDate) =>
                 setBirthdate(newDate ? dayjs(newDate) : null)
               }
+              format="DD/MM/YYYY"
             />
           </LocalizationProvider>
           {birthdateError && <Alert severity="error">{birthdateError}</Alert>}
