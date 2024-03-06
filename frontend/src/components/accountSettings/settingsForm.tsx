@@ -5,22 +5,13 @@ import { formTheme } from "../../styles/formThemeMUI";
 import { RenderPaymentMethodFields } from "./paymentMethodFields";
 import { RenderPasswordFields } from "./passwordFields";
 import { RenderSettingsDataFields } from "./settingsDataFields";
-import {
-  Container,
-  Divider,
-  Button,
-  Typography,
-  Box,
-  FormControlLabel,
-  Checkbox,
-} from "@mui/material";
+import { RenderConfirmDeletion } from "./confirmDeletion";
+import { Container, Divider, Button, Typography, Box } from "@mui/material";
 import { RenderFieldsProps, AccountSettingsProps, EditModes } from "./types";
 import SubmitHandler from "./settingsSubmitHandler";
 import { AuthenticationError } from "./errors";
 import { TokenContext } from "../../contexts/tokenContext";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { deleteAccount } from "../../api/accountManagement/deleteAccount";
-import ConfirmationDialog from "../../components/ConfirmationDialog";
 
 // AccountSettings component
 // Blame Esa for everything that is wrong with this component
@@ -47,8 +38,9 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
   const [isFocused, setIsFocused] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
-  const [isAccepted, setIsAccepted] = React.useState(false);
+
   const [cardAsDefault, setCardAsDefault] = useState(false);
+
   // State variables built from settingsData
   // settingsData is in format key: {title: string, value: string, type: string, autocomplete: string}
   // forms are built with these settings, for each key in settingsData
@@ -88,8 +80,6 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
 
   // Popout state for the change password field. This causes the password fields to pop out instead of always being visible to the user to save space on the page.
   const [popOutPassword, setPopoutPassword] = useState(false);
-  const sleep = (ms: number) =>
-    new Promise((resolve) => setTimeout(resolve, ms));
   // Here we update the formValues and updatedFormFields objects when the form fields are changed.
   // This is done by using the field name as the key, and the value as the value.
   // The formValues show the current values of the form fields, and the updatedFormFields is used to store the values for submission.
@@ -159,62 +149,6 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
     }
   };
 
-  // dialog set
-  const [acceptTermsDialogOpen, setAcceptTermsDialogOpen] = useState(false);
-  const [enterPasswordDialogOpen, setEnterPasswordDialogOpen] = useState(false);
-  const [firstConfirmationDialogOpen, setFirstConfirmationDialogOpen] =
-    useState(false);
-  const [secondConfirmationDialogOpen, setSecondConfirmationDialogOpen] =
-    useState(false);
-
-  const handleClose = () => {
-    setAcceptTermsDialogOpen(false);
-    setEnterPasswordDialogOpen(false);
-    setFirstConfirmationDialogOpen(false);
-    setSecondConfirmationDialogOpen(false);
-    return;
-  };
-
-  const handleConfirm = () => {
-    handleClose();
-  };
-  /// dialog end
-
-  const deleteUser = async () => {
-    if (auth === null || auth.currentUser === null || idToken === null) return;
-
-    if (!isAccepted) {
-      setAcceptTermsDialogOpen(true);
-      return;
-    }
-
-    if (!updatedFormFields.oldPassword) {
-      setEnterPasswordDialogOpen(true);
-      return;
-    }
-
-    setFirstConfirmationDialogOpen(true);
-  };
-
-  const handleFirstConfirmation = () => {
-    setTimeout(() => {
-      setSecondConfirmationDialogOpen(true);
-    }, 1000);
-  };
-
-  const handleSecondConfirmation = async () => {
-    try {
-      if (idToken) {
-        const result = await deleteAccount(idToken);
-        if (!result.status) throw new Error("Väärä salasana");
-        await sleep(3000);
-        setSecondConfirmationDialogOpen(false);
-        signOutMethod();
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const verifyCard = async (stripe: any, elements: any) => {
     const card = elements.getElement(CardElement);
@@ -272,7 +206,6 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
   return (
     <ThemeProvider theme={formTheme}>
       <Container component="main" maxWidth="sm">
-        {/* {JSON.stringify(fields)} */}
         <Typography
           variant="h4"
           style={{ marginTop: "8px", textAlign: "center" }}
@@ -347,94 +280,10 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
             {successMessage}
           </Typography>
         </form>
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
-          <Button
-            variant="contained"
-            color="primary"
-            style={{
-              backgroundColor: "#FF4500",
-              width: "90%",
-            }}
-            onClick={deleteUser}
-          >
-            Poista tili
-          </Button>
-          <FormControlLabel
-            sx={{ marginTop: 3, width: "95%" }}
-            control={
-              <Checkbox
-                sx={{ "& .MuiSvgIcon-root": { marginBottom: "8px" } }} // Adjusts the checkbox icon alignment if needed
-                checked={isAccepted}
-                onChange={() => setIsAccepted(!isAccepted)}
-                name="accept"
-              />
-            }
-            label={
-              <Typography>
-                Ymmärrän, että käyttäjätilin poistaessani kaikki tiedot poistuu
-                peruuttamattomasti eikä niiden palautus ole enää mahdollista.
-              </Typography>
-            }
-          />
-        </div>
-
-        <ConfirmationDialog
-          open={acceptTermsDialogOpen}
-          onClose={handleClose}
-          onConfirm={handleConfirm}
-          title="Hyväksy ehdot"
-          content="Sinun tulee hyväksyä ehdot poistaaksesi tilisi."
-          showCancel={true}
-          cancelButtonText="Ok"
-          cancelButtonBackgroundColor="#57bfb1"
-        />
-        <ConfirmationDialog
-          open={enterPasswordDialogOpen}
-          onClose={handleClose}
-          onConfirm={handleConfirm}
-          title="Salasana puuttuu"
-          content="Syötä salasana poistaaksesi tilisi."
-          showCancel={true}
-          cancelButtonText="Ok"
-          cancelButtonBackgroundColor="#57bfb1"
-        />
-        <ConfirmationDialog
-          open={firstConfirmationDialogOpen}
-          onClose={handleClose}
-          onConfirm={handleFirstConfirmation}
-          title="Vahvista toiminto"
-          content="Oletko varma, että haluat poistaa tilisi? Tämä toiminto EI ole peruutettavissa."
-          showCancel={true}
-          showConfirm={true}
-          confirmButtonText="Kyllä"
-          confirmButtonColor=""
-          confirmButtonBackgroundColor="#FF4500"
-          cancelButtonText="Ei"
-          cancelButtonColor=""
-          cancelButtonBackgroundColor="#57bfb1"
-        />
-        <ConfirmationDialog
-          open={secondConfirmationDialogOpen}
-          onClose={handleClose}
-          onConfirm={handleSecondConfirmation}
-          title="Vahvista toiminto"
-          content="Oletko AIVAN varma, että haluat poistaa tilisi? Tämä toiminto EI ole peruutettavissa."
-          showCancel={true}
-          showConfirm={true}
-          confirmButtonText="Kyllä"
-          confirmButtonColor=""
-          confirmButtonBackgroundColor="#FF4500"
-          cancelButtonText="Ei"
-          cancelButtonColor=""
-          cancelButtonBackgroundColor="#57bfb1"
+        <RenderConfirmDeletion
+          idToken={idToken}
+          password={updatedFormFields.oldPassword}
+          signOutMethod={signOutMethod}
         />
       </Container>
     </ThemeProvider>
