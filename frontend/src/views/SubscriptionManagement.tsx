@@ -3,7 +3,7 @@ import { stripeSubscription } from "../api/stripeSubscriptions";
 import { SubscriptionData } from "../types/typesFrontend";
 import React, { useState, useContext, useEffect } from "react";
 import PleaseLoginModal from "../components/modals/pleaseLoginModal";
-import { ConfirmationDialog } from "../components/subscriptionComponents/confirmationDialog";
+import { SubscriptionConfirmationDialog } from "../components/subscriptionComponents/SubscriptionConfirmationDialog.tsx";
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from "../styles/formThemeMUI.tsx";
 import {
@@ -112,7 +112,7 @@ const SubscriptionManagement: React.FC = () => {
         Tilaustiedot
       </Typography>
       <br></br>
-      <ConfirmationDialog
+      <SubscriptionConfirmationDialog
         onCancelSubscription={handleCancelSubscription}
         onStartSubscription={handleStartSubscription}
         subscription={subscription}
