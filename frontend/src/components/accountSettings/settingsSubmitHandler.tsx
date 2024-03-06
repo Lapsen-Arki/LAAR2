@@ -8,7 +8,6 @@ import {
 } from "firebase/auth";
 import { FirebaseError } from "@firebase/util";
 import { AuthenticationError, PasswordError } from "./errors";
-/* import postSettings from "../../api/postSettings";*/
 import { AccountSettingsFormData, UpdateStatusDataType } from "./types";
 import postSettings from "../../api/accountManagement/postSettings";
 const updateStatus: UpdateStatusDataType = {
