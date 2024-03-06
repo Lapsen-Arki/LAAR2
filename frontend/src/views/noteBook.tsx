@@ -12,15 +12,18 @@ import {
     Collapse,
     Tooltip,
     Button,
+    Box,
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import SaveIcon from '@mui/icons-material/Save';
+import InfoIcon from '@mui/icons-material/Info';
 
 const NoteBook: React.FC = () => {
   const [memos, setMemos] = useState<Memo[]>([]);
   const [isOpen, setIsOpen] = useState(false); // Tila muistelmien lisäämisnäkymän hallintaan
+  const [isOpenInfo, setIsOpenInfo] = useState(false);
 
   useEffect(() => {
     // Ladataan muistelmat Session Storagesta kun komponentti ladataan ensimmäistä kertaa
@@ -70,8 +73,12 @@ const NoteBook: React.FC = () => {
   };
   
 
-  const handleToggle = () => {
+  const handleToggleAdd = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleToggleInfo = () => {
+    setIsOpenInfo(!isOpenInfo);
   };
 
   return (
@@ -92,7 +99,7 @@ const NoteBook: React.FC = () => {
             sx={{ marginTop: 2, marginBottom: 2, marginRight: 2 }}
             type="submit"
             variant="outlined"
-            onClick={handleToggle}
+            onClick={handleToggleAdd}
           >
             <AddIcon />
             {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
@@ -112,7 +119,26 @@ const NoteBook: React.FC = () => {
         <Collapse in={isOpen}>
           <MemoCreator addMemo={addMemo} />
         </Collapse>
-        <ReturnBtn />
+          <ReturnBtn />
+        
+        <Tooltip title="INFO">
+          <Button
+            sx={{ marginTop: 2, marginBottom: 2, marginRight: 2 }}
+            type="submit"
+            variant="outlined"
+            onClick={handleToggleInfo}
+          >
+            <InfoIcon />
+            {isOpenInfo ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          </Button>
+        </Tooltip>
+
+        <Collapse in={isOpenInfo}>
+        <Box sx={{backgroundColor: 'orange', padding: 3, borderRadius: 10, marginBottom: 2}}>
+          <Typography variant="body1" gutterBottom><i>Voit halutessasi vaihtaa muistilappujen paikkaa raahaamalla,</i> tämä ominaisuus toimii vain PC:llä.</Typography>
+        </Box>
+        </Collapse>
+          
       </Container>
       
       {/* Näytetään muistilaput */}
