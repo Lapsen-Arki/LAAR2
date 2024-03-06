@@ -1,43 +1,63 @@
-import { Box, Typography } from "@mui/material";
-import { Link } from "react-router-dom"; // Assuming you're using react-router
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import { Link } from "react-router-dom";
 
 // HeaderLinks component for individual links
-const HeaderLink = ({
-  setOpen,
-  navLinkTo,
-  navLinkName,
-}: {
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  navLinkTo: string;
-  navLinkName: string;
-}) => {
+export default function HeaderLink() {
   return (
-    <Box
-      sx={{
-        margin: 1.5,
-        mt: 3,
-        mr: 2,
-        "&:hover": {
-          transform: "scale(1.05)",
-          transition: "transform 0.1s ease-in-out",
-        },
-      }}
-    >
-      <Typography
-        component={Link}
-        to={navLinkTo}
-        onClick={() => setOpen(false)}
-        sx={{
-          p: 2,
-          flexGrow: 1,
-          // Any additional styling
-        }}
-      >
-        {navLinkName}
-      </Typography>
-      <hr style={{ marginTop: 5, maxWidth: "75%" }} />
-    </Box>
+    <List sx={{ display: { sx: "block", md: "flex" } }}>
+      <ListItem disablePadding sx={{ display: { md: "none" } }}>
+        <ListItemButton component={Link} to="/" sx={{ textAlign: "left" }}>
+          <ListItemText primary="Etusivu" />
+        </ListItemButton>
+      </ListItem>
+      <ListItem disablePadding>
+        <ListItemButton
+          component={Link}
+          to="/shopping-list"
+          sx={{ textAlign: "left" }}
+        >
+          <ListItemText primary="Ostoslista" />
+        </ListItemButton>
+      </ListItem>
+      <ListItem disablePadding>
+        <ListItemButton
+          component={Link}
+          to="https://www.kauppa.lapsen-arki.fi/kauppa/"
+          sx={{ textAlign: "left" }}
+        >
+          <ListItemText primary="Kauppa" />
+        </ListItemButton>
+      </ListItem>
+      <ListItem disablePadding>
+        <ListItemButton
+          component={Link}
+          to="https://www.kauppa.lapsen-arki.fi/blogi-artikkelit/"
+          sx={{ textAlign: "left" }}
+        >
+          <ListItemText primary="Blogi" />
+        </ListItemButton>
+      </ListItem>
+      <ListItem disablePadding>
+        <ListItemButton
+          component={Link}
+          to="/"
+          sx={{ textAlign: "left" }}
+        >
+          <ListItemText primary="Vinkit" />
+        </ListItemButton>
+      </ListItem>
+      <ListItem disablePadding>
+        <ListItemButton
+          component={Link}
+          to="/"
+          sx={{ textAlign: "left" }}
+        >
+          <ListItemText primary="Muistikirja" />
+        </ListItemButton>
+      </ListItem>
+    </List>
   );
-};
-
-export default HeaderLink;
+}
