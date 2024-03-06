@@ -1,3 +1,7 @@
+.page {
+    display: block !important;
+}
+
 /* PostIt */
 .post-it-memo {
     background-color: #fefecd; /* Post-it lapun keltainen */
@@ -48,4 +52,3 @@
     /* Lisää näkyvyyttä varjostuksella, jos tarpeen */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   }
-  

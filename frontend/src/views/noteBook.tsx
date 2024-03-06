@@ -16,6 +16,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import SaveIcon from '@mui/icons-material/Save';
 
 const NoteBook: React.FC = () => {
   const [memos, setMemos] = useState<Memo[]>([]);
@@ -77,7 +78,7 @@ const NoteBook: React.FC = () => {
     <ThemeProvider theme={formTheme}>
 
       {/* Lisää uusi muistilappu */}
-      <Container component="main" maxWidth="sm" style={{ textAlign: "center" }}>
+      <Container className="noteBook" component="main" style={{ textAlign: "center" }}>
         <Typography 
           variant="h6"
           component="h6"
@@ -88,7 +89,7 @@ const NoteBook: React.FC = () => {
 
         <Tooltip title="Lisää muistelmia">
           <Button
-            sx={{ marginTop: 2, marginBottom: 2 }}
+            sx={{ marginTop: 2, marginBottom: 2, marginRight: 2 }}
             type="submit"
             variant="outlined"
             onClick={handleToggle}
@@ -98,14 +99,24 @@ const NoteBook: React.FC = () => {
           </Button>
         </Tooltip>
 
+        <Tooltip title="Ominaisuus tulossa!">
+          <Button
+            sx={{ marginTop: 2, marginBottom: 2 }}
+            type="submit"
+            variant="outlined"
+          >
+            <SaveIcon />
+          </Button>
+        </Tooltip>
+
         <Collapse in={isOpen}>
           <MemoCreator addMemo={addMemo} />
         </Collapse>
         <ReturnBtn />
       </Container>
-    
+      
       {/* Näytetään muistilaput */}
-      <Container component="main" maxWidth="sm" style={{ textAlign: "center", boxShadow: 'unset' }}>
+      <Container className="noteBook" component="main" maxWidth="sm" style={{ textAlign: "center", boxShadow: 'unset' }}>
         {memos.map((memo) => (
           <div
           key={memo.id}
@@ -118,7 +129,7 @@ const NoteBook: React.FC = () => {
         </div>
         ))}
       </Container>
-    </ThemeProvider>
+      </ThemeProvider>
   );
 };
 
