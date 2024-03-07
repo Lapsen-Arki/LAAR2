@@ -31,7 +31,7 @@ const AdminPage = () => {
     title: "",
     name: "",
     textContent: "",
-    ageLimit: 0,
+    ageLimit: undefined,
     photoLink: "",
   });
   const { idToken } = useContext(TokenContext);
@@ -57,17 +57,13 @@ const AdminPage = () => {
 
     const response = await adminAddData(idToken, submitData);
     if (response && response.error) {
+      setSuccessMessage("");
       setErrorMessage(response.error);
-      setInterval(() => {
-        setErrorMessage("");
-      }, 5000);
     } else {
+      setErrorMessage("");
       setSuccessMessage(
         "Tietokantaan tallentaminen onnistui! Lisää uusi tieto tai voit poistua sivulta."
       );
-      setInterval(() => {
-        setSuccessMessage("");
-      }, 5000);
     }
   };
 
@@ -125,7 +121,7 @@ const AdminPage = () => {
                 title: "",
                 name: "",
                 textContent: "",
-                ageLimit: 0,
+                ageLimit: undefined,
                 photoLink: "",
               });
               setCategory(e.target.value);
@@ -159,7 +155,13 @@ const AdminPage = () => {
             </Button>
             <Collapse
               in={openInstructions}
-              sx={{ border: "solid", borderWidth: 2, p: 2.5, mb: 5, mt: 2 }}
+              sx={{
+                border: "solid",
+                borderWidth: openInstructions ? 2 : 0,
+                p: openInstructions ? 2.5 : 0,
+                mb: openInstructions ? 2 : 0,
+                mt: 2,
+              }}
             >
               <Typography>
                 <strong>Vinkkeihin on 3 tyyppiä.</strong> Päiväunet, iltatoimet
@@ -236,7 +238,13 @@ const AdminPage = () => {
           <strong>Avaa ohjeet otsikon käyttöön:</strong>
         </Button>
         <Collapse
-          sx={{ border: "solid", borderWidth: 2, p: 2.5, mb: 5 }}
+          sx={{
+            border: "solid",
+            borderWidth: openTitleInstructions ? 2 : 0,
+            p: openTitleInstructions ? 2.5 : 0,
+            mb: openTitleInstructions ? 2 : 0,
+            mt: 2,
+          }}
           in={openTitleInstructions}
         >
           <Typography>
@@ -337,6 +345,7 @@ const AdminPage = () => {
           }}
           name="title"
           fullWidth
+          value={formData.title}
           label="otsikko"
           margin="dense"
           onChange={handleChange}
@@ -352,6 +361,7 @@ const AdminPage = () => {
             background: "white",
           }}
           name="name"
+          value={formData.name}
           fullWidth
           label="Nimi"
           margin="dense"
@@ -365,6 +375,7 @@ const AdminPage = () => {
             background: "white",
           }}
           name="ageLimit"
+          value={formData.ageLimit}
           fullWidth
           label="Ikäraja/kk"
           margin="dense"
@@ -376,6 +387,7 @@ const AdminPage = () => {
         <Typography>Vinkin tai tulossivun tekstisisältö:</Typography>
         <TextareaAutosize
           name="textContent"
+          value={formData.textContent}
           minRows={8} // Minimum number of rows
           maxRows={8} // Maximum number of rows
           style={{ width: 495 }}
@@ -393,6 +405,7 @@ const AdminPage = () => {
               marginTop: 0,
               background: "white",
             }}
+            value={formData.photoLink}
             name="photoLink"
             fullWidth
             label="Kuvan linkki"

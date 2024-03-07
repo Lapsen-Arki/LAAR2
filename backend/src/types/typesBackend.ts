@@ -41,6 +41,7 @@ export interface FinalRecommData {
   recomm: recomm;
   textContent: TextContents;
   photos?: Photos;
+  nameKeys: string[];
 }
 
 export interface UserData {}
