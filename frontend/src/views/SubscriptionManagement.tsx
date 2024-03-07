@@ -3,7 +3,9 @@ import { stripeSubscription } from "../api/stripeSubscriptions";
 import { SubscriptionData } from "../types/typesFrontend";
 import React, { useState, useContext, useEffect } from "react";
 import PleaseLoginModal from "../components/modals/pleaseLoginModal";
-import { ConfirmationDialog } from "../components/subscriptionComponents/confirmationDialog";
+import { SubscriptionConfirmationDialog } from "../components/subscriptionComponents/SubscriptionConfirmationDialog.tsx";
+import { ThemeProvider } from "@mui/material/styles";
+import { formTheme } from "../styles/formThemeMUI.tsx";
 import {
   IsSubscribed,
   NotSubscribed,
@@ -100,6 +102,7 @@ const SubscriptionManagement: React.FC = () => {
   }
 
   return (
+	<ThemeProvider theme={formTheme}>
     <Container
       sx={{
         textAlign: "center",
@@ -109,7 +112,7 @@ const SubscriptionManagement: React.FC = () => {
         Tilaustiedot
       </Typography>
       <br></br>
-      <ConfirmationDialog
+      <SubscriptionConfirmationDialog
         onCancelSubscription={handleCancelSubscription}
         onStartSubscription={handleStartSubscription}
         subscription={subscription}
@@ -141,16 +144,17 @@ const SubscriptionManagement: React.FC = () => {
       <br></br>
       <br></br>
       {successMessage != null && (
-        <Alert severity="success">
+        <Alert severity="success" sx={{marginBottom: '10px'}}>
           <Typography variant="subtitle1">{successMessage}</Typography>
         </Alert>
       )}
       {errorMessage != null && (
-        <Alert severity="error">
+        <Alert severity="error" sx={{marginBottom: '10px'}}>
           <Typography variant="subtitle2">{errorMessage}</Typography>
         </Alert>
       )}
     </Container>
+	</ThemeProvider>
   );
 };
 

@@ -19,10 +19,12 @@ export default function MealComp({
 
   return (
     <>
-      <Typography sx={{ mt: 5 }} variant="h3">
+      <Typography sx={{ mt: 5, textAlign: "center" }} variant="h3">
         Kokoa ateria:
       </Typography>
-      <Typography>Lapsen ikään sopivia ruoka suosituksia:</Typography>
+      <Typography sx={{ textAlign: "center" }}>
+        Lapsen ikään sopivia ruoka suosituksia:
+      </Typography>
       <RecommComp
         recommendations={recommendations}
         multipleSelections={true}

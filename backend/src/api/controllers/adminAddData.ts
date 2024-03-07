@@ -45,6 +45,16 @@ const adminPage = async (req: Request, res: Response) => {
           "Sinulla pitää olla kuvaa varten linkki | You must have either a link or a file for the image"
         );
     }
+    if (
+      addDataObject.photoLink &&
+      !addDataObject.photoLink.startsWith("https://")
+    ) {
+      return res
+        .status(400)
+        .send(
+          'Linkin pitää alkaa "https://" | Link has to start with "https://"'
+        );
+    }
     if (!addDataObject.ageLimit) {
       return res
         .status(400)

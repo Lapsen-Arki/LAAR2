@@ -106,10 +106,11 @@ export default function ChoicesPage() {
       <Container
         sx={{
           width: {
-            xs: "95%",
+            xs: "90%",
             sm: "600px",
             md: "800px",
             lg: "1200px",
+            textAlign: "center",
           },
           maxWidth: "100%",
         }}

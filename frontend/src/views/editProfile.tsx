@@ -197,6 +197,7 @@ const EditProfile = () => {
               onChange={(newDate) =>
                 setBirthdate(newDate ? dayjs(newDate) : null)
               }
+              format="DD/MM/YYYY"
             />
           </LocalizationProvider>
           {birthdateError && <Alert severity="error">{birthdateError}</Alert>}
@@ -205,10 +206,9 @@ const EditProfile = () => {
           <TextField
             sx={{ width: 260 }}
             id="childAllergies"
-            label="Allergiat"
+            label="Erityisruokavaliot"
             margin="dense"
             variant="outlined"
-            inputProps={{ maxLength: 50 }}
             value={childAllergies}
             onChange={(e) => setChildAllergies(e.target.value)}
           />
