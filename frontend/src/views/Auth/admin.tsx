@@ -57,17 +57,13 @@ const AdminPage = () => {
 
     const response = await adminAddData(idToken, submitData);
     if (response && response.error) {
+      setSuccessMessage("");
       setErrorMessage(response.error);
-      setInterval(() => {
-        setErrorMessage("");
-      }, 5000);
     } else {
+      setErrorMessage("");
       setSuccessMessage(
         "Tietokantaan tallentaminen onnistui! Lisää uusi tieto tai voit poistua sivulta."
       );
-      setInterval(() => {
-        setSuccessMessage("");
-      }, 5000);
     }
   };
 
