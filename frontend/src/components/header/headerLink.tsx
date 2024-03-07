@@ -52,7 +52,7 @@ export default function HeaderLink() {
       <ListItem disablePadding>
         <ListItemButton
           component={Link}
-          to="/"
+          to="/notebook"
           sx={{ textAlign: "left" }}
         >
           <ListItemText primary="Muistikirja" />
