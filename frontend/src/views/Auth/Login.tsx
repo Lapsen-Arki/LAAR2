@@ -127,7 +127,6 @@ const Login: React.FC = (): JSX.Element => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setPassword(e.target.value)
             }
-
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
