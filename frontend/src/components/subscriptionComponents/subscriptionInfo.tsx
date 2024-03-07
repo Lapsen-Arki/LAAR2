@@ -57,7 +57,6 @@ const IsSubscribed = ({
       <br></br>
       <TableContainer component={Paper}>
         <Table
-          sx={{ minWidth: { xs: "100%", md: 600 } }}
           aria-label="simple table"
         >
           <TableBody>
