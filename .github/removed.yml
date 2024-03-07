@@ -1,0 +1,23 @@
+run-prettier:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "20.11.0"
+
+    - name: Run prettier
+      run: |
+        npx prettier . --check &> utils/results/prettier-summary.txt || true
+        cd utils
+        node prettier-parser.js
+
+    - name: Comment PR
+      if: success() || failure()
+      uses: thollander/actions-comment-pull-request@v2
+      with:
+        filePath: "utils/results/prettier-summary.md"
+        comment_tag: "Prettier check results"
