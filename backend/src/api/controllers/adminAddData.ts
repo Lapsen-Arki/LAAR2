@@ -86,13 +86,48 @@ const adminPage = async (req: Request, res: Response) => {
       recomm: recommObj,
       textContent: textContentObj,
       photos: photos,
+      nameKeys: [nameKey],
     };
+
+    // Small delay to prevent timing related issues causing potential duplicates:
+    function delay(ms: number) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+    await delay(2000);
 
     // Saving data to firebase
     const db = admin.firestore();
     const recommCollection = db.collection("recommendations");
 
-    let query = recommCollection
+    // Check for diplicate titles:
+    const titleQuery = await recommCollection
+      .where("category", "==", newData.category)
+      .where("title", "==", newData.title)
+      .get();
+
+    if (!titleQuery.empty) {
+      return res
+        .status(400)
+        .send(
+          `Duplikaatti. Samassa kategoriassa on valmiiksi jo otsikko: ${newData.title} | Duplicate. Within the same category there is already the same title: ${newData.title} `
+        );
+    }
+
+    // Check for diplicate names:
+    const nameQuery = await recommCollection
+      .where("category", "==", newData.category)
+      .where("nameKeys", "array-contains", nameKey)
+      .get();
+
+    if (!nameQuery.empty) {
+      return res
+        .status(400)
+        .send(
+          `Duplikaatti. Samassa kategoriassa on valmiiksi jo nimi: ${nameKey} | Duplicate. Within the same category there is already the same name: ${nameKey} `
+        );
+    }
+
+    let query = await recommCollection
       .where("category", "==", newData.category)
       .where("type", "==", newData.type)
       .where("title", "==", newData.title);
@@ -108,6 +143,7 @@ const adminPage = async (req: Request, res: Response) => {
         [`recomm.${nameKey}`]: recommValue,
         [`textContent.${nameKey}`]: textContValue,
         [`photos.${nameKey}`]: addDataObject.photoLink,
+        nameKeys: admin.firestore.FieldValue.arrayUnion(nameKey),
       };
 
       // Perform the update
