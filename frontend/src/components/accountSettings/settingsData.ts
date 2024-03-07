@@ -1,6 +1,6 @@
 import { SettingsType, UserType } from "./types";
 
-async function buildData(user: UserType) {
+async function SettingsData(user: UserType) {
   const settings: SettingsType = {
     displayName: {
       title: "Nimi",
@@ -23,4 +23,4 @@ async function buildData(user: UserType) {
   };
   return settings;
 }
-export default buildData;
+export default SettingsData;

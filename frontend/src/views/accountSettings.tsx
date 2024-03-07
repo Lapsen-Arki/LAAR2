@@ -1,11 +1,11 @@
 import { useEffect, useState, useContext, useCallback } from "react";
-import buildData from "./accountSettingsComponents/dataHandler";
-import AccountSettings from "./accountSettingsComponents/accountSettings";
+import SettingsData from "../components/accountSettings/settingsData";
+import AccountSettings from "../components/accountSettings/settingsForm";
 import { UserContext } from "../contexts/userContext";
 import { AuthProvider } from "../contexts/authContext";
 import getSettings from "../api/accountManagement/getSettings";
 import { TokenContext } from "../contexts/tokenContext";
-import { PaymentMethod } from "./accountSettingsComponents/types";
+import { PaymentMethod } from "../components/accountSettings/types";
 import LoadingComponent from "../components/LoadingComponent";
 import "../conf/firebaseSdkConfig";
 const AccountSettingsPage = () => {
@@ -19,7 +19,7 @@ const AccountSettingsPage = () => {
     if (user.userId === undefined) return;
     if (token.idToken === null) return;
     try {
-      const data = await buildData(user);
+      const data = await SettingsData(user);
       const dbData = await getSettings(token.idToken);
       setDbData(dbData);
       setSettingsData(data);
@@ -33,7 +33,12 @@ const AccountSettingsPage = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-  if (isLoading) return <div><LoadingComponent /></div>;
+  if (isLoading)
+    return (
+      <div>
+        <LoadingComponent />
+      </div>
+    );
   return (
     <>
       <AuthProvider>
