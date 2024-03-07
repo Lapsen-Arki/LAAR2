@@ -80,7 +80,9 @@ const EditProfile = () => {
                 : null
             );
             setSelectedAvatar(profileDataFromStorage.avatar);
-            setChildAllergies(profileDataFromStorage.allergies);
+			if (profileDataFromStorage.allergies) {
+				setChildAllergies(profileDataFromStorage.allergies);
+			}
             setAccessRights(profileDataFromStorage.accessRights);
           } else {
             // Jos ei löydy Session Storagesta, haetaan palvelimelta
