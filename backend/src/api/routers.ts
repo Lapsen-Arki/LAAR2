@@ -33,6 +33,9 @@ import { updateCard } from "./controllers/accountManagement/updateCard";
 
 const router = express.Router();
 
+// Memo controllers:
+import {saveMemo, getMemos} from "./controllers/memos"
+
 // General routes:
 router.post("/register", registerUser);
 router.post("/auth", checkAuth, (req: Request, res: Response) => {
@@ -63,6 +66,10 @@ router.post("/update-card", checkAuth, updateCard);
 router.post("/start-subscription", checkAuth, startSubscription);
 router.post("/cancel-subscription", checkAuth, cancelSubscription);
 router.post("/get-subscription", checkAuth, getSubscriptionById);
+
+// Memo routes
+router.post("/save-memo", checkAuth, saveMemo);
+router.post("/get-memos", checkAuth, getMemos);
 
 // FOR TESTING
 // -------------------------------------

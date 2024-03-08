@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import NotePage from '../components/notebook/notePage';
 import MemoCreator from '../components/notebook/memoCreator';
+import { TokenContext } from "../contexts/tokenContext";
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from '../styles/formThemeMUI';
 import ReturnBtn from '../components/returnBtn';
 import { Memo } from '../types/typesFrontend';
-import { saveMemosToSessionStorage, getMemosFromSessionStorage, updateMemosInSessionStorage } from '../api/memoStorage';
+import { saveMemosToSessionStorage, getMemosFromSessionStorage, updateMemosInSessionStorage, saveMemosToBackend, getMemos } from '../api/memoStorage';
 import {
     Container,
     Typography,
@@ -24,9 +25,12 @@ const NoteBook: React.FC = () => {
   const [memos, setMemos] = useState<Memo[]>([]);
   const [isOpen, setIsOpen] = useState(false); // Tila muistelmien lisäämisnäkymän hallintaan
   const [isOpenInfo, setIsOpenInfo] = useState(false);
+  const { idToken } = useContext(TokenContext);
 
   useEffect(() => {
     // Ladataan muistelmat Session Storagesta kun komponentti ladataan ensimmäistä kertaa
+	const backendMemos = getMemos(idToken);
+	console.log("backendMemos: ", backendMemos)
     const storedMemos = getMemosFromSessionStorage();
     if(storedMemos) setMemos(storedMemos); // Varmista, että storedMemos on olemassa ennen kuin kutsut setMemos
   }, []);
@@ -36,6 +40,8 @@ const NoteBook: React.FC = () => {
     setMemos(updatedMemos);
     saveMemosToSessionStorage(updatedMemos);
     updateMemosInSessionStorage(newMemo); // Lisää uusi muistilappu sessionStorageen
+	console.log(memos)
+	saveMemosToBackend(idToken, updatedMemos)
   };
 
   const handleDragStart = (id: string) => (e: React.DragEvent<HTMLDivElement>) => {

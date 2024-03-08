@@ -44,4 +44,12 @@ export interface FinalRecommData {
   nameKeys: string[];
 }
 
+// Memo-related types
+
+export interface Memo {
+	type: string;
+	content: string;
+	id: string;
+  }
+
 export interface UserData {}
