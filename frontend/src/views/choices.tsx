@@ -2,9 +2,10 @@ import { useLocation } from "react-router-dom";
 import NameDropDown from "../components/index/nameDropDown";
 import ReturnBtn from "../components/returnBtn";
 import { useEffect, useState } from "react";
-import { Container, Typography } from "@mui/material";
+import { Card, Container, Typography } from "@mui/material";
 import { NamesAndAgesType } from "../types/typesFrontend";
 import makeChildObject from "../utils/makeChildObject";
+import InfoIcon from "@mui/icons-material/Info";
 
 // comp imports:
 import ActivityComp from "../components/coices/activityComp";
@@ -106,7 +107,7 @@ export default function ChoicesPage() {
       <Container
         sx={{
           width: {
-            xs: "90%",
+            xs: "98%",
             sm: "600px",
             md: "800px",
             lg: "1200px",
@@ -124,6 +125,51 @@ export default function ChoicesPage() {
         <div style={{ marginBottom: 50 }}>
           {tipsFor && <TipsComp adviseType={tipsFor} />}
         </div>
+        {!selectedChild && (
+          <Card
+            style={{
+              display: "inline-block",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "#e0f1ff",
+              padding: 25,
+              maxWidth: 450,
+              borderRadius: 10,
+            }}
+          >
+            <InfoIcon />
+            <Typography sx={{ mt: 1 }} variant="h5">
+              Näin pääset alkuun:
+            </Typography>
+            <Typography>Huom. Luet ohjeet loppuun asti ensin.</Typography>
+            <br />
+            <Typography>
+              <strong> 1. Valitse lapsi </strong> <br /> Valitse yläpuolella
+              olevasta valikosta oma tai hoidettava lapsesi, niin ehdotukset
+              tulevat näkyviin tähän kohtaan.
+            </Typography>
+            <br />
+            <Typography sx={{ wordBreak: "break-word" }}>
+              <strong> 2. Selaa ehdotuksia </strong> <br /> Selaa oman tai
+              hoidettavan lapsesi ikään sopivia ehdotuksia ja ideoita. Lapsen
+              allergiat tulevat näkyviin ateriasivuilla. Muista ottaa nämä
+              huomioon :)
+            </Typography>
+            <br />
+            <Typography>
+              <strong> 3. Valitse </strong> <br /> Valitse hauskimmat,
+              mieluisimmat ja maukkaimmat ideat.
+            </Typography>
+            <br />
+            <Typography>
+              <strong> 4. Katso tulokset </strong> <br /> Näytä tulossivu
+              painamalla "Kokoa ateria" tai "Valitse aktiviteetti" ja luo
+              halutessasi ostoslista ateriasivuilla. Tulossivulla saat
+              valintojesi perusteella ammattilaisen laatimia hyödyllisiä
+              vinkkejä parhaaseen lapsen arkeen.
+            </Typography>
+          </Card>
+        )}
         {smallMeal && (
           <div>
             {selectedChild && (
