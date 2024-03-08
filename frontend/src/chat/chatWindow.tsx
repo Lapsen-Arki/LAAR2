@@ -50,7 +50,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     const cleanupChatService = chatService.current;
     return () => {
-      console.log("Cleanup");
+      //("Cleanup");
       cleanupChatService.clearOnMessageReceived(); // Accessing the current instance method
     };
   }, []);
@@ -58,7 +58,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
   useEffect(() => {
     const onMessageReceivedCallback = (response?: Message | Message[]) => {
       if (response) {
-        console.log("Received response from Chattirobotti:", response);
+        //("Received response from Chattirobotti:", response);
         const messagesArray: Message[] = Array.isArray(response) ? response : [response];
         setMessages((prevMessages: Message[]) => [...prevMessages, ...messagesArray]);
       }
@@ -128,7 +128,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
       timestamp: now,
     };
   
-    console.log("Sending message:", userMessage);
+    //("Sending message:", userMessage);
   
     setMessages([...messages, userMessage]); // Always append the user's message to the messages array
   
