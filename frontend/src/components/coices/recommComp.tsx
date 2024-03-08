@@ -136,7 +136,7 @@ export default function RecommComp({
                   pr: 2,
                   pb: 2,
                   maxHeight: collapseOpen[recommendation.title] ? "none" : 100,
-                  maxWidth: collapseOpen[recommendation.title] ? "none" : 300,
+                  maxWidth: collapseOpen[recommendation.title] ? "none" : 350,
                 }}
               >
                 {/* Iterate trough all the recommendations in the object */}
