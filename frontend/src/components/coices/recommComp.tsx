@@ -125,9 +125,14 @@ export default function RecommComp({
                 sx={{
                   textAlign: "center",
                   border: "solid",
-                  borderColor: "#fad4b4",
+                  borderColor: collapseOpen[recommendation.title]
+                    ? "orange"
+                    : "#fad4b4",
+                  borderRadius: 5,
+                  ml: -1,
                   pr: 2,
                   pb: 2,
+                  maxHeight: collapseOpen[recommendation.title] ? "none" : 100,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
