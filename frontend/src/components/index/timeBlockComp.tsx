@@ -12,7 +12,18 @@ export default function TimeBlockComp() {
   };
 
   return (
-    <Grid container spacing={2} sx={{ mt: 5, mb: 15, textAlign: "center" }}>
+    <Grid
+      container
+      spacing={2}
+      sx={{
+        mt: 5,
+        mb: 15,
+        textAlign: "center",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       {/* Mapping the timeBlockData */}
       {timeBlockData.map((block, index) => (
         <Grid item xs={12} sm={4} key={index}>
