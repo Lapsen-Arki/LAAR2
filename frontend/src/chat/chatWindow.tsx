@@ -1,20 +1,9 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
-import {
-  Paper,
-  List,
-  ListItem,
-  useTheme,
-  Button,
-  Tooltip,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
-
+import React, { useState, useEffect, useRef } from "react";
+import { Paper, List, ListItem, useTheme, Button, Tooltip, Typography, useMediaQuery } from "@mui/material";
 import "./ChatWindow.css";
 import { Message } from "../types/typesFrontend";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-
-import ChattirobottiService from "./chatRobotService";
+import ChatRobotService from "./chatRobotService";
 
 interface ChatWindowProps {
   onClose: () => void;
@@ -26,9 +15,8 @@ const formatMessageTimestamp = (
   timestamp: Date | string,
   includeDate: boolean = true
 ): string => {
-  // Tarkista, onko aikaleima kelvollinen
   if (typeof timestamp === 'string' || isNaN(new Date(timestamp).getTime())) {
-    return ''; // Palauta tyhjä merkkijono, jos aikaleima ei ole kelvollinen
+    return '';
   }
 
   const options: Intl.DateTimeFormatOptions = {
@@ -54,68 +42,55 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState<string>("");
-  const [initialLoad, setInitialLoad] = useState<boolean>(true); // Uusi tila initialLoad
-
+  const [initialLoad, setInitialLoad] = useState<boolean>(true);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleChattirobottiResponse = useCallback(
-    (response?: Message | Message[]) => {
+  const chatService = useRef(new ChatRobotService()); // Ref to store the instance
+
+  useEffect(() => {
+    const cleanupChatService = chatService.current;
+    return () => {
+      console.log("Cleanup");
+      cleanupChatService.clearOnMessageReceived(); // Accessing the current instance method
+    };
+  }, []);
+
+  useEffect(() => {
+    const onMessageReceivedCallback = (response?: Message | Message[]) => {
       if (response) {
         console.log("Received response from Chattirobotti:", response);
-        const messagesArray: Message[] = Array.isArray(response)
-          ? response
-          : [response];
-        setMessages((prevMessages: Message[]) => [
-          ...prevMessages,
-          ...messagesArray,
-        ]);
+        const messagesArray: Message[] = Array.isArray(response) ? response : [response];
+        setMessages((prevMessages: Message[]) => [...prevMessages, ...messagesArray]);
       }
-    },
-    []
-  );
-
-  const chatService = useMemo(() => {
-    const service = new ChattirobottiService();
-    service.setOnMessageReceived(handleChattirobottiResponse);
-    return service;
-  }, [handleChattirobottiResponse]);
-
-  useEffect(() => {
-    chatService.handleIncomingMessages(handleChattirobottiResponse);
-
-    return () => {
-      chatService.clearOnMessageReceived();
     };
-  }, [chatService, handleChattirobottiResponse]);
+
+    chatService.current.setOnMessageReceived(onMessageReceivedCallback); // Setting callback
+  }, []);
 
   useEffect(() => {
-    if (isOpen && initialLoad) { // Muutettu ehdon tarkistus
-      const savedMessages = JSON.parse(
-        sessionStorage.getItem(CHAT_STORAGE_KEY) || "[]"
-      );
+    if (isOpen && initialLoad) {
+      const savedMessages = JSON.parse(sessionStorage.getItem(CHAT_STORAGE_KEY) || "[]");
       const welcomeMessageAlreadyExists = savedMessages.some((message: Message) => message.id === "welcomeMessage");
       const welcomeMessage: Message = {
         id: "welcomeMessage",
         senderId: "LAAR Chattirobotti",
         receiverId: "User 1",
         message: "ChatWindow opened",
-        text:
-          "Moikka ja tervetuloa LAARille! Olen LAAR, asiakaspalvelurobotti." +
+        text: "Moikka ja tervetuloa LAARille! Olen LAAR, asiakaspalvelurobotti." +
           "Suoriudun parhaiten, kun kirjoitat lyhyen ja selkeän kysymyksen. Kuinka voin olla avuksi?" +
           "<br /><br />Jos kirjaudut Minun LAARiin, voit tehdä myös itse muutoksia profiilisi ja palveluihisi ja pääset tarvittaessa asiakaspalvelun chatiin.",
         isUser: false,
         timestamp: new Date(),
       };
-      if (!welcomeMessageAlreadyExists) { // Lisätään welcomeMessage vain jos sitä ei ole jo tallennettu
+      if (!welcomeMessageAlreadyExists) {
         setMessages([welcomeMessage, ...savedMessages]);
       } else {
-        setMessages(savedMessages); // Muuten käytetään tallennettuja viestejä suoraan
+        setMessages(savedMessages);
       }
-      setInitialLoad(false); // Asetetaan initialLoad falseksi kun viestit on ladattu
+      setInitialLoad(false);
     }
-  }, [isOpen, setMessages, initialLoad]); // Lisätty initialLoad riippuvuus
+  }, [isOpen, setMessages, initialLoad]);
 
-  // Tallenna viestit Session Storageen aina, kun messages-tila muuttuu ja initialLoad on false
   useEffect(() => {
     if (!initialLoad) {
       sessionStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
@@ -142,21 +117,23 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
   const handleSendMessage = () => {
     const now = new Date();
     const defaultUsername = "Käyttäjä";
-
+  
     const userMessage: Message = {
       id: "userMessage-" + now.getTime(),
       senderId: defaultUsername,
       receiverId: "LAAR Chattirobotti",
       message: inputMessage,
-      text: `Käyttäjä: ${inputMessage}`,
+      text: inputMessage,
       isUser: true,
       timestamp: now,
     };
-
+  
     console.log("Sending message:", userMessage);
-    setMessages([...messages, userMessage]);
+  
+    setMessages([...messages, userMessage]); // Always append the user's message to the messages array
+  
     setInputMessage("");
-    chatService.addUserMessageAndGenerateResponse(inputMessage);
+    chatService.current?.addUserMessageAndGenerateResponse(inputMessage);
   };
 
   return (
@@ -256,7 +233,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
                 >
                   {message.isUser ? (
                     <span>
-                      {message.senderId}: {message.message}
+                      {message.message}
                     </span>
                   ) : (
                     <span dangerouslySetInnerHTML={{ __html: message.text }} />
