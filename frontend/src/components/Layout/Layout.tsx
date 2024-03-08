@@ -3,6 +3,7 @@ import Header from "../header/Header";
 import React from "react";
 import ScrollToTopButton from "./ScrollToTopButton";
 import "../../styles/Layout.css";
+import ChatWindowLauncher from "../../chat/ChatWindowLauncher";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -14,6 +15,7 @@ export default function Layout(props: LayoutProps) {
       <Header />
       <div className="content-container">
         <div className="page">{props.children}</div>
+        <ChatWindowLauncher />
         <ScrollToTopButton />
       </div>
       <Footer />
