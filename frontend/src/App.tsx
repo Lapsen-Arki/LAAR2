@@ -7,7 +7,7 @@ import Login from "./views/Auth/Login";
 import Profile from "./views/Profile";
 import EditProfile from "./views/editProfile";
 import CaresProfile from "./views/carersProfile";
-import AdminPage from "./views/Auth/admin";
+import AdminPage from "./views/Auth/AdminPage";
 import SubscriptionManagement from "./views/SubscriptionManagement";
 import AccountSettingsPage from "./views/accountSettings";
 import ChoicesPage from "./views/choices";
