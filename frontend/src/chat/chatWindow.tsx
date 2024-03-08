@@ -1,5 +1,4 @@
-//LAAR/Pikaviesti/frontend/src/components/ChatWindow.tsx
-import React, {  useState, useEffect, useRef, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import {
   Paper,
   List,
@@ -15,8 +14,7 @@ import "./ChatWindow.css";
 import { Message } from "../types/typesFrontend";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-import ChattirobottiService  from "./chatRobotService";
-
+import ChattirobottiService from "./chatRobotService";
 
 interface ChatWindowProps {
   onClose: () => void;
@@ -24,11 +22,15 @@ interface ChatWindowProps {
   user?: { name: string };
 }
 
-
 const formatMessageTimestamp = (
-  timestamp: Date,
+  timestamp: Date | string,
   includeDate: boolean = true
 ): string => {
+  // Tarkista, onko aikaleima kelvollinen
+  if (typeof timestamp === 'string' || isNaN(new Date(timestamp).getTime())) {
+    return ''; // Palauta tyhjä merkkijono, jos aikaleima ei ole kelvollinen
+  }
+
   const options: Intl.DateTimeFormatOptions = {
     weekday: "short",
     year: includeDate ? "numeric" : undefined,
@@ -40,104 +42,58 @@ const formatMessageTimestamp = (
   };
 
   const formattedTimestamp = new Intl.DateTimeFormat("fi-FI", options).format(
-    timestamp
+    new Date(timestamp)
   );
   return formattedTimestamp.replace(/\b\w/g, (char) => char.toUpperCase());
 };
 
-
-const CHAT_STORAGE_KEY = 'chatMessages';
+const CHAT_STORAGE_KEY = "chatMessages";
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
   const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const [messages, setMessages] = useState<Message[]>([]);
-  const [inputMessage, setInputMessage] = useState<string>('');
+  const [inputMessage, setInputMessage] = useState<string>("");
+  const [initialLoad, setInitialLoad] = useState<boolean>(true); // Uusi tila initialLoad
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChattirobottiResponse = useCallback(
     (response?: Message | Message[]) => {
       if (response) {
-        console.log('Received response from Chattirobotti:', response);
-        const messagesArray: Message[] = Array.isArray(response) ? response : [response];
-        setMessages((prevMessages: Message[]) => [...prevMessages, ...messagesArray]);
+        console.log("Received response from Chattirobotti:", response);
+        const messagesArray: Message[] = Array.isArray(response)
+          ? response
+          : [response];
+        setMessages((prevMessages: Message[]) => [
+          ...prevMessages,
+          ...messagesArray,
+        ]);
       }
     },
     []
   );
-  
-  // Assuming you have declared chatService within the component
- const chatService = useMemo(() => {
+
+  const chatService = useMemo(() => {
     const service = new ChattirobottiService();
-      service.setOnMessageReceived(handleChattirobottiResponse)
+    service.setOnMessageReceived(handleChattirobottiResponse);
     return service;
   }, [handleChattirobottiResponse]);
-    
-  
-  
-  const saveToSessionStorage = (key: string, data: Message[]) => {
-    sessionStorage.setItem(key, JSON.stringify(data));
-  };
 
-  const messageToSave: Message[] = messages;
-  saveToSessionStorage(CHAT_STORAGE_KEY, messageToSave);
-
-  const loadMessagesFromSessionStorage = (key: string) => {
-    const data = sessionStorage.getItem(key);
-    return data ? JSON.parse(data) : null;
-  };
-
-
- 
-// Handling Chattirobotti Responses
-//This effect handles responses from Chattirobotti, updating the messages state accordingly.
   useEffect(() => {
-    const handleChattirobottiResponse = (response?: Message | Message[]) => {
-      if (response) {
-        console.log('Received response from Chattirobotti:', response);
-        const messagesArray: Message[] = Array.isArray(response) ? response : [response];
-        setMessages((prevMessages: Message[]) => [...prevMessages, ...messagesArray]);
-      }
-    };
-
-    // Use the new function to handle incoming messages
     chatService.handleIncomingMessages(handleChattirobottiResponse);
 
     return () => {
       chatService.clearOnMessageReceived();
     };
-  }, [chatService, setMessages]);
-  
-  
-  const toggleWindowVisibility = () => {
-    onClose();
-  };
+  }, [chatService, handleChattirobottiResponse]);
 
-  // handleSendMessage Function
-  const handleSendMessage = () => {
-    const now = new Date();
-     const defaultUsername = "Anonymous";
-
-      const userMessage: Message = {
-      id: "userMessage-" + now.getTime(),
-      senderId: defaultUsername,
-      receiverId: "LAAR Chattirobotti",
-      message: inputMessage,
-      text: `Käyttäjä: ${inputMessage}`,
-      isUser: true,
-      timestamp: now,
-    };
-
-     console.log("Sending message:", userMessage);
-     setMessages([...messages, userMessage]);
-     setInputMessage("");
-     chatService.addUserMessageAndGenerateResponse(inputMessage);
-    };
-
-  //  This useEffect initializes the chat window when it is open, loading saved messages from session storage and displaying a welcome message.
   useEffect(() => {
-    if (isOpen) {
-      const savedMessages = loadMessagesFromSessionStorage(CHAT_STORAGE_KEY);
+    if (isOpen && initialLoad) { // Muutettu ehdon tarkistus
+      const savedMessages = JSON.parse(
+        sessionStorage.getItem(CHAT_STORAGE_KEY) || "[]"
+      );
+      const welcomeMessageAlreadyExists = savedMessages.some((message: Message) => message.id === "welcomeMessage");
       const welcomeMessage: Message = {
         id: "welcomeMessage",
         senderId: "LAAR Chattirobotti",
@@ -147,41 +103,61 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
           "Moikka ja tervetuloa LAARille! Olen LAAR, asiakaspalvelurobotti." +
           "Suoriudun parhaiten, kun kirjoitat lyhyen ja selkeän kysymyksen. Kuinka voin olla avuksi?" +
           "<br /><br />Jos kirjaudut Minun LAARiin, voit tehdä myös itse muutoksia profiilisi ja palveluihisi ja pääset tarvittaessa asiakaspalvelun chatiin.",
-
         isUser: false,
         timestamp: new Date(),
       };
-      setMessages([welcomeMessage, ...savedMessages]);
+      if (!welcomeMessageAlreadyExists) { // Lisätään welcomeMessage vain jos sitä ei ole jo tallennettu
+        setMessages([welcomeMessage, ...savedMessages]);
+      } else {
+        setMessages(savedMessages); // Muuten käytetään tallennettuja viestejä suoraan
+      }
+      setInitialLoad(false); // Asetetaan initialLoad falseksi kun viestit on ladattu
     }
-  }, [isOpen, setMessages, handleChattirobottiResponse]); 
+  }, [isOpen, setMessages, initialLoad]); // Lisätty initialLoad riippuvuus
 
-  // Cleaning Up Message Handling on Component Unmount
- useEffect(() => {
-    return () => 
-    chatService.clearOnMessageReceived();
-  }, [chatService]);
-  
-  // Scroll to the bottom of the input field when new messages are added
+  // Tallenna viestit Session Storageen aina, kun messages-tila muuttuu ja initialLoad on false
+  useEffect(() => {
+    if (!initialLoad) {
+      sessionStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
+    }
+  }, [messages, initialLoad]);
+
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
 
+  const toggleWindowVisibility = () => {
+    onClose();
+  };
 
-    // Handle the "Enter" key to send the message
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      // Check if the pressed key is "Enter"
-      if (e.key === "Enter") {
-        // Prevent the default behavior (e.g., line break in the input field)
-        e.preventDefault();
-        // Call the function to handle sending the message
-        handleSendMessage();
-      }
+  const handleSendMessage = () => {
+    const now = new Date();
+    const defaultUsername = "Käyttäjä";
+
+    const userMessage: Message = {
+      id: "userMessage-" + now.getTime(),
+      senderId: defaultUsername,
+      receiverId: "LAAR Chattirobotti",
+      message: inputMessage,
+      text: `Käyttäjä: ${inputMessage}`,
+      isUser: true,
+      timestamp: now,
     };
-  
 
+    console.log("Sending message:", userMessage);
+    setMessages([...messages, userMessage]);
+    setInputMessage("");
+    chatService.addUserMessageAndGenerateResponse(inputMessage);
+  };
 
   return (
     <>
@@ -189,21 +165,19 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
         <Paper
           style={{
             position: "fixed",
-            bottom: 0, // Stick the chat window to the bottom
+            bottom: 0,
             right: 0,
             padding: theme.spacing(2),
-            maxWidth:  isSmallScreen ? "100%" : 400, // Responsive design
-            margin: isSmallScreen ? 0 : "auto", // Center the chat window
+            maxWidth: isSmallScreen ? "100%" : 400,
+            margin: isSmallScreen ? 0 : "auto",
           }}
         >
-          {/* ChatWindow header */}
-
           <div
             style={{
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              padding: isSmallScreen ? "8px" : "16px", // Responsive design
+              padding: isSmallScreen ? "8px" : "16px",
               backgroundColor: "#57bfb1",
             }}
           >
@@ -230,31 +204,28 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
                   fontSize: "24px",
                   color: "white",
                 }}
-                >
-                  {/* Button added to toggle the chat window visibility */}
-                   <Button
-                    variant="outlined"
-                    sx={{
+              >
+                <Button
+                  variant="outlined"
+                  sx={{
                     fontSize: 8,
                     p: 0,
                     width: 2,
                     color: "orange",
                     borderColor: "orange",
-                    }}
-                    onClick={toggleWindowVisibility}
+                  }}
+                  onClick={toggleWindowVisibility}
                 >
-                
-                <KeyboardArrowDownIcon sx={{ fontSize: 20 }} />
-              </Button>
+                  <KeyboardArrowDownIcon sx={{ fontSize: 20 }} />
+                </Button>
               </span>
             </Tooltip>
-            
           </div>
           <List
             style={{
               flex: 1,
               overflowY: "auto",
-              maxHeight:   isSmallScreen ? "200px" : "300px",
+              maxHeight: isSmallScreen ? "200px" : "300px",
               padding: "8px",
               flexDirection: "column",
               border: "1px solid #ccc",
@@ -283,7 +254,6 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
                     margin: "8px 0",
                   }}
                 >
-                  {/* Check if the message is from the user, and adjust the displayed text */}
                   {message.isUser ? (
                     <span>
                       {message.senderId}: {message.message}
@@ -303,7 +273,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
               placeholder="Kirjoita kysymyksesi tähän..."
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
-              onKeyDown={handleKeyDown} // Handle the "Enter" key
+              onKeyDown={handleKeyDown}
               style={{
                 marginBottom: theme.spacing(2),
                 width: "80%",
@@ -327,10 +297,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
               Lähetä
             </Button>
           </div>
-        
         </Paper>
       )}
-     
     </>
   );
 };
