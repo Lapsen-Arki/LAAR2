@@ -123,19 +123,20 @@ export default function RecommComp({
                 container
                 spacing={2}
                 sx={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                   textAlign: "center",
                   border: "solid",
                   borderColor: collapseOpen[recommendation.title]
-                    ? "orange"
+                    ? "#57bfb1"
                     : "#fad4b4",
                   borderRadius: 5,
                   ml: -1,
                   pr: 2,
                   pb: 2,
                   maxHeight: collapseOpen[recommendation.title] ? "none" : 100,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  maxWidth: collapseOpen[recommendation.title] ? "none" : 300,
                 }}
               >
                 {/* Iterate trough all the recommendations in the object */}
