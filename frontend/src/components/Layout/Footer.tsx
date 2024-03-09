@@ -14,12 +14,18 @@ export default function Footer() {
           </Link>
           <div className="footer-icons">
             <Tooltip title="Facebook">
-              <Link to="#" className="footer-link">
+              <Link
+                to="https://www.facebook.com/LAAR.lapsen.arki"
+                className="footer-link"
+              >
                 <FacebookIcon />
               </Link>
             </Tooltip>
             <Tooltip title="Instagram">
-              <Link to="#" className="footer-link">
+              <Link
+                to="https://www.instagram.com/laar.lapsen.arki/"
+                className="footer-link"
+              >
                 <InstagramIcon sx={{ ml: 1 }} />
               </Link>
             </Tooltip>
