@@ -1,4 +1,10 @@
 // This array could be placed outside your component or in a separate file if preferred
+
+export type BlockDataType = {
+  title: string;
+  period: string;
+};
+
 // 0-4kk
 export const imeväinenRytmi = [
   { title: "Aamiainen", period: "" },
@@ -11,7 +17,7 @@ export const imeväinenRytmi = [
   { title: "Nukkumista", period: "" },
   { title: "Iltapala ja iltatoimet", period: "" },
   { title: "Hyvää yötä", period: "" },
-];
+] as BlockDataType[];
 // 4-6kk
 export const vauvaRytmi = [
   { title: "Aamiainen", period: "7.30-8.30" },
@@ -25,7 +31,7 @@ export const vauvaRytmi = [
   { title: "Aktiviteetti", period: "17.15-18.00" },
   { title: "Iltapala ja iltatoimet", period: "18.00-19.00" },
   { title: "Hyvää yötä", period: "19.00-20.00" },
-];
+] as BlockDataType[];
 // 6-12kk
 export const taaperoRytmi = [
   { title: "Aamiainen", period: "7.30-8.30" },
@@ -39,7 +45,7 @@ export const taaperoRytmi = [
   { title: "Aktiviteetti", period: "17.15-18.00" },
   { title: "Iltapala ja iltatoimet", period: "18.00-19.00" },
   { title: "Hyvää yötä", period: "19.00-20.00" },
-];
+] as BlockDataType[];
 
 // 12kk-5v
 export const yliKuusiRytmi = [
@@ -53,4 +59,4 @@ export const yliKuusiRytmi = [
   { title: "Aktiviteetti", period: "17.15-18.00" },
   { title: "Iltapala ja iltatoimet", period: "18.00-19.00" },
   { title: "Hyvää yötä", period: "19.00-20.00" },
-];
+] as BlockDataType[];
