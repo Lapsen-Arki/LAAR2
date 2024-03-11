@@ -40,8 +40,6 @@ export default function TimeBlockComp({
           (child) => child.childName === childName
         );
         if (child) {
-          console.log("setting child age: ");
-
           setSelectedChildAge(child.age);
         }
       }
