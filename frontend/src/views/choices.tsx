@@ -98,7 +98,7 @@ export default function ChoicesPage() {
       case "Hyvää yötä":
         setTipsFor("sleep");
         break;
-      case "Nukkuminen":
+      case "Nukkumista":
         setTipsFor("sleep");
         break;
     }
