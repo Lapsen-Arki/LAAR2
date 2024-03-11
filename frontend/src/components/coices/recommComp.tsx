@@ -6,6 +6,8 @@ import {
   Button,
   Collapse,
 } from "@mui/material";
+
+import InfoIcon from "@mui/icons-material/Info";
 import { RecommendationsType } from "../../types/recommTypes";
 import React, { useContext, useEffect, useState } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
@@ -13,6 +15,7 @@ import { getSubscriptionStatus } from "../../api/stripeSubscriptions";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import RecommButtons from "./recommButtons";
+import { useNavigate } from "react-router-dom";
 
 // Getting real child data somewhere:
 
@@ -38,7 +41,7 @@ export default function RecommComp({
   const [selectionList, setSelectionList] = useState<string[]>([]);
   const [subscribed, setSubscribed] = useState<boolean | null>(false);
   const [collapseOpen, setCollapseOpen] = useState<CollapseOpen>({});
-  const { idToken } = useContext(TokenContext);
+  const { isLoggedIn, idToken } = useContext(TokenContext);
 
   useEffect(() => {
     const getSubStatus = async () => {
@@ -50,6 +53,12 @@ export default function RecommComp({
     };
     getSubStatus();
   }, [idToken]);
+
+  const navigate = useNavigate();
+  const registerNowClick = () => {
+    navigate("/register");
+    window.scrollTo(0, 0);
+  };
 
   const handleCollapse = (itemName: string) => {
     setCollapseOpen((prevCollapseOpen) => ({
@@ -218,6 +227,44 @@ export default function RecommComp({
           );
         }
       })}
+
+      {!isLoggedIn && (
+        <Card
+          style={{
+            display: "inline-block",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "#e0f1ff",
+            padding: 25,
+            maxWidth: 450,
+            borderRadius: 10,
+          }}
+        >
+          <InfoIcon />
+          <Typography>
+            <strong> 5. Katso tulokset tai luo ostoslista </strong> <br />{" "}
+            Rekisteröidyttyäsi ja kirjauduttua sisään alapuolelle tulee
+            valintasi tehtyä "Kokoa ateria" tai "Valitse aktiviteetti" nappi.
+            Tämä luo tulossivun valintojesi perusteella. Tulossuvulla saat myös
+            varhaiskasvatuksen ammattilaisen laatimia hyödyllisiä vinkkejä
+            parhaaseen lapsen arkeen. Voit myös luoda ostoslistan valitsemistasi
+            ruuista ateriasivuilla.
+          </Typography>
+          <br />
+          <Typography>
+            <strong>
+              Avaa kaikki ominaisuudet ja aloita nyt 14 päivän ilmainen kokeilu!
+            </strong>
+          </Typography>
+          <Button
+            onClick={registerNowClick}
+            sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
+            variant="contained"
+          >
+            Rekisteröidy nyt!
+          </Button>
+        </Card>
+      )}
 
       <RecommButtons
         subscribed={subscribed}

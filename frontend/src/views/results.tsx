@@ -48,11 +48,20 @@ export default function Results() {
 
   return (
     <Container>
-      <ReturnBtn />
-      <Typography variant="h3" sx={{ textAlign: "center" }}>
-        Tulokset
-      </Typography>
-      <ChildInfoComp mealType={isMealPage} />
+      <div
+        style={{
+          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+          borderRadius: 20,
+          padding: 25,
+          background: "#fad5b6",
+        }}
+      >
+        <ReturnBtn />
+        <Typography variant="h3" sx={{ textAlign: "center" }}>
+          Tulokset
+        </Typography>
+        <ChildInfoComp mealType={isMealPage} />
+      </div>
       <Grid
         container
         sx={{
