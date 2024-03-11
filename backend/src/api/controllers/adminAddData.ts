@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
 import { TextContents, recomm } from "../../types/typesBackend";
 import { FinalRecommData } from "../../types/typesBackend";
+import { FieldValue } from "firebase-admin/firestore";
 
 const adminPage = async (req: Request, res: Response) => {
   try {
@@ -99,10 +100,11 @@ const adminPage = async (req: Request, res: Response) => {
     const db = admin.firestore();
     const recommCollection = db.collection("recommendations");
 
-    // Check for diplicate titles:
+    // Check for duplicate titles:
     const titleQuery = await recommCollection
       .where("category", "==", newData.category)
       .where("title", "==", newData.title)
+      .where("type", "!=", newData.type)
       .get();
 
     if (!titleQuery.empty) {
@@ -113,7 +115,7 @@ const adminPage = async (req: Request, res: Response) => {
         );
     }
 
-    // Check for diplicate names:
+    // Check for duplicate names:
     const nameQuery = await recommCollection
       .where("category", "==", newData.category)
       .where("nameKeys", "array-contains", nameKey)
@@ -143,7 +145,7 @@ const adminPage = async (req: Request, res: Response) => {
         [`recomm.${nameKey}`]: recommValue,
         [`textContent.${nameKey}`]: textContValue,
         [`photos.${nameKey}`]: addDataObject.photoLink,
-        nameKeys: admin.firestore.FieldValue.arrayUnion(nameKey),
+        nameKeys: FieldValue.arrayUnion(newData.nameKeys[0]),
       };
 
       // Perform the update
