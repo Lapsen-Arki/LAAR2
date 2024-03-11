@@ -186,7 +186,7 @@ export default function ChoicesPage() {
             </Typography>
           </Card>
         )}
-        {!isLoggedIn && selectedChild && (
+        {!isLoggedIn && selectedChild && !tipsFor && (
           <Card
             style={{
               display: "inline-block",
