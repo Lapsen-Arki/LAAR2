@@ -3,7 +3,7 @@ import Header from "../header/Header";
 import React from "react";
 import ScrollToTopButton from "./ScrollToTopButton";
 import "../../styles/Layout.css";
-import ChatWindowLauncher from "../../chat/ChatWindowLauncher";
+import ChatWindowLauncher from "../../chat/chatWindowLauncher";
 
 interface LayoutProps {
   children: React.ReactNode;

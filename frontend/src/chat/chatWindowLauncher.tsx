@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Paper, Tooltip, Typography, Button } from "@mui/material";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import { styled } from "@mui/material/styles";
-import ChatWindow from "./ChatWindow";
+import ChatWindow from "./chatWindow";
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 // Custom styled component for colored ChatIcon
 const StyledChatIcon = styled(QuestionAnswerIcon)({
