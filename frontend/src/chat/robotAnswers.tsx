@@ -10,6 +10,7 @@ export const robotAnswers: { [key: string]: string } = {
   iltaa: 'Hyvää iltaa! Kuinka voin auttaa?',
   kiitos: 'Ole hyvä!',
   kiitti: 'Ei kestä!',
+  lelu: 'Lelut ovat tärkeitä lapsen kehitykselle. Ne auttavat lasta oppimaan ja kehittymään. Lelut voivat olla myös hauskaa ajanvietettä.',
   moikka: 'Moikka! Kiitos keskustelusta ja mukavaa päivänjatkoa. Näkemiin.',
   terveys: 'Säännölliset terveystarkastukset ovat lapsille tärkeitä. Rokotukset, hammashoito ja näöntarkastukset ovat myös tärkeitä. Edistä terveellisiä tapoja ja opeta heille henkilökohtaista hygieniaa.',
   kasvatus: 'Positiivinen vanhemmuus, rajojen asettaminen ja hyvä roolimalli ovat tärkeitä. Kannusta hyvään käytökseen ja anna opastusta. Myös viestintä ja laatuaika ovat tärkeitä.',
@@ -105,6 +106,10 @@ export const robotAnswers: { [key: string]: string } = {
   harrastusvaatteet: 'Hanki lapsellesi mukavat ja sopivat vaatteet hänen harrastukseensa. Oikeanlaiset vaatteet voivat tehdä harrastamisesta entistä mukavampaa ja nautittavampaa.',
   harrastuspalkinnot: 'Kannusta lastasi asettamaan pieniä tavoitteita harrastuksessaan ja palkitse häntä saavutuksista. Palkinnot voivat olla esimerkiksi pieniä lahjoja tai yhteinen aktiviteetti.',
   profiili: 'Voit luoda lapsellesi profiilin, joka sisältää tietoja hänen terveydestään, rokotuksistaan ja muista tärkeistä tiedoista. Näin voit helposti seurata lapsesi terveyttä ja hyvinvointia.',
+  profiilinluonti: 'Voit luoda lapsellesi profiilin, joka sisältää tietoja hänen terveydestään, rokotuksistaan ja muista tärkeistä tiedoista. Näin voit helposti seurata lapsesi terveyttä ja hyvinvointia.',
+  profiilinmuokkaus: 'Voit muokata lapsesi profiilia päivittämällä tietoja, kuten pituutta, painoa ja muita terveyteen liittyviä tietoja.',
+  profiilinjakaminen: 'Voit jakaa lapsesi profiilin terveydenhuollon ammattilaisten kanssa, jotta he voivat seurata lapsesi terveyttä ja hyvinvointia.',
+  profiilinseuranta: 'Voit seurata lapsesi terveyttä ja hyvinvointia päivittämällä profiilia säännöllisesti ja tallentamalla tärkeitä tietoja.',
   aamupala: 'Aamupala on päivän tärkein ateria. Tarjoa lapsellesi monipuolinen aamupala, joka sisältää esimerkiksi täysjyväviljaa, hedelmiä ja maitotuotteita.',
   päivällinen: 'Päivällinen on tärkeä ateria, joka antaa lapsellesi energiaa ja ravinteita. Tarjoa hänelle monipuolinen päivällinen, joka sisältää esimerkiksi proteiinia, vihanneksia ja täysjyväviljaa.',
   iltapala: 'Iltapala on tärkeä osa lapsesi päivittäistä ruokavaliota. Tarjoa hänelle terveellinen iltapala, joka sisältää esimerkiksi hedelmiä, marjoja ja maitotuotteita.',
@@ -113,23 +118,22 @@ export const robotAnswers: { [key: string]: string } = {
   ruokailu: 'Ruokailuhetket ovat tärkeitä lapsesi terveydelle. Tarjoa hänelle säännöllisiä aterioita ja välipaloja, jotka sisältävät monipuolisesti ravintoaineita.',
   ruokailutottumukset: 'Opeta lapsellesi terveellisiä ruokailutottumuksia, kuten hitaasti syömistä ja ruoan maistelua. Näin hän oppii nauttimaan ruoasta täysin.',
   rokotus: `Rokotukset ovat tärkeitä lapsen terveydelle. Ne suojaavat lapsesi vakavilta sairauksilta ja auttavat estämään tautien leviämistä.
-  | Ikä           | Rok. Lyhenne | Suoj. Tauti                                                                                                      |
-  | 2 kk          | RV           | Rotavirusripuli                                                                                                  |
-  | 3 kk          | PCV          | Pneumokokkibakteerin aiheuttama aivokalvontulehdus, keuhkokuume, verenmyrkytys ja korvatulehdus                  |
-  | 3 kk          | RV           | Rotavirusripuli                                                                                                  |
-  | 3 kk          | DTaP-IPV-Hib  | Kurkkumätä, jäykkäkouristus, hinkuyskä, polio ja Hib-taudit, kuten aivokalvontulehdus, kurkunkannen tulehdus ja verenmyrkytys |
-  | 5 kk          | PCV          | Pneumokokkibakteerin aiheuttama aivokalvontulehdus, keuhkokuume, verenmyrkytys ja korvatulehdus                  |
-  | 5 kk          | RV           | Rotavirusripuli                                                                                                  |
-  | 5 kk          | DTaP-IPV-Hib  | Kurkkumätä, jäykkäkouristus, hinkuyskä, polio ja Hib-taudit, kuten aivokalvontulehdus, kurkunkannen tulehdus ja verenmyrkytys |
-  | 12 kk         | PCV          | Pneumokokkibakteerin aiheuttama aivokalvontulehdus, keuhkokuume, verenmyrkytys ja korvatulehdus                  |
-  | 12 kk         | DTaP-IPV-Hib  | Kurkkumätä, jäykkäkouristus, hinkuyskä, polio ja Hib-taudit, kuten aivokalvontulehdus, kurkunkannen tulehdus ja verenmyrkytys |
-  | 12 - 18 kk    | MPR          | Tuhkarokko, sikotauti, vihurirokko                                                                               |
-  | 6 kk - 6 v    | Influenssa   | Kausi-influenssa (vuosittain)                                                                                    |
-  | 1,5-11 v      | VAR          | Vesirokko                                                                                                        |
-  | 4 v           | DTaP-IPV     | Kurkkumätä, jäykkäkouristus, hinkuyskä, polio                                                                    |
-  | 6 v           | MPRV         | Tuhkarokko, sikotauti, vihurirokko, vesirokko                                                                    |
+  <p> Ikä:           |Rok. Lyhenne | Suoj. Tauti </p>
+  <p> 2 kk:           RV            Rotavirusripuli </p>
+  <p> 3 kk:           PCV          | Pneumokokkibakteerin aiheuttama aivokalvontulehdus, keuhkokuume, verenmyrkytys ja korvatulehdus </p>
+  <p> 3 kk:           RV           | Rotavirusripuli </p>
+  <p> 3 kk:           DTaP-IPV-Hib | Kurkkumätä, jäykkäkouristus, hinkuyskä, polio ja Hib-taudit, kuten aivokalvontulehdus, kurkunkannen tulehdus ja verenmyrkytys   </p>
+  <p> 5 kk:           PCV          | Pneumokokkibakteerin aiheuttama aivokalvontulehdus, keuhkokuume, verenmyrkytys ja korvatulehdus </p>
+  <p> 5 kk:           RV           | Rotavirusripuli </p>
+  <p>5 kk:            DTaP-IPV-Hib | Kurkkumätä, jäykkäkouristus, hinkuyskä, polio ja Hib-taudit, kuten aivokalvontulehdus, kurkunkannen tulehdus ja verenmyrkytys </p>
+  <p> 12 kk:          PCV          | Pneumokokkibakteerin aiheuttama aivokalvontulehdus, keuhkokuume, verenmyrkytys ja korvatulehdus </p>
+  <p> 12 kk:          DTaP-IPV-Hib | Kurkkumätä, jäykkäkouristus, hinkuyskä, polio ja Hib-taudit, kuten aivokalvontulehdus, kurkunkannen tulehdus ja verenmyrkytys </p>
+  <p> 12 - 18 kk:     MPR          | Tuhkarokko, sikotauti, vihurirokko </p>                                                                          
+  <p> 6 kk - 6 v:     Influenssa   | Kausi-influenssa (vuosittain) </p>                                                                                     
+  <p> 1,5-11 v:       VAR          | Vesirokko </p>                                                                                                    
+  <p> 4 v:            DTaP-IPV     | Kurkkumätä, jäykkäkouristus, hinkuyskä, polio </p>                                                                   
+  <p> 6 v:            MPRV         | Tuhkarokko, sikotauti, vihurirokko, vesirokko </p>                                                                  
   
     `,
-
-  
+  'miten poistan profiilin': 'Voit poistaa lapsesi profiilin asetuksista. Valitse "Profiili" ja valitse sitten "Poista profiili". Vahvista poisto ja profiilisi poistetaan pysyvästi.',
 };
