@@ -69,7 +69,7 @@ router.post("/get-subscription", checkAuth, getSubscriptionById);
 
 // Memo routes
 router.post("/save-memo", checkAuth, saveMemo);
-router.post("/get-memos", checkAuth, getMemos);
+router.get("/get-memos", checkAuth, getMemos);
 
 // FOR TESTING
 // -------------------------------------

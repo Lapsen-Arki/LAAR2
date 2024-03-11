@@ -71,12 +71,9 @@ export const getMemos = async (idToken: string | null): Promise<Memo[]> => {
       },
     };
 	console.log("kutsutaan get-memos")
-    const response = await axios.get<Memo[]>(`${API_BASE_URL}/get-memos`, config);
-	console.log("get-memos kutsu tehty")
-	console.log("response: ", response)
-    const memos: Memo[] = response.data;
-	console.log("memos: ", memos)
-    return memos;
+    const { data } = await axios.get<Memo[]>(`${API_BASE_URL}/get-memos`, config);
+	console.log("memos: ", data)
+    return data;
   } catch (error) {
     console.error("getMemos, tapahtui error");
   }
