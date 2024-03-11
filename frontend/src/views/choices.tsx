@@ -199,19 +199,29 @@ export default function ChoicesPage() {
             }}
           >
             <InfoIcon />
+            <Typography>
+              Noin! Nyt olet suosittelusivulla. Tällä sivulla sinulle
+              suositellaan valitsemaasi ajankohtaan sopivia ehdotuksia.
+              Ehdotuksina voi olla esimerkiksi lapsen ikään sopivia ruokia,
+              aktiviteetteja tai vinkkejä helpompaan ja viihtyisämpään perheen
+              arkeen.
+            </Typography>
+            <br />
 
             <Typography sx={{ wordBreak: "break-word" }}>
-              <strong> 3. Huomioi allergiat ja selaa ehdotuksia </strong> <br />{" "}
+              <strong> 3. Selaa ehdotuksia ja huomioi allergiat </strong> <br />{" "}
               Selaa oman tai hoidettavan lapsesi ikään sopivia ehdotuksia ja
               ideoita. Lapsen allergiat tulevat näkyviin yläpuolelle
-              ateriasivuilla ja kaikki hoitajat näkevät ne. Allergioita ei oteta
-              huomioon ruokasuosituksissa, eli muista aina tarkistaa ne
-              pakkausselosteista.
+              ateriasivuilla ja kaikki lapsen hoitajat näkevät ne. Allergioita
+              ei oteta automaattisesti huomioon ruokasuosituksissa, eli muista
+              aina tarkistaa ne pakkausselosteista.
             </Typography>
             <br />
             <Typography>
               <strong> 4. Valinnan vapaus </strong> <br /> Valitse hauskimmat,
-              mieluisimmat ja maukkaimmat ideat.
+              mieluisimmat ja maukkaimmat ideat. Voit valita ehdotuksia
+              aterioille ja aktiviteeteille. Sitten voit koota niistä
+              monipuolisen aterian tai hauskan hetken aktiviteeteille.
             </Typography>
           </Card>
         )}

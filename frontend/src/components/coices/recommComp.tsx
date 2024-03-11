@@ -238,7 +238,7 @@ export default function RecommComp({
             <strong> 5. Katso tulokset tai luo ostoslista </strong> <br />{" "}
             Rekisteröidyttyäsi voit painaa "Kokoa ateria" tai "Valitse
             aktiviteetti" nappia. Tämä luo tulossivun valintojesi perusteella.
-            Tulossuvulla saat varhaiskasvatuksen ammattilaisen laatimia
+            Tulossuvulla saat myös varhaiskasvatuksen ammattilaisen laatimia
             hyödyllisiä vinkkejä parhaaseen lapsen arkeen.
           </Typography>
         </Card>

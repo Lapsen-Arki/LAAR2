@@ -84,10 +84,10 @@ export default function IndexPage() {
               </Typography>
               <Typography>
                 Voit lisätä lapsillesi omat profiilit tai olla hoitajana toisten
-                lapsille. Voit myös kutsua vanhempia omien lapsiesi hoitajaksi.
-                Profiilien tieteoihin kerätään ainoastaan 3 tietoa: 1. nimi tai
-                lempinimi, 2. syntymäaika ja 3. allergiat. Emme kerää mitään
-                muuta tietoa profiileja varten.
+                lapsille. Voit myös kutsua vanhempia omien lapsiesi
+                hoitajajiksi. Profiilien tieteoihin kerätään ainoastaan 3
+                tietoa: 1. nimi tai lempinimi, 2. syntymäaika ja 3. allergiat.
+                Emme kerää mitään muuta tietoa lasten profiileja varten.
               </Typography>
             </Card>
           </div>
@@ -123,7 +123,9 @@ export default function IndexPage() {
               <strong>2. Valitse alta ajankohtaan sopiva laatikko: </strong>
             </Typography>
             <Typography>
-              Päivärytmi on laadittu lapsen ikään sopivaksi.
+              Päivärytmi on laadittu lapsen ikään sopivaksi. Päivärytmi on
+              varhaiskasvatuksen ammattilaisen laatima ja perustuu pohjoismaisen
+              kasvatuksen parhaisiin standardeihin.
             </Typography>
           </Card>
         )}
