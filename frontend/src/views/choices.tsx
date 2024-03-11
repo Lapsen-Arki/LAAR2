@@ -186,7 +186,7 @@ export default function ChoicesPage() {
             </Typography>
           </Card>
         )}
-        {!isLoggedIn && (
+        {!isLoggedIn && selectedChild && (
           <Card
             style={{
               display: "inline-block",
@@ -210,7 +210,7 @@ export default function ChoicesPage() {
             </Typography>
             <br />
             <Typography>
-              <strong> 3. Valinnan vapaus </strong> <br /> Valitse hauskimmat,
+              <strong> 4. Valinnan vapaus </strong> <br /> Valitse hauskimmat,
               mieluisimmat ja maukkaimmat ideat.
             </Typography>
           </Card>

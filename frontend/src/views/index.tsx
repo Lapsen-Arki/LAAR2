@@ -1,4 +1,4 @@
-import { Container, Typography } from "@mui/material";
+import { Card, Container, Typography } from "@mui/material";
 import LandingComp from "../components/index/landingComp";
 import TimeBlockComp from "../components/index/timeBlockComp";
 import { useContext, useEffect, useState } from "react";
@@ -8,6 +8,8 @@ import { getChildProfiles } from "../api/childProfile/getChildProfiles";
 import makeChildObject from "../utils/makeChildObject";
 import { getCarerChildProfiles } from "../api/carersProfile/getCarerChildProfiles";
 import selectRandomPhoto from "../utils/randomPhoto";
+
+import InfoIcon from "@mui/icons-material/Info";
 import ChildInfoComp from "../components/coices/childInfoComp";
 
 export default function IndexPage() {
@@ -64,16 +66,30 @@ export default function IndexPage() {
         </div>
         {!isLoggedIn && (
           <div>
-            <Typography variant="h5" sx={{ mt: 5 }}>
-              <strong>1. Valitse oma tai hoidettava lapsesi: </strong>
-            </Typography>
-            <Typography>
-              Voit lisätä lapsillesi omat profiilit tai olla hoitajana toisten
-              lapsille. Voit myös kutsua vanhempia omien lapsiesi hoitajaksi.
-              Profiilien tieteoihin kerätään ainoastaan 3 tietoa: 1. nimi tai
-              lempinimi, 2. syntymäaika ja 3. allergiat. Emme kerää mitään muuta
-              tietoa profiileja varten.
-            </Typography>
+            <Card
+              style={{
+                display: "inline-block",
+                alignItems: "center",
+                justifyContent: "center",
+                background: "#e0f1ff",
+                padding: 25,
+                marginTop: 20,
+                borderRadius: 10,
+              }}
+            >
+              <InfoIcon />
+
+              <Typography variant="h5">
+                <strong>1. Valitse oma tai hoidettava lapsesi: </strong>
+              </Typography>
+              <Typography>
+                Voit lisätä lapsillesi omat profiilit tai olla hoitajana toisten
+                lapsille. Voit myös kutsua vanhempia omien lapsiesi hoitajaksi.
+                Profiilien tieteoihin kerätään ainoastaan 3 tietoa: 1. nimi tai
+                lempinimi, 2. syntymäaika ja 3. allergiat. Emme kerää mitään
+                muuta tietoa profiileja varten.
+              </Typography>
+            </Card>
           </div>
         )}
         <div
@@ -88,10 +104,28 @@ export default function IndexPage() {
         <Typography sx={{ m: 0, p: 0 }}>
           <strong>Lapsen ikään soveltuva päivärytmi:</strong>
         </Typography>
-        {!isLoggedIn && (
-          <Typography variant="h5" sx={{ mt: 5 }}>
-            <strong>2. Valitse alta ajankohtaan sopiva laatikko: </strong>
-          </Typography>
+        {!isLoggedIn && selectedChild && (
+          <Card
+            style={{
+              display: "inline-block",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "#e0f1ff",
+              padding: 25,
+              marginTop: 20,
+              marginBottom: 20,
+              borderRadius: 10,
+            }}
+          >
+            <InfoIcon />
+
+            <Typography variant="h5">
+              <strong>2. Valitse alta ajankohtaan sopiva laatikko: </strong>
+            </Typography>
+            <Typography>
+              Päivärytmi on laadittu lapsen ikään sopivaksi.
+            </Typography>
+          </Card>
         )}
         <TimeBlockComp childName={selectedChild} />{" "}
         {/* <-- Routes to choices page with renderIdentif */}

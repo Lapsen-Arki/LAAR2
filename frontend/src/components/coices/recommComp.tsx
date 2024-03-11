@@ -235,11 +235,11 @@ export default function RecommComp({
         >
           <InfoIcon />
           <Typography>
-            <strong> 4. Katso tulokset tai luo ostoslista </strong> <br />{" "}
+            <strong> 5. Katso tulokset tai luo ostoslista </strong> <br />{" "}
             Rekisteröidyttyäsi voit painaa "Kokoa ateria" tai "Valitse
             aktiviteetti" nappia. Tämä luo tulossivun valintojesi perusteella.
-            Tulossuvulla saat ammattilaisen laatimia hyödyllisiä vinkkejä
-            parhaaseen lapsen arkeen.
+            Tulossuvulla saat varhaiskasvatuksen ammattilaisen laatimia
+            hyödyllisiä vinkkejä parhaaseen lapsen arkeen.
           </Typography>
         </Card>
       )}
