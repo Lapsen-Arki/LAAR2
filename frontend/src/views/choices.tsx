@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import NameDropDown from "../components/index/nameDropDown";
 import ReturnBtn from "../components/returnBtn";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Card, Container, Typography } from "@mui/material";
 import { NamesAndAgesType } from "../types/typesFrontend";
 import makeChildObject from "../utils/makeChildObject";
@@ -12,10 +12,12 @@ import ActivityComp from "../components/coices/activityComp";
 import ChildInfoComp from "../components/coices/childInfoComp";
 import MealComp from "../components/coices/mealComp";
 import TipsComp from "../components/coices/tipsComp";
+import { TokenContext } from "../contexts/tokenContext";
 
 export default function ChoicesPage() {
   const location = useLocation();
   const { renderIdentifier } = location.state || {};
+  const { isLoggedIn } = useContext(TokenContext);
 
   // Rendering states:
   const [activity, setActivity] = useState(false);
@@ -96,6 +98,9 @@ export default function ChoicesPage() {
       case "Hyvää yötä":
         setTipsFor("sleep");
         break;
+      case "Nukkuminen":
+        setTipsFor("sleep");
+        break;
     }
   }, [renderIdentifier]);
 
@@ -117,11 +122,23 @@ export default function ChoicesPage() {
         }}
       >
         <ReturnBtn message="palaa etusivulle" />
-        <Typography variant="h2" sx={{ textAlign: "center" }}>
-          {renderIdentifier}
-        </Typography>
-        <ChildInfoComp selectedChild={selectedChild} mealType={mealType} />{" "}
-        <NameDropDown changerFunc={handleParentChange} />
+        <div
+          style={{
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+            borderRadius: 20,
+            padding: 25,
+            background: "#fad5b6",
+          }}
+        >
+          <Typography variant="h2" sx={{ textAlign: "center" }}>
+            {renderIdentifier}
+          </Typography>
+          <NameDropDown changerFunc={handleParentChange} />
+          <ChildInfoComp
+            selectedChild={selectedChild}
+            mealType={mealType}
+          />{" "}
+        </div>
         <div style={{ marginBottom: 50 }}>
           {tipsFor && <TipsComp adviseType={tipsFor} />}
         </div>
@@ -141,7 +158,6 @@ export default function ChoicesPage() {
             <Typography sx={{ mt: 1 }} variant="h5">
               Näin pääset alkuun:
             </Typography>
-            <Typography>Huom. Luet ohjeet loppuun asti ensin.</Typography>
             <br />
             <Typography>
               <strong> 1. Valitse lapsi </strong> <br /> Valitse yläpuolella
@@ -152,8 +168,8 @@ export default function ChoicesPage() {
             <Typography sx={{ wordBreak: "break-word" }}>
               <strong> 2. Selaa ehdotuksia </strong> <br /> Selaa oman tai
               hoidettavan lapsesi ikään sopivia ehdotuksia ja ideoita. Lapsen
-              allergiat tulevat näkyviin ateriasivuilla. Muista ottaa nämä
-              huomioon :)
+              allergiat tulevat näkyviin ateriasivuilla ja kaikki hoitajat
+              näkevät nämä.
             </Typography>
             <br />
             <Typography>
@@ -167,6 +183,35 @@ export default function ChoicesPage() {
               halutessasi ostoslista ateriasivuilla. Tulossivulla saat
               valintojesi perusteella ammattilaisen laatimia hyödyllisiä
               vinkkejä parhaaseen lapsen arkeen.
+            </Typography>
+          </Card>
+        )}
+        {!isLoggedIn && (
+          <Card
+            style={{
+              display: "inline-block",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "#e0f1ff",
+              padding: 25,
+              maxWidth: 450,
+              borderRadius: 10,
+            }}
+          >
+            <InfoIcon />
+
+            <Typography sx={{ wordBreak: "break-word" }}>
+              <strong> 3. Huomioi allergiat ja selaa ehdotuksia </strong> <br />{" "}
+              Selaa oman tai hoidettavan lapsesi ikään sopivia ehdotuksia ja
+              ideoita. Lapsen allergiat tulevat näkyviin yläpuolelle
+              ateriasivuilla ja kaikki hoitajat näkevät ne. Allergioita ei oteta
+              huomioon ruokasuosituksissa, eli muista aina tarkistaa ne
+              pakkausselosteista.
+            </Typography>
+            <br />
+            <Typography>
+              <strong> 3. Valinnan vapaus </strong> <br /> Valitse hauskimmat,
+              mieluisimmat ja maukkaimmat ideat.
             </Typography>
           </Card>
         )}
@@ -198,6 +243,7 @@ export default function ChoicesPage() {
             selectedChild={selectedChild}
           />
         )}
+
         <br />
         <br />
         <br />

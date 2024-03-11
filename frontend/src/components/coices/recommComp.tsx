@@ -6,6 +6,8 @@ import {
   Button,
   Collapse,
 } from "@mui/material";
+
+import InfoIcon from "@mui/icons-material/Info";
 import { RecommendationsType } from "../../types/recommTypes";
 import React, { useContext, useEffect, useState } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
@@ -38,7 +40,7 @@ export default function RecommComp({
   const [selectionList, setSelectionList] = useState<string[]>([]);
   const [subscribed, setSubscribed] = useState<boolean | null>(false);
   const [collapseOpen, setCollapseOpen] = useState<CollapseOpen>({});
-  const { idToken } = useContext(TokenContext);
+  const { isLoggedIn, idToken } = useContext(TokenContext);
 
   useEffect(() => {
     const getSubStatus = async () => {
@@ -218,6 +220,29 @@ export default function RecommComp({
           );
         }
       })}
+
+      {!isLoggedIn && (
+        <Card
+          style={{
+            display: "inline-block",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "#e0f1ff",
+            padding: 25,
+            maxWidth: 450,
+            borderRadius: 10,
+          }}
+        >
+          <InfoIcon />
+          <Typography>
+            <strong> 4. Katso tulokset tai luo ostoslista </strong> <br />{" "}
+            Rekisteröidyttyäsi voit painaa "Kokoa ateria" tai "Valitse
+            aktiviteetti" nappia. Tämä luo tulossivun valintojesi perusteella.
+            Tulossuvulla saat ammattilaisen laatimia hyödyllisiä vinkkejä
+            parhaaseen lapsen arkeen.
+          </Typography>
+        </Card>
+      )}
 
       <RecommButtons
         subscribed={subscribed}
