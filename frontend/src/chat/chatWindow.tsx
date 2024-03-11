@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Paper, List, ListItem, useTheme, Button, Tooltip, Typography, useMediaQuery } from "@mui/material";
-import "./ChatWindow.css";
+import "./chatWindow.css";
 import { Message } from "../types/typesFrontend";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import ChatRobotService from "./chatRobotService";
