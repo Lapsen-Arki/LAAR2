@@ -42,6 +42,7 @@ export default function ChildInfoComp({
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              mt: 2,
             }}
           >
             {childData.avatar !== "/broken-image.jpg" && (
@@ -78,6 +79,7 @@ export default function ChildInfoComp({
                   alignItems: "center",
                   textAlign: "center",
                   fontSize: "small",
+                  mt: 2,
                 }}
               >
                 (HUOM. Allergioita ei oiteta huomioon ruokasuosituksissa.
