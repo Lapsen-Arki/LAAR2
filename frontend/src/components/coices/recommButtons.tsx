@@ -54,18 +54,13 @@ export default function RecommButtons({
     // Koska muuten: "eikun lisäänkin mansikat vielä ostoslistalle" tms
   };
 
-  const registerNowClick = () => {
-    navigate("/register");
-    window.scrollTo(0, 0);
-  };
-
   const subscribeNowClick = () => {
     navigate("/subscription");
     window.scrollTo(0, 0);
   };
 
   return (
-    <div style={{ textAlign: "right" }}>
+    <div style={{ textAlign: "center", marginTop: 10 }}>
       <div>
         {/* Kokoa Ateria btn */}
         {subscribed && isLoggedIn && selectedBox.length > 0 && (
@@ -89,21 +84,6 @@ export default function RecommButtons({
         )}
       </div>
 
-      {/* Avaa kaikki ominaisuudet btn */}
-      {!isLoggedIn && selectedBox.length > 0 && (
-        <>
-          <Button
-            onClick={registerNowClick}
-            sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
-            variant="contained"
-          >
-            Rekisteröidy nyt!
-          </Button>
-          <Typography>
-            Avaa kaikki ominaisuudet ja aloita 14 päivän ilmainen kokeilu!
-          </Typography>
-        </>
-      )}
       {/* Jatka tilausta btn */}
       {isLoggedIn && !subscribed && selectedBox.length > 0 && (
         <>

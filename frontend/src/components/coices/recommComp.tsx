@@ -15,6 +15,7 @@ import { getSubscriptionStatus } from "../../api/stripeSubscriptions";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import RecommButtons from "./recommButtons";
+import { useNavigate } from "react-router-dom";
 
 // Getting real child data somewhere:
 
@@ -52,6 +53,12 @@ export default function RecommComp({
     };
     getSubStatus();
   }, [idToken]);
+
+  const navigate = useNavigate();
+  const registerNowClick = () => {
+    navigate("/register");
+    window.scrollTo(0, 0);
+  };
 
   const handleCollapse = (itemName: string) => {
     setCollapseOpen((prevCollapseOpen) => ({
@@ -236,11 +243,26 @@ export default function RecommComp({
           <InfoIcon />
           <Typography>
             <strong> 5. Katso tulokset tai luo ostoslista </strong> <br />{" "}
-            Rekisteröidyttyäsi voit painaa "Kokoa ateria" tai "Valitse
-            aktiviteetti" nappia. Tämä luo tulossivun valintojesi perusteella.
-            Tulossuvulla saat myös varhaiskasvatuksen ammattilaisen laatimia
-            hyödyllisiä vinkkejä parhaaseen lapsen arkeen.
+            Rekisteröidyttyäsi ja kirjauduttua sisään alapuolelle tulee
+            valintasi tehtyä "Kokoa ateria" tai "Valitse aktiviteetti" nappi.
+            Tämä luo tulossivun valintojesi perusteella. Tulossuvulla saat myös
+            varhaiskasvatuksen ammattilaisen laatimia hyödyllisiä vinkkejä
+            parhaaseen lapsen arkeen. Voit myös luoda ostoslistan valitsemistasi
+            ruuista ateriasivuilla.
           </Typography>
+          <br />
+          <Typography>
+            <strong>
+              Avaa kaikki ominaisuudet ja aloita nyt 14 päivän ilmainen kokeilu!
+            </strong>
+          </Typography>
+          <Button
+            onClick={registerNowClick}
+            sx={{ mt: 0.5, mb: 0.5, mr: 0.5 }}
+            variant="contained"
+          >
+            Rekisteröidy nyt!
+          </Button>
         </Card>
       )}
 
