@@ -11,18 +11,25 @@ import selectRandomPhoto from "../utils/randomPhoto";
 
 import InfoIcon from "@mui/icons-material/Info";
 import ChildInfoComp from "../components/coices/childInfoComp";
+import { getSubscriptionStatus } from "../api/stripeSubscriptions";
+import { Link } from "react-router-dom";
 
 export default function IndexPage() {
   const { isLoggedIn, idToken } = useContext(TokenContext);
   const [selectedChild, setSelectedChild] = useState(() => {
     return sessionStorage.getItem("selectedChild");
   });
+  const [showMessage, setShowMessage] = useState(false);
 
   // Fetching child profiles and making child object in sessionStorage with name and age:
   useEffect(() => {
     if (isLoggedIn && idToken) {
       // Fetching childProfiles
       const retrieveDataAndMakeObject = async () => {
+        const subStatus = await getSubscriptionStatus(idToken);
+        if (!subStatus) {
+          setShowMessage(true);
+        }
         await getChildProfiles(idToken);
         await getCarerChildProfiles();
         makeChildObject();
@@ -101,9 +108,13 @@ export default function IndexPage() {
           <NameDropDown changerFunc={handleParentChange} />
           <ChildInfoComp selectedChild={selectedChild} />
         </div>
-        <Typography sx={{ m: 0, p: 0 }}>
-          <strong>Lapsen ikään soveltuva päivärytmi:</strong>
-        </Typography>
+        {showMessage && (
+          <Typography>
+            <InfoIcon sx={{ mt: 0.5, mb: -0.75 }} /> Huom. Näet ainoastaan
+            hoidettaiven lasten profiilit, sillä sinulla ei ole voimassaolevaa
+            tilausta. <Link to={"/subscription"}>Jatka tilaustasi täältä.</Link>
+          </Typography>
+        )}
         {!isLoggedIn && selectedChild && (
           <Card
             style={{

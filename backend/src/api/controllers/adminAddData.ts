@@ -63,14 +63,19 @@ const adminPage = async (req: Request, res: Response) => {
     }
 
     // Restructuring the data:
-    const { textContent, name, ageLimit } = addDataObject;
+    const { textContent, name, title, ageLimit } = addDataObject;
 
-    const nameKey: string = name;
+    // Remove whitespace from start and end of title and name:
+    const cleanTitle = title.trim();
+    const nameKey: string = name.trim();
     const recommValue: number = ageLimit;
+
+    // Set recomm data:
     const recommObj: recomm = {
       [nameKey]: recommValue,
     };
 
+    // Set text content data:
     const textContValue: string = textContent;
     const textContentObj: TextContents = {
       [nameKey]: textContValue,
@@ -83,7 +88,7 @@ const adminPage = async (req: Request, res: Response) => {
     const newData: FinalRecommData = {
       category: addDataObject.category,
       type: addDataObject.typeSelect,
-      title: addDataObject.title,
+      title: cleanTitle,
       recomm: recommObj,
       textContent: textContentObj,
       photos: photos,
