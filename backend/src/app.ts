@@ -26,9 +26,17 @@ if (require.main === module) {
   });
 }
 
-cron.schedule("0 13 * * *", () => {
+// Run the scheduleHandler every day at midnight
+// Schedule format: second, minute, hour, day of month, month, day of week
+// 0 0 * * * = every day at midnight, the seconds are not needed.
+// For something like every 5 minutes, it would be */5 * * * *
+// Or every 5 seconds, it would be */5 * * * * *
+// For more information, see https://crontab.guru/
+
+cron.schedule("0 0 * * *", async () => {
   console.log("Running daily cron job");
-  scheduleHandler();
+  const result = await scheduleHandler();
+  console.log(result);
 });
 
 export default app;

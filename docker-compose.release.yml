@@ -10,8 +10,6 @@ services:
       - FIREBASE_KEY_JSON
     ports:
       - "3000:3000"
-    networks:
-      - devnet
     healthcheck:
       test: curl --fail http://localhost:3000/api/alive | grep "OK" || exit 1
       interval: 30s
@@ -29,8 +27,6 @@ services:
     image: laar-frontend:latest
     ports:
       - "80:80"
-    networks:
-      - devnet
     healthcheck:
       test: curl --fail http://localhost:80/health | grep "OK" || exit 1
       interval: 30s
@@ -42,11 +38,3 @@ services:
     image: nginx:latest
     ports:
       - "8080:80"
-
-networks:
-  devnet:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: "172.18.0.0/16"
