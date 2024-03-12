@@ -52,7 +52,7 @@ router.get("/carers", checkAuth, getCarerProfile); // Hae hoitaja profiilit
 router.delete("/carer/:carerId", checkAuth, deleteCarerProfile); // Poista hoitaja profiili
 router.get("/getCarerChildProfiles", checkAuth, getCarerChildProfiles); // Hae hoidettavien lasten profiilit
 
-// Future User routes plan (?):
+// Account settings routes:
 router.get("/get-account-settings", checkAuth, getAccount);
 router.post("/post-account-settings", checkAuth, editAccount);
 router.post("/delete-account", checkAuth, deleteAccount);
