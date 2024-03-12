@@ -44,4 +44,7 @@ export interface FinalRecommData {
   nameKeys: string[];
 }
 
-export interface UserData {}
+export interface UserData {
+  data: () => { emailVerified: boolean; registrationDate: Date };
+  id: string;
+}
