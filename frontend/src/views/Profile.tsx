@@ -76,15 +76,17 @@ export default function Profile() {
               </Button>
             </Tooltip>
           )}
-          <Tooltip title="Kutsu hoitaja">
-            <Button
-              variant="contained"
-              className="custom-button Carer"
-              onClick={handleAddCarersClick}
-            >
-              Kutsu hoitaja
-            </Button>
-          </Tooltip>
+          {subStatus && profilesLoaded && (
+            <Tooltip title="Kutsu hoitaja">
+              <Button
+                variant="contained"
+                className="custom-button Carer"
+                onClick={handleAddCarersClick}
+              >
+                Kutsu hoitaja
+              </Button>
+            </Tooltip>
+          )}
           {/* Tyhjä tila tai näkymätön painike joka täyttää kolmannen painikkeen paikan */}
           <div className="custom-button-placeholder"></div>
         </div>
