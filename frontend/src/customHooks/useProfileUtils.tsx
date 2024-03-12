@@ -51,11 +51,13 @@ export function useProfileUtils() {
 
     const fetchProfilesFromServer = async () => {
       const response = await getChildProfiles(idToken);
-      if (!("error" in response)) {
-        sessionStorage.setItem("childProfiles", JSON.stringify(response));
-        setChildProfiles(response);
-      } else {
-        console.error("Virhe profiilien haussa:", response.error);
+      if (response) {
+        if (!("error" in response)) {
+          sessionStorage.setItem("childProfiles", JSON.stringify(response));
+          setChildProfiles(response);
+        } else {
+          console.error("Virhe profiilien haussa:", response.error);
+        }
       }
     };
 

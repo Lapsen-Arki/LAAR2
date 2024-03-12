@@ -12,6 +12,7 @@ import {
   startSubscription,
   cancelSubscription,
   getSubscriptionById,
+  updateCancelAtPeriodEnd,
 } from "./controllers/stripe";
 
 // Profile controllers:
@@ -55,7 +56,7 @@ router.get("/carers", checkAuth, getCarerProfile); // Hae hoitaja profiilit
 router.delete("/carer/:carerId", checkAuth, deleteCarerProfile); // Poista hoitaja profiili
 router.get("/getCarerChildProfiles", checkAuth, getCarerChildProfiles); // Hae hoidettavien lasten profiilit
 
-// Future User routes plan (?):
+// Account settings routes:
 router.get("/get-account-settings", checkAuth, getAccount);
 router.post("/post-account-settings", checkAuth, editAccount);
 router.post("/delete-account", checkAuth, deleteAccount);
@@ -66,6 +67,7 @@ router.post("/update-card", checkAuth, updateCard);
 router.post("/start-subscription", checkAuth, startSubscription);
 router.post("/cancel-subscription", checkAuth, cancelSubscription);
 router.post("/get-subscription", checkAuth, getSubscriptionById);
+router.post("/update-cancellation", checkAuth, updateCancelAtPeriodEnd); //Updating the subscription to NOT cancel when email has been verified
 
 // Memo routes
 router.post("/save-memo", checkAuth, saveMemo);
