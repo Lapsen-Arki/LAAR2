@@ -44,11 +44,15 @@ function TokenProvider({ children }: { children: ReactNode }) {
       .then(() => {
         // Sign-out successful.
         const savedList = localStorage.getItem("shoppingList");
+        const savedFirstLogin = localStorage.getItem("notFirstLogin");
         setIdToken(null);
         sessionStorage.clear();
         localStorage.clear();
         if (savedList) {
           localStorage.setItem("shoppingList", savedList);
+        }
+        if (savedFirstLogin) {
+          localStorage.setItem("notFirstLogin", savedFirstLogin);
         }
         navigate("/");
       })
