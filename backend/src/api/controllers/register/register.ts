@@ -51,6 +51,7 @@ const registerUser = async (req: Request, res: Response) => {
     const userRecord = await admin.auth().createUser({
       email: email,
       password: password,
+      displayName: isValidName,
     });
     console.log("User created: ", userRecord);
     // Save user to firebase users collection
