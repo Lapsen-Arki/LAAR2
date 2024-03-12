@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import admin from "../../config/firebseConfig";
 import stripeConf from "../../config/stripeClient";
-import checkAuth from "../../middleware/checkAuth";
 
 const stripe = stripeConf();
 
@@ -147,4 +146,45 @@ const getSubscriptionById = async (
   }
 };
 
-export { startSubscription, cancelSubscription, getSubscriptionById };
+const updateCancelAtPeriodEnd = async (req: Request, res: Response) => {
+  const { email } = req.body;
+
+  try {
+    const db = admin.firestore();
+    const usersCollection = db.collection("users");
+    const querySnapshot = await usersCollection
+      .where("email", "==", email)
+      .get();
+
+    if (!querySnapshot.empty) {
+      // User with the provided email found in Firestore
+      // Assuming email is unique; if not, you may need additional logic
+      const userDoc = querySnapshot.docs[0]; // Get the first document matching the query
+      const userData = userDoc.data();
+
+      // Update subscription cancel_at_period_end: false
+      const stripe = stripeConf();
+      await stripe.subscriptions.update(userData.stripeSubscriptionId, {
+        cancel_at_period_end: false,
+      });
+
+      return res
+        .status(200)
+        .json({ message: "Cancallation update successful" });
+    } else {
+      // User not found in Firestore
+      console.log(`User not found in Firestore with email: ${email}`);
+      return res.status(404).json({ message: `User not found with ${email}` });
+    }
+  } catch (error) {
+    console.error("Error verifying email:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export {
+  startSubscription,
+  cancelSubscription,
+  getSubscriptionById,
+  updateCancelAtPeriodEnd,
+};

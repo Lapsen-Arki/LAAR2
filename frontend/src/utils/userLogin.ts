@@ -8,6 +8,7 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import { jwtAuth } from "../api/jwtAuth";
+import { updateCancelAtPeriodEnd } from "../api/stripeSubscriptions";
 
 export const userLogin = async (
   email: string,
@@ -31,18 +32,20 @@ export const userLogin = async (
     const user = userCredential.user;
     if (!user.emailVerified) {
       await sendEmailVerification(user);
+      localStorage.removeItem("notFirstLogin");
       await signOut(auth);
       return "emailNotVerified";
     }
+
+    const newIdToken = await userCredential.user.getIdToken();
 
     // Check if first login attempt or not:
     const notFirstLogin = localStorage.getItem("notFirstLogin");
     if (!notFirstLogin || notFirstLogin === "firstAttempt") {
       // If it's the first login -> then Change user's cancel_at_period_end -> true
-      localStorage.setItem("notFirstLogin", "firstAttempt");
+      updateCancelAtPeriodEnd(newIdToken, email);
+      localStorage.setItem("notFirstLogin", "firstAttempt"); // Updating firstAttempt to "true" in home page
     }
-
-    const newIdToken = await userCredential.user.getIdToken();
 
     // Send token to backend authentication
     let authResponse;

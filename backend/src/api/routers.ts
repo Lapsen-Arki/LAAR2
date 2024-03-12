@@ -12,6 +12,7 @@ import {
   startSubscription,
   cancelSubscription,
   getSubscriptionById,
+  updateCancelAtPeriodEnd,
 } from "./controllers/stripe";
 
 // Profile controllers:
@@ -63,6 +64,7 @@ router.post("/update-card", checkAuth, updateCard);
 router.post("/start-subscription", checkAuth, startSubscription);
 router.post("/cancel-subscription", checkAuth, cancelSubscription);
 router.post("/get-subscription", checkAuth, getSubscriptionById);
+router.post("/update-cancellation", checkAuth, updateCancelAtPeriodEnd); //Updating the subscription to NOT cancel when email has been verified
 
 // FOR TESTING
 // -------------------------------------
