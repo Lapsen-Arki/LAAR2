@@ -4,6 +4,7 @@ import {
   updateProfile,
   updatePassword,
   Auth,
+  verifyBeforeUpdateEmail,
   /* updateEmail, */
 } from "firebase/auth";
 import { FirebaseError } from "@firebase/util";
@@ -122,12 +123,7 @@ async function updateSettings(
       });
     }
     if (data.email) {
-      setUpdatedValues("email", {
-        status: "fail",
-        msg: "Sähköpostia ei voi vielä vaihtaa.",
-      });
-      /* setUpdatedValues("email", { status: "pending" });
-      const result = await updateEmail(user, data.email)
+      const result = await verifyBeforeUpdateEmail(user, data.email)
         .then(() => {
           return true;
         })
@@ -140,11 +136,14 @@ async function updateSettings(
           status: "success",
           msg: "Sähköposti vaihdettu.",
         });
-      } else
+        postData.email.set = true;
+        postData.email.value = data.email;
+      } else {
         setUpdatedValues("email", {
           status: "error",
           msg: "Sähköpostia ei voitu vaihtaa.",
-        }); */
+        });
+      }
     }
     if (data.displayName) {
       setUpdatedValues("displayName", { status: "pending" });
