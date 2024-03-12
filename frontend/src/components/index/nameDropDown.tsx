@@ -1,4 +1,11 @@
-import { MenuItem, Select, Box, InputLabel } from "@mui/material";
+import {
+  MenuItem,
+  Select,
+  Box,
+  InputLabel,
+  Typography,
+  Alert,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
@@ -6,6 +13,7 @@ import { NamesAndAgesType } from "../../types/typesFrontend";
 import makeChildObject from "../../utils/makeChildObject";
 import { getChildProfiles } from "../../api/childProfile/getChildProfiles";
 import { getCarerChildProfiles } from "../../api/carersProfile/getCarerChildProfiles";
+import { Link } from "react-router-dom";
 
 export default function NameDropDown({
   changerFunc,
@@ -80,6 +88,15 @@ export default function NameDropDown({
             ))}
           </Select>
         </Box>
+      )}
+      {!childNames[0] && (
+        <Alert severity="info">
+          <Typography>
+            Sinulla ei ole vielä yhtään profiilia tai sinua ei ole kutsuttu
+            hoitajaksi.{" "}
+            <Link to={"/profile"}>Voit luoda profiileja täältä.</Link>
+          </Typography>
+        </Alert>
       )}
     </>
   );

@@ -75,17 +75,24 @@ export default function TimeBlockComp({
   return (
     <>
       <Hidden smDown>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginTop: 20,
-          }}
-        >
-          <ArrowForwardIcon />
-          <ArrowForwardIcon />
-          <ArrowForwardIcon />
-        </div>
+        {blockData && (
+          <div>
+            <Typography sx={{ m: 0, p: 0 }}>
+              <strong>Lapsen ikään soveltuva päivärytmi:</strong>
+            </Typography>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                marginTop: 20,
+              }}
+            >
+              <ArrowForwardIcon />
+              <ArrowForwardIcon />
+              <ArrowForwardIcon />
+            </div>
+          </div>
+        )}
       </Hidden>
       <Grid
         container

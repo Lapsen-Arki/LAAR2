@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 
 export default function Profile() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
-  const [subStatus, setSubStatus] = useState<boolean>();
+  const [subStatus, setSubStatus] = useState<null | boolean>();
   const { idToken } = useContext(TokenContext);
   const {
     childProfiles,
@@ -29,9 +29,9 @@ export default function Profile() {
   useEffect(() => {
     const checkSubStatus = async () => {
       if (idToken) {
-        const subStatus = await getSubscriptionStatus(idToken);
-        if (subStatus) {
-          setSubStatus(subStatus);
+        const newSubStatus = await getSubscriptionStatus(idToken);
+        if (newSubStatus) {
+          setSubStatus(newSubStatus);
         }
       }
     };
@@ -53,7 +53,7 @@ export default function Profile() {
           <HomeNavigate tooltip="Lasten päivärytmiin" />
         </div>
 
-        {!subStatus && (
+        {!subStatus && profilesLoaded && (
           <Alert sx={{ mb: 2 }} severity="info">
             <Typography>
               Et voi lisätä tai muokata omia profiileja, koska tilauksesi ei ole
@@ -64,7 +64,7 @@ export default function Profile() {
         )}
 
         <div className="buttons-header">
-          {subStatus && (
+          {subStatus && profilesLoaded && (
             <Tooltip title="Lisää profiili">
               <Button
                 sx={{ mr: 1 }}
