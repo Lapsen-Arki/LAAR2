@@ -41,7 +41,8 @@ export const saveMemosToBackend = async (
     };
     await axios.post(`${API_BASE_URL}/save-memo`, notes, config);
   } catch (error) {
-    console.error("error tapahtui");
+    console.error("Virhe tallennettaessa muistiinpanoja: ", error);
+    throw error;
   }
 };
 
@@ -58,12 +59,11 @@ export const getMemosFromBackend = async (
       `${API_BASE_URL}/get-memos`,
       config
     );
-	// Tallennetaan muistiinpanot samalla myös session storageen
-	saveMemosToSessionStorage(data);
+    // Tallennetaan muistiinpanot samalla myös session storageen
+    saveMemosToSessionStorage(data);
     return data;
   } catch (error) {
     console.error("Virhe haettaessa muistiinpanoja: ", error);
     throw error;
   }
-  return [];
 };

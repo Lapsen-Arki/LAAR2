@@ -26,15 +26,17 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import SaveIcon from "@mui/icons-material/Save";
 import InfoIcon from "@mui/icons-material/Info";
+import PleaseLoginModal from "../components/modals/pleaseLoginModal";
 
 const NoteBook: React.FC = () => {
   const [memos, setMemos] = useState<Memo[]>([]);
   const [isOpen, setIsOpen] = useState(false); // Tila muistelmien lisäämisnäkymän hallintaan
+  const [openLoginModal, setOpenLoginModal] = React.useState(false);
   const [isOpenInfo, setIsOpenInfo] = useState(false);
-  const { idToken } = useContext(TokenContext);
+  const { isLoggedIn, idToken } = useContext(TokenContext);
 
   useEffect(() => {
-    if (idToken) {
+    if (isLoggedIn && idToken) {
       // Ladataan muistelmat Session Storagesta kun komponentti ladataan ensimmäistä kertaa
       const storedMemos = getMemosFromSessionStorage();
       // Jos muistelmia ei ole session storagessa, ne haetaan kannasta
@@ -48,7 +50,7 @@ const NoteBook: React.FC = () => {
         fetchMemosFromBackend();
       }
     }
-  }, [idToken]);
+  }, [isLoggedIn, idToken]);
 
   const addMemo = (newMemo: Memo) => {
     const updatedMemos = [...memos, { ...newMemo, id: Date.now().toString() }];
@@ -100,6 +102,12 @@ const NoteBook: React.FC = () => {
   const handleToggleInfo = () => {
     setIsOpenInfo(!isOpenInfo);
   };
+
+  if (!idToken) {
+    return (
+      <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
+    );
+  }
 
   return (
     <ThemeProvider theme={formTheme}>
