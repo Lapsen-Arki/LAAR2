@@ -50,7 +50,7 @@ const registerUser = async (req: Request, res: Response) => {
         },
       ], // THIS IS TEST PLAN -> CHANGE FOR PRODUCTION
       trial_period_days: 14,
-      cancel_at_period_end: true, // this will be updated to false when the user confirms their email address
+      cancel_at_period_end: true, // this will be updated to false when the user confirms their email address at the first login
     });
     console.log("Subscription created: ", subscription);
     console.log("User created: ", userRecord);
