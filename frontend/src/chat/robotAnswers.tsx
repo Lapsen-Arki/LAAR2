@@ -1,5 +1,9 @@
+//import React from 'react';
+//import PersonPinIcon from '@mui/icons-material/PersonPin';
+
 export const robotAnswers: { [key: string]: string } = {
-  ruoka: 'Tässä on joitain terveellisiä ruokavaihtoehtoja lapsille: hedelmät, vihannekset, täysjyväviljat ja maitotuotteet. Niiden kasvun kannalta on välttämätöntä tarjota tasapainoinen ruokavalio.',
+//export const robotAnswers: { [key: string]: string | (() => JSX.Element) } = {
+  
   moi: 'Moi! Kuinka voin auttaa?',
   moro: 'Moro! Miten voin auttaa sinua parhaiten?',
   hei: 'Hei! Kuinka voin auttaa?',
@@ -11,6 +15,7 @@ export const robotAnswers: { [key: string]: string } = {
   kiitos: 'Ole hyvä!',
   kiitti: 'Ei kestä!',
   lelu: 'Lelut ovat tärkeitä lapsen kehitykselle. Ne auttavat lasta oppimaan ja kehittymään. Lelut voivat olla myös hauskaa ajanvietettä.',
+  ruoka: 'Tässä on joitain terveellisiä ruokavaihtoehtoja lapsille: hedelmät, vihannekset, täysjyväviljat ja maitotuotteet. Niiden kasvun kannalta on välttämätöntä tarjota tasapainoinen ruokavalio.',
   moikka: 'Moikka! Kiitos keskustelusta ja mukavaa päivänjatkoa. Näkemiin.',
   terveys: 'Säännölliset terveystarkastukset ovat lapsille tärkeitä. Rokotukset, hammashoito ja näöntarkastukset ovat myös tärkeitä. Edistä terveellisiä tapoja ja opeta heille henkilökohtaista hygieniaa.',
   kasvatus: 'Positiivinen vanhemmuus, rajojen asettaminen ja hyvä roolimalli ovat tärkeitä. Kannusta hyvään käytökseen ja anna opastusta. Myös viestintä ja laatuaika ovat tärkeitä.',
@@ -105,15 +110,12 @@ export const robotAnswers: { [key: string]: string } = {
   harrastusvideot: 'Etsi yhdessä lapsesi kanssa harrastusvideoita verkosta. Videoista voi saada inspiraatiota ja oppia uusia asioita, jotka voivat innostaa uuden harrastuksen pariin.',
   harrastusvaatteet: 'Hanki lapsellesi mukavat ja sopivat vaatteet hänen harrastukseensa. Oikeanlaiset vaatteet voivat tehdä harrastamisesta entistä mukavampaa ja nautittavampaa.',
   harrastuspalkinnot: 'Kannusta lastasi asettamaan pieniä tavoitteita harrastuksessaan ja palkitse häntä saavutuksista. Palkinnot voivat olla esimerkiksi pieniä lahjoja tai yhteinen aktiviteetti.',
-  profiili: 'Voit luoda lapsellesi profiilin, joka sisältää tietoja hänen terveydestään, rokotuksistaan ja muista tärkeistä tiedoista. Näin voit helposti seurata lapsesi terveyttä ja hyvinvointia.',
-  profiilinluonti: 'Voit luoda lapsellesi profiilin, joka sisältää tietoja hänen terveydestään, rokotuksistaan ja muista tärkeistä tiedoista. Näin voit helposti seurata lapsesi terveyttä ja hyvinvointia.',
-  profiilinmuokkaus: 'Voit muokata lapsesi profiilia päivittämällä tietoja, kuten pituutta, painoa ja muita terveyteen liittyviä tietoja.',
-  profiilinjakaminen: 'Voit jakaa lapsesi profiilin terveydenhuollon ammattilaisten kanssa, jotta he voivat seurata lapsesi terveyttä ja hyvinvointia.',
-  profiilinseuranta: 'Voit seurata lapsesi terveyttä ja hyvinvointia päivittämällä profiilia säännöllisesti ja tallentamalla tärkeitä tietoja.',
+  iltatoimintaa: 'Rauhallinen iltatoiminta auttaa lasta rentoutumaan ja valmistautumaan nukkumaanmenoon. Voitte lukea kirjaa, piirtää tai kuunnella rauhoittavaa musiikkia yhdessä.',
   aamupala: 'Aamupala on päivän tärkein ateria. Tarjoa lapsellesi monipuolinen aamupala, joka sisältää esimerkiksi täysjyväviljaa, hedelmiä ja maitotuotteita.',
   päivällinen: 'Päivällinen on tärkeä ateria, joka antaa lapsellesi energiaa ja ravinteita. Tarjoa hänelle monipuolinen päivällinen, joka sisältää esimerkiksi proteiinia, vihanneksia ja täysjyväviljaa.',
   iltapala: 'Iltapala on tärkeä osa lapsesi päivittäistä ruokavaliota. Tarjoa hänelle terveellinen iltapala, joka sisältää esimerkiksi hedelmiä, marjoja ja maitotuotteita.',
   välipala: 'Välipalat ovat tärkeitä lapsen energian ja ravinteiden saannin kannalta. Tarjoa lapsellesi terveellisiä välipaloja, kuten hedelmiä, vihanneksia ja täysjyväviljaa.',
+  rekisteröinti: 'Voit rekisteröityä palveluun antamalla sähköpostiosoitteesi, nimesi, salasanasi ja maksukorttitietosi palveluun.',
   ruokavalio: 'Monipuolinen ruokavalio on tärkeä lapsesi terveydelle. Tarjoa hänelle monipuolista ruokaa, joka sisältää erilaisia ravintoaineita ja vitamiineja.',
   ruokailu: 'Ruokailuhetket ovat tärkeitä lapsesi terveydelle. Tarjoa hänelle säännöllisiä aterioita ja välipaloja, jotka sisältävät monipuolisesti ravintoaineita.',
   ruokailutottumukset: 'Opeta lapsellesi terveellisiä ruokailutottumuksia, kuten hitaasti syömistä ja ruoan maistelua. Näin hän oppii nauttimaan ruoasta täysin.',
@@ -135,5 +137,100 @@ export const robotAnswers: { [key: string]: string } = {
   <p> 6 v:            MPRV         | Tuhkarokko, sikotauti, vihurirokko, vesirokko </p>                                                                  
   
     `,
-  'miten poistan profiilin': 'Voit poistaa lapsesi profiilin asetuksista. Valitse "Profiili" ja valitse sitten "Poista profiili". Vahvista poisto ja profiilisi poistetaan pysyvästi.',
+ 
+
+    // Tilin asetukset
+    tilinnpoisto: `
+    <p>PC:llä voit poistaa käyttäjätilisi valitsemalla oikeasta yläkulmasta mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
+    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+    <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
+    
+    <p>Mobiili laitteella voit poistaa käyttäjätilisi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
+    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+    <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
+    
+    <p>Kummatkin vaihtoehdot vaativat, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>`,
+
+    käyttäjätunnuksenpoisto: `
+    <p>PC:llä voit poistaa käyttäjätilisi valitsemalla oikeasta yläkulmasta mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
+    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+    <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
+    
+    <p>Mobiili laitteella voit poistaa käyttäjätilisi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
+    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+    <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
+    
+    <p>Kummatkin vaihtoehdot vaativat, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>`,
+
+    salasananvaihto: `
+    <p>PC:llä voit vaihtaa käyttäjätilisi salasanaa oikeasta yläkulmasta valitsemalla mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda salasana.</p>
+    <p>Sinun tulee syöttää uusi salasanasi, vahvistaa salasanasi sekä kirjoittaa vanha salasanasi ja lopuksi painaa Tallenna muutokset.</p>
+    
+    <p>Mobiili laitteella Voit vaihtaa käyttäjätilisi salasanaa avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda salasana.</p>
+    <p>Sinun tulee syöttää uusi salasanasi, vahvistaa salasanasi sekä kirjoittaa vanha salasanasi ja lopuksi painaa Tallenna muutokset.</p>
+    
+    <p>Kummatkin vaihtoehdot vaativat, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>`,
+    
+    maksukortinvaihto: `
+    <p>PC:llä voit vaihtaa käyttäjätilisi maksukorttia oikeasta yläkulmasta valitsemalla mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda maksukortti.</p>
+    <p>Sinun tulee syöttää uusi maksukorttisi, ennekuin voit vaihtaa vanhaa maksukorttia. Samalla aukee mahdollisuus poistaa vanha maksukortti ja asettaa uusi maksukortti oletuskortiksi.</p>
+    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+    
+    <p>Mobiili laitteella voit vaihtaa käyttäjätilisi maksukorttia avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda maksukortti.</p>
+    <p>Sinun tulee syöttää uusi maksukorttisi, ennekuin voit vaihtaa vanhaa maksukorttia. Samalla aukee mahdollisuus poistaa vanha maksukortti ja asettaa uusi maksukortti oletuskortiksi.</p>
+    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+    
+    <p>Kummatkin vaihtoehdot vaativat, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>`,
+
+    maksukortinpoisto: `
+    <p>PC:llä voit poistaa käyttäjätilisi maksukorttisi oikeasta yläkulmasta valitsemalla mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda maksukortti.</p>
+    <p>Sinun tulee syöttää uusi maksukorttisi, ennekuin voit poistaa vanhan maksukorttisi. Samalla aukee mahdollisuus asettaa uusi maksukortti oletuskortiksi, kun syötät uuden kortin.</p>
+    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+    
+    <p>Mobiili laitteella poistaa käyttäjätilisi maksukorttisi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda maksukortti.</p>
+    <p>Sinun tulee syöttää uusi maksukorttisi, ennekuin voit poistaa vanhan maksukorttisi. Samalla aukee mahdollisuus asettaa uusi maksukortti oletuskortiksi, kun syötät uuden kortin.</p>
+    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+    
+    <p>Kummatkin vaihtoehdot vaativat, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>`,
+
+    käyttäjäimi: `
+    <p>PC:llä voit vaihtaa käyttäjätilin nimesi oikeasta yläkulmasta valitsemalla mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ Nimen kohdalla paina EDIT.</p>
+    <p>Voit vaihtaa nimeä tai syöttää nimen mikäli sitä ei ole jo annettu.</p>
+    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+    
+    <p>Mobiili laitteella voit vaihtaa käyttäjätilin nimesi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ Nimen kohdalla paina EDIT.</p>
+    <p>Voit vaihtaa nimeä tai syöttää nimen mikäli sitä ei ole jo annettu.</p>
+    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+    
+    <p>Kummatkin vaihtoehdot vaativat, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>`,
+
+
+    // omat profiilit
+    profiilinluonti : 'Voit luoda lapsellesi profiilin, joka sisältää tietoja hänen terveydestään, rokotuksistaan ja muista tärkeistä tiedoista. Näin voit helposti seurata lapsesi terveyttä ja hyvinvointia.',
+    profiilinmuokkaus: 'Voit muokata lapsesi profiilia päivittämällä tietoja, kuten pituutta, painoa ja muita terveyteen liittyviä tietoja.',
+    profiilinjakaminen: 'Voit jakaa lapsesi profiilin terveydenhuollon ammattilaisten kanssa, jotta he voivat seurata lapsesi terveyttä ja hyvinvointia.',
+    profiilinseuranta: 'Voit seurata lapsesi terveyttä ja hyvinvointia päivittämällä profiilia säännöllisesti ja tallentamalla tärkeitä tietoja.',
+
+    profiilinpoisto: `
+    <p>PC:llä poistaa lapsesi profiilin valitsemalla oikeasta yläkulmasta persoona iconia ➧ klikkaa punaista roskakorin kuvaa profiilissa, jonka haluat poistaa ➧ Vahvista poisto. Tämä poistaa profiilisi pysyvästi. </p>
+    <p><u>Huomioi että tämä on lopullinen ratkaisu, profiilisi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
+    
+    <p>Mobiili laitteella voit poistaa käyttäjätilisi avaamalla hampurilais valikon ➧ <a href="/profile">Profiili</a> ➧ Vahvista poisto. Tämä poistaa profiilisi pysyvästi.</p>
+    <p><u>Huomioi että tämä on lopullinen ratkaisu, profiilisi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
+    
+    <p>Kummatkin vaihtoehdot vaativat, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile">tästä profiileihin.</a></p>`,
+
+    /*
+    testi: () => (
+      <React.Fragment>
+        <p>PC:llä poistaa lapsesi profiilin valitsemalla oikeasta yläkulmasta persoona iconia <PersonPinIcon /> ➧ klikkaa punaista roskakorin kuvaa profiilissa, jonka haluat poistaa ➧ Vahvista poisto. Tämä poistaa profiilisi pysyvästi.</p>
+        <p><u>Huomioi että tämä on lopullinen ratkaisu, profiilisi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
+        
+        <p>Mobiili laitteella voit poistaa käyttäjätilisi avaamalla hampurilais valikon ➧ <a href="/profile">Profiili</a> ➧ Vahvista poisto. Tämä poistaa profiilisi pysyvästi.</p>
+        <p><u>Huomioi että tämä on lopullinen ratkaisu, profiilisi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
+        
+        <p>Kummatkin vaihtoehdot vaativat, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/profile">tästä profiileihin.</a></p>
+      </React.Fragment>
+    ),
+    */
 };

@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { robotAnswers } from './robotAnswers';
 import { Message } from '../types/typesFrontend';
+import * as stringSimilarity from 'string-similarity';
+
+
 
 interface Forecast {
   dt: number;
@@ -146,6 +149,9 @@ class ChatRobotService {
     } 
   }
 
+
+
+
   private async generateResponse(userMessage: string): Promise<Message | undefined> {
     //('Generating response for user message:', userMessage);
     const trimmedUserMessage = userMessage.trim().toLowerCase();
@@ -165,6 +171,7 @@ class ChatRobotService {
       return response;
     }
 
+
      // Iterate over the keys of robotAnswers and check for keywords
      for (const keyword of Object.keys(robotAnswers)) {
       if (trimmedUserMessage.includes(keyword.toLowerCase())) {
@@ -182,8 +189,28 @@ class ChatRobotService {
         return response;
     } 
   }
+  
 
-  // SÄÄÄ JATKUU
+// Iterate over the keys of robotAnswers and check for keywords
+const userKeywords = Object.keys(robotAnswers);
+const matches = stringSimilarity.findBestMatch(trimmedUserMessage.toLowerCase(), userKeywords.map(k => k.toLowerCase()));
+
+if (matches.bestMatch.rating > 0.5) {
+  const bestMatchKeyword = userKeywords[matches.bestMatchIndex];
+  const responseMessage = robotAnswers[bestMatchKeyword];
+  const response: Message = {
+    id: Date.now().toString(),
+    senderId: "LAAR Chattirobotti",
+    receiverId: "User",
+    message: responseMessage,
+    text: `LAAR Chattirobotti: ${responseMessage}`,
+    timestamp: new Date(),
+    isUser: false,
+  };
+  return response;
+}
+
+  // SÄÄ JATKUU
   if (/sää|weather/i.test(trimmedUserMessage)) {
     try {
       let city = 'Helsinki';
