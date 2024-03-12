@@ -11,19 +11,26 @@ import selectRandomPhoto from "../utils/randomPhoto";
 
 import InfoIcon from "@mui/icons-material/Info";
 import ChildInfoComp from "../components/coices/childInfoComp";
+import { getSubscriptionStatus } from "../api/stripeSubscriptions";
 
 export default function IndexPage() {
   const { isLoggedIn, idToken } = useContext(TokenContext);
   const [selectedChild, setSelectedChild] = useState(() => {
     return sessionStorage.getItem("selectedChild");
   });
+  const [showMessage, setShowMessage] = useState(false);
 
   // Fetching child profiles and making child object in sessionStorage with name and age:
   useEffect(() => {
     if (isLoggedIn && idToken) {
       // Fetching childProfiles
       const retrieveDataAndMakeObject = async () => {
-        await getChildProfiles(idToken);
+        const subStatus = await getSubscriptionStatus(idToken);
+        if (subStatus) {
+          await getChildProfiles(idToken);
+        } else {
+          setShowMessage(true);
+        }
         await getCarerChildProfiles();
         makeChildObject();
       };
@@ -101,6 +108,12 @@ export default function IndexPage() {
           <NameDropDown changerFunc={handleParentChange} />
           <ChildInfoComp selectedChild={selectedChild} />
         </div>
+        {showMessage && (
+          <Typography>
+            Huom. Näet ainoastaan hoidettaiven lasten profiilit, sillä sinulla
+            ei ole voimassaolevaa tilausta.
+          </Typography>
+        )}
         <Typography sx={{ m: 0, p: 0 }}>
           <strong>Lapsen ikään soveltuva päivärytmi:</strong>
         </Typography>

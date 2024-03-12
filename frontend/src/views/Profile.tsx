@@ -1,6 +1,6 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import "../styles/Profile.css";
-import { Button, Box, Tooltip, Alert } from "@mui/material";
+import { Button, Box, Tooltip, Alert, Typography } from "@mui/material";
 
 import { TokenContext } from "../contexts/tokenContext";
 import PleaseLoginModal from "../components/modals/pleaseLoginModal.tsx";
@@ -10,9 +10,12 @@ import { useProfileUtils } from "../customHooks/useProfileUtils.tsx";
 import InvitedCarersComponent from "../components/profileComponents/invitedCarers.tsx";
 import MyChildComponent from "../components/profileComponents/myChild.tsx";
 import CarerChildComponent from "../components/profileComponents/carerChild.tsx";
+import { getSubscriptionStatus } from "../api/stripeSubscriptions";
+import { Link } from "react-router-dom";
 
 export default function Profile() {
   const [openLoginModal, setOpenLoginModal] = useState(false);
+  const [subStatus, setSubStatus] = useState<boolean>();
   const { idToken } = useContext(TokenContext);
   const {
     childProfiles,
@@ -22,6 +25,18 @@ export default function Profile() {
     handleAddCarersClick,
     profilesLoaded,
   } = useProfileUtils();
+
+  useEffect(() => {
+    const checkSubStatus = async () => {
+      if (idToken) {
+        const subStatus = await getSubscriptionStatus(idToken);
+        if (subStatus) {
+          setSubStatus(subStatus);
+        }
+      }
+    };
+    checkSubStatus();
+  });
 
   if (!idToken) {
     return (
@@ -34,21 +49,33 @@ export default function Profile() {
       <div className="profile-view">
         {/* Otsikkorivi painikkeille */}
 
-        <div className="buttons-header" style={{ textAlign: 'center' }}>
+        <div className="buttons-header" style={{ textAlign: "center" }}>
           <HomeNavigate tooltip="Lasten päivärytmiin" />
         </div>
 
-        <div className="buttons-header">
-          <Tooltip title="Lisää profiili">
-            <Button
-              variant="contained"
-              className="custom-button"
-              onClick={handleAddProfileClick}
-            >
-              Lisää profiili
-            </Button>
-          </Tooltip>
+        {!subStatus && (
+          <Alert sx={{ mb: 2 }} severity="info">
+            <Typography>
+              Et voi lisätä tai muokata omia profiileja, koska tilauksesi ei ole
+              voimassa.{" "}
+              <Link to={"/subscription"}> Jatka tilaustasi tästä.</Link>
+            </Typography>
+          </Alert>
+        )}
 
+        <div className="buttons-header">
+          {subStatus && (
+            <Tooltip title="Lisää profiili">
+              <Button
+                sx={{ mr: 1 }}
+                variant="contained"
+                className="custom-button"
+                onClick={handleAddProfileClick}
+              >
+                Lisää profiili
+              </Button>
+            </Tooltip>
+          )}
           <Tooltip title="Kutsu hoitaja">
             <Button
               variant="contained"
