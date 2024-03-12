@@ -11,7 +11,7 @@ import {
   getMemosFromSessionStorage,
   updateMemosInSessionStorage,
   saveMemosToBackend,
-  getMemos,
+  getMemosFromBackend,
 } from "../api/memoStorage";
 import {
   Container,
@@ -34,23 +34,27 @@ const NoteBook: React.FC = () => {
   const { idToken } = useContext(TokenContext);
 
   useEffect(() => {
-    // Ladataan muistelmat Session Storagesta kun komponentti ladataan ensimmäistä kertaa
-    const storedMemos = getMemosFromSessionStorage();
-    if (storedMemos) {
-      setMemos(storedMemos);
-    } else {
-      getMemos(idToken).then((memos) => {
-        setMemos(memos);
-      });
-    } // Varmista, että storedMemos on olemassa ennen kuin kutsut setMemos
-  }, []);
+    if (idToken) {
+      // Ladataan muistelmat Session Storagesta kun komponentti ladataan ensimmäistä kertaa
+      const storedMemos = getMemosFromSessionStorage();
+      // Jos muistelmia ei ole session storagessa, ne haetaan kannasta
+      if (storedMemos.length !== 0) {
+        setMemos(storedMemos);
+      } else {
+        const fetchMemosFromBackend = async (): Promise<void> => {
+          const backendMemos = await getMemosFromBackend(idToken);
+          setMemos(backendMemos);
+        };
+        fetchMemosFromBackend();
+      }
+    }
+  }, [idToken]);
 
   const addMemo = (newMemo: Memo) => {
     const updatedMemos = [...memos, { ...newMemo, id: Date.now().toString() }];
     setMemos(updatedMemos);
     saveMemosToSessionStorage(updatedMemos);
     updateMemosInSessionStorage(newMemo); // Lisää uusi muistilappu sessionStorageen
-    console.log(memos);
     saveMemosToBackend(idToken, updatedMemos);
   };
 

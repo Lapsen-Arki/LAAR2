@@ -34,48 +34,36 @@ export const saveMemosToBackend = async (
   notes: Memo[]
 ): Promise<void> => {
   try {
-    console.log("api notes: ", notes);
-    /*
-      await axios.post(`${API_BASE_URL}/save-memo`, {
-        notes: notes,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${idToken}`,
-        },
-      });*/
-
     const config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
     };
-
-    const response = await axios.post(
-      `${API_BASE_URL}/save-memo`,
-      notes,
-      config
-    );
-    console.log("response: ", response);
+    await axios.post(`${API_BASE_URL}/save-memo`, notes, config);
   } catch (error) {
     console.error("error tapahtui");
   }
 };
 
-export const getMemos = async (idToken: string | null): Promise<Memo[]> => {
+export const getMemosFromBackend = async (
+  idToken: string | null
+): Promise<Memo[]> => {
   try {
     const config = {
       headers: {
         Authorization: `Bearer ${idToken}`,
       },
     };
-	console.log("kutsutaan get-memos")
-    const { data } = await axios.get<Memo[]>(`${API_BASE_URL}/get-memos`, config);
-	console.log("memos: ", data)
+    const { data } = await axios.get<Memo[]>(
+      `${API_BASE_URL}/get-memos`,
+      config
+    );
+	// Tallennetaan muistiinpanot samalla myös session storageen
+	saveMemosToSessionStorage(data);
     return data;
   } catch (error) {
-    console.error("getMemos, tapahtui error");
+    console.error("Virhe haettaessa muistiinpanoja: ", error);
+    throw error;
   }
   return [];
 };
