@@ -26,6 +26,12 @@ const registerUser = async (req: Request, res: Response) => {
         "Et voi rekisteröityä hyväksymättä tietosuojaselostetta ja palvelun käyttöehtoja | You cannot register without accepting the privacy statement and the terms of the service"
       );
     }
+    // Create a new user using Firebase Authentication
+    const userRecord = await admin.auth().createUser({
+      email: email,
+      password: password,
+      displayName: isValidName,
+    });
 
     const stripe = stripeConf();
 
@@ -47,12 +53,6 @@ const registerUser = async (req: Request, res: Response) => {
       cancel_at_period_end: true, // this will be updated to false when the user confirms their email address
     });
     console.log("Subscription created: ", subscription);
-    // Create a new user using Firebase Authentication
-    const userRecord = await admin.auth().createUser({
-      email: email,
-      password: password,
-      displayName: isValidName,
-    });
     console.log("User created: ", userRecord);
     // Save user to firebase users collection
     const registrationDate = new Date();
