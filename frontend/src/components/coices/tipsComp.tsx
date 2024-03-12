@@ -1,9 +1,11 @@
-import { Box, Button, CardMedia, Typography } from "@mui/material";
+import { Box, Button, CardMedia, Collapse, Typography } from "@mui/material";
 import { RecommendationsType } from "../../types/recommTypes";
 import useGetRecommData from "../../customHooks/useGetRecommData";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { TokenContext } from "../../contexts/tokenContext";
 import { useNavigate } from "react-router-dom";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 // Now there is 3 types of tips: "päiväunet", "iltatoimet", "nukkuminen".
 // More tips can be added by changing the choices page and adding more advise types.
@@ -11,11 +13,23 @@ import { useNavigate } from "react-router-dom";
 
 // EXTRA FEATURE: make feature to hide and show tips.
 
+interface CollapseOpen {
+  [key: string]: boolean;
+}
+
 export default function TipsComp({ adviseType }: { adviseType: string }) {
   const { isLoggedIn } = useContext(TokenContext);
+  const [collapseOpen, setCollapseOpen] = useState<CollapseOpen>({});
   const navigate = useNavigate();
   const registerNowClick = () => {
     navigate("/register");
+  };
+
+  const handleCollapse = (itemName: string) => {
+    setCollapseOpen((prevCollapseOpen) => ({
+      ...prevCollapseOpen,
+      [itemName]: !prevCollapseOpen[itemName],
+    }));
   };
 
   const correctPhoto = (recommendation: RecommendationsType) => {
@@ -60,15 +74,36 @@ export default function TipsComp({ adviseType }: { adviseType: string }) {
             )}
             <Typography variant="h4">{recommendation.title}</Typography>
 
-            {Object.entries(recommendation.textContent).map(([key, value]) => (
-              <Typography
-                key={key}
-                component="pre"
-                style={{ whiteSpace: "pre-wrap", marginBottom: 20 }}
-              >
-                {value}
-              </Typography>
-            ))}
+            <Button
+              variant="outlined"
+              sx={{
+                fontSize: 8,
+                p: 0,
+                width: 2,
+              }}
+              onClick={() => handleCollapse(recommendation.title)}
+            >
+              {!collapseOpen[recommendation.title] && (
+                <KeyboardArrowDownIcon sx={{ fontSize: 20 }} />
+              )}
+              {collapseOpen[recommendation.title] && (
+                <KeyboardArrowUpIcon sx={{ fontSize: 20 }} />
+              )}
+            </Button>
+
+            <Collapse in={collapseOpen[recommendation.title]}>
+              {Object.entries(recommendation.textContent).map(
+                ([key, value]) => (
+                  <Typography
+                    key={key}
+                    component="pre"
+                    style={{ whiteSpace: "pre-wrap", marginBottom: 20 }}
+                  >
+                    {value}
+                  </Typography>
+                )
+              )}
+            </Collapse>
             <hr />
             {!isLoggedIn && (
               <>
