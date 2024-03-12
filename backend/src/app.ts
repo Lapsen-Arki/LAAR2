@@ -33,10 +33,12 @@ if (require.main === module) {
 // Or every 5 seconds, it would be */5 * * * * *
 // For more information, see https://crontab.guru/
 
-cron.schedule("0 0 * * *", async () => {
-  console.log("Running daily cron job");
-  const result = await scheduleHandler();
-  console.log(result);
-});
+if (process.env.NODE_ENV !== "test") {
+  cron.schedule("0 0 * * *", async () => {
+    console.log("Running daily cron job");
+    const result = await scheduleHandler();
+    console.log(result);
+  });
+}
 
 export default app;
