@@ -35,6 +35,13 @@ export const userLogin = async (
       return "emailNotVerified";
     }
 
+    // Check if first login attempt or not:
+    const notFirstLogin = localStorage.getItem("notFirstLogin");
+    if (!notFirstLogin || notFirstLogin === "firstAttempt") {
+      // If it's the first login -> then Change user's cancel_at_period_end -> true
+      localStorage.setItem("notFirstLogin", "firstAttempt");
+    }
+
     const newIdToken = await userCredential.user.getIdToken();
 
     // Send token to backend authentication
