@@ -2,6 +2,7 @@
 import express from "express";
 import routers from "./api/routers";
 import cors from "cors";
+import cron from "node-cron";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -23,5 +24,9 @@ if (require.main === module) {
     console.log(`Server is running on port ${port}`);
   });
 }
+
+cron.schedule("0 13 * * *", () => {
+  console.log("Running daily cron job");
+});
 
 export default app;
