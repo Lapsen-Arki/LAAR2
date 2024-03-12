@@ -56,23 +56,9 @@ export default function TipsComp({ adviseType }: { adviseType: string }) {
         }
         return (
           <div key={index}>
-            {recommendation.photos && (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <CardMedia
-                  component="img"
-                  image={correctImage}
-                  alt="Placeholder Image"
-                  sx={{ maxWidth: 300, maxHeight: 300 }}
-                />
-              </Box>
-            )}
-            <Typography variant="h4">{recommendation.title}</Typography>
+            <Typography sx={{ mt: 2 }} variant="h4">
+              {recommendation.title}
+            </Typography>
 
             <Button
               variant="outlined"
@@ -80,6 +66,7 @@ export default function TipsComp({ adviseType }: { adviseType: string }) {
                 fontSize: 8,
                 p: 0,
                 width: 2,
+                mb: 1,
               }}
               onClick={() => handleCollapse(recommendation.title)}
             >
@@ -92,6 +79,23 @@ export default function TipsComp({ adviseType }: { adviseType: string }) {
             </Button>
 
             <Collapse in={collapseOpen[recommendation.title]}>
+              {recommendation.photos && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    image={correctImage}
+                    alt="Placeholder Image"
+                    sx={{ maxWidth: 300, maxHeight: 300 }}
+                  />
+                </Box>
+              )}
+
               {Object.entries(recommendation.textContent).map(
                 ([key, value]) => (
                   <Typography
