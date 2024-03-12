@@ -83,4 +83,27 @@ const getSubscriptionStatus = async (
   return null;
 };
 
-export { stripeSubscription, getSubscriptionStatus };
+const updateCancelAtPeriodEnd = async (idToken: string, email: string) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/update-cancellation`,
+      { email },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response) {
+      console.error("Tilauksen hakeminen epäonnistui:", error.response.data);
+      return { error: error.response.data };
+    }
+    console.error("Virhe tilausta haettaessa:", error);
+    throw error;
+  }
+};
+
+export { stripeSubscription, getSubscriptionStatus, updateCancelAtPeriodEnd };
