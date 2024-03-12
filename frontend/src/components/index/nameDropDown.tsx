@@ -64,7 +64,7 @@ export default function NameDropDown({
   return (
     <>
       {childNames[0]?.length >= 2 && (
-        <Box sx={{ display: "flex-1", justifyContent: "flex-start" }}>
+        <Box sx={{ display: "flex-1", justifyContent: "flex-start", mb: 1 }}>
           <InputLabel id="preview-target-label">Valitse Lapsi</InputLabel>
           <Select
             labelId="preview-target-label"
