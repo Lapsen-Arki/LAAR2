@@ -8,13 +8,13 @@ async function SettingsData(user: UserType) {
       autocomplete: "off",
       value: user.displayName ?? "",
     },
-    /* email: {
+    email: {
       title: "Email",
       type: "email",
       autocomplete: "off",
       value: user.email ?? "",
     },
-    phoneNumber: {
+    /*  phoneNumber: {
       title: "Puhelinnumero",
       type: "tel",
       autocomplete: "off",
