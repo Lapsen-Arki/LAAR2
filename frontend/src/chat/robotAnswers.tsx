@@ -119,7 +119,8 @@ export const robotAnswers: { [key: string]: string } = {
   ruokavalio: 'Monipuolinen ruokavalio on tärkeä lapsesi terveydelle. Tarjoa hänelle monipuolista ruokaa, joka sisältää erilaisia ravintoaineita ja vitamiineja.',
   ruokailu: 'Ruokailuhetket ovat tärkeitä lapsesi terveydelle. Tarjoa hänelle säännöllisiä aterioita ja välipaloja, jotka sisältävät monipuolisesti ravintoaineita.',
   ruokailutottumukset: 'Opeta lapsellesi terveellisiä ruokailutottumuksia, kuten hitaasti syömistä ja ruoan maistelua. Näin hän oppii nauttimaan ruoasta täysin.',
-  rokotus: `Rokotukset ovat tärkeitä lapsen terveydelle. Ne suojaavat lapsesi vakavilta sairauksilta ja auttavat estämään tautien leviämistä.
+  rokotus: `
+  Rokotukset ovat tärkeitä lapsen terveydelle. Ne suojaavat lapsesi vakavilta sairauksilta ja auttavat estämään tautien leviämistä.
   <p> Ikä:           |Rok. Lyhenne | Suoj. Tauti </p>
   <p> 2 kk:           RV            Rotavirusripuli </p>
   <p> 3 kk:           PCV          | Pneumokokkibakteerin aiheuttama aivokalvontulehdus, keuhkokuume, verenmyrkytys ja korvatulehdus </p>
@@ -135,91 +136,148 @@ export const robotAnswers: { [key: string]: string } = {
   <p> 1,5-11 v:       VAR          | Vesirokko </p>                                                                                                    
   <p> 4 v:            DTaP-IPV     | Kurkkumätä, jäykkäkouristus, hinkuyskä, polio </p>                                                                   
   <p> 6 v:            MPRV         | Tuhkarokko, sikotauti, vihurirokko, vesirokko </p>                                                                  
-  
     `,
- 
+
+    /*
+        INFO-opastus alkaa
+    */
 
     // Tilin asetukset
     tilinnpoisto: `
-    <p>PC:llä voit poistaa käyttäjätilisi valitsemalla oikeasta yläkulmasta mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
-    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-    <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
-    
-    <p>Mobiili laitteella voit poistaa käyttäjätilisi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
-    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-    <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
-    
-    <p>Kummatkin vaihtoehdot vaativat, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>`,
+      <p>PC:llä voit poistaa käyttäjätilisi valitsemalla oikeasta yläkulmasta mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
+      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+      <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
+      
+      <p>Mobiili laitteella voit poistaa käyttäjätilisi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
+      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+      <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
+    `,
 
     käyttäjätunnuksenpoisto: `
-    <p>PC:llä voit poistaa käyttäjätilisi valitsemalla oikeasta yläkulmasta mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
-    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-    <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
-    
-    <p>Mobiili laitteella voit poistaa käyttäjätilisi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
-    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-    <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
-    
-    <p>Kummatkin vaihtoehdot vaativat, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>`,
+      <p>PC:llä voit poistaa käyttäjätilisi valitsemalla oikeasta yläkulmasta mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
+      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+      <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
+      
+      <p>Mobiili laitteella voit poistaa käyttäjätilisi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
+      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+      <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
+    `,
+
+    poistakäyttäjä: `
+      <p>PC:llä voit poistaa käyttäjätilisi valitsemalla oikeasta yläkulmasta mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
+      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+      <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
+
+      <p>Mobiili laitteella voit poistaa käyttäjätilisi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
+      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+      <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
+    `,
 
     salasananvaihto: `
-    <p>PC:llä voit vaihtaa käyttäjätilisi salasanaa oikeasta yläkulmasta valitsemalla mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda salasana.</p>
-    <p>Sinun tulee syöttää uusi salasanasi, vahvistaa salasanasi sekä kirjoittaa vanha salasanasi ja lopuksi painaa Tallenna muutokset.</p>
-    
-    <p>Mobiili laitteella Voit vaihtaa käyttäjätilisi salasanaa avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda salasana.</p>
-    <p>Sinun tulee syöttää uusi salasanasi, vahvistaa salasanasi sekä kirjoittaa vanha salasanasi ja lopuksi painaa Tallenna muutokset.</p>
-    
-    <p>Kummatkin vaihtoehdot vaativat, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>`,
+      <p>PC:llä voit vaihtaa käyttäjätilisi salasanaa oikeasta yläkulmasta valitsemalla mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda salasana.</p>
+      <p>Sinun tulee syöttää uusi salasanasi, vahvistaa salasanasi sekä kirjoittaa vanha salasanasi ja lopuksi painaa Tallenna muutokset.</p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
+      
+      <p>Mobiili laitteella Voit vaihtaa käyttäjätilisi salasanaa avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda salasana.</p>
+      <p>Sinun tulee syöttää uusi salasanasi, vahvistaa salasanasi sekä kirjoittaa vanha salasanasi ja lopuksi painaa Tallenna muutokset.</p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
+    `,
     
     maksukortinvaihto: `
-    <p>PC:llä voit vaihtaa käyttäjätilisi maksukorttia oikeasta yläkulmasta valitsemalla mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda maksukortti.</p>
-    <p>Sinun tulee syöttää uusi maksukorttisi, ennekuin voit vaihtaa vanhaa maksukorttia. Samalla aukee mahdollisuus poistaa vanha maksukortti ja asettaa uusi maksukortti oletuskortiksi.</p>
-    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-    
-    <p>Mobiili laitteella voit vaihtaa käyttäjätilisi maksukorttia avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda maksukortti.</p>
-    <p>Sinun tulee syöttää uusi maksukorttisi, ennekuin voit vaihtaa vanhaa maksukorttia. Samalla aukee mahdollisuus poistaa vanha maksukortti ja asettaa uusi maksukortti oletuskortiksi.</p>
-    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-    
-    <p>Kummatkin vaihtoehdot vaativat, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>`,
+      <p>PC:llä voit vaihtaa käyttäjätilisi maksukorttia oikeasta yläkulmasta valitsemalla mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda maksukortti.</p>
+      <p>Sinun tulee syöttää uusi maksukorttisi, ennekuin voit vaihtaa vanhaa maksukorttia. Samalla aukee mahdollisuus poistaa vanha maksukortti ja asettaa uusi maksukortti oletuskortiksi.</p>
+      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
+      
+      <p>Mobiili laitteella voit vaihtaa käyttäjätilisi maksukorttia avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda maksukortti.</p>
+      <p>Sinun tulee syöttää uusi maksukorttisi, ennekuin voit vaihtaa vanhaa maksukorttia. Samalla aukee mahdollisuus poistaa vanha maksukortti ja asettaa uusi maksukortti oletuskortiksi.</p>
+      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
+    `,
 
     maksukortinpoisto: `
-    <p>PC:llä voit poistaa käyttäjätilisi maksukorttisi oikeasta yläkulmasta valitsemalla mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda maksukortti.</p>
-    <p>Sinun tulee syöttää uusi maksukorttisi, ennekuin voit poistaa vanhan maksukorttisi. Samalla aukee mahdollisuus asettaa uusi maksukortti oletuskortiksi, kun syötät uuden kortin.</p>
-    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-    
-    <p>Mobiili laitteella poistaa käyttäjätilisi maksukorttisi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda maksukortti.</p>
-    <p>Sinun tulee syöttää uusi maksukorttisi, ennekuin voit poistaa vanhan maksukorttisi. Samalla aukee mahdollisuus asettaa uusi maksukortti oletuskortiksi, kun syötät uuden kortin.</p>
-    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-    
-    <p>Kummatkin vaihtoehdot vaativat, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>`,
+      <p>PC:llä voit poistaa käyttäjätilisi maksukorttisi oikeasta yläkulmasta valitsemalla mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda maksukortti.</p>
+      <p>Sinun tulee syöttää uusi maksukorttisi, ennekuin voit poistaa vanhan maksukorttisi. Samalla aukee mahdollisuus asettaa uusi maksukortti oletuskortiksi, kun syötät uuden kortin.</p>
+      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
+      
+      <p>Mobiili laitteella poistaa käyttäjätilisi maksukorttisi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda maksukortti.</p>
+      <p>Sinun tulee syöttää uusi maksukorttisi, ennekuin voit poistaa vanhan maksukorttisi. Samalla aukee mahdollisuus asettaa uusi maksukortti oletuskortiksi, kun syötät uuden kortin.</p>
+      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
+    `,
 
     käyttäjäimi: `
-    <p>PC:llä voit vaihtaa käyttäjätilin nimesi oikeasta yläkulmasta valitsemalla mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ Nimen kohdalla paina EDIT.</p>
-    <p>Voit vaihtaa nimeä tai syöttää nimen mikäli sitä ei ole jo annettu.</p>
-    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-    
-    <p>Mobiili laitteella voit vaihtaa käyttäjätilin nimesi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ Nimen kohdalla paina EDIT.</p>
-    <p>Voit vaihtaa nimeä tai syöttää nimen mikäli sitä ei ole jo annettu.</p>
-    <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-    
-    <p>Kummatkin vaihtoehdot vaativat, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>`,
-
+      <p>PC:llä voit vaihtaa käyttäjätilin nimesi oikeasta yläkulmasta valitsemalla mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ Nimen kohdalla paina EDIT.</p>
+      <p>Voit vaihtaa nimeä tai syöttää nimen mikäli sitä ei ole jo annettu.</p>
+      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
+      
+      <p>Mobiili laitteella voit vaihtaa käyttäjätilin nimesi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ Nimen kohdalla paina EDIT.</p>
+      <p>Voit vaihtaa nimeä tai syöttää nimen mikäli sitä ei ole jo annettu.</p>
+      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
+    `,
 
     // omat profiilit
-    profiilinluonti : 'Voit luoda lapsellesi profiilin, joka sisältää tietoja hänen terveydestään, rokotuksistaan ja muista tärkeistä tiedoista. Näin voit helposti seurata lapsesi terveyttä ja hyvinvointia.',
-    profiilinmuokkaus: 'Voit muokata lapsesi profiilia päivittämällä tietoja, kuten pituutta, painoa ja muita terveyteen liittyviä tietoja.',
-    profiilinjakaminen: 'Voit jakaa lapsesi profiilin terveydenhuollon ammattilaisten kanssa, jotta he voivat seurata lapsesi terveyttä ja hyvinvointia.',
-    profiilinseuranta: 'Voit seurata lapsesi terveyttä ja hyvinvointia päivittämällä profiilia säännöllisesti ja tallentamalla tärkeitä tietoja.',
+    profiilinjakaminen: 'Voit kutsua halutsessasi hoitajan lastesi profiileihin, tämä edellyttää että olet antanut lapsen profiiliin pääsyn muille ja kutsunut Laar-sovelluksessa olevan hoitajan.',
+
+    profiilinluonti : `
+      <p>PC:llä pääset luomaan lapsellesi profiilin valitsemalla oikeasta yläkulmasta persoona iconia ➧ Lisää profiili ➧ Kirjoita lapsellesi lempinimi, anna hänen syntymäaika, lisää erityisruokavaliot ja valitse kuva. Lopuksi päätä haluatko että lapsesi profiili näkyy myös sinun kutsumillasi hoitajilla, mikäli olet jo ehtinyt niitä kutsua.</p>
+      <p>Voit halutessasi lisätä niin monta lapsen profiilia, kuin sinulla on tarve. Profiileita voit myöhemmin muokata ja tarvittaessa myös poistaa.</p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile-edit">tästä lisäämään profiilin.</a></p>
+
+      <p>Mobiili laitteella pääset luomaan lapsellesi profiilin avaamalla hampurilais valikon ➧ Lisää profiili ➧ Kirjoita lapsellesi lempinimi, anna hänen syntymäaika, lisää erityisruokavaliot ja valitse kuva. Lopuksi päätä haluatko että lapsesi profiili näkyy myös sinun kutsumillasi hoitajilla, mikäli olet jo ehtinyt niitä kutsua. Muista tallentaa.</p>
+      <p>Voit halutessasi lisätä niin monta lapsen profiilia, kuin sinulla on tarve. Profiileita voit myöhemmin muokata ja tarvittaessa myös poistaa.</p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile-edit">tästä lisäämään profiilin.</a></p>
+    `,
+
+    poistahoitaja: `
+    <p>PC:llä pääset poistamaan hoitajan valitsemalla oikeasta yläkulmasta persoona iconia ➧ Klikkaa punaista roskakoria "Kutsutut hoitajat" näkymässä ➧ Vahvista poisto, tämä poistaa hoitajalta oikeuden kaikkiin sinun profiileihisi.</p>
+    <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile-share">tästä poistamaan hoitaja.</a></p>
+
+    <p>Mobiili laitteella pääset poistamaan hoitajan avaamalla hampurilais valikon ➧ Klikkaa punaista roskakoria "Kutsutut hoitajat" näkymässä ➧ Vahvista poisto, tämä poistaa hoitajalta oikeuden kaikkiin sinun profiileihisi.</p>
+    <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile-share">tästä poistamaan hoitaja.</a></p>
+  `,
+
+    kutsuhoitaja: `
+      <p>PC:llä pääset kutsumaan hoitajan valitsemalla oikeasta yläkulmasta persoona iconia ➧ kutsu hoitaja ➧ Kirjoita hoitajan sähköpostiosoite, jolla on Laar-tili ja kutsu hoitaja.</p>
+      <p>Halutessasi voit myös useamman hoitajan, kutsutut hoitajat näet kun palaat takaisin profiili sivustolle.</p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile-share">tästä kutsumaan hoitaja.</a></p>
+
+      <p>Mobiili laitteella pääset kutsumaan hoitajan avaamalla hampurilais valikon ➧ kutsu hoitaja ➧ Kirjoita hoitajan sähköpostiosoite, jolla on Laar-tili ja kutsu hoitaja.</p>
+      <p>Halutessasi voit myös useamman hoitajan, kutsutut hoitajat näet kun palaat takaisin profiili sivustolle.</p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile-share">tästä kutsumaan hoitaja.</a></p>
+    `,
+
+    profiilinmuokkaus: `
+      <p>PC:llä pääset muokkaamaan lapsen profiilia valitsemalla oikeasta yläkulmasta persoona iconia ➧ klikkaa sinistä kynän kuvaa profiilissa, jota haluat muokata ➧ Voit vaihtaa lapsen profiilin nimen tai lempinimen, syntymäajan sekä lisätä lapsellesi erityisruokavalioita.</p>
+      <p>Halutessasi voit myös muuttaa lapsen profiilin avataria ja näkyvyyttä, näkyykö lapsen profiili hoitajille.</p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile">tästä profiileihin.</a></p>
+
+      <p>Mobiili laitteella pääset muokkaamaan lapsen profiilia avaamalla hampurilais valikon ➧ klikkaa sinistä kynän kuvaa profiilissa, jota haluat muokata ➧ Voit vaihtaa lapsen profiilin nimen tai lempinimen, syntymäajan sekä lisätä lapsellesi erityisruokavalioita.</p>
+      <p>Halutessasi voit myös muuttaa lapsen profiilin avataria ja näkyvyyttä, näkyykö lapsen profiili hoitajille.</p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile">tästä profiileihin.</a></p>
+    `,
 
     profiilinpoisto: `
-    <p>PC:llä poistaa lapsesi profiilin valitsemalla oikeasta yläkulmasta persoona iconia ➧ klikkaa punaista roskakorin kuvaa profiilissa, jonka haluat poistaa ➧ Vahvista poisto. Tämä poistaa profiilisi pysyvästi. </p>
-    <p><u>Huomioi että tämä on lopullinen ratkaisu, profiilisi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
-    
-    <p>Mobiili laitteella voit poistaa käyttäjätilisi avaamalla hampurilais valikon ➧ <a href="/profile">Profiili</a> ➧ Vahvista poisto. Tämä poistaa profiilisi pysyvästi.</p>
-    <p><u>Huomioi että tämä on lopullinen ratkaisu, profiilisi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
-    
-    <p>Kummatkin vaihtoehdot vaativat, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile">tästä profiileihin.</a></p>`,
+      <p>PC:llä poistaa lapsesi profiilin valitsemalla oikeasta yläkulmasta persoona iconia ➧ klikkaa punaista roskakorin kuvaa profiilissa, jonka haluat poistaa ➧ Vahvista poisto. Tämä poistaa profiilisi pysyvästi. </p>
+      <p><u>Huomioi että tämä on lopullinen ratkaisu, profiilisi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile">tästä profiileihin.</a></p>
+      
+      <p>Mobiili laitteella voit poistaa lapsesi profiilin avaamalla hampurilais valikon ➧ <a href="/profile">Profiili</a> ➧ Vahvista poisto. Tämä poistaa profiilisi pysyvästi.</p>
+      <p><u>Huomioi että tämä on lopullinen ratkaisu, profiilisi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
+      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile">tästä profiileihin.</a></p>
+    `,
 
+
+    // testi, jos haluaa iconin viestiin koodia tulee hieman muuttaa täällä ja chatRobotService mutta onko sitten myöhemmin kannattava jos tietue siirtyy backendiin..
     /*
     testi: () => (
       <React.Fragment>
