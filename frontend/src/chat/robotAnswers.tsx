@@ -138,143 +138,727 @@ export const robotAnswers: { [key: string]: string } = {
   <p> 6 v:            MPRV         | Tuhkarokko, sikotauti, vihurirokko, vesirokko </p>                                                                  
     `,
 
-    /*
-        INFO-opastus alkaa
-    */
+/*
+ INFO-opastus alkaa
+*/
 
-    // Tilin asetukset
-    tilinnpoisto: `
-      <p>PC:llä voit poistaa käyttäjätilisi valitsemalla oikeasta yläkulmasta mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
-      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-      <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
-      
-      <p>Mobiili laitteella voit poistaa käyttäjätilisi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
-      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-      <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
-    `,
+// TILIN ASETUKSET:
+tilinnpoisto: `
+  <h3>Käyttäjätilin poistaminen</h3>
 
-    käyttäjätunnuksenpoisto: `
-      <p>PC:llä voit poistaa käyttäjätilisi valitsemalla oikeasta yläkulmasta mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
-      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-      <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
-      
-      <p>Mobiili laitteella voit poistaa käyttäjätilisi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
-      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-      <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
-    `,
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse oikeasta yläkulmasta mutteri-ikoni ja siirry kohtaan <a href="/account">Tilin asetukset</a>.</li>
+      <li>Valitse "Poista tili".</li>
+      <li>Syötä salasanasi muutosten vahvistamiseksi.</li>
+  </ol>
+  <p><strong>Huomioi, että tämä on lopullinen ratkaisu. Kaikki tietosi poistetaan pysyvästi, eikä poistettuja tietoja voi palauttaa.</strong></p>
 
-    poistakäyttäjä: `
-      <p>PC:llä voit poistaa käyttäjätilisi valitsemalla oikeasta yläkulmasta mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
-      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-      <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko ja siirry kohtaan <a href="/account">Tilin asetukset</a>.</li>
+      <li>Valitse "Poista tili".</li>
+      <li>Syötä salasanasi muutosten vahvistamiseksi.</li>
+  </ol>
+  <p><strong>Huomioi, että tämä on lopullinen ratkaisu. Kaikki tietosi poistetaan pysyvästi, eikä poistettuja tietoja voi palauttaa.</strong></p>
 
-      <p>Mobiili laitteella voit poistaa käyttäjätilisi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ poista tili.</p>
-      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-      <p><u>Huomioi että tämä on lopullinen ratkaisu, kaikki tietosi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
-    `,
+  <p>Jotta voit poistaa tilisi, sinun on oltava kirjautuneena sisään. Oikotie tilin asetuksiin: <a href="/account">klikkaa tästä siirtyäksesi tilin asetuksiin</a>.</p>
+`,
 
-    salasananvaihto: `
-      <p>PC:llä voit vaihtaa käyttäjätilisi salasanaa oikeasta yläkulmasta valitsemalla mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda salasana.</p>
-      <p>Sinun tulee syöttää uusi salasanasi, vahvistaa salasanasi sekä kirjoittaa vanha salasanasi ja lopuksi painaa Tallenna muutokset.</p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
-      
-      <p>Mobiili laitteella Voit vaihtaa käyttäjätilisi salasanaa avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda salasana.</p>
-      <p>Sinun tulee syöttää uusi salasanasi, vahvistaa salasanasi sekä kirjoittaa vanha salasanasi ja lopuksi painaa Tallenna muutokset.</p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
-    `,
+käyttäjätunnuksenpoisto: `
+  <h3>Käyttäjätilin poistaminen</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse oikeasta yläkulmasta mutteri-ikoni ja siirry kohtaan <a href="/account">Tilin asetukset</a>.</li>
+      <li>Valitse "Poista tili".</li>
+      <li>Syötä salasanasi muutosten vahvistamiseksi.</li>
+  </ol>
+  <p><strong>Huomioi, että tämä on lopullinen ratkaisu. Kaikki tietosi poistetaan pysyvästi, eikä poistettuja tietoja voi palauttaa.</strong></p>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko ja siirry kohtaan <a href="/account">Tilin asetukset</a>.</li>
+      <li>Valitse "Poista tili".</li>
+      <li>Syötä salasanasi muutosten vahvistamiseksi.</li>
+  </ol>
+  <p><strong>Huomioi, että tämä on lopullinen ratkaisu. Kaikki tietosi poistetaan pysyvästi, eikä poistettuja tietoja voi palauttaa.</strong></p>
+
+  <p>Jotta voit poistaa tilisi, sinun on oltava kirjautuneena sisään. Oikotie tilin asetuksiin: <a href="/account">klikkaa tästä siirtyäksesi tilin asetuksiin</a>.</p>
+`,
+
+poistakäyttäjä: `
+  <h3>Käyttäjätilin poistaminen</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse oikeasta yläkulmasta mutteri-ikoni ja siirry kohtaan <a href="/account">Tilin asetukset</a>.</li>
+      <li>Valitse "Poista tili".</li>
+      <li>Syötä salasanasi muutosten vahvistamiseksi.</li>
+  </ol>
+  <p><strong>Huomioi, että tämä on lopullinen ratkaisu. Kaikki tietosi poistetaan pysyvästi, eikä poistettuja tietoja voi palauttaa.</strong></p>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko ja siirry kohtaan <a href="/account">Tilin asetukset</a>.</li>
+      <li>Valitse "Poista tili".</li>
+      <li>Syötä salasanasi muutosten vahvistamiseksi.</li>
+  </ol>
+  <p><strong>Huomioi, että tämä on lopullinen ratkaisu. Kaikki tietosi poistetaan pysyvästi, eikä poistettuja tietoja voi palauttaa.</strong></p>
+
+  <p>Jotta voit poistaa tilisi, sinun on oltava kirjautuneena sisään. Oikotie tilin asetuksiin: <a href="/account">klikkaa tästä siirtyäksesi tilin asetuksiin</a>.</p>
+`,
+
+salasananvaihto: `
+  <h3>Salasanan vaihtaminen</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse oikeasta yläkulmasta mutteri-ikoni ja siirry kohtaan <a href="/account">Tilin asetukset</a>.</li>
+      <li>Valitse "Vaihda salasana".</li>
+      <li>Syötä uusi salasanasi, vahvista uusi salasanasi ja anna vanha salasanasi. Lopuksi paina "Tallenna muutokset".</li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko ja siirry kohtaan <a href="/account">Tilin asetukset</a>.</li>
+      <li>Valitse "Vaihda salasana".</li>
+      <li>Syötä uusi salasanasi, vahvista uusi salasanasi ja anna vanha salasanasi. Lopuksi paina "Tallenna muutokset".</li>
+  </ol>
+
+  <p>Sinun on oltava kirjautuneena sisään, jotta voit vaihtaa salasanasi. Oikotie tilin asetuksiin: <a href="/account">klikkaa tästä siirtyäksesi tilin asetuksiin</a>.</p>
+`,
     
-    maksukortinvaihto: `
-      <p>PC:llä voit vaihtaa käyttäjätilisi maksukorttia oikeasta yläkulmasta valitsemalla mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda maksukortti.</p>
-      <p>Sinun tulee syöttää uusi maksukorttisi, ennekuin voit vaihtaa vanhaa maksukorttia. Samalla aukee mahdollisuus poistaa vanha maksukortti ja asettaa uusi maksukortti oletuskortiksi.</p>
-      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
-      
-      <p>Mobiili laitteella voit vaihtaa käyttäjätilisi maksukorttia avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda maksukortti.</p>
-      <p>Sinun tulee syöttää uusi maksukorttisi, ennekuin voit vaihtaa vanhaa maksukorttia. Samalla aukee mahdollisuus poistaa vanha maksukortti ja asettaa uusi maksukortti oletuskortiksi.</p>
-      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
-    `,
+maksukortinvaihto: `
+  <h3>Maksukortin vaihtaminen</h3>
 
-    maksukortinpoisto: `
-      <p>PC:llä voit poistaa käyttäjätilisi maksukorttisi oikeasta yläkulmasta valitsemalla mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda maksukortti.</p>
-      <p>Sinun tulee syöttää uusi maksukorttisi, ennekuin voit poistaa vanhan maksukorttisi. Samalla aukee mahdollisuus asettaa uusi maksukortti oletuskortiksi, kun syötät uuden kortin.</p>
-      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
-      
-      <p>Mobiili laitteella poistaa käyttäjätilisi maksukorttisi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ Vaihda maksukortti.</p>
-      <p>Sinun tulee syöttää uusi maksukorttisi, ennekuin voit poistaa vanhan maksukorttisi. Samalla aukee mahdollisuus asettaa uusi maksukortti oletuskortiksi, kun syötät uuden kortin.</p>
-      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
-    `,
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse oikeasta yläkulmasta mutteri-ikoni ja siirry kohtaan <a href="/account">Tilin asetukset</a>.</li>
+      <li>Valitse "Vaihda maksukortti". Sinun tulee syöttää uuden maksukortin tiedot ennen kuin voit vaihtaa vanhan kortin. Tässä vaiheessa voit myös poistaa vanhan maksukortin ja asettaa uuden kortin oletuskortiksi.</li>
+      <li>Syötä salasanasi muutosten vahvistamiseksi.</li>
+  </ol>
 
-    käyttäjäimi: `
-      <p>PC:llä voit vaihtaa käyttäjätilin nimesi oikeasta yläkulmasta valitsemalla mutteri ➧ <a href="/account">Tilin asetukset</a> ➧ Nimen kohdalla paina EDIT.</p>
-      <p>Voit vaihtaa nimeä tai syöttää nimen mikäli sitä ei ole jo annettu.</p>
-      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
-      
-      <p>Mobiili laitteella voit vaihtaa käyttäjätilin nimesi avaamalla hampurilais valikon ➧ <a href="/account">Tilin asetukset</a> ➧ Nimen kohdalla paina EDIT.</p>
-      <p>Voit vaihtaa nimeä tai syöttää nimen mikäli sitä ei ole jo annettu.</p>
-      <p>Lisäksi sinun täytyy syöttää salasanasi vahvistaaksesi muutokset.</p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/account">tästä tilin asetuksiin.</a></p>
-    `,
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko ja siirry kohtaan <a href="/account">Tilin asetukset</a>.</li>
+      <li>Valitse "Vaihda maksukortti". Muista, että uusi maksukortti on lisättävä ennen vanhan kortin vaihtamista. Samalla voit poistaa vanhan kortin ja asettaa uuden kortin oletuskortiksi.</li>
+      <li>Syötä salasanasi muutosten vahvistamiseksi.</li>
+  </ol>
 
-    // omat profiilit
-    profiilinjakaminen: 'Voit kutsua halutsessasi hoitajan lastesi profiileihin, tämä edellyttää että olet antanut lapsen profiiliin pääsyn muille ja kutsunut Laar-sovelluksessa olevan hoitajan.',
+  <p>Sinun on oltava kirjautuneena sisään, jotta voit hallinnoida maksukorttitietojasi. Oikotie tilin asetuksiin: <a href="/account">klikkaa tästä siirtyäksesi tilin asetuksiin</a>.</p>
+`,
 
-    profiilinluonti : `
-      <p>PC:llä pääset luomaan lapsellesi profiilin valitsemalla oikeasta yläkulmasta persoona iconia ➧ Lisää profiili ➧ Kirjoita lapsellesi lempinimi, anna hänen syntymäaika, lisää erityisruokavaliot ja valitse kuva. Lopuksi päätä haluatko että lapsesi profiili näkyy myös sinun kutsumillasi hoitajilla, mikäli olet jo ehtinyt niitä kutsua.</p>
-      <p>Voit halutessasi lisätä niin monta lapsen profiilia, kuin sinulla on tarve. Profiileita voit myöhemmin muokata ja tarvittaessa myös poistaa.</p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile-edit">tästä lisäämään profiilin.</a></p>
+maksukortinpoisto: `
+  <h3>Maksukortin poistaminen</h3>
 
-      <p>Mobiili laitteella pääset luomaan lapsellesi profiilin avaamalla hampurilais valikon ➧ Lisää profiili ➧ Kirjoita lapsellesi lempinimi, anna hänen syntymäaika, lisää erityisruokavaliot ja valitse kuva. Lopuksi päätä haluatko että lapsesi profiili näkyy myös sinun kutsumillasi hoitajilla, mikäli olet jo ehtinyt niitä kutsua. Muista tallentaa.</p>
-      <p>Voit halutessasi lisätä niin monta lapsen profiilia, kuin sinulla on tarve. Profiileita voit myöhemmin muokata ja tarvittaessa myös poistaa.</p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile-edit">tästä lisäämään profiilin.</a></p>
-    `,
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse oikeasta yläkulmasta mutteri-ikoni ja siirry kohtaan <a href="/account">Tilin asetukset</a>.</li>
+      <li>Valitse "Vaihda maksukortti". Sinun on syötettävä uusi maksukortin tiedot ennen vanhan kortin poistamista. Tässä vaiheessa voit myös asettaa uuden kortin oletuskortiksi.</li>
+      <li>Syötä salasanasi muutosten vahvistamiseksi.</li>
+  </ol>
 
-    poistahoitaja: `
-    <p>PC:llä pääset poistamaan hoitajan valitsemalla oikeasta yläkulmasta persoona iconia ➧ Klikkaa punaista roskakoria "Kutsutut hoitajat" näkymässä ➧ Vahvista poisto, tämä poistaa hoitajalta oikeuden kaikkiin sinun profiileihisi.</p>
-    <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile-share">tästä poistamaan hoitaja.</a></p>
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko ja siirry kohtaan <a href="/account">Tilin asetukset</a>.</li>
+      <li>Valitse "Vaihda maksukortti". Muista, että uusi maksukortti on lisättävä ennen kuin voit poistaa vanhan. Samalla voit asettaa uuden kortin oletuskortiksi.</li>
+      <li>Syötä salasanasi muutosten vahvistamiseksi.</li>
+  </ol>
 
-    <p>Mobiili laitteella pääset poistamaan hoitajan avaamalla hampurilais valikon ➧ Klikkaa punaista roskakoria "Kutsutut hoitajat" näkymässä ➧ Vahvista poisto, tämä poistaa hoitajalta oikeuden kaikkiin sinun profiileihisi.</p>
-    <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile-share">tästä poistamaan hoitaja.</a></p>
+  <p>Jotta voit hallinnoida maksukorttitietojasi, sinun on oltava kirjautuneena sisään. Oikotie tilin asetuksiin: <a href="/account">klikkaa tästä siirtyäksesi tilin asetuksiin</a>.</p>
+`,
+
+käyttäjäimi: `
+  <h3>Käyttäjätilin nimen vaihtaminen</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse oikeasta yläkulmasta mutteri-ikoni ja siirry kohtaan <a href="/account">Tilin asetukset</a>.</li>
+      <li>Etsi nimen kohdalta "EDIT" ja klikkaa sitä.</li>
+      <li>Voit nyt vaihtaa nimesi tai syöttää uuden nimen, jos sitä ei ole vielä annettu.</li>
+      <li>Syötä salasanasi muutosten vahvistamiseksi.</li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko ja siirry kohtaan <a href="/account">Tilin asetukset</a>.</li>
+      <li>Etsi nimen kohdalta "EDIT" ja klikkaa sitä.</li>
+      <li>Voit nyt vaihtaa nimesi tai syöttää uuden nimen, jos sitä ei ole vielä annettu.</li>
+      <li>Syötä salasanasi muutosten vahvistamiseksi.</li>
+  </ol>
+
+  <p>Sinun on oltava kirjautuneena sisään, jotta voit muokata tilin tietoja. Oikotie tilin asetuksiin: <a href="/account">klikkaa tästä siirtyäksesi tilin asetuksiin</a>.</p>
+`,
+
+// TILAUKSET:
+tilaustiedot: `
+  <h3>Tilaustietojen tarkastelu</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse oikeasta yläkulmasta mutteri-ikoni.</li>
+      <li>Siirry kohtaan "Tilaukset" nähdäksesi tilaustietosi.</li>
+  </ol>
+  <p>Sinun on oltava kirjautuneena sisään, jotta voit tarkastella tilaustietojasi. Oikotie tilaustietoihisi: <a href="/subscription">klikkaa tästä tarkistamaan tilaustiedot</a>.</p>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko.</li>
+      <li>Valitse "Tilaukset" nähdäksesi tilaustietosi.</li>
+  </ol>
+  <p>Sinun on oltava kirjautuneena sisään, jotta voit tarkastella tilaustietojasi. Oikotie tilaustietoihisi: <a href="/subscription">klikkaa tästä tarkistamaan tilaustiedot</a>.</p>
+`,
+
+jatkatilausta: `
+  <h3>Tilauksen jatkaminen</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse oikeasta yläkulmasta mutteri-ikoni.</li>
+      <li>Siirry kohtaan "Tilaukset" ja valitse "Jatka tilausta".</li>
+  </ol>
+  <p>Tilaustiedot-sivustolla näet tilauksesi tilanteen ja milloin seuraava maksu erääntyy.</p>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko.</li>
+      <li>Valitse "Tilaukset" ja sen jälkeen "Jatka tilausta".</li>
+  </ol>
+  <p>Tilaustiedot-sivustolla näet tilauksesi tilanteen ja milloin seuraava maksu erääntyy.</p>
+
+  <p>Jotta voit hallinnoida tilaustasi, sinun on oltava kirjautuneena sisään. Oikotie tilaustietoihisi: <a href="/subscription">klikkaa tästä tarkistamaan tilaustiedot</a>.</p>
+`,
+
+seuraavamaksu: `
+  <h3>Seuraavan maksupäivän tarkistaminen</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse oikeasta yläkulmasta mutteri-ikoni.</li>
+      <li>Siirry kohtaan "Tilaukset" nähdäksesi tilauksesi tiedot, mukaan lukien seuraavan maksupäivän.</li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko.</li>
+      <li>Valitse "Tilaukset" nähdäksesi tilauksesi tiedot, mukaan lukien seuraavan maksupäivän.</li>
+  </ol>
+
+  <p>Sinun on oltava kirjautuneena sisään, jotta voit tarkastaa tilauksesi tiedot. Oikotie tilaustietoihisi: <a href="/subscription">klikkaa tästä tarkistamaan tilaustiedot</a>.</p>
+`,
+
+keskeytätilaus: `
+  <h3>Tilauksen keskeyttäminen</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse oikeasta yläkulmasta mutteri-ikoni.</li>
+      <li>Mene kohtaan "Tilaukset" ja valitse "Keskeytä tilaus".</li>
+  </ol>
+  <p>Tilaustietosivulla voit tarkastella tilauksesi tilannetta ja nähdä, milloin tilauksesi päättyy keskeytyksen jälkeen.</p>
+  <p>Jos päätätkin jatkaa tilaustasi, voit milloin tahansa valita "Jatka tilausta".</p>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko.</li>
+      <li>Valitse "Tilaukset" ja sen jälkeen "Keskeytä tilaus".</li>
+  </ol>
+  <p>Tilaustietosivulla näet tilauksesi tilanteen ja sen, milloin tilauksesi päättyy keskeytyksen jälkeen.</p>
+  <p>Jos mielipiteesi muuttuu ja haluat jatkaa tilausta, voit valita "Jatka tilausta".</p>
+
+  <p>Jotta voit hallinnoida tilaustasi, sinun on oltava kirjautuneena sisään. Oikotie tilaustietoihisi: <a href="/subscription">klikkaa tästä tarkistamaan tilaustiedot</a>.</p>
+`,
+
+peruutatilaus: `
+  <h3>Tilauksen keskeyttäminen</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse oikeasta yläkulmasta mutteri-ikoni.</li>
+      <li>Mene kohtaan "Tilaukset" ja valitse "Keskeytä tilaus".</li>
+  </ol>
+  <p>Tilaustietosivulla voit tarkastella tilauksesi tilannetta ja nähdä, milloin tilauksesi päättyy keskeytyksen jälkeen.</p>
+  <p>Jos päätätkin jatkaa tilaustasi, voit milloin tahansa valita "Jatka tilausta".</p>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko.</li>
+      <li>Valitse "Tilaukset" ja sen jälkeen "Keskeytä tilaus".</li>
+  </ol>
+  <p>Tilaustietosivulla näet tilauksesi tilanteen ja sen, milloin tilauksesi päättyy keskeytyksen jälkeen.</p>
+  <p>Jos mielipiteesi muuttuu ja haluat jatkaa tilausta, voit valita "Jatka tilausta".</p>
+
+  <p>Jotta voit hallinnoida tilaustasi, sinun on oltava kirjautuneena sisään. Oikotie tilaustietoihisi: <a href="/subscription">klikkaa tästä tarkistamaan tilaustiedot</a>.</p>
+`,
+
+lopetatilaus: `
+  <h3>Tilauksen keskeyttäminen</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse oikeasta yläkulmasta mutteri-ikoni.</li>
+      <li>Mene kohtaan "Tilaukset" ja valitse "Keskeytä tilaus".</li>
+  </ol>
+  <p>Tilaustietosivulla voit tarkastella tilauksesi tilannetta ja nähdä, milloin tilauksesi päättyy keskeytyksen jälkeen.</p>
+  <p>Jos päätätkin jatkaa tilaustasi, voit milloin tahansa valita "Jatka tilausta".</p>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko.</li>
+      <li>Valitse "Tilaukset" ja sen jälkeen "Keskeytä tilaus".</li>
+  </ol>
+  <p>Tilaustietosivulla näet tilauksesi tilanteen ja sen, milloin tilauksesi päättyy keskeytyksen jälkeen.</p>
+  <p>Jos mielipiteesi muuttuu ja haluat jatkaa tilausta, voit valita "Jatka tilausta".</p>
+
+  <p>Jotta voit hallinnoida tilaustasi, sinun on oltava kirjautuneena sisään. Oikotie tilaustietoihisi: <a href="/subscription">klikkaa tästä tarkistamaan tilaustiedot</a>.</p>
+`,
+
+// PROFIILIT:
+profiilinjakaminen: 'Voit kutsua halutsessasi hoitajan lastesi profiileihin, tämä edellyttää että olet antanut lapsen profiiliin pääsyn muille ja kutsunut Laar-sovelluksessa olevan hoitajan.',
+
+profiilinluonti : `
+  <h3>Lapsen profiilin luominen</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse sivun oikeasta yläkulmasta persoona-ikoni.</li>
+      <li>Valitse "Lisää profiili". Kirjoita lapsellesi lempinimi, anna hänen syntymäaika, lisää erityisruokavaliot ja valitse kuva.</li>
+      <li>Päätä, haluatko että lapsesi profiili näkyy myös sinun kutsumillasi hoitajilla. Jos olet jo kutsunut hoitajia, he näkevät lapsen profiilin.</li>
+  </ol>
+  <p>Voit lisätä useita lapsen profiileja tarpeesi mukaan. Profiileja voi myöhemmin muokata tai tarvittaessa poistaa.</p>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko.</li>
+      <li>Valitse "Lisää profiili". Kirjoita lapsellesi lempinimi, anna hänen syntymäaika, lisää erityisruokavaliot ja valitse kuva.</li>
+      <li>Päätä, haluatko että lapsesi profiili näkyy myös sinun kutsumillasi hoitajilla. Jos olet jo kutsunut hoitajia, he näkevät lapsen profiilin. Muista tallentaa muutoksesi.</li>
+  </ol>
+  <p>Voit lisätä useita lapsen profiileja tarpeesi mukaan. Profiileja voi myöhemmin muokata tai tarvittaessa poistaa.</p>
+
+  <p>Oikotie profiileihisi, jos olet kirjautunut sisään: <a href="/profile-edit">klikkaa tästä lisäämään profiilin</a>.</p>
+`,
+
+poistahoitaja: `
+  <h3>Hoitajan poistaminen</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse sivun oikeasta yläkulmasta persoona-ikoni.</li>
+      <li>Näet "Kutsutut hoitajat" -näkymän. Klikkaa siellä hoitajan kohdalla olevaa punaista roskakoria.</li>
+      <li>Vahvista poisto. Tämä toimenpide poistaa hoitajalta oikeudet kaikkiin profiileihisi.</li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko.</li>
+      <li>Näet "Kutsutut hoitajat" -näkymän. Klikkaa siellä hoitajan kohdalla olevaa punaista roskakoria.</li>
+      <li>Vahvista poisto. Tämä toimenpide poistaa hoitajalta oikeudet kaikkiin profiileihisi.</li>
+  </ol>
+
+  <p>Oikotie profiileihisi, jos olet kirjautunut sisään: <a href="/profile-share">klikkaa tästä poistamaan hoitaja</a>.</p>
+`,
+
+kutsuhoitaja: `
+  <h3>Hoitajan kutsuminen</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse sivun oikeasta yläkulmasta persoona-ikoni.</li>
+      <li>Valitse "Kutsu hoitaja" ja kirjoita hoitajan sähköpostiosoite, jolla on Laar-tili. Sen jälkeen kutsu hoitaja.</li>
+  </ol>
+  <p>Voit kutsua useita hoitajia. Kutsutut hoitajat näkyvät, kun palaat takaisin profiilisivulle.</p>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko.</li>
+      <li>Valitse "Kutsu hoitaja" ja kirjoita hoitajan sähköpostiosoite, jolla on Laar-tili. Sen jälkeen kutsu hoitaja.</li>
+  </ol>
+  <p>Voit kutsua useita hoitajia. Kutsutut hoitajat näkyvät, kun palaat takaisin profiilisivulle.</p>
+
+  <p>Oikotie profiileihisi, jos olet kirjautunut sisään: <a href="/profile-share">klikkaa tästä kutsumaan hoitaja</a>.</p>
+`,
+
+profiilinmuokkaus: `
+  <h3>Lapsen profiilin muokkaaminen</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse sivun oikeasta yläkulmasta persoona-ikoni.</li>
+      <li>Klikkaa sinistä kynän kuvaa profiilissa, jota haluat muokata. Täältä voit:</li>
+      <ul>
+          <li>Vaihtaa lapsen profiilin nimen tai lempinimen.</li>
+          <li>Muuttaa syntymäajan.</li>
+          <li>Lisätä erityisruokavalioita.</li>
+          <li>Muuttaa lapsen profiilin avataria.</li>
+          <li>Säätää, näkyykö lapsen profiili hoitajille.</li>
+      </ul>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko ja siirry Profiili sivulle.</li>
+      <li>Klikkaa sinistä kynän kuvaa profiilissa, jota haluat muokata. Voit tehdä samat muutokset kuin tietokoneellakin:</li>
+      <ul>
+          <li>Vaihtaa lapsen profiilin nimen tai lempinimen.</li>
+          <li>Muuttaa syntymäajan.</li>
+          <li>Lisätä erityisruokavalioita.</li>
+          <li>Muuttaa lapsen profiilin avataria.</li>
+          <li>Säätää, näkyykö lapsen profiili hoitajille.</li>
+      </ul>
+  </ol>
+  <p>Oikotie profiileihisi, jos olet kirjautunut sisään: <a href="/profile">klikkaa tästä profiileihin</a>.</p>
+`,
+
+profiilinpoisto: `
+    <h3>Lapsen profiilin poistaminen</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Valitse sivun oikeasta yläkulmasta persoona-ikoni.</li>
+      <li>Etsi profiili, jonka haluat poistaa, ja klikkaa profiilin kohdalla olevaa punaista roskakorin kuvaa.</li>
+      <li>Vahvista poisto. <strong>Huomioi, että tämä poistaa profiilin pysyvästi, eikä poistettuja tietoja voi palauttaa.</strong></li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko.</li>
+      <li>Valitse <a href="/profile">Profiili</a> ja vahvista poisto. <strong>Huomioi, että tämä poistaa profiilin pysyvästi, eikä poistettuja tietoja voi palauttaa.</strong></li>
+  </ol>
+  <p>Oikotie profiileihisi, jos olet kirjautunut sisään: <a href="/profile">klikkaa tästä profiileihin</a>.</p>
   `,
 
-    kutsuhoitaja: `
-      <p>PC:llä pääset kutsumaan hoitajan valitsemalla oikeasta yläkulmasta persoona iconia ➧ kutsu hoitaja ➧ Kirjoita hoitajan sähköpostiosoite, jolla on Laar-tili ja kutsu hoitaja.</p>
-      <p>Halutessasi voit myös useamman hoitajan, kutsutut hoitajat näet kun palaat takaisin profiili sivustolle.</p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile-share">tästä kutsumaan hoitaja.</a></p>
 
-      <p>Mobiili laitteella pääset kutsumaan hoitajan avaamalla hampurilais valikon ➧ kutsu hoitaja ➧ Kirjoita hoitajan sähköpostiosoite, jolla on Laar-tili ja kutsu hoitaja.</p>
-      <p>Halutessasi voit myös useamman hoitajan, kutsutut hoitajat näet kun palaat takaisin profiili sivustolle.</p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile-share">tästä kutsumaan hoitaja.</a></p>
-    `,
+// KIRJAUTUMINEN:
+kirjaudusisään: `
+  <p>Voit kirjautua sisään tietokoneella seuraavasti:</p>
+  <ul>
+    <li>Löydät "Kirjaudu sisään" -painikkeen sivun oikeasta yläkulmasta, "Blogi"-linkin oikealta puolelta.</li>
+    <li>Pikakirjautumiseen, klikkaa <a href="/login">tästä kirjautuaksesi sisään</a>.</li>
+  </ul>
+  
+  <p>Kirjautuminen mobiililaitteella:</p>
+    <ul>
+      <li>Avaa hampurilaisvalikko sivun vasemmasta yläkulmasta.</li>
+      <li>Valitse valikosta "Kirjaudu sisään".</li>
+    </ul>
+  <p>Pikakirjautumiseen, klikkaa <a href="/login">tästä kirjautuaksesi sisään</a>.</p>
+`,
 
-    profiilinmuokkaus: `
-      <p>PC:llä pääset muokkaamaan lapsen profiilia valitsemalla oikeasta yläkulmasta persoona iconia ➧ klikkaa sinistä kynän kuvaa profiilissa, jota haluat muokata ➧ Voit vaihtaa lapsen profiilin nimen tai lempinimen, syntymäajan sekä lisätä lapsellesi erityisruokavalioita.</p>
-      <p>Halutessasi voit myös muuttaa lapsen profiilin avataria ja näkyvyyttä, näkyykö lapsen profiili hoitajille.</p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile">tästä profiileihin.</a></p>
+kirjauduulos: `
+  <p>Voit kirjautua ulos tietokoneella seuraavasti:</p>
+  <ul>
+      <li>Löydät "Kirjaudu ulos" -painikkeen sivun oikeasta yläkulmasta, "Blogi"-linkin oikealta puolelta.</li>
+  </ul>
 
-      <p>Mobiili laitteella pääset muokkaamaan lapsen profiilia avaamalla hampurilais valikon ➧ klikkaa sinistä kynän kuvaa profiilissa, jota haluat muokata ➧ Voit vaihtaa lapsen profiilin nimen tai lempinimen, syntymäajan sekä lisätä lapsellesi erityisruokavalioita.</p>
-      <p>Halutessasi voit myös muuttaa lapsen profiilin avataria ja näkyvyyttä, näkyykö lapsen profiili hoitajille.</p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile">tästä profiileihin.</a></p>
-    `,
+  <p>Uloskirjautuminen mobiililaitteella:</p>
+  <ul>
+      <li>Avaa hampurilaisvalikko sivun vasemmasta yläkulmasta.</li>
+      <li>Valitse valikosta "Kirjaudu ulos".</li>
+  </ul>
+`,
 
-    profiilinpoisto: `
-      <p>PC:llä poistaa lapsesi profiilin valitsemalla oikeasta yläkulmasta persoona iconia ➧ klikkaa punaista roskakorin kuvaa profiilissa, jonka haluat poistaa ➧ Vahvista poisto. Tämä poistaa profiilisi pysyvästi. </p>
-      <p><u>Huomioi että tämä on lopullinen ratkaisu, profiilisi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile">tästä profiileihin.</a></p>
-      
-      <p>Mobiili laitteella voit poistaa lapsesi profiilin avaamalla hampurilais valikon ➧ <a href="/profile">Profiili</a> ➧ Vahvista poisto. Tämä poistaa profiilisi pysyvästi.</p>
-      <p><u>Huomioi että tämä on lopullinen ratkaisu, profiilisi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
-      <p>Tämä vaihtoehto edellyttää, että olet kirjautunut sisään. Oikotie profiileihisi on kun klikkaat <a href="/profile">tästä profiileihin.</a></p>
-    `,
+// LINKIT:
+blogi: `
+  <h3>Blogi</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li>Siirry sivun oikeasta yläkulmasta löytyvän <a href="https://www.kauppa.lapsen-arki.fi/blogi-artikkelit/">Blogi</a> linkin kautta Lapsen Arki -blogisivustolle.</li>
+      <li>Jos haluat palata Laar-aplikaatioon, klikkaa Blogi-sivuston navigointipalkissa kohtaa "Aplikaatio".</li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li>Avaa hampurilaisvalikko ja valitse sieltä <a href="https://www.kauppa.lapsen-arki.fi/blogi-artikkelit/">Blogi</a> päästäksesi Lapsen Arki -blogisivustolle.</li>
+      <li>Jos haluat palata Laar-aplikaatioon, avaa Blogi-sivuston hampurilaisvalikko ja valitse "Aplikaatio".</li>
+  </ol>
+  <p>Oikotie Blogiin: <a href="https://www.kauppa.lapsen-arki.fi/blogi-artikkelit/">klikkaa tästä siirtyäksesi suoraan blogiin</a>.</p>
+  `,
+
+löydäblogi: `
+  <h3>Blogi</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li>Siirry sivun oikeasta yläkulmasta löytyvän <a href="https://www.kauppa.lapsen-arki.fi/blogi-artikkelit/">Blogi</a> linkin kautta Lapsen Arki -blogisivustolle.</li>
+      <li>Jos haluat palata Laar-aplikaatioon, klikkaa Blogi-sivuston navigointipalkissa kohtaa "Aplikaatio".</li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li>Avaa hampurilaisvalikko ja valitse sieltä <a href="https://www.kauppa.lapsen-arki.fi/blogi-artikkelit/">Blogi</a> päästäksesi Lapsen Arki -blogisivustolle.</li>
+      <li>Jos haluat palata Laar-aplikaatioon, avaa Blogi-sivuston hampurilaisvalikko ja valitse "Aplikaatio".</li>
+  </ol>
+  <p>Oikotie Blogiin: <a href="https://www.kauppa.lapsen-arki.fi/blogi-artikkelit/">klikkaa tästä siirtyäksesi suoraan blogiin</a>.</p>
+`,
+
+kauppa: `
+  <h3>Kauppa</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li>Siirry sivun oikeasta yläkulmasta löytyvän <a href="https://www.kauppa.lapsen-arki.fi/kauppa/">Kauppa</a> linkin kautta Lapsen Arki -kauppasivustolle.</li>
+      <li>Jos haluat palata Laar-aplikaatioon, klikkaa Blogi-sivuston navigointipalkissa kohtaa "Aplikaatio".</li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li>Avaa hampurilaisvalikko ja valitse sieltä <a href="https://www.kauppa.lapsen-arki.fi/kauppa/">Kauppa</a> päästäksesi Lapsen Arki -kauppasivustolle.</li>
+      <li>Jos haluat palata Laar-aplikaatioon, avaa Blogi-sivuston hampurilaisvalikko ja valitse "Aplikaatio".</li>
+  </ol>
+  <p>Oikotie Kauppaan: <a href="https://www.kauppa.lapsen-arki.fi/kauppa/">klikkaa tästä siirtyäksesi suoraan kauppaan</a>.</p>
+`,
+
+löydäkauppa: `
+  <h3>Kauppa</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li>Siirry sivun oikeasta yläkulmasta löytyvän <a href="https://www.kauppa.lapsen-arki.fi/kauppa/">Kauppa</a> linkin kautta Lapsen Arki -kauppasivustolle.</li>
+      <li>Jos haluat palata Laar-aplikaatioon, klikkaa Blogi-sivuston navigointipalkissa kohtaa "Aplikaatio".</li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li>Avaa hampurilaisvalikko ja valitse sieltä <a href="https://www.kauppa.lapsen-arki.fi/kauppa/">Kauppa</a> päästäksesi Lapsen Arki -kauppasivustolle.</li>
+      <li>Jos haluat palata Laar-aplikaatioon, avaa Blogi-sivuston hampurilaisvalikko ja valitse "Aplikaatio".</li>
+  </ol>
+  <p>Oikotie Kauppaan: <a href="https://www.kauppa.lapsen-arki.fi/kauppa/">klikkaa tästä siirtyäksesi suoraan kauppaan</a>.</p>
+`,
+
+ostoslista: `
+  <h3>Ostoslista</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li>Siirry sivun oikeasta yläkulmasta löytyvän <a href="/shopping-list">Ostoslista</a> linkin kautta Laar aplikaation ostoslistalle.</li>
+      <li>Voit lisätä aterian kokoamis sivulla ostoslistallesi raaka-aineita tai ruokaideoita, tätä ei pidä sekoittaa Lapsen Arki -kauppa sivustoon.</li>
+      <li>Huom. Ososlistasi ei näy toisille hoitajille, eikä toisilla laitteilla./li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li>Avaa hampurilaisvalikko ja valitse sieltä <a href="/shopping-list">Ostoslista</a> päästäksesi Laar aplikaation ostoslistalle.</li>
+      <li>Voit lisätä aterian kokoamis sivulla ostoslistallesi raaka-aineita tai ruokaideoita, tätä ei pidä sekoittaa Lapsen Arki -kauppa sivustoon.</li>
+      <li>Huom. Ososlistasi ei näy toisille hoitajille, eikä toisilla laitteilla./li>
+  </ol>
+  <p>Oikotie Ostoslistaan: <a href="/shopping-list">klikkaa tästä siirtyäksesi suoraan ostoslistaan</a>.</p>
+`,
+
+löydäostoslista: `
+  <h3>Ostoslista</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li>Siirry sivun oikeasta yläkulmasta löytyvän <a href="/shopping-list">Ostoslista</a> linkin kautta Laar aplikaation ostoslistalle.</li>
+      <li>Voit lisätä aterian kokoamis sivulla ostoslistallesi raaka-aineita tai ruokaideoita, tätä ei pidä sekoittaa Lapsen Arki -kauppa sivustoon.</li>
+      <li>Huom. Ososlistasi ei näy toisille hoitajille, eikä toisilla laitteilla./li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li>Avaa hampurilaisvalikko ja valitse sieltä <a href="/shopping-list">Ostoslista</a> päästäksesi Laar aplikaation ostoslistalle.</li>
+      <li>Voit lisätä aterian kokoamis sivulla ostoslistallesi raaka-aineita tai ruokaideoita, tätä ei pidä sekoittaa Lapsen Arki -kauppa sivustoon.</li>
+      <li>Huom. Ososlistasi ei näy toisille hoitajille, eikä toisilla laitteilla./li>
+  </ol>
+  <p>Oikotie Ostoslistaan: <a href="/shopping-list">klikkaa tästä siirtyäksesi suoraan ostoslistaan</a>.</p>
+`,
+
+muistikirja: `
+  <h3>Muistikirja</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Siirry sivun oikeasta yläkulmasta löytyvän <a href="/notebook">Muistikirja</a> linkin kautta Laar aplikaation muistikirjaan.</li>
+      <li>Muistikirjassa voit luoda erimuotoisia muistilappuja itsellesi ja hoitajille.</li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko ja siirry Muistikirjaan.</li>
+      <li>Muistikirjassa voit luoda itsellesi ja hoitajille erinäköisiä muistilappuja, muistuttamaan asioista:</li>
+  </ol>
+  <p>Oikotie muistikirjaan, jos olet kirjautunut sisään: <a href="/notebook">klikkaa tästä muistikirjaan</a>.</p>
+`,
+
+löydämuistikirja: `
+  <h3>Muistikirja</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Siirry sivun oikeasta yläkulmasta löytyvän <a href="/notebook">Muistikirja</a> linkin kautta Laar aplikaation muistikirjaan.</li>
+      <li>Muistikirjassa voit luoda erimuotoisia muistilappuja itsellesi ja hoitajille.</li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko ja siirry Muistikirjaan.</li>
+      <li>Muistikirjassa voit luoda itsellesi ja hoitajille erinäköisiä muistilappuja, muistuttamaan asioista:</li>
+  </ol>
+  <p>Oikotie muistikirjaan, jos olet kirjautunut sisään: <a href="/notebook">klikkaa tästä muistikirjaan</a>.</p>
+`,
+
+// päivärytmi
+lapsenpäivärytmi: `
+  <h3>Päivärytmi</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Siirry sivun <a href="/">etusivulle</a> ja valitse lapsi valikosta.</li>
+      <li>Nuolet näyttävät päivärytmissä suunnan, miten sitä tulee lukea. Valitse päivärytmin kategoria jota haluat tarkastella.</li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko ja siirry <a href="/">etusivulle</a>.</li>
+      <li>Valitse lapsi valikosta.</li>
+      <li>Nuolet näyttävät päivärytmissä suunnan, miten sitä tulee lukea. Valitse päivärytmin kategoria jota haluat tarkastella.</li>
+  </ol>
+  <p>Oikotie lapsen päivärytmiin, jos olet kirjautunut sisään: <a href="/">klikkaa tästä päivärytmiin</a>.</p>
+`,
+löydäpäivärytmi: `
+  <h3>Päivärytmi</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Siirry sivun <a href="/">etusivulle</a> ja valitse lapsi valikosta.</li>
+      <li>Nuolet näyttävät päivärytmissä suunnan, miten sitä tulee lukea. Valitse päivärytmin kategoria jota haluat tarkastella.</li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko ja siirry <a href="/">etusivulle</a>.</li>
+      <li>Valitse lapsi valikosta.</li>
+      <li>Nuolet näyttävät päivärytmissä suunnan, miten sitä tulee lukea. Valitse päivärytmin kategoria jota haluat tarkastella.</li>
+  </ol>
+  <p>Oikotie lapsen päivärytmiin, jos olet kirjautunut sisään: <a href="/">klikkaa tästä päivärytmiin</a>.</p>
+`,
+
+//choices
+kokoanateria: `
+  <h3>Päivärytmi</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Siirry sivun <a href="/">etusivulle</a> ja valitse lapsi valikosta.</li>
+      <li>Nuolet näyttävät päivärytmissä suunnan, miten sitä tulee lukea. Valitse päivärytmin kategoria jota haluat tarkastella, esim. Aamiainen.</li>
+      <li>Kokoa ateria aamiaista varten avaamalla kategorioita ja valitsemalla tuote</li>
+      <li>Kun tuote on valittu, se muuttuu oranssiksi.</li>
+      <li>Kun olet valinnut aamupalan tuotteet, scrollaa alas ja klikkaa kokoa ateria.</li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li><a href="/login">Kirjaudu sisään.</a></li>
+      <li>Avaa hampurilaisvalikko ja siirry <a href="/">etusivulle</a>.</li>
+      <li>Valitse lapsi valikosta.</li>
+      <li>Nuolet näyttävät päivärytmissä suunnan, miten sitä tulee lukea. Valitse päivärytmin kategoria jota haluat tarkastella, esim. Aamiainen.</li>
+      <li>Kokoa ateria aamiaista varten avaamalla kategorioita ja valitsemalla tuote</li>
+      <li>Kun tuote on valittu, se muuttuu oranssiksi.</li>
+      <li>Kun olet valinnut aamupalan tuotteet, scrollaa alas ja klikkaa kokoa ateria.</li>
+  </ol>
+  <p>Oikotie aterian kokoamiseen, jos olet kirjautunut sisään: <a href="/choices">klikkaa tästä aterian kokoamiseen</a>. <br />
+  Jos käytät oikotietä, muista valita lapsen profiili.</p>
+`,
+
+//choices
+kokoaateria: `
+  <h3>Päivärytmi</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+    <li>Ensimmäiseksi, <a href="/login">kirjaudu sisään</a>.</li>
+    <li>Siirry <a href="/">etusivulle</a> ja valitse haluamasi lapsi valikosta.</li>
+    <li>Tutustu päivärytmiin nuolien osoittamassa suunnassa ja valitse kategoria, esimerkiksi "Aamiainen".</li>
+    <li>Kokoa ateriasi avaamalla kategoriat ja valitsemalla tuotteita. Valitut tuotteet muuttuvat oranssiksi.</li>
+    <li>Valittuasi kaikki aamiaisen tuotteet, vieritä sivua alas ja klikkaa "Kokoa ateria".</li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+    <li>Ensimmäiseksi, <a href="/login">kirjaudu sisään</a>.</li>
+    <li>Avaa hampurilaisvalikko ja siirry <a href="/">etusivulle</a>.</li>
+    <li>Valitse lapsi valikosta.</li>
+    <li>Käytä päivärytmin nuolia ohjeistuksena ja valitse tarkasteltava kategoria, kuten "Aamiainen".</li>
+    <li>Kokoa ateriasi avaamalla kategoriat ja valitsemalla tuotteita. Valitut tuotteet muuttuvat oranssiksi.</li>
+    <li>Valittuasi kaikki aamiaisen tuotteet, vieritä sivua alas ja klikkaa "Kokoa ateria".</li>
+  </ol>
+
+  <p>Oikopolku aterian kokoamiseen on saatavilla <a href="/choices">tästä</a>, muista valita lapsi ensin.</p>
+`,
+
+luoostoslista: `
+  <h3>Luo ostoslista</h3>
+
+  <h4>Tietokoneella:</h4>
+  <ol>
+      <li>Ensimmäiseksi, <a href="/login">kirjaudu sisään</a>.</li>
+      <li>Siirry <a href="/">etusivulle</a> ja valitse haluamasi lapsi valikosta.</li>
+      <li>Tutustu päivärytmiin nuolien osoittamassa suunnassa ja valitse kategoria, esimerkiksi "Aamiainen".</li>
+      <li>Kokoa ateriasi avaamalla kategoriat ja valitsemalla tuotteita. Valitut tuotteet muuttuvat oranssiksi.</li>
+      <li>Valittuasi kaikki aamiaisen tuotteet, vieritä sivua alas ja klikkaa "Luo ostoslista".</li>
+      <li>Voit tarkastella tallennettuja ostoslistoja <a href="/shopping-list">Ostoslistat-sivulla</a>.</li>
+  </ol>
+
+  <h4>Mobiililaitteella:</h4>
+  <ol>
+      <li>Ensimmäiseksi, <a href="/login">kirjaudu sisään</a>.</li>
+      <li>Avaa hampurilaisvalikko ja siirry <a href="/">etusivulle</a>.</li>
+      <li>Valitse lapsi valikosta.</li>
+      <li>Käytä päivärytmin nuolia ohjeistuksena ja valitse tarkasteltava kategoria, kuten "Aamiainen".</li>
+      <li>Kokoa ateriasi avaamalla kategoriat ja valitsemalla tuotteita. Valitut tuotteet muuttuvat oranssiksi.</li>
+      <li>Valittuasi kaikki aamiaisen tuotteet, vieritä sivua alas ja klikkaa "Luo ostoslista".</li>
+      <li>Tallennettuja ostoslistoja voit selata <a href="/shopping-list">Ostoslistat-sivulla</a>.</li>
+  </ol>
+
+  <p>Oikopolku ostoslistan luomiseen on saatavilla <a href="/choices">tästä</a>, muista valita lapsi ensin.</p>
+`,
 
 
     // testi, jos haluaa iconin viestiin koodia tulee hieman muuttaa täällä ja chatRobotService mutta onko sitten myöhemmin kannattava jos tietue siirtyy backendiin..
@@ -284,7 +868,7 @@ export const robotAnswers: { [key: string]: string } = {
         <p>PC:llä poistaa lapsesi profiilin valitsemalla oikeasta yläkulmasta persoona iconia <PersonPinIcon /> ➧ klikkaa punaista roskakorin kuvaa profiilissa, jonka haluat poistaa ➧ Vahvista poisto. Tämä poistaa profiilisi pysyvästi.</p>
         <p><u>Huomioi että tämä on lopullinen ratkaisu, profiilisi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
         
-        <p>Mobiili laitteella voit poistaa käyttäjätilisi avaamalla hampurilais valikon ➧ <a href="/profile">Profiili</a> ➧ Vahvista poisto. Tämä poistaa profiilisi pysyvästi.</p>
+        <p>Mobiililaitteella voit poistaa käyttäjätilisi, avaamalla hampurilais valikon ➧ <a href="/profile">Profiili</a> ➧ Vahvista poisto. Tämä poistaa profiilisi pysyvästi.</p>
         <p><u>Huomioi että tämä on lopullinen ratkaisu, profiilisi poistetaan pysyvästi ja poistettuja tietoja ei voi palauttaa.</u></p>
         
         <p>Kummatkin vaihtoehdot vaativat, että olet kirjautunut sisään. Oikotie tilin asetuksiin on kun klikkaat <a href="/profile">tästä profiileihin.</a></p>
