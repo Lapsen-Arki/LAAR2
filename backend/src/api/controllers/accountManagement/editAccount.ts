@@ -81,6 +81,10 @@ function filterUpdateData(data: EditRequestDataType) {
         const firebaseKey = keyMapping[key] || key;
         // Assign the value to the filteredData object
         filteredData[firebaseKey] = value;
+        const newDate = new Date();
+        if (key === "email") {
+          filteredData["emailVerificationSent"] = newDate.toISOString();
+        }
       }
     }
   }
