@@ -85,6 +85,10 @@ const getSubscriptionStatus = async (
 
 const updateCancelAtPeriodEnd = async (idToken: string, email: string) => {
   try {
+    const subStatus = getSubscriptionStatus(idToken);
+    if (!subStatus) {
+      return;
+    }
     const response = await axios.post(
       `${API_BASE_URL}/update-cancellation`,
       { email },

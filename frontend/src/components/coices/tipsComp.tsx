@@ -11,8 +11,6 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 // More tips can be added by changing the choices page and adding more advise types.
 // This component renders all advises with matching adviseType
 
-// EXTRA FEATURE: make feature to hide and show tips.
-
 interface CollapseOpen {
   [key: string]: boolean;
 }
