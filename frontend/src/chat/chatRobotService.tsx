@@ -50,7 +50,7 @@ class ChatRobotService {
       throw new Error('Invalid type specified.');
     }
   
-    console.log('API URL:', apiUrl);
+    //'API URL:', apiUrl);
   
     try {
       const response = await axios.get(apiUrl);
