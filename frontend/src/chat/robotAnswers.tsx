@@ -677,7 +677,7 @@ ostoslista: `
   <ol>
       <li>Avaa hampurilaisvalikko ja valitse sieltä <a href="/shopping-list">Ostoslista</a> päästäksesi Laar aplikaation ostoslistalle.</li>
       <li>Voit lisätä aterian kokoamis sivulla ostoslistallesi raaka-aineita tai ruokaideoita, tätä ei pidä sekoittaa Lapsen Arki -kauppa sivustoon.</li>
-      <li>Huom. Ososlistasi ei näy toisille hoitajille, eikä toisilla laitteilla./li>
+      <li>Huom. Ososlistasi ei näy toisille hoitajille, eikä toisilla laitteilla.</li>
   </ol>
   <p>Oikotie Ostoslistaan: <a href="/shopping-list">klikkaa tästä siirtyäksesi suoraan ostoslistaan</a>.</p>
 `,
