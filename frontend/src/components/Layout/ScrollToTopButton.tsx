@@ -25,7 +25,7 @@ const ScrollToTopButton = () => {
   return (
     <div>
       <div
-        style={{ position: "fixed", bottom: "60px", right: "20px", zIndex: 99, opacity: 0.8 }}
+        style={{ position: "fixed", bottom: "60px", left: "20px", zIndex: 99, opacity: 0.8 }}
       >
         {isVisible && (
           <Button

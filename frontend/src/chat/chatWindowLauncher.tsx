@@ -65,6 +65,7 @@ const ChatWindowLauncher: React.FC = () => {
         >
           <Container>
             <StyledChatIcon />
+
               {/* Added a button to open the chat window */}
               <Button
               variant="outlined"
