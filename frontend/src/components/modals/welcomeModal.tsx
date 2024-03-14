@@ -7,15 +7,12 @@ import {
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
-type PleaseLoginModalProps = {
+type FirstLoginModalProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const FirstLoginModal: React.FC<PleaseLoginModalProps> = ({
-  open,
-  setOpen,
-}) => {
+const FirstLoginModal: React.FC<FirstLoginModalProps> = ({ open, setOpen }) => {
   const navigate = useNavigate();
 
   const goToLoginPageHandler = async () => {

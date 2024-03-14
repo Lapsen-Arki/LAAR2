@@ -14,7 +14,6 @@ import { getSubscriptionStatus } from "../api/stripeSubscriptions";
 import { Link } from "react-router-dom";
 
 export default function Profile() {
-  const [openLoginModal, setOpenLoginModal] = useState(false);
   const [subStatus, setSubStatus] = useState<null | boolean>();
   const { idToken } = useContext(TokenContext);
   const {
@@ -39,9 +38,7 @@ export default function Profile() {
   });
 
   if (!idToken) {
-    return (
-      <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
-    );
+    return <PleaseLoginModal open={true} />;
   }
 
   return (
