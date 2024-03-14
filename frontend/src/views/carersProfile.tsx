@@ -30,7 +30,6 @@ import { formTheme } from "../styles/formThemeMUI.tsx";
 import ReturnBtn from "../components/returnBtn.tsx";
 
 export default function CarersProfile() {
-  const [openLoginModal, setOpenLoginModal] = useState(false);
   const { idToken } = useContext(TokenContext);
   const [email, setEmail] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
@@ -41,9 +40,7 @@ export default function CarersProfile() {
   const [emailForAlert, setEmailForAlert] = useState("");
 
   if (!idToken) {
-    return (
-      <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
-    );
+    return <PleaseLoginModal open={true} />;
   }
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,7 +110,9 @@ export default function CarersProfile() {
       >
         <form>
           <ReturnBtn />
-          <Typography variant="h5">Kutsu hoitaja, jolla on Laar-tili</Typography>
+          <Typography variant="h5">
+            Kutsu hoitaja, jolla on Laar-tili
+          </Typography>
           <TextField
             style={{ background: "white" }}
             variant="outlined"
@@ -160,7 +159,7 @@ export default function CarersProfile() {
                 variant="body1"
                 style={{ margin: 3, display: "flex", alignItems: "center" }}
               >
-{/*
+                {/*
                 <EditNoteIcon style={{ marginRight: 10, color: "#1976d2" }} />{" "}
                 Muokata lasteni allergioita <i>(ominaisuus tulossa)</i>
               </Typography>
@@ -229,11 +228,15 @@ export default function CarersProfile() {
           {inviteResult && inviteResult.includes("404") && (
             <Alert severity="warning">
               <AlertTitle>Henkilö ei ole rekisteröitynyt vielä </AlertTitle>
-              Kehoita kutsuttavaa rekisteröitymään Laar-sovellukseen, jotta voit kutsua hänet.
+              Kehoita kutsuttavaa rekisteröitymään Laar-sovellukseen, jotta voit
+              kutsua hänet.
             </Alert>
           )}
 
-          <Tooltip sx={{ marginBottom: 4, marginTop: 2 }} title="Kutsu hoitaja sähköpostilla">
+          <Tooltip
+            sx={{ marginBottom: 4, marginTop: 2 }}
+            title="Kutsu hoitaja sähköpostilla"
+          >
             <Button
               variant="contained"
               className="custom-button"

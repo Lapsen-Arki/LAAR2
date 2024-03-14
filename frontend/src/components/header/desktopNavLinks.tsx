@@ -40,6 +40,20 @@ export default function DesktopNavLinks() {
           <ListItemText primary="Blogi" />
         </ListItemButton>
       </ListItem>
+      <ListItem disablePadding>
+        <ListItemButton component={Link} to="/" sx={{ textAlign: "left" }}>
+          <ListItemText primary="Vinkit" />
+        </ListItemButton>
+      </ListItem>
+      <ListItem disablePadding>
+        <ListItemButton
+          component={Link}
+          to="/notebook"
+          sx={{ textAlign: "left" }}
+        >
+          <ListItemText primary="Muistikirja" />
+        </ListItemButton>
+      </ListItem>
     </List>
   );
 }

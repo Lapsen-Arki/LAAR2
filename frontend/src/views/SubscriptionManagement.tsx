@@ -24,7 +24,6 @@ const SubscriptionManagement: React.FC = () => {
   const { idToken } = useContext(TokenContext);
   const [open, setOpen] = React.useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [openLoginModal, setOpenLoginModal] = React.useState(false);
   const [subscription, setSubscription] = useState<SubscriptionData | null>();
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -96,9 +95,7 @@ const SubscriptionManagement: React.FC = () => {
   }, [idToken]);
 
   if (!idToken) {
-    return (
-      <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
-    );
+    return <PleaseLoginModal open={true} />;
   }
 
   return (
