@@ -53,7 +53,10 @@ const InvitedCarersComponent = ({
         )}
         {carerProfiles.length === 0 ? (
           <div className="Carer">
-            <Card className="Carer-cards">
+            <Card
+              sx={{ mr: 2, display: "inline-block" }}
+              className="Carer-cards"
+            >
               <CardContent className="Carer-content">
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <Tooltip title="Hoitajia ei ole vielä lisätty">
