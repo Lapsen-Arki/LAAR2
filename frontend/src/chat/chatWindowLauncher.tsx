@@ -1,6 +1,6 @@
 //LAAR/Pikaviesti/frontend/src/components/ChatWindowLauncher.tsx
-import React, { useState } from "react";
-import { Paper, Tooltip, Typography, Button } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Paper, Tooltip, Button } from "@mui/material";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import { styled } from "@mui/material/styles";
 import ChatWindow from "./chatWindow";
@@ -19,14 +19,29 @@ const Container = styled("div")({
   alignItems: "center",
 });
 
-
-
 const ChatWindowLauncher: React.FC = () => {
   const [isChatWindowOpen, setIsChatWindowOpen] = useState(false);
+  const [bottom, setBottom] = useState(0);
 
   const toggleChatWindow = () => {
     setIsChatWindowOpen((prev) => !prev);
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Oletetaan, että footerin korkeus on 200px
+      const footerHeight = 200;
+      const scrolledToFooter = window.innerHeight + window.scrollY >= document.body.offsetHeight - footerHeight;
+      
+      setBottom(scrolledToFooter ? footerHeight : 0); // Jos footer näkyy, aseta bottom 200px, muuten 0
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   return (
     <>
@@ -39,21 +54,17 @@ const ChatWindowLauncher: React.FC = () => {
         <Paper
           style={{
             position: "fixed",
-            bottom: 0, // Stick to the bottom
-            right: 0,
-            padding: "8px",
+            bottom: bottom, // Stick to the bottom
+            right: 5,
+            padding: 8,
             cursor: "pointer",
-            fontSize: "24px",
-            width: "300px",
+            fontSize: 24,
+            width: "auto",
             textAlign: "center",
           }}
-          
         >
           <Container>
             <StyledChatIcon />
-            <Typography sx={{ color: "white" }} variant="h6">
-              Kysy Chattirobotilta 
-
               {/* Added a button to open the chat window */}
               <Button
               variant="outlined"
@@ -71,9 +82,7 @@ const ChatWindowLauncher: React.FC = () => {
               <KeyboardArrowUpIcon
               sx={{ fontSize: 20}}
               /> 
-
               </Button>
-            </Typography>
           </Container>
         </Paper>
       </Tooltip>
