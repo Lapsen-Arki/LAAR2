@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import admin from "../../../config/firebseConfig";
 import { firestore } from "firebase-admin";
-import { getUserIdFromToken } from "../../../utils/getUserIdFromTokenUtil";
 
 interface ChildProfile {
   id: string;
@@ -14,15 +13,11 @@ interface ChildProfile {
 
 const getChildProfiles = async (req: Request, res: Response): Promise<void> => {
   try {
-    const idToken = req.headers.authorization?.split("Bearer ")[1];
-    if (!idToken) {
-      res.status(401).json({ error: "Token puuttuu" });
-      return;
-    }
+    // middleware asettaa userId:n res-objektiin
+    const creatorId = (res as any).userId;
 
-    const creatorId = await getUserIdFromToken(idToken);
     if (!creatorId) {
-      res.status(403).json({ error: "Virheellinen token" });
+      res.status(403).json({ error: "Käyttäjän tunnistaminen epäonnistui" });
       return;
     }
 
@@ -33,7 +28,7 @@ const getChildProfiles = async (req: Request, res: Response): Promise<void> => {
       .get();
     const profiles: ChildProfile[] = [];
 
-    profilesSnapshot.forEach((doc: FirebaseFirestore.DocumentSnapshot) => {
+    profilesSnapshot.forEach((doc: firestore.DocumentSnapshot) => {
       const profileData = doc.data() as ChildProfile;
       profileData.id = doc.id;
       profiles.push(profileData);

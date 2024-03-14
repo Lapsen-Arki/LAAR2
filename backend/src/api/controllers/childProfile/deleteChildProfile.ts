@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import admin from "../../../config/firebseConfig";
 import { firestore } from "firebase-admin";
-import { getUserIdFromToken } from "../../../utils/getUserIdFromTokenUtil";
 
 interface ChildProfile {
   id: string;
@@ -17,17 +16,12 @@ const deleteChildProfile = async (
   res: Response
 ): Promise<void> => {
   const profileId = req.params.profileId;
+  // middleware asettaa userId:n res-objektiin
+  const creatorId = (res as any).userId;
 
   try {
-    const idToken = req.headers.authorization?.split("Bearer ")[1];
-    if (!idToken) {
-      res.status(401).json({ error: "Token puuttuu" });
-      return;
-    }
-
-    const creatorId = await getUserIdFromToken(idToken);
     if (!creatorId) {
-      res.status(403).json({ error: "Virheellinen token" });
+      res.status(403).json({ error: "Käyttäjän tunnistaminen epäonnistui" });
       return;
     }
 
@@ -50,14 +44,10 @@ const deleteChildProfile = async (
 
     await childProfilesCollection.doc(profileId).delete();
 
-    res
-      .status(200)
-      .json({ success: true, message: "Profiili poistettu onnistuneesti." });
+    res.status(200).json({ success: true, message: "Profiili poistettu onnistuneesti." });
   } catch (error: any) {
     console.error("Profiilin poisto epäonnistui", error);
-    res
-      .status(500)
-      .json({ success: false, message: "Profiilin poisto epäonnistui." });
+    res.status(500).json({ success: false, message: "Profiilin poisto epäonnistui." });
   }
 };
 
