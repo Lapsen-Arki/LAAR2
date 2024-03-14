@@ -85,7 +85,7 @@ const getSubscriptionStatus = async (
 
 const updateCancelAtPeriodEnd = async (idToken: string, email: string) => {
   try {
-    const subStatus = getSubscriptionStatus(idToken);
+    const subStatus = await getSubscriptionStatus(idToken);
     if (!subStatus) {
       return;
     }

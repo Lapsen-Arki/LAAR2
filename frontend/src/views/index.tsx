@@ -13,9 +13,12 @@ import InfoIcon from "@mui/icons-material/Info";
 import ChildInfoComp from "../components/coices/childInfoComp";
 import { getSubscriptionStatus } from "../api/stripeSubscriptions";
 import { Link } from "react-router-dom";
+import FirstLoginModal from "../components/modals/welcomeModal";
 
 export default function IndexPage() {
   const { isLoggedIn, idToken } = useContext(TokenContext);
+  const [openFirstLoginModal, setFirstOpenLoginModal] = useState(false);
+  const [isFirstLogin, setIsFirstLogin] = useState(false);
   const [selectedChild, setSelectedChild] = useState(() => {
     return sessionStorage.getItem("selectedChild");
   });
@@ -33,10 +36,27 @@ export default function IndexPage() {
         await getChildProfiles(idToken);
         await getCarerChildProfiles();
         makeChildObject();
+
+        const notFirstLogin = localStorage.getItem("notFirstLogin");
+        if (notFirstLogin === "firstAttempt") {
+          setFirstOpenLoginModal(true);
+          setIsFirstLogin(true);
+          // Show first login modal / message etc
+          localStorage.setItem("notFirstLogin", "true");
+        }
       };
       retrieveDataAndMakeObject();
     }
-  }, [idToken, isLoggedIn]);
+  }, [idToken, isLoggedIn, openFirstLoginModal]);
+
+  if (isFirstLogin) {
+    return (
+      <FirstLoginModal
+        open={openFirstLoginModal}
+        setOpen={setFirstOpenLoginModal}
+      />
+    );
+  }
 
   const handleParentChange = (newValue: string) => {
     setSelectedChild(newValue);
