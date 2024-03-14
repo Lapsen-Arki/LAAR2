@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import admin from "../../../config/firebseConfig";
+import stripeConf from "../../../config/stripeClient";
 
 // Määritellään lapsiprofiilin rakenne
 interface ChildProfile {
@@ -37,13 +38,32 @@ const getCarerChildProfiles = async (req: Request, res: Response) => {
     const senderUids = childCarersDoc.docs[0].data().senderUid;
 
     for (const senderUid of senderUids) {
+      // Checking that creatorId / senderUid has subscribed the service
+      const stripe = stripeConf();
+      const senderDocRef = db.collection("users").doc(senderUid);
+      const senderUserDoc = await senderDocRef.get();
+      if (!senderUserDoc.exists) {
+        res.status(404).json({ error: "User not found" });
+        return;
+      }
+
+      const stripeSubscriptionId = senderUserDoc.data()?.stripeSubscriptionId;
+
+      if (stripeSubscriptionId) {
+        const subscription = await stripe.subscriptions.retrieve(
+          stripeSubscriptionId
+        );
+        if (subscription.status === "canceled") {
+          // Moving to next iteration if sender have not subscribed the service
+          continue;
+        }
+      }
+
       const childProfilesSnapshot = await db
         .collection("childProfile")
         .where("creatorId", "==", senderUid)
         .where("accessRights", "==", true)
         .get();
-
-      // Tähän check mikä tarkistaa, että creatorUid on myös subscribannut palvelun
 
       for (const childDoc of childProfilesSnapshot.docs) {
         const childData = childDoc.data() as ChildProfile;

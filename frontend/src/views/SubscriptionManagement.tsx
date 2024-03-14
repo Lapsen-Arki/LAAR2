@@ -141,16 +141,18 @@ const SubscriptionManagement: React.FC = () => {
         )}
         <br></br>
         <br></br>
-        {successMessage != null && (
-          <Alert severity="success" sx={{ marginBottom: "10px" }}>
-            <Typography variant="subtitle1">{successMessage}</Typography>
-          </Alert>
-        )}
-        {errorMessage != null && (
-          <Alert severity="error" sx={{ marginBottom: "10px" }}>
-            <Typography variant="subtitle2">{errorMessage}</Typography>
-          </Alert>
-        )}
+        <div style={{ padding: 1 }}>
+          {successMessage != null && (
+            <Alert severity="success" sx={{ marginBottom: "10px" }}>
+              <Typography variant="subtitle1">{successMessage}</Typography>
+            </Alert>
+          )}
+          {errorMessage != null && (
+            <Alert severity="error" sx={{ marginBottom: "10px" }}>
+              <Typography variant="subtitle2">{errorMessage}</Typography>
+            </Alert>
+          )}
+        </div>
       </Container>
     </ThemeProvider>
   );
