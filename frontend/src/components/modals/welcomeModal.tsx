@@ -21,9 +21,6 @@ const FirstLoginModal: React.FC<PleaseLoginModalProps> = ({
   const goToLoginPageHandler = async () => {
     return navigate("/profile");
   };
-  const continueHandler = async () => {
-    return navigate("/");
-  };
 
   return (
     <Dialog
@@ -60,8 +57,8 @@ const FirstLoginModal: React.FC<PleaseLoginModalProps> = ({
           <strong>Lasten hoitajana:</strong>
         </Typography>
         <Typography sx={{ mt: 2 }}>
-          1. Nyt kun sinulla on LAAR tili, niin kuka tahansa voi kutsua sinut
-          lapsilleen hoitajaksi. <br />
+          1. Nyt kun sinulla on LAAR tili, niin sinut voidaan lisätä lasten
+          hoitajaksi. <br />
           2. Anna kirjautuessa käyttämäsi sähköpostiosoitteesi hoidettavien
           lasten vanhemmille, niin he lisäävät sinut hoitajaksi. <br />
           3. Jos sinulla ei ole omia lapsia palvelussa, niin{" "}
@@ -71,8 +68,7 @@ const FirstLoginModal: React.FC<PleaseLoginModalProps> = ({
             peruuttaa tilauksesi päättymään 14 päivän ilmaiseen kokeiluun.{" "}
           </Link>{" "}
           <br />
-          4. Hyödynnä kaikki ajankohtaasi sopivat vinkit <br />
-          ja ideat. <br />
+          4. Hyödynnä kaikki ajankohtaasi sopivat vinkit ja ideat. <br />
           5. Tukenasi on myös LAAR chat robootti, jos tarvitset apua tai neuvoja
           palvelun käyttöön.
         </Typography>
@@ -92,7 +88,7 @@ const FirstLoginModal: React.FC<PleaseLoginModalProps> = ({
           Profiilisivulle
         </Button>
         <Button
-          onClick={continueHandler}
+          onClick={() => setOpen(false)}
           fullWidth
           variant="contained"
           color="primary"

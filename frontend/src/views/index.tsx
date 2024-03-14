@@ -49,15 +49,6 @@ export default function IndexPage() {
     }
   }, [idToken, isLoggedIn, openFirstLoginModal]);
 
-  if (isFirstLogin) {
-    return (
-      <FirstLoginModal
-        open={openFirstLoginModal}
-        setOpen={setFirstOpenLoginModal}
-      />
-    );
-  }
-
   const handleParentChange = (newValue: string) => {
     setSelectedChild(newValue);
   };
@@ -73,6 +64,12 @@ export default function IndexPage() {
             background: "#fad5b6",
           }}
         >
+          {isFirstLogin && (
+            <FirstLoginModal
+              open={openFirstLoginModal}
+              setOpen={setFirstOpenLoginModal}
+            />
+          )}
           {!isLoggedIn ? (
             <LandingComp />
           ) : (
