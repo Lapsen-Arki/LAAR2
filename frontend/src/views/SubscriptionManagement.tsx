@@ -102,59 +102,62 @@ const SubscriptionManagement: React.FC = () => {
   }
 
   return (
-	<ThemeProvider theme={formTheme}>
-    <Container
-      sx={{
-        textAlign: "center",
-      }}
-    >
-      <Typography variant="h3" component="div">
-        Tilaustiedot
-      </Typography>
-      <br></br>
-      <SubscriptionConfirmationDialog
-        onCancelSubscription={handleCancelSubscription}
-        onStartSubscription={handleStartSubscription}
-        subscription={subscription}
-        open={open}
-        onClose={handleConfirmationDialogClose}
-      />
-      {!isLoading && (
-        <Card variant="outlined">
-          <CardContent>
-            {!isLoading && subscription && (
-              <IsSubscribed subscription={subscription} />
-            )}
-            {!isLoading && !subscription && <NotSubscribed />}
-          </CardContent>
-        </Card>
-      )}
-      <br></br>
-      {!isLoading && (subscription?.cancel_at_period_end || !subscription) && (
-        <Button onClick={handleConfirmationDialogOpen} variant="contained">
-          Jatka tilausta
-        </Button>
-      )}{" "}
-      {isLoading && <LoadingComponent />}
-      {!isLoading && subscription && !subscription?.cancel_at_period_end && (
-        <Button onClick={handleConfirmationDialogOpen} variant="contained">
-          Keskeytä tilaus
-        </Button>
-      )}
-      <br></br>
-      <br></br>
-      {successMessage != null && (
-        <Alert severity="success" sx={{marginBottom: '10px'}}>
-          <Typography variant="subtitle1">{successMessage}</Typography>
-        </Alert>
-      )}
-      {errorMessage != null && (
-        <Alert severity="error" sx={{marginBottom: '10px'}}>
-          <Typography variant="subtitle2">{errorMessage}</Typography>
-        </Alert>
-      )}
-    </Container>
-	</ThemeProvider>
+    <ThemeProvider theme={formTheme}>
+      <Container
+        sx={{
+          textAlign: "center",
+        }}
+      >
+        <Typography variant="h3" component="div">
+          Tilaustiedot
+        </Typography>
+        <br></br>
+        <SubscriptionConfirmationDialog
+          onCancelSubscription={handleCancelSubscription}
+          onStartSubscription={handleStartSubscription}
+          subscription={subscription}
+          open={open}
+          onClose={handleConfirmationDialogClose}
+        />
+        {!isLoading && (
+          <Card variant="outlined">
+            <CardContent>
+              {!isLoading && subscription && (
+                <IsSubscribed subscription={subscription} />
+              )}
+              {!isLoading && !subscription && <NotSubscribed />}
+            </CardContent>
+          </Card>
+        )}
+        <br></br>
+        {!isLoading &&
+          (subscription?.cancel_at_period_end || !subscription) && (
+            <Button onClick={handleConfirmationDialogOpen} variant="contained">
+              Jatka tilausta
+            </Button>
+          )}{" "}
+        {isLoading && <LoadingComponent />}
+        {!isLoading && subscription && !subscription?.cancel_at_period_end && (
+          <Button onClick={handleConfirmationDialogOpen} variant="contained">
+            Keskeytä tilaus
+          </Button>
+        )}
+        <br></br>
+        <br></br>
+        <div style={{ padding: 1 }}>
+          {successMessage != null && (
+            <Alert severity="success" sx={{ marginBottom: "10px" }}>
+              <Typography variant="subtitle1">{successMessage}</Typography>
+            </Alert>
+          )}
+          {errorMessage != null && (
+            <Alert severity="error" sx={{ marginBottom: "10px" }}>
+              <Typography variant="subtitle2">{errorMessage}</Typography>
+            </Alert>
+          )}
+        </div>
+      </Container>
+    </ThemeProvider>
   );
 };
 
