@@ -150,7 +150,9 @@ export default function Profile() {
           ) : (
             <>
               {childProfiles.length > 0 && <MyChildComponent />}
-              {carerProfiles.length > 0 && <InvitedCarersComponent />}
+              {carerProfiles.length > 0 && (
+                <InvitedCarersComponent subStatus={subStatus} />
+              )}
               {carerChildProfiles.length > 0 && <CarerChildComponent />}
             </>
           )}

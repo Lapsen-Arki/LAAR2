@@ -8,7 +8,8 @@ const formThemeStyles = createTheme({
     MuiAlert: {
       styleOverrides: {
         root: {
-          marginTop: 2,
+          mb: 1,
+          mt: 2,
           textDecoration: "none",
         },
       },
@@ -20,6 +21,8 @@ const formThemeStyles = createTheme({
       styleOverrides: {
         root: {
           maxWidth: 300,
+          mb: 1,
+          mt: 1,
           boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
           "@media (min-width:400px)": {
             width: 400,
