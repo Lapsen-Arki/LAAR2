@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import NotePage from '../components/notebook/notePage';
 import MemoCreator from '../components/notebook/memoCreator';
+import PleaseLoginModal from "../components/modals/pleaseLoginModal.tsx";
+import { TokenContext } from "../contexts/tokenContext";
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from '../styles/formThemeMUI';
 import ReturnBtn from '../components/returnBtn';
@@ -24,6 +26,8 @@ const NoteBook: React.FC = () => {
   const [memos, setMemos] = useState<Memo[]>([]);
   const [isOpen, setIsOpen] = useState(false); // Tila muistelmien lisäämisnäkymän hallintaan
   const [isOpenInfo, setIsOpenInfo] = useState(false);
+  const { idToken } = useContext(TokenContext);
+  const [openLoginModal, setOpenLoginModal] = useState(false);
 
   useEffect(() => {
     // Ladataan muistelmat Session Storagesta kun komponentti ladataan ensimmäistä kertaa
@@ -80,6 +84,12 @@ const NoteBook: React.FC = () => {
   const handleToggleInfo = () => {
     setIsOpenInfo(!isOpenInfo);
   };
+
+  if (!idToken) {
+    return (
+      <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
+    );
+  }
 
   return (
     <ThemeProvider theme={formTheme}>
