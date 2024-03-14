@@ -45,10 +45,18 @@ const NoteBook: React.FC = () => {
     updateMemosInSessionStorage(newMemo); // Lisää uusi muistilappu sessionStorageen
   };
 
-  const handleDragStart =
-    (id: string) => (e: React.DragEvent<HTMLDivElement>) => {
-      e.dataTransfer.setData("text/plain", id);
-    };
+  const deleteMemo = (memoId: string) => {
+    const updatedMemos = memos.filter(memo => memo.id !== memoId);
+    setMemos(updatedMemos);
+  };
+
+  const handleDeleteClick = (memoId: string) => {
+    deleteMemo(memoId);
+  };
+
+  const handleDragStart = (id: string) => (e: React.DragEvent<HTMLDivElement>) => {
+    e.dataTransfer.setData("text/plain", id);
+  };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -171,14 +179,14 @@ const NoteBook: React.FC = () => {
       >
         {memos.map((memo) => (
           <div
-            key={memo.id}
-            draggable
-            onDragStart={handleDragStart(memo.id)}
-            onDragOver={handleDragOver}
-            onDrop={(e) => handleDrop(e, memo.id)}
-          >
-            <NotePage memo={memo} />
-          </div>
+          key={memo.id}
+          draggable
+          onDragStart={handleDragStart(memo.id)}
+          onDragOver={handleDragOver}
+          onDrop={(e) => handleDrop(e, memo.id)}
+        >
+          <NotePage memo={memo} onDelete={() => deleteMemo(memo.id)}/>
+        </div>
         ))}
       </Container>
     </ThemeProvider>
