@@ -1,0 +1,29 @@
+.custom-button {
+    background-color: #57bfb1 !important;
+  }
+  
+  .input-group {
+    text-align: center;
+  }
+  
+  /* Korttien tyyli */
+  .card-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .text-section {
+    text-align: center;
+  }
+  
+  
+    .received-messages-container {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+  
+    .righteous-text {
+      font-family: 'Righteous', sans-serif;
+      font-size: 16px;
+    }
