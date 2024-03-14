@@ -13,20 +13,40 @@ const NotePage: React.FC<{ memo: Memo; onDelete: () => void }> = ({
     switch (memo.type) {
       case "post-it":
         return (
-          <div className="post-it-memo">
-            {memo.content}{" "}
-            <button onClick={onDelete}>
-              <DeleteIcon />
-            </button>
+          <div>
+            <div className="post-it-memo">
+              {memo.content}{" "}
+              <button
+                onClick={onDelete}
+                style={{
+                  border: "none",
+                  outline: "none",
+                  background: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <DeleteIcon />
+              </button>
+            </div>
           </div>
         ); // Renderöi muistilappuna post-it-tyylisen elementin
       case "balloon":
         return (
-          <div className="balloon-memo">
-            {memo.content}{" "}
-            <button onClick={onDelete}>
-              <DeleteIcon />
-            </button>
+          <div>
+            <div className="balloon-memo">
+              {memo.content}{" "}
+              <button
+                onClick={onDelete}
+                style={{
+                  border: "none",
+                  outline: "none",
+                  background: "none",
+                  cursor: "pointer",
+                }}
+              >
+                <DeleteIcon />
+              </button>
+            </div>
           </div>
         ); // Renderöi muistilappuna balloon-tyylisen elementin
       default:
