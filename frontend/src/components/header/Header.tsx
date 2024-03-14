@@ -10,11 +10,11 @@ import {
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
-import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
+import CancelPresentationIcon from "@mui/icons-material/CancelPresentation";
 
 import { ThemeProvider } from "@mui/material/styles";
-import HeaderLink from "./headerLink";
-import HeaderIconsAsText from "./headerIconsAsText";
+import DesktopNavLinks from "./desktopNavLinks";
+import MobileNavLinks from "./mobileNavLinks";
 import HeaderIcons from "./headerIcons";
 import BrandingBanner from "./headerBrandingBanner";
 
@@ -31,9 +31,9 @@ export default function Header() {
         <BrandingBanner />
         <CancelPresentationIcon />
       </div>
-      <HeaderLink />
+      <DesktopNavLinks />
       <Divider />
-      <HeaderIconsAsText />
+      <MobileNavLinks />
     </Box>
   );
 
@@ -57,7 +57,7 @@ export default function Header() {
 
               {/* NavBar Navigation links */}
               <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                <HeaderLink />
+                <DesktopNavLinks />
                 <HeaderIcons />
               </Box>
             </Toolbar>

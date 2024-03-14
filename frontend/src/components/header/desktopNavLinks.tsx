@@ -5,7 +5,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { Link } from "react-router-dom";
 
 // HeaderLinks component for individual links
-export default function HeaderLink() {
+export default function DesktopNavLinks() {
   return (
     <List sx={{ display: { sx: "block", md: "flex" } }}>
       <ListItem disablePadding sx={{ display: { md: "none" } }}>

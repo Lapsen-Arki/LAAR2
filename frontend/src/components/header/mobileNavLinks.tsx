@@ -1,14 +1,9 @@
 import { TokenContext } from "../../contexts/tokenContext";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { 
-  List, 
-  ListItem, 
-  ListItemButton, 
-  ListItemText 
-} from "@mui/material";
+import { List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 
-export default function HeaderIconsAsText() {
+export default function MobileNavLinks() {
   const { isLoggedIn, signOutMethod } = useContext(TokenContext);
 
   return (
@@ -28,7 +23,7 @@ export default function HeaderIconsAsText() {
           </ListItem>
           <ListItem disablePadding>
             <ListItemButton component={Link} to="/subscription">
-              <ListItemText primary="Tilaukset" />
+              <ListItemText primary="Tilaus" />
             </ListItemButton>
           </ListItem>
         </div>
