@@ -59,7 +59,7 @@ export default function TimeBlockComp({
   }, [childName, isLoggedIn]);
 
   useEffect(() => {
-    if (selectedChildAge) {
+    if (selectedChildAge || selectedChildAge === 0) {
       if (selectedChildAge <= 4) {
         setBlockData(imeväinenRytmi);
       } else if (selectedChildAge >= 4 && selectedChildAge <= 6) {
