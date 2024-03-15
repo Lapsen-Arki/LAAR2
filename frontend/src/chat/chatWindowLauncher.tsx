@@ -3,7 +3,7 @@ import { Paper, Tooltip, Button } from "@mui/material";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import { styled } from "@mui/material/styles";
 import ChatWindow from "./chatWindow";
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 // Määritellään ChatWindowLauncherProps -rajapinta
 interface ChatWindowLauncherProps {
@@ -24,7 +24,10 @@ const Container = styled("div")({
   alignItems: "center",
 });
 
-const ChatWindowLauncher: React.FC<ChatWindowLauncherProps> = ({ isChatWindowOpen, setIsChatWindowOpen }) => {
+const ChatWindowLauncher: React.FC<ChatWindowLauncherProps> = ({
+  isChatWindowOpen,
+  setIsChatWindowOpen,
+}) => {
   const [bottom, setBottom] = useState<number>(0); // Asetetaan bottom-tilamuuttujan tyyppi
 
   const toggleChatWindow = () => {
@@ -33,18 +36,22 @@ const ChatWindowLauncher: React.FC<ChatWindowLauncherProps> = ({ isChatWindowOpe
 
   useEffect(() => {
     const handleScroll = () => {
-      const isMobile = window.matchMedia("only screen and (max-width: 768px)").matches;
-      const footerHeight = isMobile ? 280 : 200;
+      const isMobile = window.matchMedia(
+        "only screen and (max-width: 768px)"
+      ).matches;
+      const footerHeight = isMobile ? 50 : 0;
 
-      const scrolledToFooter = window.innerHeight + window.scrollY >= document.body.offsetHeight - footerHeight;
-      
+      const scrolledToFooter =
+        window.innerHeight + window.scrollY >=
+        document.body.offsetHeight - footerHeight;
+
       setBottom(scrolledToFooter ? footerHeight : 0);
     };
-  
-    window.addEventListener('scroll', handleScroll);
-  
+
+    window.addEventListener("scroll", handleScroll);
+
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -60,13 +67,13 @@ const ChatWindowLauncher: React.FC<ChatWindowLauncherProps> = ({ isChatWindowOpe
             position: "fixed",
             bottom: bottom,
             right: 5,
-            padding: 8,
+            padding: 3,
             cursor: "pointer",
             fontSize: 24,
             width: "auto",
             textAlign: "center",
             opacity: 0.8,
-            transition: "bottom 0.3s ease"
+            transition: "bottom 0.3s ease",
           }}
         >
           <Container>
@@ -83,7 +90,7 @@ const ChatWindowLauncher: React.FC<ChatWindowLauncherProps> = ({ isChatWindowOpe
               }}
               onClick={toggleChatWindow}
             >
-              <KeyboardArrowUpIcon sx={{ fontSize: 20 }} /> 
+              <KeyboardArrowUpIcon sx={{ fontSize: 20 }} />
             </Button>
           </Container>
         </Paper>

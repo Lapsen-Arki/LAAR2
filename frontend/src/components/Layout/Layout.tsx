@@ -21,13 +21,19 @@ const Layout: React.FC<LayoutProps> = (props) => {
       <Header />
       <div className="content-container">
         <div className="page">{props.children}</div>
-        <ChatWindowLauncher isChatWindowOpen={isChatWindowOpen} setIsChatWindowOpen={setIsChatWindowOpen} />
+        <ChatWindowLauncher
+          isChatWindowOpen={isChatWindowOpen}
+          setIsChatWindowOpen={setIsChatWindowOpen}
+        />
         {/* Lisätään handleChatWindowToggle props ScrollToTopButtonille */}
-        <ScrollToTopButton isChatWindowOpen={isChatWindowOpen} handleChatWindowToggle={handleChatWindowToggle} />
+        <ScrollToTopButton
+          isChatWindowOpen={isChatWindowOpen}
+          handleChatWindowToggle={handleChatWindowToggle}
+        />
       </div>
       <Footer />
     </div>
   );
-}
+};
 
 export default Layout;
