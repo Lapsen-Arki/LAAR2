@@ -254,7 +254,7 @@ export default function Register() {
             variant="body1"
           >
             Rekisteröitymällä aloitan 14 vrk ilmaisen kokeilujakson ja palvelun
-            hinta on tämän jälkeen 6,99€/kk. Tilauksen voit peruttaa koska
+            hinta on tämän jälkeen 4.80€/kk. Tilauksen voit peruttaa koska
             tahansa.
           </Typography>
           {/* Repeat for other fields like password, confirm password, etc. */}

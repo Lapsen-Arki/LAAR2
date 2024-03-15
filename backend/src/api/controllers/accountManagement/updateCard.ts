@@ -27,14 +27,7 @@ export const updateCard = async (req: Request, res: Response) => {
 
     const cardId: CardId = req.body.cardId;
     const action: Action = req.body.action;
-    console.log(
-      "Card ID:",
-      cardId,
-      "Action:",
-      action,
-      "Stripe Customer ID:",
-      stripeCustomerId
-    );
+
     if (action === "delete") {
       await stripe.paymentMethods.detach(cardId);
     } else if (action === "update") {

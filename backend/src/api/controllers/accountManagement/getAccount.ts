@@ -43,7 +43,6 @@ export const getAccount = async (req: Request, res: Response) => {
     }
     const customer = await stripe.customers.retrieve(stripeCustomerId);
     if (customer.deleted) throw new Error("Customer not found");
-    console.log(customer);
     let defaultPaymentMethodId: string;
     if (
       customer.invoice_settings.default_payment_method === null &&
@@ -69,7 +68,6 @@ export const getAccount = async (req: Request, res: Response) => {
       expYear: method.card?.exp_year,
       isDefault: method.id === defaultPaymentMethodId,
     }));
-    console.log(sanitizedPaymentMethods);
 
     return res.status(200).json(sanitizedPaymentMethods);
   } catch (error) {

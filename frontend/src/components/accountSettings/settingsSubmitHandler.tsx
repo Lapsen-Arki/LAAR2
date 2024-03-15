@@ -170,7 +170,6 @@ async function updateSettings(
           msg: "Nimeä ei voitu vaihtaa.",
         });
     }
-    console.log(postData);
     const result = await postSettings(postData, idToken);
     if (!result.status) return { status: false, msg: result.message };
     return { status: true, msg: "Asetukset päivitetty onnistuneesti." };
