@@ -1,11 +1,16 @@
-//LAAR/Pikaviesti/frontend/src/components/ChatWindowLauncher.tsx
-import React, { useState } from "react";
-import { Paper, Tooltip, Typography, Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Paper, Tooltip, Button } from "@mui/material";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import { styled } from "@mui/material/styles";
 import ChatWindow from "./chatWindow";
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-// Custom styled component for colored ChatIcon
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+
+// Määritellään ChatWindowLauncherProps -rajapinta
+interface ChatWindowLauncherProps {
+  isChatWindowOpen: boolean;
+  setIsChatWindowOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 const StyledChatIcon = styled(QuestionAnswerIcon)({
   color: "orange",
   fontSize: "24px",
@@ -19,14 +24,36 @@ const Container = styled("div")({
   alignItems: "center",
 });
 
-
-
-const ChatWindowLauncher: React.FC = () => {
-  const [isChatWindowOpen, setIsChatWindowOpen] = useState(false);
+const ChatWindowLauncher: React.FC<ChatWindowLauncherProps> = ({
+  isChatWindowOpen,
+  setIsChatWindowOpen,
+}) => {
+  const [bottom, setBottom] = useState<number>(0); // Asetetaan bottom-tilamuuttujan tyyppi
 
   const toggleChatWindow = () => {
-    setIsChatWindowOpen((prev) => !prev);
+    setIsChatWindowOpen((prev: boolean) => !prev); // Asetetaan prev-parametrin tyyppi
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isMobile = window.matchMedia(
+        "only screen and (max-width: 768px)"
+      ).matches;
+      const footerHeight = isMobile ? 50 : 0;
+
+      const scrolledToFooter =
+        window.innerHeight + window.scrollY >=
+        document.body.offsetHeight - footerHeight;
+
+      setBottom(scrolledToFooter ? footerHeight : 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <>
@@ -34,46 +61,37 @@ const ChatWindowLauncher: React.FC = () => {
         className="custom-button"
         title={"Avaa keskusteluikkuna"}
         placement="top"
-        
       >
         <Paper
           style={{
             position: "fixed",
-            bottom: 0, // Stick to the bottom
-            right: 0,
-            padding: "8px",
+            bottom: bottom,
+            right: 5,
+            padding: 3,
             cursor: "pointer",
-            fontSize: "24px",
-            width: "300px",
+            fontSize: 24,
+            width: "auto",
             textAlign: "center",
+            opacity: 0.8,
+            transition: "bottom 0.3s ease",
           }}
-          
         >
           <Container>
             <StyledChatIcon />
-            <Typography sx={{ color: "white" }} variant="h6">
-              Kysy Chattirobotilta 
-
-              {/* Added a button to open the chat window */}
-              <Button
+            <Button
               variant="outlined"
               sx={{
-              fontSize: 8,
-              p: 0,
-              width: 2,
-              color: "orange",
-              borderColor: "orange",
-              marginLeft: 1,
-              
+                fontSize: 8,
+                p: 0,
+                width: 2,
+                color: "orange",
+                borderColor: "orange",
+                marginLeft: 1,
               }}
               onClick={toggleChatWindow}
-              >
-              <KeyboardArrowUpIcon
-              sx={{ fontSize: 20}}
-              /> 
-
-              </Button>
-            </Typography>
+            >
+              <KeyboardArrowUpIcon sx={{ fontSize: 20 }} />
+            </Button>
           </Container>
         </Paper>
       </Tooltip>

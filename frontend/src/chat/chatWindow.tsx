@@ -1,5 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Paper, List, ListItem, useTheme, Button, Tooltip, Typography, useMediaQuery } from "@mui/material";
+import {
+  Paper,
+  List,
+  ListItem,
+  useTheme,
+  Button,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
 import "./chatWindow.css";
 import { Message } from "../types/typesFrontend";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -15,8 +24,8 @@ const formatMessageTimestamp = (
   timestamp: Date | string,
   includeDate: boolean = true
 ): string => {
-  if (typeof timestamp === 'string' || isNaN(new Date(timestamp).getTime())) {
-    return '';
+  if (typeof timestamp === "string" || isNaN(new Date(timestamp).getTime())) {
+    return "";
   }
 
   const options: Intl.DateTimeFormatOptions = {
@@ -59,8 +68,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
     const onMessageReceivedCallback = (response?: Message | Message[]) => {
       if (response) {
         //("Received response from Chattirobotti:", response);
-        const messagesArray: Message[] = Array.isArray(response) ? response : [response];
-        setMessages((prevMessages: Message[]) => [...prevMessages, ...messagesArray]);
+        const messagesArray: Message[] = Array.isArray(response)
+          ? response
+          : [response];
+        setMessages((prevMessages: Message[]) => [
+          ...prevMessages,
+          ...messagesArray,
+        ]);
       }
     };
 
@@ -69,16 +83,20 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     if (isOpen && initialLoad) {
-      const savedMessages = JSON.parse(sessionStorage.getItem(CHAT_STORAGE_KEY) || "[]");
-      const welcomeMessageAlreadyExists = savedMessages.some((message: Message) => message.id === "welcomeMessage");
+      const savedMessages = JSON.parse(
+        sessionStorage.getItem(CHAT_STORAGE_KEY) || "[]"
+      );
+      const welcomeMessageAlreadyExists = savedMessages.some(
+        (message: Message) => message.id === "welcomeMessage"
+      );
       const welcomeMessage: Message = {
         id: "welcomeMessage",
         senderId: "LAAR Chattirobotti",
         receiverId: "User 1",
         message: "ChatWindow opened",
-        text: "Moikka ja tervetuloa LAARille! Olen LAAR, asiakaspalvelurobotti." +
-          "Suoriudun parhaiten, kun kirjoitat lyhyen ja selkeän kysymyksen. Kuinka voin olla avuksi?" +
-          "<br /><br />Jos kirjaudut Minun LAARiin, voit tehdä myös itse muutoksia profiilisi ja palveluihisi ja pääset tarvittaessa asiakaspalvelun chatiin.",
+        text:
+          "Moikka ja tervetuloa LAARille! Olen LAAR, asiakaspalvelurobotti." +
+          "Suoriudun parhaiten, kun kirjoitat lyhyen ja selkeän kysymyksen. Kuinka voin olla avuksi?",
         isUser: false,
         timestamp: new Date(),
       };
@@ -117,7 +135,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
   const handleSendMessage = () => {
     const now = new Date();
     const defaultUsername = "Käyttäjä";
-  
+
     const userMessage: Message = {
       id: "userMessage-" + now.getTime(),
       senderId: defaultUsername,
@@ -127,11 +145,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
       isUser: true,
       timestamp: now,
     };
-  
+
     //("Sending message:", userMessage);
-  
+
     setMessages([...messages, userMessage]); // Always append the user's message to the messages array
-  
+
     setInputMessage("");
     chatService.current?.addUserMessageAndGenerateResponse(inputMessage);
   };
@@ -232,9 +250,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ isOpen, onClose }) => {
                   }}
                 >
                   {message.isUser ? (
-                    <span>
-                      {message.message}
-                    </span>
+                    <span>{message.message}</span>
                   ) : (
                     <span dangerouslySetInnerHTML={{ __html: message.text }} />
                   )}
