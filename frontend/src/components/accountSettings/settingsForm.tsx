@@ -214,7 +214,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       setSignoutContentText(
         "Tilisi asetukset on muutettu, ja sinut kirjataan ulos " +
           seconds +
-          " sekunnin kuluttua. Kirjaudu sisään uudelleen nähdäksesi muutokset."
+          " sekunnin kuluttua. Kirjaudu uudelleen sisään nähdäksesi muutokset."
       );
       seconds--;
       setTimeout(() => signoutSignal(seconds), 1000);
