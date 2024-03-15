@@ -41,7 +41,11 @@ export default function DesktopNavLinks() {
         </ListItemButton>
       </ListItem>
       <ListItem disablePadding>
-        <ListItemButton component={Link} to="/" sx={{ textAlign: "left" }}>
+        <ListItemButton
+          component={Link}
+          to="https://www.kauppa.lapsen-arki.fi/vinkkeja/"
+          sx={{ textAlign: "left" }}
+        >
           <ListItemText primary="Vinkit" />
         </ListItemButton>
       </ListItem>
