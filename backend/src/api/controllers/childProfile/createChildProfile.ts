@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import admin from "../../../config/firebseConfig";
-import { getUserIdFromToken } from "../../../utils/getUserIdFromTokenUtil";
 
 const createChildProfile = async (
   req: Request,
@@ -8,7 +7,8 @@ const createChildProfile = async (
 ): Promise<void> => {
   try {
     const { childName, birthdate, avatar, accessRights, allergies } = req.body;
-
+    const creatorId = (res as any).userId; // middleware asettaa userId:n res-objektiin
+    //("Creator UID:", creatorId);
 	const sanitizedAllergies = allergies || null;
 
     if (!childName || !birthdate || !avatar || accessRights === undefined) {
@@ -18,15 +18,8 @@ const createChildProfile = async (
       return;
     }
 
-    const idToken = req.headers.authorization?.split("Bearer ")[1];
-    if (!idToken) {
-      res.status(401).json({ error: "Token puuttuu" });
-      return;
-    }
-
-    const creatorId = await getUserIdFromToken(idToken);
     if (!creatorId) {
-      res.status(403).json({ error: "Virheellinen token" });
+      res.status(403).json({ error: "Virheellinen tai puuttuva käyttäjän ID" });
       return;
     }
 
