@@ -8,12 +8,32 @@ import stripeConf from "../../../config/stripeClient";
 // Registration function
 const registerUser = async (req: Request, res: Response) => {
   try {
-    const { email, name, password, confirmPassword, accept, token } =
-      req.body as RegisterData;
+    const {
+      email,
+      name,
+      phoneNumber,
+      password,
+      confirmPassword,
+      accept,
+      token,
+    } = req.body as RegisterData;
 
     // Stripe token
     const stripeCardTokenId = token.id;
-
+    let validatedPhone: string | null = phoneNumber;
+    // Validate phoneNumber
+    const phoneRegex = /^(?:\+(?:[0-9] ?){6,14}[0-9]|\d{7,10})$/;
+    if (phoneNumber.length > 0) {
+      if (!phoneRegex.test(phoneNumber)) {
+        throw new Error(
+          "Puhelinnumero ei ole oikeassa muodossa | Phone number is not in the correct format"
+        );
+      } else {
+        validatedPhone = phoneNumber;
+      }
+    } else {
+      validatedPhone = null;
+    }
     // Validating password and name. Firebase should validate email already.
     const isPasswordValid = validatePassword(password, confirmPassword, res);
     const isValidName = validateAndSanitizeName(name, res);
@@ -31,6 +51,7 @@ const registerUser = async (req: Request, res: Response) => {
       email: email,
       password: password,
       displayName: isValidName,
+      phoneNumber: validatedPhone,
     });
 
     const stripe = stripeConf();
@@ -61,6 +82,7 @@ const registerUser = async (req: Request, res: Response) => {
     await usersCollection.doc(userRecord.uid).set({
       name: isValidName,
       email: email,
+      phoneNumber: validatedPhone,
       registrationDate: registrationDate,
       stripeCustomerId: customer.id,
       stripeCardTokenId: stripeCardTokenId,

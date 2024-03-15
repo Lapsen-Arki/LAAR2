@@ -14,12 +14,13 @@ async function SettingsData(user: UserType) {
       autocomplete: "off",
       value: user.email ?? "",
     },
-    /*  phoneNumber: {
+    phoneNumber: {
       title: "Puhelinnumero",
       type: "tel",
       autocomplete: "off",
       value: user.phoneNumber ?? "",
-    }, */
+      regex: "^[0-9]{9,15}$",
+    },
   };
   return settings;
 }
