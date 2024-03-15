@@ -54,6 +54,7 @@ export default function Register() {
   const [formData, setFormData] = React.useState<RegisterData>({
     email: "",
     name: "",
+    phoneNumber: "",
     password: "",
     confirmPassword: "",
     accept: false,
@@ -140,7 +141,16 @@ export default function Register() {
             value={formData.name}
             onChange={handleChange}
           />
-
+          <TextField
+            name="phoneNumber"
+            variant="outlined"
+            margin="dense"
+            fullWidth
+            label="Puhelinnumero"
+            autoComplete="tel"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+          />
           <Tooltip title="Klikkaa avataksesi salasanavaatimukset">
             <IconButton
               onClick={handleToggle}

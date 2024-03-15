@@ -4,6 +4,7 @@ export type SettingsType = {
     type: string;
     autocomplete: string;
     value: string;
+    regex?: string;
   };
 };
 
