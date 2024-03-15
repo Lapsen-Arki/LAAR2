@@ -40,7 +40,7 @@ const PleaseLoginModal: React.FC<PleaseLoginModalProps> = ({
           variant="contained"
           color="primary"
         >
-          Kirjautumis sivulle
+          Kirjautumissivulle
         </Button>
         <Button
           onClick={returnHandler}

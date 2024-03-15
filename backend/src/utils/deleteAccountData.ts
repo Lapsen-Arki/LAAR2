@@ -26,7 +26,7 @@ const deleteUser = async (userId: string) => {
     // Deletion of childCarers documents:
     const childCarersSnapshot = await db
       .collection("childCarers")
-      .where("receiverId", "==", userId)
+      .where("receiverUid", "==", userId)
       .get();
 
     // Delete carers where receiverId matches
@@ -36,9 +36,10 @@ const deleteUser = async (userId: string) => {
     // Wait for all carer deletions to complete
     await Promise.all(carerDeletePromises);
     // Update carers where senderUID array contains userId
-    const carerUpdatePromises = childCarersSnapshot.docs.map(
+    const allChildCarersSnapshot = await db.collection("childCarers").get();
+    const carerUpdatePromises = allChildCarersSnapshot.docs.map(
       async (doc: FirebaseFirestore.DocumentSnapshot) => {
-        const senderUID = doc.get("senderUID");
+        const senderUID = doc.get("senderUid");
         // Filter out the userId from the senderUID array
         const updatedSenderUID = senderUID.filter(
           (uid: string) => uid !== userId
@@ -46,12 +47,12 @@ const deleteUser = async (userId: string) => {
 
         // Only update if there's a change
         if (updatedSenderUID.length !== senderUID.length) {
-          await doc.ref.update({ senderUID: updatedSenderUID });
+          await doc.ref.update({ senderUid: updatedSenderUID });
         }
       }
     );
     await Promise.all(carerUpdatePromises);
-	// Delete memos created by the user
+    // Delete memos created by the user
     const memosSnapshot = await db.collection("memos").get();
     memosSnapshot.forEach(async (doc: FirebaseFirestore.DocumentSnapshot) => {
       if (doc.id === userId) {

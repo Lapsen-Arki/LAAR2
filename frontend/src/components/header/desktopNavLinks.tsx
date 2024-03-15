@@ -3,9 +3,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { TokenContext } from "../../contexts/tokenContext";
 
 // HeaderLinks component for individual links
 export default function DesktopNavLinks() {
+  const { isLoggedIn } = useContext(TokenContext);
   return (
     <List sx={{ display: { sx: "block", md: "flex" } }}>
       <ListItem disablePadding sx={{ display: { md: "none" } }}>
@@ -49,15 +52,17 @@ export default function DesktopNavLinks() {
           <ListItemText primary="Vinkit" />
         </ListItemButton>
       </ListItem>
-      <ListItem disablePadding>
-        <ListItemButton
-          component={Link}
-          to="/notebook"
-          sx={{ textAlign: "left" }}
-        >
-          <ListItemText primary="Muistikirja" />
-        </ListItemButton>
-      </ListItem>
+      {isLoggedIn && (
+        <ListItem disablePadding>
+          <ListItemButton
+            component={Link}
+            to="/notebook"
+            sx={{ textAlign: "left" }}
+          >
+            <ListItemText primary="Muistikirja" />
+          </ListItemButton>
+        </ListItem>
+      )}
     </List>
   );
 }
