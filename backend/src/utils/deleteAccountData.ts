@@ -36,7 +36,8 @@ const deleteUser = async (userId: string) => {
     // Wait for all carer deletions to complete
     await Promise.all(carerDeletePromises);
     // Update carers where senderUID array contains userId
-    const carerUpdatePromises = childCarersSnapshot.docs.map(
+    const allChildCarersSnapshot = await db.collection("childCarers").get();
+    const carerUpdatePromises = allChildCarersSnapshot.docs.map(
       async (doc: FirebaseFirestore.DocumentSnapshot) => {
         const senderUID = doc.get("senderUid");
         // Filter out the userId from the senderUID array
