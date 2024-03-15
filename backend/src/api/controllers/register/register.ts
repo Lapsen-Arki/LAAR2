@@ -39,7 +39,6 @@ const registerUser = async (req: Request, res: Response) => {
       email: email,
       source: stripeCardTokenId,
     });
-    console.log("Customer created: ", customer);
     // Starting new subscription and 14 day trial:
     const subscription = await stripe.subscriptions.create({
       customer: customer.id,
@@ -52,8 +51,6 @@ const registerUser = async (req: Request, res: Response) => {
       trial_period_days: 14,
       cancel_at_period_end: true, // this will be updated to false when the user confirms their email address at the first login
     });
-    console.log("Subscription created: ", subscription);
-    console.log("User created: ", userRecord);
     // Save user to firebase users collection
     const registrationDate = new Date();
     const db = admin.firestore();
@@ -66,7 +63,6 @@ const registerUser = async (req: Request, res: Response) => {
       stripeCardTokenId: stripeCardTokenId,
       stripeSubscriptionId: subscription.id,
     });
-    console.log("User saved to Firestore: ", userRecord.uid);
     res
       .status(201)
       .send(
