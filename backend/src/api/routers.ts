@@ -34,6 +34,9 @@ import { updateCard } from "./controllers/accountManagement/updateCard";
 
 const router = express.Router();
 
+// Memo controllers:
+import {saveMemo, getMemos} from "./controllers/memos"
+
 // General routes:
 router.post("/register", registerUser);
 router.post("/auth", checkAuth, (req: Request, res: Response) => {
@@ -65,6 +68,10 @@ router.post("/start-subscription", checkAuth, startSubscription);
 router.post("/cancel-subscription", checkAuth, cancelSubscription);
 router.post("/get-subscription", checkAuth, getSubscriptionById);
 router.post("/update-cancellation", checkAuth, updateCancelAtPeriodEnd); //Updating the subscription to NOT cancel when email has been verified
+
+// Memo routes
+router.post("/save-memo", checkAuth, saveMemo);
+router.get("/get-memos", checkAuth, getMemos);
 
 // FOR TESTING
 // -------------------------------------

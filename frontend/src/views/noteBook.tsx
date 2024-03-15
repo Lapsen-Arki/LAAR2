@@ -11,6 +11,8 @@ import {
   saveMemosToSessionStorage,
   getMemosFromSessionStorage,
   updateMemosInSessionStorage,
+  saveMemosToBackend,
+  getMemosFromBackend,
 } from "../api/memoStorage";
 import {
   Container,
@@ -23,26 +25,44 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import SaveIcon from "@mui/icons-material/Save";
 import InfoIcon from "@mui/icons-material/Info";
 
 const NoteBook: React.FC = () => {
   const [memos, setMemos] = useState<Memo[]>([]);
   const [isOpen, setIsOpen] = useState(false); // Tila muistelmien lisäämisnäkymän hallintaan
   const [isOpenInfo, setIsOpenInfo] = useState(false);
-  const { idToken } = useContext(TokenContext);
+  const { isLoggedIn, idToken } = useContext(TokenContext);
 
   useEffect(() => {
-    // Ladataan muistelmat Session Storagesta kun komponentti ladataan ensimmäistä kertaa
-    const storedMemos = getMemosFromSessionStorage();
-    if (storedMemos) setMemos(storedMemos); // Varmista, että storedMemos on olemassa ennen kuin kutsut setMemos
-  }, []);
+    if (isLoggedIn && idToken) {
+      // Ladataan muistelmat Session Storagesta kun komponentti ladataan ensimmäistä kertaa
+      const storedMemos = getMemosFromSessionStorage();
+      // Jos muistelmia ei ole session storagessa, ne haetaan kannasta
+      if (storedMemos.length !== 0) {
+        setMemos(storedMemos);
+      } else {
+        const fetchMemosFromBackend = async (): Promise<void> => {
+          const backendMemos = await getMemosFromBackend(idToken);
+          setMemos(backendMemos);
+        };
+        fetchMemosFromBackend();
+      }
+    }
+  }, [isLoggedIn, idToken]);
 
   const addMemo = (newMemo: Memo) => {
     const updatedMemos = [...memos, { ...newMemo, id: Date.now().toString() }];
     setMemos(updatedMemos);
     saveMemosToSessionStorage(updatedMemos);
     updateMemosInSessionStorage(newMemo); // Lisää uusi muistilappu sessionStorageen
+    saveMemosToBackend(idToken, updatedMemos);
+  };
+
+  const deleteMemo = (memoId: string) => {
+    const updatedMemos = memos.filter((memo) => memo.id !== memoId);
+    setMemos(updatedMemos);
+    saveMemosToSessionStorage(updatedMemos);
+    saveMemosToBackend(idToken, updatedMemos);
   };
 
   const handleDragStart =
@@ -77,6 +97,7 @@ const NoteBook: React.FC = () => {
 
       // Poistetaan vanhat muistilaput ja lisätään uudet oikeassa järjestyksessä Session Storageen
       saveMemosToSessionStorage(newMemos);
+      saveMemosToBackend(idToken, newMemos);
     }
   };
 
@@ -101,7 +122,7 @@ const NoteBook: React.FC = () => {
         style={{ textAlign: "center" }}
       >
         <Typography variant="h6" component="h6" sx={{ textAlign: "center" }}>
-          Lisää väliaikainen muistilappu
+          Lisää muistilappu
         </Typography>
 
         <Tooltip title="Lisää muistelmia">
@@ -113,16 +134,6 @@ const NoteBook: React.FC = () => {
           >
             <AddIcon />
             {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-          </Button>
-        </Tooltip>
-
-        <Tooltip title="Ominaisuus tulossa!">
-          <Button
-            sx={{ marginTop: 2, marginBottom: 2 }}
-            type="submit"
-            variant="outlined"
-          >
-            <SaveIcon />
           </Button>
         </Tooltip>
 
@@ -177,7 +188,7 @@ const NoteBook: React.FC = () => {
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, memo.id)}
           >
-            <NotePage memo={memo} />
+            <NotePage memo={memo} onDelete={() => deleteMemo(memo.id)} />
           </div>
         ))}
       </Container>
