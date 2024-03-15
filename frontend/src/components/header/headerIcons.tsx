@@ -3,12 +3,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import { 
-  IconButton, 
-  Box, Tooltip, 
-  Menu, 
-  MenuItem 
-} from "@mui/material";
+import { IconButton, Box, Tooltip, Menu, MenuItem } from "@mui/material";
 import { Link } from "react-router-dom";
 import { TokenContext } from "../../contexts/tokenContext";
 import { useContext, useState } from "react";
@@ -99,7 +94,7 @@ export default function HeaderIcons() {
               to="/subscription"
               onClick={handleAnchorClose}
             >
-              Tilaukset
+              Tilaus
             </MenuItem>
             <MenuItem
               component={Link}

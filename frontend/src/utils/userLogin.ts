@@ -43,7 +43,7 @@ export const userLogin = async (
     const notFirstLogin = localStorage.getItem("notFirstLogin");
     if (!notFirstLogin || notFirstLogin === "firstAttempt") {
       // If it's the first login -> then Change user's cancel_at_period_end -> true
-      updateCancelAtPeriodEnd(newIdToken, email);
+      await updateCancelAtPeriodEnd(newIdToken, email);
       localStorage.setItem("notFirstLogin", "firstAttempt"); // Updating firstAttempt to "true" in home page
     }
 

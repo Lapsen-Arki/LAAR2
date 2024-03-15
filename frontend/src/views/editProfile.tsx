@@ -1,4 +1,3 @@
-import React from "react";
 import { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
@@ -48,7 +47,6 @@ const EditProfile = () => {
   const [accessRights, setAccessRights] = useState(false);
   const navigate = useNavigate();
   const { idToken } = useContext(TokenContext);
-  const [openLoginModal, setOpenLoginModal] = React.useState(false);
 
   // Tyhjä merkkijono, jos id ei ole määritetty URL:ssä
   const profileId = id || "";
@@ -80,9 +78,9 @@ const EditProfile = () => {
                 : null
             );
             setSelectedAvatar(profileDataFromStorage.avatar);
-			if (profileDataFromStorage.allergies) {
-				setChildAllergies(profileDataFromStorage.allergies);
-			}
+            if (profileDataFromStorage.allergies) {
+              setChildAllergies(profileDataFromStorage.allergies);
+            }
             setAccessRights(profileDataFromStorage.accessRights);
           } else {
             // Jos ei löydy Session Storagesta, haetaan palvelimelta
@@ -113,9 +111,7 @@ const EditProfile = () => {
 
   // Tarkista, onko käyttäjä kirjautunut
   if (!idToken) {
-    return (
-      <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
-    );
+    return <PleaseLoginModal open={true} />;
   }
 
   const handleShowAnimalAvatar = () => {
