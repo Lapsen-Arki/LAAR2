@@ -1,30 +1,20 @@
 import { Request, Response } from "express";
 import admin from "../../../config/firebseConfig";
-import { getUserIdFromToken } from "../../../utils/getUserIdFromTokenUtil";
 
 const editChildProfile = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id, childName, birthdate, avatar, accessRights, allergies } =
-      req.body;
-
+    const { id, childName, birthdate, avatar, accessRights, allergies } = req.body;
     const sanitizedAllergies = allergies || null;
+    const creatorId = (res as any).userId; // middleware asettaa userId:n res-objektiin
+    
 
     if (!childName || !birthdate || !avatar || accessRights === undefined) {
-      res
-        .status(400)
-        .json({ error: "Kaikki tarvittavat tiedot eivät ole saatavilla" });
+      res.status(400).json({ error: "Kaikki tarvittavat tiedot eivät ole saatavilla" });
       return;
     }
 
-    const idToken = req.headers.authorization?.split("Bearer ")[1];
-    if (!idToken) {
-      res.status(401).json({ error: "Token puuttuu" });
-      return;
-    }
-
-    const creatorId = await getUserIdFromToken(idToken);
     if (!creatorId) {
-      res.status(403).json({ error: "Virheellinen token" });
+      res.status(403).json({ error: "Virheellinen tai puuttuva käyttäjän ID" });
       return;
     }
 
@@ -43,11 +33,11 @@ const editChildProfile = async (req: Request, res: Response): Promise<void> => {
 
       // Päivitä olemassa olevaa profiilia id:n avulla
       await profileRef.update({
-        childName: childName,
-        birthdate: birthdate,
-        avatar: avatar,
-        accessRights: accessRights,
-        creatorId: creatorId, // Käyttäjän UID
+        childName,
+        birthdate,
+        avatar,
+        accessRights,
+        creatorId, // Käyttäjän UID
         allergies: sanitizedAllergies,
       });
 

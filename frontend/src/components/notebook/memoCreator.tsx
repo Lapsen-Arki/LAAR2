@@ -10,7 +10,6 @@ import {
     FormControl,
     InputLabel,
     Box,
-    Typography,
 } from "@mui/material";
 
 interface MemoCreatorProps {
@@ -83,11 +82,6 @@ const MemoCreator: React.FC<MemoCreatorProps> = ({ addMemo }) => {
             Luo muistilappu
           </Button>
         </form>
-
-        <Box sx={{backgroundColor: 'orange', padding: 3, borderRadius: 10}}>
-          <Typography variant="h6" gutterBottom>Muistilaput ovat väliaikaisia!</Typography>
-          <Typography variant="body1" gutterBottom><s>Kirjaudu sisään tallentaaksesi muistikirja tietokantaan, muista painaa tallenna kuvaketta.</s> <br /> <i>Ominaisuus tulossa!</i></Typography>
-        </Box>
     </ThemeProvider>
   );
 };
