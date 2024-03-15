@@ -54,9 +54,10 @@ export const RenderConfirmDeletion: React.FC<RenderConfirmationDialogProps> = ({
   };
 
   const handleConfirmationDialog = (dialog: string, confirm?: boolean) => {
-    setConfirmDialogOpen({
-      [dialog]: !confirmDialogOpen[dialog],
-    });
+    setConfirmDialogOpen((currentState) => ({
+      ...currentState,
+      [dialog]: !currentState[dialog],
+    }));
     if (dialog === "firstConfirmation" && confirm) {
       setTimeout(() => {
         setConfirmDialogOpen({ ["secondConfirmation"]: true });
