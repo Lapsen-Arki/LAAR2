@@ -56,7 +56,13 @@ const startSubscription = async (
         // vanha tilaus on lopetettu, ja jäljellä oleva aika on myös loppunut
         const newSubscription = await stripe.subscriptions.create({
           customer: stripeCustomerId,
-          items: [{ plan: "price_1ObLeAK45umi2LZd5XwwYvam" }],
+          items: [
+            {
+              plan:
+                process.env.STRIPE_PRICE_PLAN ||
+                "price_1ObLeAK45umi2LZd5XwwYvam",
+            },
+          ],
         });
         await userDocRef.update({ stripeSubscriptionId: newSubscription.id });
         const { created, current_period_end, cancel_at_period_end } =
