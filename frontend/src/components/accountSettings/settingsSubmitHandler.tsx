@@ -174,7 +174,6 @@ async function updateSettings(
       (postData.phoneNumber.value = data.phoneNumber),
         (postData.phoneNumber.set = true);
     }
-    console.log(postData);
     const result = await postSettings(postData, idToken);
     if (!result.status) return { status: false, msg: result.message };
     return { status: true, msg: "Asetukset päivitetty onnistuneesti." };

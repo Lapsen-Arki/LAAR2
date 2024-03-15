@@ -179,7 +179,6 @@ const updateCancelAtPeriodEnd = async (req: Request, res: Response) => {
         .json({ message: "Cancallation update successful" });
     } else {
       // User not found in Firestore
-      console.log(`User not found in Firestore with email: ${email}`);
       return res.status(404).json({ message: `User not found with ${email}` });
     }
   } catch (error) {

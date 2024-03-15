@@ -48,7 +48,6 @@ export const getAccount = async (req: Request, res: Response) => {
     }
     const customer = await stripe.customers.retrieve(stripeCustomerId);
     if (customer.deleted) throw new Error("Customer not found");
-    console.log(customer);
     let defaultPaymentMethodId: string;
     if (
       customer.invoice_settings.default_payment_method === null &&
