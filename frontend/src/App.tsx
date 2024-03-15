@@ -44,6 +44,7 @@ function App() {
         <UserProvider>
           <ThemeProvider theme={globalTheme}>
             <Elements stripe={stripePromise}>
+              {/* Layoout includes: 1. Header, 2. Footer, 3. Chat robot, 4. Scroll up button */}
               <Layout>
                 <Routes>
                   <Route path="/" element={<IndexPage />} />

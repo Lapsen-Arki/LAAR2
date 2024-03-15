@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import admin from "../../../config/firebseConfig";
-import checkAuth from "../../../middleware/checkAuth";
 import { DocumentSnapshot } from "firebase-admin/firestore";
 
 const inviteAccountToProfile = async (
@@ -8,7 +7,6 @@ const inviteAccountToProfile = async (
   res: Response
 ): Promise<void> => {
   try {
-    checkAuth(req, res, async () => {
       const accountEmail = req.body.accountEmail;
 
       if (!accountEmail) {
@@ -76,7 +74,6 @@ const inviteAccountToProfile = async (
 
         res.status(200).json({ message: "Kutsuttu käyttäjä lisätty hoitajaksi" });
       }
-    });
   } catch (error: any) {
     //console.error("Kutsun luonti epäonnistui", error);
     res.status(500).json({ error: "Kutsun luonti epäonnistui" });
