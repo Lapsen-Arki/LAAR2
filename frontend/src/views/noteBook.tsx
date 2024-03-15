@@ -25,7 +25,6 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import SaveIcon from "@mui/icons-material/Save";
 import InfoIcon from "@mui/icons-material/Info";
 
 const NoteBook: React.FC = () => {
@@ -56,6 +55,13 @@ const NoteBook: React.FC = () => {
     setMemos(updatedMemos);
     saveMemosToSessionStorage(updatedMemos);
     updateMemosInSessionStorage(newMemo); // Lisää uusi muistilappu sessionStorageen
+    saveMemosToBackend(idToken, updatedMemos);
+  };
+
+  const deleteMemo = (memoId: string) => {
+    const updatedMemos = memos.filter((memo) => memo.id !== memoId);
+    setMemos(updatedMemos);
+    saveMemosToSessionStorage(updatedMemos);
     saveMemosToBackend(idToken, updatedMemos);
   };
 
@@ -91,6 +97,7 @@ const NoteBook: React.FC = () => {
 
       // Poistetaan vanhat muistilaput ja lisätään uudet oikeassa järjestyksessä Session Storageen
       saveMemosToSessionStorage(newMemos);
+      saveMemosToBackend(idToken, newMemos);
     }
   };
 
@@ -115,7 +122,7 @@ const NoteBook: React.FC = () => {
         style={{ textAlign: "center" }}
       >
         <Typography variant="h6" component="h6" sx={{ textAlign: "center" }}>
-          Lisää väliaikainen muistilappu
+          Lisää muistilappu
         </Typography>
 
         <Tooltip title="Lisää muistelmia">
@@ -127,16 +134,6 @@ const NoteBook: React.FC = () => {
           >
             <AddIcon />
             {isOpen ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-          </Button>
-        </Tooltip>
-
-        <Tooltip title="Ominaisuus tulossa!">
-          <Button
-            sx={{ marginTop: 2, marginBottom: 2 }}
-            type="submit"
-            variant="outlined"
-          >
-            <SaveIcon />
           </Button>
         </Tooltip>
 
@@ -191,7 +188,7 @@ const NoteBook: React.FC = () => {
             onDragOver={handleDragOver}
             onDrop={(e) => handleDrop(e, memo.id)}
           >
-            <NotePage memo={memo} />
+            <NotePage memo={memo} onDelete={() => deleteMemo(memo.id)} />
           </div>
         ))}
       </Container>
