@@ -5,7 +5,6 @@ import {
   updatePassword,
   Auth,
   verifyBeforeUpdateEmail,
-  /* updateEmail, */
 } from "firebase/auth";
 import { FirebaseError } from "@firebase/util";
 import { AuthenticationError, PasswordError } from "./errors";
@@ -21,6 +20,7 @@ const postData = {
   email: { set: false, value: "" },
   displayName: { set: false, value: "" },
   paymentMethod: { set: false, value: "", default: false },
+  phoneNumber: { set: false, value: "" },
 };
 
 export default async function SubmitHandler(
@@ -170,7 +170,10 @@ async function updateSettings(
           msg: "Nimeä ei voitu vaihtaa.",
         });
     }
-    console.log(postData);
+    if (data.phoneNumber) {
+      (postData.phoneNumber.value = data.phoneNumber),
+        (postData.phoneNumber.set = true);
+    }
     const result = await postSettings(postData, idToken);
     if (!result.status) return { status: false, msg: result.message };
     return { status: true, msg: "Asetukset päivitetty onnistuneesti." };

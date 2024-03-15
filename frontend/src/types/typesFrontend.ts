@@ -5,6 +5,7 @@ import { Token } from "@stripe/stripe-js";
 export interface RegisterData {
   email: string;
   name: string;
+  phoneNumber: string;
   password: string;
   confirmPassword: string;
   accept: boolean;
@@ -94,7 +95,7 @@ export interface SubscriptionData {
 }
 
 export interface ConfirmationDialogProps {
-  subscription : SubscriptionData | null | undefined;
+  subscription: SubscriptionData | null | undefined;
   onCancelSubscription: () => Promise<void>;
   onStartSubscription: () => Promise<void>;
   open: boolean;

@@ -15,7 +15,7 @@ const deleteUser = async (userId: string) => {
     }
     // Deletion of childProfiles documents:
     const childProfilesSnapshot = await db
-      .collection("childProfiles")
+      .collection("childProfile")
       .where("creatorId", "==", userId)
       .get();
     // Delete all childProfiles where creatorId matches
@@ -51,6 +51,14 @@ const deleteUser = async (userId: string) => {
       }
     );
     await Promise.all(carerUpdatePromises);
+	// Delete memos created by the user
+    const memosSnapshot = await db.collection("memos").get();
+    memosSnapshot.forEach(async (doc: FirebaseFirestore.DocumentSnapshot) => {
+      if (doc.id === userId) {
+        await db.collection("memos").doc(doc.id).delete();
+      }
+    });
+
     // Finally, delete the user document and the user account
     await userDocRef.delete();
     await auth.deleteUser(userId);

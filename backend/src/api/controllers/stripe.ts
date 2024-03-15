@@ -56,7 +56,13 @@ const startSubscription = async (
         // vanha tilaus on lopetettu, ja jäljellä oleva aika on myös loppunut
         const newSubscription = await stripe.subscriptions.create({
           customer: stripeCustomerId,
-          items: [{ plan: "price_1ObLeAK45umi2LZd5XwwYvam" }],
+          items: [
+            {
+              plan:
+                process.env.STRIPE_PRICE_PLAN ||
+                "price_1ObLeAK45umi2LZd5XwwYvam",
+            },
+          ],
         });
         await userDocRef.update({ stripeSubscriptionId: newSubscription.id });
         const { created, current_period_end, cancel_at_period_end } =
@@ -173,7 +179,6 @@ const updateCancelAtPeriodEnd = async (req: Request, res: Response) => {
         .json({ message: "Cancallation update successful" });
     } else {
       // User not found in Firestore
-      console.log(`User not found in Firestore with email: ${email}`);
       return res.status(404).json({ message: `User not found with ${email}` });
     }
   } catch (error) {

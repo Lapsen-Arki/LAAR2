@@ -159,24 +159,6 @@ export default function IndexPage() {
         )}
         <TimeBlockComp childName={selectedChild} />{" "}
         {/* <-- Routes to choices page with renderIdentif */}
-        <Typography variant="h5">
-          Lämmin kiitos osallistumisestasi sovelluksemme beta-testaukseen!
-        </Typography>
-        <br />
-        <Typography>
-          Panostuksesi on meille korvaamaton, ja toivomme saavamme sinulta
-          avointa palautetta kokemuksestasi. Haluamme muistuttaa, että sovellus
-          toimii testauksen jälkeen täysin samalla tavalla kuin ennenkin, ja
-          kaikki käyttäjätiedot säilyvät turvallisesti. Olethan yhteydessä
-          meihin sähköpostitse osoitteeseen{" "}
-          <strong>testing@lapsen-arki.fi</strong>, mikäli kohtaat bugeja tai
-          sinulla on ehdotuksia sovelluksemme parantamiseksi. Vakuutamme, että
-          käsittelemme jokaisen palautteen huolellisesti ja pyrimme jatkuvasti
-          kehittämään sovellusta saamamme palautteen perusteella. Tavoitteenamme
-          on tarjota paras mahdollinen käyttökokemus, ja juuri sinun panoksesi
-          on tässä avainasemassa. Arvostamme luottamustasi ja sitoutumistasi
-          sovelluksemme kehitykseen.
-        </Typography>
       </Container>
     </>
   );

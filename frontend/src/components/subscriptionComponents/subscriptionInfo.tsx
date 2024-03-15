@@ -56,9 +56,7 @@ const IsSubscribed = ({
       )}
       <br></br>
       <TableContainer component={Paper}>
-        <Table
-          aria-label="simple table"
-        >
+        <Table aria-label="simple table">
           <TableBody>
             <TableRow>
               <TableCell>Tilaus alkanut</TableCell>
@@ -74,7 +72,7 @@ const IsSubscribed = ({
             </TableRow>
             <TableRow sx={{ "&:last-child td": { borderBottom: "none" } }}>
               <TableCell>Jäsenyyden hinta</TableCell>
-              <TableCell align="right">6,99/kk</TableCell>
+              <TableCell align="right">4.80€/kk</TableCell>
             </TableRow>
           </TableBody>
         </Table>
@@ -103,7 +101,7 @@ const NotSubscribed = (): React.ReactNode => {
         Hanki täysjäsenyys hintaan
       </Typography>
       <Typography variant="h3" component="div">
-        6,99/kk
+        4.80€/kk
       </Typography>
       <br></br>
       <Divider variant="middle" />

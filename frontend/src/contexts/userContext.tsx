@@ -63,8 +63,7 @@ function authUserTokenHandler() {
   const authUserToken = getFirebaseAuthUserToken();
   if (!authUserToken) return;
   const parsedToken = JSON.parse(authUserToken);
-  const authProviderData = parsedToken.providerData[0];
-  return { token: authUserToken, providerData: authProviderData };
+  return { token: authUserToken, providerData: parsedToken };
 }
 
 function getFirebaseAuthUserToken() {

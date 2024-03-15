@@ -54,6 +54,7 @@ export default function Register() {
   const [formData, setFormData] = React.useState<RegisterData>({
     email: "",
     name: "",
+    phoneNumber: "",
     password: "",
     confirmPassword: "",
     accept: false,
@@ -140,7 +141,16 @@ export default function Register() {
             value={formData.name}
             onChange={handleChange}
           />
-
+          <TextField
+            name="phoneNumber"
+            variant="outlined"
+            margin="dense"
+            fullWidth
+            label="Puhelinnumero"
+            autoComplete="tel"
+            value={formData.phoneNumber}
+            onChange={handleChange}
+          />
           <Tooltip title="Klikkaa avataksesi salasanavaatimukset">
             <IconButton
               onClick={handleToggle}
@@ -254,7 +264,7 @@ export default function Register() {
             variant="body1"
           >
             Rekisteröitymällä aloitan 14 vrk ilmaisen kokeilujakson ja palvelun
-            hinta on tämän jälkeen 6,99€/kk. Tilauksen voit peruttaa koska
+            hinta on tämän jälkeen 4.80€/kk. Tilauksen voit peruttaa koska
             tahansa.
           </Typography>
           {/* Repeat for other fields like password, confirm password, etc. */}

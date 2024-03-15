@@ -9,14 +9,13 @@ import { useNavigate } from "react-router-dom";
 
 type PleaseLoginModalProps = {
   open: boolean;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const PleaseLoginModal: React.FC<PleaseLoginModalProps> = ({
   open,
-  setOpen,
+}: {
+  open: boolean;
 }) => {
-  setOpen(true);
   const navigate = useNavigate();
 
   const goToLoginPageHandler = async () => {
@@ -27,13 +26,7 @@ const PleaseLoginModal: React.FC<PleaseLoginModalProps> = ({
     navigate(-1);
   };
   return (
-    <Dialog
-      open={open}
-      onClose={() => {
-        setOpen;
-      }}
-      disableEscapeKeyDown
-    >
+    <Dialog open={open} disableEscapeKeyDown>
       <DialogTitle>Kirjaudu sisään</DialogTitle>
       <DialogContent>
         <Typography>

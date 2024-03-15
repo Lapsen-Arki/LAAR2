@@ -38,7 +38,8 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
   const [isFocused, setIsFocused] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [successMessage, setSuccessMessage] = React.useState("");
-
+  const [signoutDialogOpen, setSignoutDialogOpen] = useState(false);
+  const [signoutContentText, setSignoutContentText] = useState("");
   const [cardAsDefault, setCardAsDefault] = useState(false);
 
   // State variables built from settingsData
@@ -192,7 +193,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       );
       if (response.status) {
         setSuccessMessage(response.msg);
-        signOutMethod();
+        signoutSignal(3);
       } else {
         setErrorMessage(response.msg);
       }
@@ -200,6 +201,23 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       if (error instanceof AuthenticationError) {
         setErrorMessage(error.message);
       }
+    }
+  };
+
+  const signoutSignal = (seconds: number) => {
+    if (seconds === 0) {
+      signOutMethod();
+      setSignoutDialogOpen(false);
+      return;
+    } else {
+      setSignoutDialogOpen(true);
+      setSignoutContentText(
+        "Tilisi asetukset on muutettu, ja sinut kirjataan ulos " +
+          seconds +
+          " sekunnin kuluttua. Kirjaudu uudelleen sisään nähdäksesi muutokset."
+      );
+      seconds--;
+      setTimeout(() => signoutSignal(seconds), 1000);
     }
   };
 
@@ -284,6 +302,8 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
           idToken={idToken}
           password={updatedFormFields.oldPassword}
           signOutMethod={signOutMethod}
+          signoutDialogOpen={signoutDialogOpen}
+          signoutContentText={signoutContentText}
         />
       </Container>
     </ThemeProvider>

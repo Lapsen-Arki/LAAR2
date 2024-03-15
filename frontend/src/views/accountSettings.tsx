@@ -5,13 +5,13 @@ import { UserContext } from "../contexts/userContext";
 import { AuthProvider } from "../contexts/authContext";
 import getSettings from "../api/accountManagement/getSettings";
 import { TokenContext } from "../contexts/tokenContext";
-import { PaymentMethod } from "../components/accountSettings/types";
+import { GetUserSettingsDataType } from "../components/accountSettings/types";
 import LoadingComponent from "../components/LoadingComponent";
 import "../conf/firebaseSdkConfig";
 const AccountSettingsPage = () => {
   const [settingsData, setSettingsData] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [dbData, setDbData] = useState([] as PaymentMethod[]);
+  const [dbData, setDbData] = useState<GetUserSettingsDataType>();
   const user = useContext(UserContext);
   const token = useContext(TokenContext);
   const fetchData = useCallback(async () => {
@@ -19,8 +19,8 @@ const AccountSettingsPage = () => {
     if (user.userId === undefined) return;
     if (token.idToken === null) return;
     try {
-      const data = await SettingsData(user);
       const dbData = await getSettings(token.idToken);
+      const data = await SettingsData(user, dbData.settings);
       setDbData(dbData);
       setSettingsData(data);
       setIsLoading(false);
@@ -33,18 +33,19 @@ const AccountSettingsPage = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-  if (isLoading)
+  if (isLoading || !dbData)
     return (
       <div>
         <LoadingComponent />
       </div>
     );
+
   return (
     <>
       <AuthProvider>
         <AccountSettings
           settingsData={settingsData}
-          dbData={dbData}
+          dbData={dbData.sanitizedPaymentMethods}
           idToken={token.idToken}
         />
       </AuthProvider>

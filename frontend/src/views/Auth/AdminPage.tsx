@@ -28,7 +28,6 @@ const AdminPage = () => {
   const [typeSelect, setTypeSelect] = React.useState("");
   const [openInstructions, setOpenInstructions] = useState(false);
   const [openTitleInstructions, setOpenTitleInstructions] = useState(false);
-  const [openLoginModal, setOpenLoginModal] = React.useState(false);
   const [formData, setFormData] = React.useState<FormDataToBackend>({
     title: "",
     name: "",
@@ -39,9 +38,7 @@ const AdminPage = () => {
   const { idToken } = useContext(TokenContext);
 
   if (!idToken) {
-    return (
-      <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
-    );
+    return <PleaseLoginModal open={true} />;
   }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
