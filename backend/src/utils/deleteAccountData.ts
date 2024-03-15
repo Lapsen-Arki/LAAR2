@@ -15,7 +15,7 @@ const deleteUser = async (userId: string) => {
     }
     // Deletion of childProfiles documents:
     const childProfilesSnapshot = await db
-      .collection("childProfiles")
+      .collection("childProfile")
       .where("creatorId", "==", userId)
       .get();
     // Delete all childProfiles where creatorId matches
