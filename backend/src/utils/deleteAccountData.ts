@@ -47,7 +47,7 @@ const deleteUser = async (userId: string) => {
 
         // Only update if there's a change
         if (updatedSenderUID.length !== senderUID.length) {
-          await doc.ref.update({ senderUID: updatedSenderUID });
+          await doc.ref.update({ senderUid: updatedSenderUID });
         }
       }
     );
