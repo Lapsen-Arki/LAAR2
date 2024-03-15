@@ -52,7 +52,6 @@ export interface Memo {
 	id: string;
   }
 
-export interface UserData {}
 export interface UserRecordList {
   users: UserRecord[];
   pageToken: string;
