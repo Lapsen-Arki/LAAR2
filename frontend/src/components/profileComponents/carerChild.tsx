@@ -6,7 +6,7 @@ import {
   Tooltip,
   Avatar,
   Collapse,
-  IconButton
+  IconButton,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";

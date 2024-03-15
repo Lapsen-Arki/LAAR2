@@ -53,3 +53,23 @@ export interface Memo {
   }
 
 export interface UserData {}
+export interface UserRecordList {
+  users: UserRecord[];
+  pageToken: string;
+}
+
+export type UserForDeletion = {
+  uid: string;
+  email: string;
+};
+
+export interface UserRecord extends UserForDeletion {
+  emailVerified: boolean;
+  metadata: { creationTime: string; lastSignInTime: string };
+}
+
+export interface UnverifiedUser extends UserForDeletion {
+  creation_time: string;
+  last_signin_time: string;
+  verified: boolean;
+}

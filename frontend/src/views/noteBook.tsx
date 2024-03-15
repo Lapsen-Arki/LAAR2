@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import NotePage from "../components/notebook/notePage";
 import MemoCreator from "../components/notebook/memoCreator";
+import PleaseLoginModal from "../components/modals/pleaseLoginModal.tsx";
 import { TokenContext } from "../contexts/tokenContext";
 import { ThemeProvider } from "@mui/material/styles";
 import { formTheme } from "../styles/formThemeMUI";
@@ -26,12 +27,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import SaveIcon from "@mui/icons-material/Save";
 import InfoIcon from "@mui/icons-material/Info";
-import PleaseLoginModal from "../components/modals/pleaseLoginModal";
 
 const NoteBook: React.FC = () => {
   const [memos, setMemos] = useState<Memo[]>([]);
   const [isOpen, setIsOpen] = useState(false); // Tila muistelmien lisäämisnäkymän hallintaan
-  const [openLoginModal, setOpenLoginModal] = React.useState(false);
   const [isOpenInfo, setIsOpenInfo] = useState(false);
   const { isLoggedIn, idToken } = useContext(TokenContext);
 
@@ -104,9 +103,7 @@ const NoteBook: React.FC = () => {
   };
 
   if (!idToken) {
-    return (
-      <PleaseLoginModal open={openLoginModal} setOpen={setOpenLoginModal} />
-    );
+    return <PleaseLoginModal open={true} />;
   }
 
   return (

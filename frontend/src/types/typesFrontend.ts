@@ -108,3 +108,15 @@ export interface Memo {
   content: string;
   id: string;
 }
+
+// Chatrobot
+
+export interface Message {
+  id: string;
+  senderId: string;
+  receiverId: string;
+  message: string;
+  text: string;
+  timestamp: Date;
+  isUser: boolean;
+}
