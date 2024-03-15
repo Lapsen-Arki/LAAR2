@@ -36,6 +36,11 @@ export const getAccount = async (req: Request, res: Response) => {
       return;
     }
     const stripeCustomerId = userDoc.data()?.stripeCustomerId;
+    const phoneNumber = userDoc.data()?.phoneNumber;
+
+    const settings = {
+      phoneNumber,
+    };
 
     if (!stripeCustomerId) {
       res.status(404).json({ error: "User not found. Please contact admin." });
@@ -69,9 +74,8 @@ export const getAccount = async (req: Request, res: Response) => {
       expYear: method.card?.exp_year,
       isDefault: method.id === defaultPaymentMethodId,
     }));
-    console.log(sanitizedPaymentMethods);
 
-    return res.status(200).json(sanitizedPaymentMethods);
+    return res.status(200).json({ settings, sanitizedPaymentMethods });
   } catch (error) {
     console.error("Error getting account:", error);
     res.status(500).json({ error: "Error getting account" });

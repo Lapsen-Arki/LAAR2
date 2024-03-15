@@ -8,6 +8,15 @@ export type SettingsType = {
   };
 };
 
+export type DbSettingsType = {
+  phoneNumber: string;
+};
+
+export type GetUserSettingsDataType = {
+  sanitizedPaymentMethods: PaymentMethod[];
+  settings: DbSettingsType;
+};
+
 export type PaymentMethod = {
   id: string;
   brand: string;

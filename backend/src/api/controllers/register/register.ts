@@ -51,7 +51,6 @@ const registerUser = async (req: Request, res: Response) => {
       email: email,
       password: password,
       displayName: isValidName,
-      phoneNumber: validatedPhone,
     });
 
     const stripe = stripeConf();
