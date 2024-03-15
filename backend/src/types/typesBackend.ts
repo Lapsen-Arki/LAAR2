@@ -3,6 +3,7 @@
 export interface RegisterData {
   email: string;
   name: string;
+  phoneNumber: string;
   password: string;
   confirmPassword: string;
   accept: boolean;

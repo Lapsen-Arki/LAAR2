@@ -4,7 +4,17 @@ export type SettingsType = {
     type: string;
     autocomplete: string;
     value: string;
+    regex?: string;
   };
+};
+
+export type DbSettingsType = {
+  phoneNumber: string;
+};
+
+export type GetUserSettingsDataType = {
+  sanitizedPaymentMethods: PaymentMethod[];
+  settings: DbSettingsType;
 };
 
 export type PaymentMethod = {

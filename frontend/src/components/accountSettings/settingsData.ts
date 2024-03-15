@@ -1,6 +1,6 @@
 import { SettingsType, UserType } from "./types";
-
-async function SettingsData(user: UserType) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function SettingsData(user: UserType, userSettings: any) {
   const settings: SettingsType = {
     displayName: {
       title: "Nimi",
@@ -14,12 +14,13 @@ async function SettingsData(user: UserType) {
       autocomplete: "off",
       value: user.email ?? "",
     },
-    /*  phoneNumber: {
+    phoneNumber: {
       title: "Puhelinnumero",
       type: "tel",
       autocomplete: "off",
-      value: user.phoneNumber ?? "",
-    }, */
+      value: userSettings.phoneNumber ?? "",
+      regex: "^[0-9]{9,15}$",
+    },
   };
   return settings;
 }

@@ -9,11 +9,15 @@ interface RenderConfirmationDialogProps {
   idToken: string | null;
   password: string;
   signOutMethod: () => void;
+  signoutDialogOpen: boolean;
+  signoutContentText: string;
 }
 export const RenderConfirmDeletion: React.FC<RenderConfirmationDialogProps> = ({
   idToken,
   password,
   signOutMethod,
+  signoutDialogOpen,
+  signoutContentText,
 }) => {
   const { auth } = useContext(AuthContext);
   const [isAccepted, setIsAccepted] = React.useState(false);
@@ -50,9 +54,10 @@ export const RenderConfirmDeletion: React.FC<RenderConfirmationDialogProps> = ({
   };
 
   const handleConfirmationDialog = (dialog: string, confirm?: boolean) => {
-    setConfirmDialogOpen({
-      [dialog]: !confirmDialogOpen[dialog],
-    });
+    setConfirmDialogOpen((currentState) => ({
+      ...currentState,
+      [dialog]: !currentState[dialog],
+    }));
     if (dialog === "firstConfirmation" && confirm) {
       setTimeout(() => {
         setConfirmDialogOpen({ ["secondConfirmation"]: true });
@@ -221,6 +226,15 @@ export const RenderConfirmDeletion: React.FC<RenderConfirmationDialogProps> = ({
         onConfirm={() => handleConfirmationDialog("final")}
         title="Tili poistettu"
         content={removedContentText}
+        showCancel={false}
+        showConfirm={false}
+      />
+      <ConfirmationDialog
+        open={signoutDialogOpen}
+        onClose={() => 0}
+        onConfirm={() => 0}
+        title="Tilin asetukset muutettu onnistuneesti"
+        content={signoutContentText}
         showCancel={false}
         showConfirm={false}
       />

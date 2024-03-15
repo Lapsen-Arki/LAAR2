@@ -15,6 +15,7 @@ describe("Register", () => {
       .send({
         email: "testmail@test.com",
         name: "Tester",
+        phoneNumber: "",
         password: "TestiSalasana!1",
         confirmPassword: "TestiSalasana!1",
         accept: true,
