@@ -11,6 +11,7 @@ import {
   vauvaRytmi,
   tenavaRytmi,
   ylineljäRytmi,
+  yliKuusiRytmi,
 } from "./blockData";
 import { TokenContext } from "../../contexts/tokenContext";
 
