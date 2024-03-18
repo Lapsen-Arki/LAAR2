@@ -27,7 +27,7 @@ body {
 /* Yleiset tyylit Headerille ja Footerille */
 .MuiBox-root .MuiPaper-root {
   flex: 0 0 auto;
-  background-color: #fff4ec;
+  background-color: #d8c4ab;
   color: black;
   box-shadow: 0px 0px;
 }
