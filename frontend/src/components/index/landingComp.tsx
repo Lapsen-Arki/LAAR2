@@ -16,10 +16,9 @@ export default function LandingComp() {
         <Typography variant="h5">Tueksi vanhemmuuden polulla.</Typography>
         <hr />
         <Typography variant="body1">
-          Olemme täällä auttamassa uusien vanhempien arkea ja arkirutiineja,
-          antamassa hauskoja suosituksia aktiviteetteihin, käytännön vinkkejä
-          sekä ideoita aterioiden kokoamiseen eri-ikäisille vauva- ja
-          taaperoikäisille lapsille.
+          Moikka! Olemme täällä auttamassa uusien vanhempien arkea ja arkirutiineja, siis perheille joissa on vauvoja, taaaperoita ja pikkulapsia.
+          Päivärytmiin sisältuu maalaisjärkeen perustuvia suosituksia aktiviteetteihin, käytännön vinkkejä ns. ongelmakohtiin
+          sekä ideoita aterioiden kokoamiseen alle kuusivuotiaille lapsille. Me emme ole mikään virallinen taho, vaan yritämme kertoa suomeksi lastenhoidon kieltä.
         </Typography>
         <br />
         <Typography variant="body1">
