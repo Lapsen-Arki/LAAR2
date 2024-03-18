@@ -9,7 +9,8 @@ import {
   taaperoRytmi,
   imeväinenRytmi,
   vauvaRytmi,
-  yliKuusiRytmi,
+  tenavaRytmi,
+  ylineljäRytmi,
 } from "./blockData";
 import { TokenContext } from "../../contexts/tokenContext";
 
