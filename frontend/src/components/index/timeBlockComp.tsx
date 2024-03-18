@@ -70,6 +70,10 @@ export default function TimeBlockComp({
         setBlockData(taaperoRytmi);
       } else if (selectedChildAge >= 12) {
         setBlockData(yliKuusiRytmi);
+       } else if (selectedChildAge >= 48) {
+        setBlockData(tenavaRytmi);
+           } else if (selectedChildAge >= 60) {
+        setBlockData(ylineljäRytmi);
       }
     }
   }, [selectedChildAge]);
