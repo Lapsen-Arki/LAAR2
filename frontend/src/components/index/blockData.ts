@@ -38,7 +38,8 @@ export const taaperoRytmi = [
   { title: "Aktiviteetti", period: "8.30-9.30" },
   { title: "Päiväunet", period: "9.30-11.00" },
   { title: "Lounas", period: "11.00-12.00" },
-  { title: "Päiväunet", period: "12.00-14.00" },
+  { title: "Aktiviteetti", period: "12.00-13.00" },
+  { title: "Päiväunet", period: "13.00-14.00" },
   { title: "Välipala", period: "14.00-14.30" },
   { title: "Aktiviteetti", period: "14.30-17.00" },
   { title: "Päivällinen", period: "17.00-17.30" },
@@ -61,7 +62,7 @@ export const tenavaRytmi = [
   { title: "Hyvää yötä", period: "19.00-20.00" },
 ] as BlockDataType[];
 
-// 4-5v.v
+// 4-5v
 export const ylineljäRytmi = [
   { title: "Aamiainen", period: "6.30-8.30" },
   { title: "Aktiviteetti", period: "8.30-10.45" },
@@ -75,7 +76,7 @@ export const ylineljäRytmi = [
   { title: "Hyvää yötä", period: "19.30-20.30" },
 ] as BlockDataType[];
 
-// 4-5v.v
+// 5-6v
 export const yliKuusiRytmi = [
   { title: "Aamiainen", period: "6.30-8.30" },
   { title: "Aktiviteetti", period: "8.30-10.45" },
@@ -84,7 +85,7 @@ export const yliKuusiRytmi = [
   { title: "Välipala", period: "14.00-14.30" },
   { title: "Aktiviteetti", period: "14.30-17.00" },
   { title: "Päivällinen", period: "17.00-17.30" },
-  { title: "Aktiviteetti", period: "17.30-18.30" },
-  { title: "Iltapala ja iltatoimet", period: "18.30-" },
-  { title: "Hyvää yötä", period: "19.30-20.30" },
+  { title: "Aktiviteetti", period: "17.30-19.30" },
+  { title: "Iltapala ja iltatoimet", period: "19.30-" },
+  { title: "Hyvää yötä", period: "19.30-21.30" },
 ] as BlockDataType[];
