@@ -59,7 +59,7 @@ export const tenavaRytmi = [
   { title: "Päivällinen", period: "17.00-17.30" },
   { title: "Aktiviteetti", period: "17.30-18.00" },
   { title: "Iltapala ja iltatoimet", period: "18.00-19.00" },
-  { title: "Hyvää yötä", period: "19.00-20.00" },
+  { title: "Hyvää yötä", period: "19.00-21.00" },
 ] as BlockDataType[];
 
 
