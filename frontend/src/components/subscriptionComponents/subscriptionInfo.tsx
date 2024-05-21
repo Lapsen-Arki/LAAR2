@@ -101,7 +101,7 @@ const NotSubscribed = (): React.ReactNode => {
         Hanki täysjäsenyys hintaan
       </Typography>
       <Typography variant="h3" component="div">
-        4.80€/kk
+       1€/kk
       </Typography>
       <br></br>
       <Divider variant="middle" />
