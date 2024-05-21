@@ -31,7 +31,7 @@ export default function LandingComp() {
         <Grid sx={{ textAlign: "center", marginTop: 2 }}>
           <Link to="/register">
             <Button variant="contained">
-              aloita 14 päivän ilmainen kokeilu
+              aloita 14 päivän ilmainen kokeilu ja sen jälkeen aplikaatio maksaa 1€ kuukaudessa
             </Button>
           </Link>
           <Link to="https://www.kauppa.lapsen-arki.fi/">
