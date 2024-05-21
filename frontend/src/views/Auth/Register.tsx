@@ -116,7 +116,7 @@ export default function Register() {
           <ReturnBtn />
         </div>
         <Typography variant="h4">Rekisteröidy</Typography>
-        <Typography>Ja aloita 14 päivän ilmainen kokeilu</Typography>
+        <Typography>Ja aloita 14 päivän ilmainen kokeilu, jonka jälkeen jäsenyys on 1€ / kk</Typography>
         <form onSubmit={handleSubmit}>
           <TextField
             name="email"
