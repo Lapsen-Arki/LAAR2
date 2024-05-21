@@ -72,7 +72,7 @@ const IsSubscribed = ({
             </TableRow>
             <TableRow sx={{ "&:last-child td": { borderBottom: "none" } }}>
               <TableCell>Jäsenyyden hinta</TableCell>
-              <TableCell align="right">4.80€/kk</TableCell>
+              <TableCell align="right">1€/kk</TableCell>
             </TableRow>
           </TableBody>
         </Table>
