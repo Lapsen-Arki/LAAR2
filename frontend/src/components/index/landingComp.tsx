@@ -17,8 +17,9 @@ export default function LandingComp() {
         <hr />
         <Typography variant="body1">
           Moikka! Olemme täällä auttamassa uusien vanhempien arkea ja arkirutiineja, siis perheille joissa on vauvoja, taaaperoita ja pikkulapsia.
-          Päivärytmiin sisältuu maalaisjärkeen perustuvia suosituksia aktiviteetteihin, käytännön vinkkejä ns. ongelmakohtiin
-          sekä ideoita aterioiden kokoamiseen alle kuusivuotiaille lapsille. Me emme ole mikään virallinen taho, vaan yritämme kertoa suomeksi lastenhoidon kieltä.
+          Päivärytmiin sisältyy maalaisjärkeen perustuvia suosituksia aktiviteetteihin, käytännön vinkkejä ns. ongelmakohtiin
+          sekä ideoita aterioiden kokoamiseen alle kuusivuotiaille lapsille. Hiukan voit muokata päivärytmin aika-ikkunoita, kuten nukkumaanmenoaikaa, päivälevon sisältö
+           ja heräämisaikaa, muttet tietty kokonaan. Me emme ole mikään virallinen taho, vaan yritämme kertoa suomeksi lastenhoidon kieltä.
         </Typography>
         <br />
         <Typography variant="body1">
